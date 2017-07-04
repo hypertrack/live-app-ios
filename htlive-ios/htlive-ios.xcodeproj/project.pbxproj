@@ -13,6 +13,10 @@
 		33334B921F0B740A001A970E /* htlive_ios.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 33334B901F0B740A001A970E /* htlive_ios.xcdatamodeld */; };
 		33334B941F0B740A001A970E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33334B931F0B740A001A970E /* Assets.xcassets */; };
 		33334B971F0B740A001A970E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 33334B951F0B740A001A970E /* LaunchScreen.storyboard */; };
+		33334BA01F0B87A9001A970E /* ShareVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334B9F1F0B87A9001A970E /* ShareVC.swift */; };
+		33334BA21F0B87BD001A970E /* OnboardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334BA11F0B87BD001A970E /* OnboardVC.swift */; };
+		33334BA61F0BA399001A970E /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334BA51F0BA399001A970E /* UIViewExtension.swift */; };
+		33334BA91F0BA425001A970E /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334BA81F0BA425001A970E /* TextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +28,10 @@
 		33334B931F0B740A001A970E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		33334B961F0B740A001A970E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		33334B981F0B740A001A970E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		33334B9F1F0B87A9001A970E /* ShareVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareVC.swift; sourceTree = "<group>"; };
+		33334BA11F0B87BD001A970E /* OnboardVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardVC.swift; sourceTree = "<group>"; };
+		33334BA51F0BA399001A970E /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		33334BA81F0BA425001A970E /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +64,51 @@
 		33334B881F0B740A001A970E /* htlive-ios */ = {
 			isa = PBXGroup;
 			children = (
-				33334B891F0B740A001A970E /* AppDelegate.swift */,
-				33334B8B1F0B740A001A970E /* ViewController.swift */,
 				33334B8D1F0B740A001A970E /* Main.storyboard */,
+				33334BA71F0BA39F001A970E /* Extensions */,
+				33334B9E1F0B84CB001A970E /* Placeline */,
+				33334BA41F0B87CD001A970E /* Share */,
+				33334BA31F0B87C3001A970E /* Onboarding */,
+				33334B891F0B740A001A970E /* AppDelegate.swift */,
 				33334B931F0B740A001A970E /* Assets.xcassets */,
 				33334B951F0B740A001A970E /* LaunchScreen.storyboard */,
 				33334B981F0B740A001A970E /* Info.plist */,
 				33334B901F0B740A001A970E /* htlive_ios.xcdatamodeld */,
 			);
 			path = "htlive-ios";
+			sourceTree = "<group>";
+		};
+		33334B9E1F0B84CB001A970E /* Placeline */ = {
+			isa = PBXGroup;
+			children = (
+				33334B8B1F0B740A001A970E /* ViewController.swift */,
+			);
+			name = Placeline;
+			sourceTree = "<group>";
+		};
+		33334BA31F0B87C3001A970E /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				33334BA11F0B87BD001A970E /* OnboardVC.swift */,
+			);
+			name = Onboarding;
+			sourceTree = "<group>";
+		};
+		33334BA41F0B87CD001A970E /* Share */ = {
+			isa = PBXGroup;
+			children = (
+				33334B9F1F0B87A9001A970E /* ShareVC.swift */,
+			);
+			name = Share;
+			sourceTree = "<group>";
+		};
+		33334BA71F0BA39F001A970E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				33334BA51F0BA399001A970E /* UIViewExtension.swift */,
+				33334BA81F0BA425001A970E /* TextField.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,7 +184,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33334BA61F0BA399001A970E /* UIViewExtension.swift in Sources */,
+				33334BA01F0B87A9001A970E /* ShareVC.swift in Sources */,
 				33334B8C1F0B740A001A970E /* ViewController.swift in Sources */,
+				33334BA91F0BA425001A970E /* TextField.swift in Sources */,
+				33334BA21F0B87BD001A970E /* OnboardVC.swift in Sources */,
 				33334B921F0B740A001A970E /* htlive_ios.xcdatamodeld in Sources */,
 				33334B8A1F0B740A001A970E /* AppDelegate.swift in Sources */,
 			);
