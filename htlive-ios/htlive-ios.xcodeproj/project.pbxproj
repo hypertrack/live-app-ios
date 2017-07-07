@@ -17,6 +17,7 @@
 		33334BA21F0B87BD001A970E /* OnboardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334BA11F0B87BD001A970E /* OnboardVC.swift */; };
 		33334BA61F0BA399001A970E /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334BA51F0BA399001A970E /* UIViewExtension.swift */; };
 		33334BA91F0BA425001A970E /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334BA81F0BA425001A970E /* TextField.swift */; };
+		6C0CCE1DCCAAE4E4B15AA5E5 /* Pods_htlive_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA1FE93D3C7A407B321E103 /* Pods_htlive_ios.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,9 @@
 		33334BA11F0B87BD001A970E /* OnboardVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardVC.swift; sourceTree = "<group>"; };
 		33334BA51F0BA399001A970E /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		33334BA81F0BA425001A970E /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		460AC2866063016417D72344 /* Pods-htlive-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		6FA1FE93D3C7A407B321E103 /* Pods_htlive_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_htlive_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B23EC95E2F4386FADC61EB1 /* Pods-htlive-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C0CCE1DCCAAE4E4B15AA5E5 /* Pods_htlive_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,6 +55,8 @@
 			children = (
 				33334B881F0B740A001A970E /* htlive-ios */,
 				33334B871F0B740A001A970E /* Products */,
+				F566F550D917E6ECD1F27CB6 /* Pods */,
+				C8EC434E1C44884397D1BDA9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -111,6 +118,23 @@
 			name = Extensions;
 			sourceTree = "<group>";
 		};
+		C8EC434E1C44884397D1BDA9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6FA1FE93D3C7A407B321E103 /* Pods_htlive_ios.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F566F550D917E6ECD1F27CB6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				460AC2866063016417D72344 /* Pods-htlive-ios.debug.xcconfig */,
+				7B23EC95E2F4386FADC61EB1 /* Pods-htlive-ios.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -118,9 +142,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 33334B9B1F0B740A001A970E /* Build configuration list for PBXNativeTarget "htlive-ios" */;
 			buildPhases = (
+				79400DADB2D27371F4D6E5F8 /* [CP] Check Pods Manifest.lock */,
 				33334B821F0B740A001A970E /* Sources */,
 				33334B831F0B740A001A970E /* Frameworks */,
 				33334B841F0B740A001A970E /* Resources */,
+				F57E6697B5B7FBC18E5A82D1 /* [CP] Embed Pods Frameworks */,
+				3BF4C8F40A656CCC1EDA9081 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -178,6 +205,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3BF4C8F40A656CCC1EDA9081 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		79400DADB2D27371F4D6E5F8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F57E6697B5B7FBC18E5A82D1 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		33334B821F0B740A001A970E /* Sources */ = {
@@ -311,6 +386,7 @@
 		};
 		33334B9C1F0B740A001A970E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 460AC2866063016417D72344 /* Pods-htlive-ios.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = H4925W78YQ;
@@ -324,6 +400,7 @@
 		};
 		33334B9D1F0B740A001A970E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7B23EC95E2F4386FADC61EB1 /* Pods-htlive-ios.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = H4925W78YQ;
