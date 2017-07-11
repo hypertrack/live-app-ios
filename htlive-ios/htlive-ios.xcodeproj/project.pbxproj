@@ -19,6 +19,8 @@
 		33334BA21F0B87BD001A970E /* OnboardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334BA11F0B87BD001A970E /* OnboardVC.swift */; };
 		33334BA61F0BA399001A970E /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334BA51F0BA399001A970E /* UIViewExtension.swift */; };
 		33334BA91F0BA425001A970E /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334BA81F0BA425001A970E /* TextField.swift */; };
+		3354C1CC1F14DAE50011506D /* placeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3354C1CB1F14DAE50011506D /* placeCell.xib */; };
+		3354C1CE1F14EB820011506D /* placeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3354C1CD1F14EB820011506D /* placeCell.swift */; };
 		3BB04555AF6CF8533DD7E47A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F29BB026EF4C014377323EA /* QuartzCore.framework */; };
 		4A9EC7183BF7416C507967D3 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E6015A432434BE00CB7D490 /* CoreVideo.framework */; };
 		6C0CCE1DCCAAE4E4B15AA5E5 /* Pods_htlive_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA1FE93D3C7A407B321E103 /* Pods_htlive_ios.framework */; };
@@ -43,6 +45,8 @@
 		33334BA11F0B87BD001A970E /* OnboardVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardVC.swift; sourceTree = "<group>"; };
 		33334BA51F0BA399001A970E /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		33334BA81F0BA425001A970E /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		3354C1CB1F14DAE50011506D /* placeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = placeCell.xib; sourceTree = "<group>"; };
+		3354C1CD1F14EB820011506D /* placeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = placeCell.swift; sourceTree = "<group>"; };
 		460AC2866063016417D72344 /* Pods-htlive-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		4E6015A432434BE00CB7D490 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		60060C7769DD795A2A0823B6 /* Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
@@ -53,7 +57,7 @@
 		8F29BB026EF4C014377323EA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		B923850CA9BCCA7AFAFE6B5C /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		BBE69D06DE0D45E789542761 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		FD47E529E549A1731A714D6D /* BuddyBuildSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BuddyBuildSDK.framework; path = BuddyBuildSDK.framework; sourceTree = "<group>"; };
+		FD47E529E549A1731A714D6D /* BuddyBuildSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BuddyBuildSDK.framework; sourceTree = "<group>"; };
 		FF9906AA2CE583E93780D301 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -118,6 +122,8 @@
 			isa = PBXGroup;
 			children = (
 				33334B8B1F0B740A001A970E /* ViewController.swift */,
+				3354C1CB1F14DAE50011506D /* placeCell.xib */,
+				3354C1CD1F14EB820011506D /* placeCell.swift */,
 			);
 			name = Placeline;
 			sourceTree = "<group>";
@@ -238,6 +244,7 @@
 			files = (
 				33334B971F0B740A001A970E /* LaunchScreen.storyboard in Resources */,
 				33334B941F0B740A001A970E /* Assets.xcassets in Resources */,
+				3354C1CC1F14DAE50011506D /* placeCell.xib in Resources */,
 				33334B8F1F0B740A001A970E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -303,6 +310,7 @@
 				33334BA91F0BA425001A970E /* TextField.swift in Sources */,
 				33334BA21F0B87BD001A970E /* OnboardVC.swift in Sources */,
 				33334B921F0B740A001A970E /* htlive_ios.xcdatamodeld in Sources */,
+				3354C1CE1F14EB820011506D /* placeCell.swift in Sources */,
 				33334B8A1F0B740A001A970E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

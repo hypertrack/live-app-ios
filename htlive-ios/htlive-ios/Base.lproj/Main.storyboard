@@ -80,9 +80,13 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="htP-64-wX6">
                                 <rect key="frame" x="0.0" y="70" width="375" height="597"/>
                             </mapView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="a3O-NP-aeB">
-                                <rect key="frame" x="0.0" y="411" width="375" height="256"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="a3O-NP-aeB">
+                                <rect key="frame" x="20" y="411" width="335" height="256"/>
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="yEj-5Y-PfZ"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="TwO-6A-Tic"/>
+                                </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bac-Nq-D3N">
                                 <rect key="frame" x="295" y="587" width="60" height="60"/>
@@ -101,15 +105,18 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="htP-64-wX6" secondAttribute="bottom" id="DFC-O1-xOo"/>
                             <constraint firstItem="0CE-eQ-4Bf" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="FWH-vn-zbV"/>
                             <constraint firstAttribute="trailing" secondItem="Bac-Nq-D3N" secondAttribute="trailing" constant="20" id="HlP-bP-p5n"/>
-                            <constraint firstItem="a3O-NP-aeB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="TA0-3l-a1d"/>
+                            <constraint firstItem="a3O-NP-aeB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="TA0-3l-a1d"/>
                             <constraint firstItem="0CE-eQ-4Bf" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="f0U-eC-gcw"/>
                             <constraint firstItem="htP-64-wX6" firstAttribute="top" secondItem="0CE-eQ-4Bf" secondAttribute="bottom" id="f7k-m0-37u"/>
-                            <constraint firstAttribute="trailing" secondItem="a3O-NP-aeB" secondAttribute="trailing" id="gxR-kR-R3B"/>
+                            <constraint firstAttribute="trailing" secondItem="a3O-NP-aeB" secondAttribute="trailing" constant="20" id="gxR-kR-R3B"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="a3O-NP-aeB" secondAttribute="bottom" id="oxs-zq-bwO"/>
                             <constraint firstItem="htP-64-wX6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="yVQ-Dq-dEo"/>
                             <constraint firstAttribute="trailing" secondItem="0CE-eQ-4Bf" secondAttribute="trailing" id="zPZ-aB-gv5"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="placeLineTable" destination="a3O-NP-aeB" id="806-E3-ZHK"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
