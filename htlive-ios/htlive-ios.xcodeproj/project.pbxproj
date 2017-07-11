@@ -71,13 +71,13 @@
 		33334B881F0B740A001A970E /* htlive-ios */ = {
 			isa = PBXGroup;
 			children = (
+				33334B931F0B740A001A970E /* Assets.xcassets */,
 				33334B8D1F0B740A001A970E /* Main.storyboard */,
 				33334BA71F0BA39F001A970E /* Extensions */,
 				33334B9E1F0B84CB001A970E /* Placeline */,
 				33334BA41F0B87CD001A970E /* Share */,
 				33334BA31F0B87C3001A970E /* Onboarding */,
 				33334B891F0B740A001A970E /* AppDelegate.swift */,
-				33334B931F0B740A001A970E /* Assets.xcassets */,
 				33334B951F0B740A001A970E /* LaunchScreen.storyboard */,
 				33334B981F0B740A001A970E /* Info.plist */,
 				33334B901F0B740A001A970E /* htlive_ios.xcdatamodeld */,
@@ -431,6 +431,7 @@
 				33334B9D1F0B740A001A970E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
