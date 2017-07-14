@@ -9,86 +9,118 @@
 import Foundation
 import MapKit
 
+
+class HTImageAnnotation: MKPointAnnotation {
+    var markerView: UIView
+    
+    init(markerView: UIView) {
+        self.markerView = markerView
+        super.init()
+    }
+}
+
 class AppleMapsProvider: NSObject, MapProviderProtocol, MKMapViewDelegate, UIGestureRecognizerDelegate {
-  
+    
     let mapView: MKMapView
     var annotations: [String: MKAnnotation]
     
     var currentHeading: CLLocationDegrees = 0.0
     var lastPosition: CLLocationCoordinate2D?
-    var destination: CLLocationCoordinate2D?
-    var heroMarker: MKPointAnnotation?
-    var destinationMarker: MKPointAnnotation?
+    var destinationMarker: HTMapAnnotation?
     
     var reFocusDisabledByUserInteraction: Bool = false
-  
-    var mapInteractionDelegate: HTMapInteractionDelegate?
+    
+    var mapInteractionDelegate: HTViewInteractionInternalDelegate?
+    var mapViewDataSource: HTMapViewDataSource?
     
     required init(mapView: MKMapView) {
         self.mapView = mapView
         self.annotations = Dictionary()
         super.init()
         self.mapView.delegate = self
-      
+        
         // This enables UI settings on MKMapView
-        self.mapView.showsTraffic = true
         self.mapView.showsPointsOfInterest = true
-      
+        
         // This sets up the tap gesture recognizer.
         let singleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapMap(gestureRecognizer:)))
         singleTap.delegate = self
         singleTap.numberOfTapsRequired = 1
         singleTap.numberOfTouchesRequired = 1
         self.mapView.addGestureRecognizer(singleTap)
-      
+        
         // This sets up the pan gesture recognizer.
         let panRec: UIPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didPanMap(gestureRecognizer:)))
         panRec.delegate = self
         self.mapView.addGestureRecognizer(panRec)
     }
-  
+    
     func didTapMap(gestureRecognizer: UIGestureRecognizer) {
         if (gestureRecognizer.state == UIGestureRecognizerState.ended) {
-            self.mapInteractionDelegate?.didTapMapView()
+            self.mapInteractionDelegate?.didTapMapView?()
             reFocusDisabledByUserInteraction = true
         }
     }
-  
+    
     func didPanMap(gestureRecognizer: UIGestureRecognizer) {
         if (gestureRecognizer.state == UIGestureRecognizerState.ended) {
-            self.mapInteractionDelegate?.didPanMapView()
+            self.mapInteractionDelegate?.didPanMapView?()
             reFocusDisabledByUserInteraction = true
         }
+    }
+    
+    func reFocusMap(isInfoViewCardExpanded: Bool, isDestinationViewVisible: Bool) {
+        self.reFocusDisabledByUserInteraction = false
+        self.updateViewFocus(isInfoViewCardExpanded: isInfoViewCardExpanded,
+                             isDestinationViewVisible: isDestinationViewVisible)
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-  
+    
     func zoomTo(visibleRegion: MKCoordinateRegion, animated: Bool = false)  {
         self.mapView.setRegion(visibleRegion, animated: animated)
     }
     
     // MARK: MapView Delegate methods
-  
     func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
         guard let tileOverlay = overlay as? MKTileOverlay else {
             return MKOverlayRenderer(overlay: overlay)
         }
         return MKTileOverlayRenderer(tileOverlay: tileOverlay)
     }
-  
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        //    let userID = self.annotations.key // associate the MKAnnotation with userID and figure out the view to return
-        if (annotation as! MKPointAnnotation) == self.heroMarker {
-            return self.mapMarkerFor(userID: "") // TODO: Figure out the association
+        if(annotation is HTMapAnnotation){
+            let mapAnnotation = annotation as! HTMapAnnotation
+            
+            // Check if annotation is destinationAnnotation
+            if (mapAnnotation.type == HTConstants.MarkerType.DESTINATION_MARKER) {
+                let annotationView = self.mapMarkerForDestination()
+                let label = UILabel.init(frame: CGRect(x:0,y:0,width:30.0,height:10.0))
+                label.text = mapAnnotation.title
+                annotationView.rightCalloutAccessoryView = label
+                annotationView.canShowCallout = true
+                annotationView.isEnabled = true
+                return annotationView
+            
+            } else {
+                let annotationView =  self.mapMarkerForHero(annotation:mapAnnotation)
+                return annotationView
+            }
+        }
+        
+        if annotation is HTImageAnnotation {
+            let imageAnnotation = annotation as! HTImageAnnotation
+            return self.mapMarkerForView(markerView: imageAnnotation.markerView)
+            
         } else {
             return self.mapMarkerForDestination()
         }
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        
         guard let polyline = overlay as? MKPolyline else {
             return MKOverlayRenderer()
         }
@@ -99,37 +131,39 @@ class AppleMapsProvider: NSObject, MapProviderProtocol, MKMapViewDelegate, UIGes
         
         return renderer
     }
-  
-    // MARK: Helper methods
-    func mapMarkerFor(userID: String) -> MKAnnotationView {
-        
-        let bundleRoot = Bundle(for: HyperTrack.self)
-        let bundle = Bundle(path: "\(bundleRoot.bundlePath)/HyperTrack.bundle")
-        
+    
+    func mapMarkerForHero(annotation : HTMapAnnotation) -> MKAnnotationView{
+        let bundle = Settings.getBundle()!
         var marker = self.mapView.dequeueReusableAnnotationView(withIdentifier: "map.marker.hero")
         if marker == nil {
             marker = MKAnnotationView()
         }
-        let markerView: MarkerView = bundle!.loadNibNamed("MarkerView", owner: self, options: nil)?.first as! MarkerView
         
-        let adjustedOrigin = CGPoint(x: -markerView.frame.size.width / 2, y: -markerView.frame.size.height / 2)
-        markerView.frame = CGRect(origin: adjustedOrigin, size: markerView.frame.size)
+        let markerView: MarkerView?
+        // Construct HeroAnnotation for Live Location Sharing use case
+        if (annotation.type == HTConstants.MarkerType.HERO_MARKER_WITH_ETA) {
+            markerView = bundle.loadNibNamed("MarkerETAView", owner: self, options: nil)?.first as? MarkerView
+            markerView!.annotationLabel.text = annotation.title
+            markerView!.subtitleLabel.text = annotation.subtitle
+        } else {
         
-        marker!.addSubview(markerView)
-        marker!.bringSubview(toFront: markerView)
+            // Construct HeroAnnotation for order tracking use case
+            markerView = bundle.loadNibNamed("MarkerView", owner: self, options: nil)?.first as? MarkerView
+        }
         
-        return marker!
+        return mapMarkerForView(markerView: markerView!)
+    }
+
+    // MARK: Helper methods
+    func mapMarkerForDestination() -> MKAnnotationView {
+        let bundle = Settings.getBundle()!
+        let markerView: DestinationMarkerView = bundle.loadNibNamed("DestinationMarkerView", owner: self, options: nil)?.first as! DestinationMarkerView
+        return mapMarkerForView(markerView: markerView)
     }
     
-    func mapMarkerForDestination() -> MKAnnotationView {
+    func mapMarkerForView(markerView: UIView) -> MKAnnotationView {
         let marker = MKAnnotationView()
-        
-        let bundleRoot = Bundle(for: HyperTrack.self)
-        let bundle = Bundle(path: "\(bundleRoot.bundlePath)/HyperTrack.bundle")
-        
-        let markerView: DestinationMarkerView = bundle!.loadNibNamed("DestinationMarkerView", owner: self, options: nil)?.first as! DestinationMarkerView
-        
-        let adjustedOrigin = CGPoint(x: -markerView.frame.size.width, y: -markerView.frame.size.height / 2)
+        let adjustedOrigin = CGPoint(x: -markerView.frame.size.width / 2, y: -markerView.frame.size.height / 2)
         markerView.frame = CGRect(origin: adjustedOrigin, size: markerView.frame.size)
         
         marker.addSubview(markerView)
@@ -137,51 +171,69 @@ class AppleMapsProvider: NSObject, MapProviderProtocol, MKMapViewDelegate, UIGes
         return marker
     }
     
-    func updateDestinationMarker(destinationAnnotation: MKPointAnnotation) {
-        self.mapView.addAnnotation(destinationAnnotation)
+    func updateDestinationMarker(showDestination: Bool, destinationAnnotation: HTMapAnnotation?) {
+        if (showDestination) {
+            // Add updated destinationAnnotation to map
+            self.mapView.addAnnotation(destinationAnnotation!)
+        }
         
+        // Remove previous destinationAnnotation to map
         if let destinationMarker = self.destinationMarker {
             self.mapView.removeAnnotation(destinationMarker)
         }
         
+        // Update destination marker reference
         self.destinationMarker = destinationAnnotation
-        self.destination = destinationAnnotation.coordinate
     }
     
-    func updateHeroMarker(heroAnnotation: MKPointAnnotation, actionID: String) {
-        if self.heroMarker == nil {
-            self.mapView.addAnnotation(heroAnnotation)
-            self.heroMarker = heroAnnotation
-            self.annotations.updateValue(heroAnnotation, forKey: actionID)
-            self.heroMarker = heroAnnotation
-        }
-    }
-  
-    func animateMarker(locations: [CLLocationCoordinate2D], currentIndex: Int, duration: TimeInterval) {
+    func updateHeroMarker(userId: String, actionID: String, heroAnnotation: HTMapAnnotation, disableHeroMarkerRotation: Bool) {
+        self.mapView.addAnnotation(heroAnnotation)
+        self.annotations.updateValue(heroAnnotation, forKey: actionID)
         
-        if let annotation = self.heroMarker, let coordinates = locations as [CLLocationCoordinate2D]? {
+        self.mapViewDataSource?.setHeroMarker(userId: userId, annotation: heroAnnotation)
+    }
+    
+    func animateMarker(userId: String,
+                       locations: [CLLocationCoordinate2D],
+                       currentIndex: Int, duration: TimeInterval,
+                       disableHeroMarkerRotation: Bool) {
+        
+        let heroAnnotation = (self.mapViewDataSource?.getMapViewModel(userId: userId)?.heroMarker)!
+        let view = self.mapView.view(for: heroAnnotation)
+        if let view = view {
             
-            if (coordinates.count < 1) {
-                return
+            // Update HeroMarker's title and subtitle
+            if (heroAnnotation.type == HTConstants.MarkerType.HERO_MARKER_WITH_ETA) {
+                let markerView = view.subviews.first as! MarkerView
+                markerView.subtitleLabel.text = heroAnnotation.subtitle
             }
-            
+        }
+        
+        if let coordinates = locations as [CLLocationCoordinate2D]?, coordinates.count >= 1 {
+        
             let currentLocation = coordinates[currentIndex]
             
-            UIView.animate(withDuration: duration, animations: {annotation.coordinate = currentLocation}, completion: { (finished) in
+            UIView.animate(withDuration: duration, animations: {heroAnnotation.coordinate = currentLocation}, completion: { (finished) in
                 if(currentIndex < coordinates.count - 1) {
                     
                     if let lastPosition = self.lastPosition {
                         self.currentHeading = self.headingFrom(lastPosition, next: currentLocation)
                     }
-
+                    
                     self.lastPosition = currentLocation
-                  
-                    if let view = self.mapView.view(for: annotation) {
+                
+                    if let view = view {
+                        if (disableHeroMarkerRotation == false) {
+                            let adjustedHeading = self.mapView.camera.heading + self.currentHeading
+                            view.transform = CGAffineTransform(rotationAngle: CGFloat(adjustedHeading * Double.pi / 180.0))
+                        }
                         
-                        let adjustedHeading = self.mapView.camera.heading + self.currentHeading
-                        view.transform = CGAffineTransform(rotationAngle: CGFloat(adjustedHeading * Double.pi / 180.0))
-                        
-                        self.animateMarker(locations: coordinates, currentIndex: currentIndex + 1, duration: duration)
+                        self.mapViewDataSource?.setHeroMarker(userId: userId, annotation: heroAnnotation)
+
+                        self.animateMarker(userId: userId,
+                                           locations: coordinates,
+                                           currentIndex: currentIndex + 1,
+                                           duration: duration, disableHeroMarkerRotation: disableHeroMarkerRotation)
                     }
                 }
             })
@@ -192,21 +244,26 @@ class AppleMapsProvider: NSObject, MapProviderProtocol, MKMapViewDelegate, UIGes
         mapPolylineFor(encodedPolyline: polyline)
     }
     
-    func reFocusMap() {
-        self.reFocusDisabledByUserInteraction = false
-        self.updateViewFocus()
-    }
-    
-    func updateViewFocus() {
-        if (self.reFocusDisabledByUserInteraction) {
+    func updateViewFocus(isInfoViewCardExpanded: Bool, isDestinationViewVisible: Bool) {
+        // User has disabled refocus by interaction, skipping updateViewFocus
+        if (self.reFocusDisabledByUserInteraction == true) {
             return
         }
         
         var annotationsForFocus = self.mapView.annotations
         var overlaysForFocus = self.mapView.overlays
         
-        let mapEdgePadding = UIEdgeInsets(top: 120, left: 40, bottom: 140, right: 40)
-
+        var mapEdgePadding = UIEdgeInsets(top: 160, left: 40, bottom: 140, right: 40)
+        
+        if (isInfoViewCardExpanded == true) {
+            mapEdgePadding.bottom = 260
+        }
+        
+        if (isDestinationViewVisible == false) {
+            mapEdgePadding.top = 40
+            mapEdgePadding.bottom = 260
+        }
+        
         var zoomRect:MKMapRect = MKMapRectNull
         
         for index in 0..<annotationsForFocus.count {
@@ -246,21 +303,79 @@ class AppleMapsProvider: NSObject, MapProviderProtocol, MKMapViewDelegate, UIGes
     func radiansToDegrees(radians: Double) -> Double {
         return radians * 180 / Double.pi
     }
-  
+    
     func mapPolylineFor(encodedPolyline: String) {
         let coordinates = decodePolyline(encodedPolyline)
+        
         let polyline = MKPolyline(coordinates: coordinates!, count: coordinates!.count)
         self.mapView.add(polyline)
+        let bundle = Settings.getBundle()!
+        
+        // Add circle and square at the start and end of the polyline
+        if let first = coordinates?.first {
+            let markerView: StartMarkerView = bundle.loadNibNamed("StartMarkerView", owner: self, options: nil)?.first as! StartMarkerView
+            let startAnnotation = HTImageAnnotation(markerView: markerView)
+            startAnnotation.coordinate = first
+            self.mapView.addAnnotation(startAnnotation)
+        }
+        
+        if let last = coordinates?.last {
+            let markerView: DestinationMarkerView = bundle.loadNibNamed("DestinationMarkerView", owner: self, options: nil)?.first as! DestinationMarkerView
+            let startAnnotation = HTImageAnnotation(markerView: markerView)
+            startAnnotation.coordinate = last
+            self.mapView.addAnnotation(startAnnotation)
+            
+            if (self.destinationMarker != nil) {
+                self.mapView.removeAnnotation(self.destinationMarker!)
+                self.destinationMarker = nil
+            }
+        }
     }
+    
+    func focusMapFor(userId : String?){
+        let mapViewModel = mapViewDataSource?.getMapViewModel(userId: userId!)
+        if let model = mapViewModel{
+            
+            
+            let view = self.mapView.view(for: (mapViewModel?.heroMarker)!)
+            if let view = view {
+                view.layer.zPosition = 1;
+            }
+
+            focusMarkers(markers: [(mapViewModel?.heroMarker)!,destinationMarker])
+        }
+    }
+    
+    
+    func focusMarkers(markers : [HTMapAnnotation?]){
+        
+        var zoomRect:MKMapRect = MKMapRectNull
+        
+        for index in 0..<markers.count {
+            var annotation = markers[index]
+            if let annotation = annotation{
+                let aPoint:MKMapPoint = MKMapPointForCoordinate(annotation.coordinate)
+                let rect:MKMapRect = MKMapRectMake(aPoint.x, aPoint.y, 0.1, 0.1)
+                if MKMapRectIsNull(zoomRect) {
+                    zoomRect = rect
+                } else {
+                    zoomRect = MKMapRectUnion(zoomRect, rect)
+                }
+            }
+        }
+        if(!MKMapRectIsNull(zoomRect)){
+            var mapEdgePadding = UIEdgeInsets(top: 160, left: 40, bottom: 140, right: 40)
+            mapView.setVisibleMapRect(zoomRect, edgePadding: mapEdgePadding, animated: true)
   
+        }
+    }
+    
     func clearMap() {
         let allAnnotations = self.mapView.annotations
         let allOverlays = self.mapView.overlays
         self.mapView.removeAnnotations(allAnnotations)
         self.mapView.removeOverlays(allOverlays)
-        self.heroMarker = nil
         self.destinationMarker = nil
-        self.destination = nil
         self.lastPosition = nil
         self.currentHeading = 0
         self.annotations.removeAll()

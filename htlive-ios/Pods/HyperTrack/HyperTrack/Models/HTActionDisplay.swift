@@ -8,65 +8,102 @@
 
 import Foundation
 
+/**
+ Instances of HyperTrackActionDisplay represent display fields of an action: https://docs.hypertrack.com/api/entities/action.html
+ */
 @objc public class HyperTrackActionDisplay:NSObject {
-  
-  public let statusText: String?
-  public let subStatusText: String?
-  public let durationRemaining: Int?
-
-  public init(statusText: String?,
-              subStatusText: String?,
-              durationRemaining: Int?) {
-    self.statusText = statusText
-    self.subStatusText = subStatusText
-    self.durationRemaining = durationRemaining
-  }
-  
-  public func toDict() -> [String:Any] {
-    let dict = [
-      "statusText": self.statusText as Any,
-      "subStatusText": self.subStatusText as Any,
-      "durationRemaining": self.durationRemaining as Any
-      ] as [String:Any]
-    return dict
-  }
-  
-  public func toJson() -> String? {
-    let dict = self.toDict()
-    do {
-      let jsonData = try JSONSerialization.data(withJSONObject: dict)
-      let jsonString = String(data: jsonData, encoding: String.Encoding.utf8)
-      return jsonString
-    } catch {
-      debugPrint("Error serializing object to JSON: %@", error.localizedDescription)
-      return nil
-    }
-  }
-  
-  public static func fromDict(dict:[String:Any]) -> HyperTrackActionDisplay? {
     
-    let display = HyperTrackActionDisplay(
-      statusText: dict["status_text"] as? String,
-      subStatusText: dict["sub_status_text"] as? String,
-      durationRemaining: dict["duration_remaining"] as? Int
-    )
-
-    return display
-  }
-  
-  public static func fromJson(data:Data?) -> HyperTrackActionDisplay? {
-    do {
-      let jsonDict = try JSONSerialization.jsonObject(with: data!, options: [])
-      
-      guard let dict = jsonDict as? [String : Any] else {
-        return nil
-      }
-      
-      return self.fromDict(dict:dict)
-    } catch {
-      print(error.localizedDescription)
-      return nil
+    /**
+     Human readable status for the action
+     */
+    public let statusText: String?
+    
+    /**
+     Human readable sub status for the action
+     */
+    public let subStatusText: String?
+    
+    /**
+     Duration remaining (ETA) in seconds for action to be completed
+     */
+    public let durationRemaining: Int?
+    
+    /**
+     Boolean indicating whether to show Action Summary or not
+     */
+    public var showSummary: Bool = false
+    
+    /**
+     Distance remaining in meters for action to be completed
+     */
+    public let distanceRemaining: Int?
+    
+    internal init(statusText: String?,
+                subStatusText: String?,
+                durationRemaining: Int?,
+                distanceRemaining: Int?,
+                showSummary: Bool?) {
+        self.statusText = statusText
+        self.subStatusText = subStatusText
+        self.durationRemaining = durationRemaining
+        self.distanceRemaining = distanceRemaining
+        if (showSummary != nil) {
+            self.showSummary = showSummary!
+        }
     }
-  }
-  
+    
+    internal func toDict() -> [String:Any] {
+        let dict = [
+            "statusText": self.statusText as Any,
+            "subStatusText": self.subStatusText as Any,
+            "durationRemaining": self.durationRemaining as Any,
+            "distanceRemaining": self.distanceRemaining as Any,
+            "showSummary": self.showSummary as Any
+            ] as [String:Any]
+        return dict
+    }
+    
+    internal func toJson() -> String? {
+        let dict = self.toDict()
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: dict)
+            let jsonString = String(data: jsonData, encoding: String.Encoding.utf8)
+            return jsonString
+        } catch {
+            HTLogger.shared.error("Error serializing object to JSON: " + error.localizedDescription)
+            return nil
+        }
+    }
+    
+    internal static func fromDict(dict:[String:Any]?) -> HyperTrackActionDisplay? {
+        
+        if let dict = dict {
+            let display = HyperTrackActionDisplay(
+                statusText: dict["status_text"] as? String,
+                subStatusText: dict["sub_status_text"] as? String,
+                durationRemaining: dict["duration_remaining"] as? Int,
+                distanceRemaining: dict["distance_remaining"] as? Int,
+                showSummary: dict["show_summary"] as? Bool
+            )
+            
+            return display
+        }
+        
+        return nil
+    }
+    
+    internal static func fromJson(data:Data?) -> HyperTrackActionDisplay? {
+        do {
+            let jsonDict = try JSONSerialization.jsonObject(with: data!, options: [])
+            
+            guard let dict = jsonDict as? [String : Any] else {
+                return nil
+            }
+            
+            return self.fromDict(dict:dict)
+        } catch {
+            HTLogger.shared.error("Error in getting action display from json: " + error.localizedDescription)
+            return nil
+        }
+    }
 }

@@ -43,7 +43,7 @@ func decodePolyline(_ encodedPolyline: String, precision: Double = 1e5) -> [CLLo
 private func decodeSingleCoordinate(byteArray: UnsafePointer<Int8>, length: Int, position: inout Int, precision: Double = 1e5) throws -> Double {
   
   guard position < length else {
-    debugPrint("Polyline position is less than length")
+    HTLogger.shared.verbose("Polyline position is less than length")
     return 0.0
   }
   
@@ -64,7 +64,7 @@ private func decodeSingleCoordinate(byteArray: UnsafePointer<Int8>, length: Int,
   } while ((currentChar & 0x20) == 0x20) && (position < length) && (componentCounter < 6)
   
   if (componentCounter == 6) && ((currentChar & 0x20) == 0x20) {
-    debugPrint("Polyline decoder has an error")
+    HTLogger.shared.verbose("Polyline decoder has an error")
   }
   
   if (coordinate & 0x01) == 0x01 {

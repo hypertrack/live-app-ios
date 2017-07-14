@@ -8,8 +8,82 @@
 
 import Foundation
 
-protocol HTViewInteractionDelegate {
-  
-  func refocusButtonClicked(_ sender: Any)
-  func backButtonClicked(_ sender: Any)
+@objc internal protocol HTViewInteractionInternalDelegate {
+
+    @objc optional func didTapReFocusButton(_ sender: Any)
+    @objc optional func didTapBackButton(_ sender: Any)
+    @objc optional func didTapPhoneButton(_ sender: Any)
+    @objc optional func didTapHeroMarkerFor(userID: String)
+    @objc optional func didTapExpectedPlaceMarkerFor(actionID: String)
+    @objc optional func didTapInfoViewFor(actionID: String)
+    @objc optional func didTapMapView()
+    @objc optional func didPanMapView()
+    @objc optional func didTapStartLiveLocationSharing(lookUpId : String, place: HyperTrackPlace?)
+    @objc optional func didTapStopLiveLocationSharing(actionId : String)
+}
+
+/**
+ The delegate protocol that you can extend to receive interaction events on the map view
+ */
+@objc public protocol HTViewInteractionDelegate {
+    // Duplicate protocol to the internal delegate, but this one is public
+
+    /**
+     Called when refocus button is tapped
+     
+     - Parameter sender: Sender object
+     */
+    @objc optional func didTapReFocusButton(_ sender: Any)
+    
+    /**
+     Called when back button is tapped
+     
+     - Parameter sender: Sender object
+     */
+    @objc optional func didTapBackButton(_ sender: Any)
+    
+    /**
+     Called when phone button is tapped
+     
+     - Parameter sender: Sender object
+     */
+    @objc optional func didTapPhoneButton(_ sender: Any)
+    
+    /**
+     Called when hero marker is tapped for a user marker
+     
+     - Parameter userID: The userID for which marker was tapped
+     */
+    @objc optional func didTapHeroMarkerFor(userID: String)
+    
+    /**
+     Called when expected place marker is tapped for an action
+     
+     - Parameter actionID: The actionID for which marker was tapped
+     */
+    @objc optional func didTapExpectedPlaceMarkerFor(actionID: String)
+    
+    /**
+     Called when info view is tapped for an action marker
+     
+     - Parameter actionID: The actionID for which marker was tapped
+     */
+    @objc optional func didTapInfoViewFor(actionID: String)
+    
+    /**
+     Called when map is tapped
+     */
+    @objc optional func didTapMapView()
+    
+    /**
+     Called when map is panned
+     */
+    @objc optional func didPanMapView()
+    
+    
+    @objc optional func didTapStartLiveLocationSharing(lookUpId : String, place: HyperTrackPlace?)
+    
+    
+    @objc optional func didTapStopLiveLocationSharing(actionId : String)
+
 }

@@ -6,9 +6,5 @@ target 'htlive-ios' do
   use_frameworks!
 
   pod 'HyperTrack'
-  pod "CalendarView'
-
-
-  # Pods for htlive-ios
 
 end

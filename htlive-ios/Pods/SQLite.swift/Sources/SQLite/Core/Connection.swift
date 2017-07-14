@@ -28,7 +28,7 @@ import Dispatch
 import sqlite3
 #elseif SQLITE_SWIFT_SQLCIPHER
 import SQLCipher
-#elseif SWIFT_PACKAGE || COCOAPODS
+#else
 import CSQLite
 #endif
 
@@ -579,7 +579,7 @@ public final class Connection {
             } else if result == nil {
                 sqlite3_result_null(context)
             } else {
-                fatalError("unsupported result type: \(String(describing: result))")
+                fatalError("unsupported result type: \(result)")
             }
         }
         var flags = SQLITE_UTF8

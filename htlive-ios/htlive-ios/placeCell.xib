@@ -58,7 +58,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NgB-6V-DrW">
-                            <rect key="frame" x="149" y="38" width="210" height="15"/>
+                            <rect key="frame" x="149" y="40" width="210" height="15"/>
                             <string key="text">30 min  |  12 Miles  |  3 events
 </string>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -71,7 +71,7 @@
                         <constraint firstItem="bM8-D9-XDu" firstAttribute="top" secondItem="6Q3-Ff-nyO" secondAttribute="bottom" constant="10" id="0G6-Nm-j17"/>
                         <constraint firstAttribute="trailing" secondItem="fbI-sz-ad2" secondAttribute="trailing" constant="5" id="5ta-br-ndS"/>
                         <constraint firstItem="iRb-qK-vUp" firstAttribute="leading" secondItem="nIT-s6-beJ" secondAttribute="leading" constant="80" id="7Wg-AB-0Ze"/>
-                        <constraint firstItem="NgB-6V-DrW" firstAttribute="top" secondItem="fbI-sz-ad2" secondAttribute="bottom" constant="3" id="Bha-pz-qUz"/>
+                        <constraint firstItem="NgB-6V-DrW" firstAttribute="top" secondItem="fbI-sz-ad2" secondAttribute="bottom" constant="5" id="Bha-pz-qUz"/>
                         <constraint firstItem="iRb-qK-vUp" firstAttribute="top" secondItem="nIT-s6-beJ" secondAttribute="top" id="FjR-mp-Ubq"/>
                         <constraint firstItem="fbI-sz-ad2" firstAttribute="leading" secondItem="sQA-Gm-3Uq" secondAttribute="trailing" constant="15" id="Iip-dq-ASs"/>
                         <constraint firstItem="bM8-D9-XDu" firstAttribute="centerX" secondItem="6Q3-Ff-nyO" secondAttribute="centerX" id="LUe-Ht-n79"/>

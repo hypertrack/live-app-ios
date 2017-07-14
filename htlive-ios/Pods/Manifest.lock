@@ -1,39 +1,34 @@
 PODS:
-  - Alamofire (4.3.0)
+  - Alamofire (4.4.0)
   - CocoaAsyncSocket (7.5.1):
     - CocoaAsyncSocket/GCD (= 7.5.1)
   - CocoaAsyncSocket/GCD (7.5.1)
-  - CocoaMQTT (1.0.11):
-    - CocoaAsyncSocket (~> 7.5.1)
-    - MSWeakTimer (~> 1.1.0)
   - GzipSwift (3.1.4)
-  - HyperTrack (0.4.3):
-    - Alamofire (= 4.3.0)
-    - CocoaMQTT (= 1.0.11)
+  - HyperTrack (0.4.28):
+    - Alamofire (= 4.4.0)
     - GzipSwift
-    - SQLite.swift (= 0.11.3)
-    - XCGLogger (= 4.0.0)
-  - MSWeakTimer (1.1.0)
-  - SQLite.swift (0.11.3):
-    - SQLite.swift/standard (= 0.11.3)
-  - SQLite.swift/standard (0.11.3)
-  - XCGLogger (4.0.0):
-    - XCGLogger/Core (= 4.0.0)
-  - XCGLogger/Core (4.0.0)
+    - JustLog
+    - SQLite.swift (= 0.11.2)
+  - JustLog (1.2.0):
+    - CocoaAsyncSocket (~> 7.5.0)
+    - SwiftyBeaver (~> 1.1.1)
+  - SQLite.swift (0.11.2):
+    - SQLite.swift/standard (= 0.11.2)
+  - SQLite.swift/standard (0.11.2)
+  - SwiftyBeaver (1.1.4)
 
 DEPENDENCIES:
   - HyperTrack
 
 SPEC CHECKSUMS:
-  Alamofire: 856a113053a7bc9cbe5d6367a555d773fc5cfef7
+  Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
   CocoaAsyncSocket: e0a7e93b2ffa411592ff87e58524fbbc9b95b4fa
-  CocoaMQTT: 41a67eab08a8c8aa3c0be6f55ef2f4ace197f193
   GzipSwift: 11ddb2bf253b1cd7b60bb169da20f62ac4348769
-  HyperTrack: 6fa791baec7b5b59370d540a5c39b3dbe2d374bd
-  MSWeakTimer: 9426150f933b80ed3acf3f6d228e4b61f0e303c8
-  SQLite.swift: 99b36c22084427f0abbeb957556ce1528cf10bb3
-  XCGLogger: 38063ea89b4c8b23232d18efd2e12eb0005f3ea4
+  HyperTrack: c587c5ffb9ff8c05ec8645932125d25ac2b0fc74
+  JustLog: 035ff2d06efd8cae26aeaf05cb2471f03ee866bb
+  SQLite.swift: 670c3e9e0a806bbfd56a3de5d530768dc0e6fe7c
+  SwiftyBeaver: 9216b6e163c145628ccc7c0126df4287880d6e1e
 
-PODFILE CHECKSUM: 1b88c18832496962054f66c2c68f5175e3aea133
+PODFILE CHECKSUM: ecfd733b42222db23843041577020683f2455a01
 
 COCOAPODS: 1.2.0

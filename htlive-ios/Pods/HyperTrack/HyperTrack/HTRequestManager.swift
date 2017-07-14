@@ -9,7 +9,7 @@
 import Foundation
 import Alamofire
 import Gzip
-
+import MapKit
 
 struct JSONArrayEncoding: ParameterEncoding {
     /// Returns a `JSONArrayEncoding` instance with default writing options.
@@ -42,7 +42,6 @@ struct GZippedJSONEncoding: ParameterEncoding {
     }
 }
 
-
 struct GZippedJSONArrayEncoding: ParameterEncoding {
     public static var `default`: GZippedJSONArrayEncoding { return GZippedJSONArrayEncoding() }
     
@@ -54,7 +53,6 @@ struct GZippedJSONArrayEncoding: ParameterEncoding {
     }
 }
 
-
 class HTTPRequest {
     var arrayParams:[Any]?
     var jsonParams:[String:Any]?
@@ -63,21 +61,23 @@ class HTTPRequest {
     var headers:[String:String]
     let urlPath:String
     let baseURL:String = "https://api.hypertrack.com/api/v1/"
-    let sdkVersion:String? = Settings.sdkVersion
+    let sdkVersion:String = Settings.sdkVersion
     let osVersion:String = UIDevice.current.systemVersion
+    let appId:String = Bundle.main.bundleIdentifier!
+    let deviceId:String = Settings.uniqueInstallationID
     
     init(method:HTTPMethod, urlPath:String, jsonParams:[String:Any]) {
         self.jsonParams = jsonParams
         self.method = method
         self.urlPath = urlPath
-        
+
         let publishableKey = Settings.getPublishableKey()! as String
         self.headers = [
             "Authorization": "token \(publishableKey)",
             "Content-Type": "application/json",
             "User-Agent": "HyperTrack iOS SDK/\(sdkVersion) (\(osVersion))",
-            "App-ID": "\(Bundle.main.bundleIdentifier)",
-            "Device-ID": "\(Settings.uniqueInstallationID)"
+            "App-ID": "\(appId ?? "")",
+            "Device-ID": "\(deviceId)"
         ]
     }
     
@@ -137,29 +137,36 @@ class HTTPRequest {
     }
 }
 
-
 class RequestManager {
-    let eventsDatabaseManager:EventsDatabaseManager
     var timer: Timer
     let serialQueue: DispatchQueue
     
     init() {
-        self.eventsDatabaseManager = EventsDatabaseManager()
         self.timer = Timer()
         self.serialQueue = DispatchQueue(label: "requestsQueue")
     }
     
     func startTimer() {
-        self.timer = Timer.scheduledTimer(timeInterval: 90.0, target: self, selector: #selector(self.postEvents) , userInfo: Date(), repeats: true)
+        let (requestBatchInterval, _) = HyperTrackSDKControls.getControls()
+        self.resetTimer(batchDuration: requestBatchInterval)
     }
     
     func resetTimer(batchDuration: Double) {
+        if self.timer.isValid {
+            self.stopTimer()
+        }
+        
         self.timer = Timer.scheduledTimer(timeInterval: batchDuration, target: self, selector: #selector(self.postEvents) , userInfo: Date(), repeats: true)
     }
     
     func stopTimer() {
-        // TODO: Need to stop when all data is posted to backend
         self.timer.invalidate()
+    }
+    
+    func stopIfNotTracking() {
+        if !Settings.getTracking() {
+            self.stopTimer()
+        }
     }
     
     func fire() {
@@ -167,9 +174,12 @@ class RequestManager {
     }
     
     @objc func postEvents(flush:Bool = true) {
+        // Post device logs to server
+        HTLogger.shared.postLogs()
+        
         self.serialQueue.async {
             guard let userId = Settings.getUserId() else { return }
-            guard let events = self.eventsDatabaseManager.getEvents(userId: userId) else { return }
+            guard let events = EventsDatabaseManager.sharedInstance.getEvents(userId: userId) else { return }
             
             var eventsDict:[[String:Any]] = []
             var eventIds:[Int64] = []
@@ -180,20 +190,26 @@ class RequestManager {
             }
             
             if eventsDict.isEmpty {
+                self.stopIfNotTracking()
                 return
             }
             
             HTTPRequest(method:.post, urlPath:"sdk_events/bulk/", arrayParams:eventsDict).makeRequest { response in
                 switch response.result {
                 case .success:
-                    self.eventsDatabaseManager.bulkDelete(ids: eventIds)
-                    debugPrint("Events pushed successfully: ", eventIds.count)
+                    EventsDatabaseManager.sharedInstance.bulkDelete(ids: eventIds)
+                    HTLogger.shared.info("Events pushed successfully: \(String(describing: eventIds.count))")
+                    
                     // Flush data
                     if flush {
                         self.postEvents(flush:true)
                     }
                 case .failure(let error):
-                    debugPrint(error, response)
+                    // Delete Events for 4xx errors to prevent unnecessary retries
+                    if ((response.response != nil) && (response.response?.statusCode)! >= 400 && (response.response?.statusCode)! < 500 ) {
+                        EventsDatabaseManager.sharedInstance.bulkDelete(ids: eventIds)
+                    }
+                    HTLogger.shared.error("Error while postEvents: \(String(describing: error))  with response: \(String(describing: response))")
                 }
             }
         }
@@ -209,46 +225,109 @@ class RequestManager {
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
+                HTLogger.shared.error("Error while getAction: \(htError.type.rawValue)")
                 completionHandler(nil, htError)
             }
         }
     }
     
-    func fetchDetailsForActions(_ actionIDs: [String], completionHandler: @escaping (_ actions: [HyperTrackAction]?, _ error: HyperTrackError?) -> Void) {
+    func getActionFromShortCode(_ shortCode:String ,completionHandler: @escaping (_ actions: [HyperTrackAction]?, _ error: HyperTrackError?) -> Void)  {
+        
+        let urlPath = "actions/?short_code=\(shortCode)"
+        
+        HTTPRequest(method:.get, urlPath:urlPath, jsonParams:[:]).makeRequest { response in
+            switch response.result {
+            case .success:
+                let actions = HyperTrackAction.multiActionsFromJSONData(data: response.data)
+                completionHandler(actions, nil)
+            case .failure:
+                // TODO: Generate better error here depending on response code
+                let htError = HyperTrackError(HyperTrackErrorType.serverError)
+                HTLogger.shared.error("Error while getActionFromShortCode: \(htError.type.rawValue)")
+                completionHandler(nil, htError)
+            }
+        }
+    }
+    
+    func fetchDetailsForActions(_ actionIDs: [String], completionHandler: @escaping (_ users: [HTTrackedUser]?, _ error: HyperTrackError?) -> Void) {
+        
+        let actionsToTrack = actionIDs.joined(separator: ",")
+        let urlPath = "actions/track/?id=\(actionsToTrack)"
+        
+        HTTPRequest(method:.get, urlPath:urlPath, jsonParams:[:]).makeRequest { response in
+            switch response.result {
+            case .success:
+                let users = HTTrackedUser.usersFromJSONData(data: response.data)
+                completionHandler(users, nil)
+                
+            case .failure:
+                // TODO: Generate better error here depending on response code
+                let htError = HyperTrackError(HyperTrackErrorType.serverError)
+                HTLogger.shared.error("Error while fetchDetailsForActions: \(htError.type.rawValue)")
+                completionHandler(nil, htError)
+            }
+        }
+    }
+    
+    func fetchDetailsForActionsByShortCodes(_ shortCodes: [String],
+                                            completionHandler: @escaping (_ users: [HTTrackedUser]?, _ error: HyperTrackError?) -> Void) {
+        
+        let actionsToTrack = shortCodes.joined(separator: ",")
+        let urlPath = "actions/track/?short_code=\(actionsToTrack)"
+        
+        HTTPRequest(method:.get, urlPath:urlPath, jsonParams:[:]).makeRequest { response in
+            switch response.result {
+            case .success:
+                let users =  HTTrackedUser.usersFromJSONData(data: response.data)
+                completionHandler(users, nil)
+                
+            case .failure:
+                // TODO: Generate better error here depending on response code
+                let htError = HyperTrackError(HyperTrackErrorType.serverError)
+                HTLogger.shared.error("Error while fetchDetailsForActionsByShortCodes: \(htError.type.rawValue)")
+                completionHandler(nil, htError)
+            }
+        }
+    }
+    
+    func fetchDetailsForActionsByLookUpId(_ lookUpId: String, completionHandler: @escaping (_ users: [HTTrackedUser]?, _ error: HyperTrackError?) -> Void) {
+        
+        let urlPath = "actions/track/?lookup_id=\(lookUpId)"
+        
+        HTTPRequest(method:.get, urlPath:urlPath, jsonParams:[:]).makeRequest { response in
+            switch response.result {
+            case .success:
+                let users =  HTTrackedUser.usersFromJSONData(data: response.data)
+                completionHandler(users, nil)
+                
+            case .failure:
+                // TODO: Generate better error here depending on response code
+                let htError = HyperTrackError(HyperTrackErrorType.serverError)
+                HTLogger.shared.error("Error while fetchDetailsForActionsByLookUpId: \(htError.type.rawValue)")
+                completionHandler(nil, htError)
+            }
+        }
+    }
+    
+    func fetchUserDetailsForActions(_ actionIDs: [String], completionHandler: @escaping (_ actions: [HTTrackedUser]?, _ error: HyperTrackError?) -> Void) {
         
         let actionsToTrack = actionIDs.joined(separator: ",")
         let urlPath = "actions/track/?id=\(actionsToTrack)"
         HTTPRequest(method:.get, urlPath:urlPath, jsonParams:[:]).makeRequest { response in
             switch response.result {
             case .success:
-                let actions = HyperTrackAction.multiActionsFromJSONData(data: response.data)
-                completionHandler(actions, nil)
+                let users =  HTTrackedUser.usersFromJSONData(data: response.data)                
+                completionHandler(users, nil)
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
+                HTLogger.shared.error("Error while fetchUserDetailsForActions: \(htError.type.rawValue)")
                 completionHandler(nil, htError)
             }
         }
     }
     
-    func fetchDetailsForActionsByShortCodes(_ shortCodes: [String], completionHandler: @escaping (_ actions: [HyperTrackAction]?, _ error: HyperTrackError?) -> Void) {
-        
-        let actionsToTrack = shortCodes.joined(separator: ",")
-        let urlPath = "actions/track/?short_code=\(actionsToTrack)"
-        HTTPRequest(method:.get, urlPath:urlPath, jsonParams:[:]).makeRequest { response in
-            switch response.result {
-            case .success:
-                let actions = HyperTrackAction.multiActionsFromJSONData(data: response.data)
-                completionHandler(actions, nil)
-            case .failure:
-                // TODO: Generate better error here depending on response code
-                let htError = HyperTrackError(HyperTrackErrorType.serverError)
-                completionHandler(nil, htError)
-            }
-        }
-    }
-    
-    func assignAction(_ action:[String:Any], completionHandler: @escaping (_ action: HyperTrackAction?, _ error: HyperTrackError?) -> Void) {
+    func createAndAssignAction(_ action:[String:Any], completionHandler: @escaping (_ action: HyperTrackAction?, _ error: HyperTrackError?) -> Void) {
         HTTPRequest(method:.post, urlPath:"actions/", jsonParams:action).makeRequest { response in
             switch response.result {
             case .success:
@@ -263,11 +342,12 @@ class RequestManager {
                     let action = HyperTrackAction.fromDict(dict: jsonDict)
                     completionHandler(action, nil)
                 } catch {
-                    debugPrint("Error serializing user: ", error.localizedDescription)
+                    HTLogger.shared.error("Error serializing action: \(error.localizedDescription)")
                 }
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
+                HTLogger.shared.error("Error while createAndAssignAction: \(htError.type.rawValue)")
                 completionHandler(nil, htError)
             }
         }
@@ -285,39 +365,157 @@ class RequestManager {
                         completionHandler(nil, htError)
                         return
                     }
-                    
-                    let name: String
-                    let phone: String
-                    let photo: String
-                    
-                    if (jsonDict["name"] != nil) {
-                        name = jsonDict["name"] as! String
-                    } else {
-                        name = ""
-                    }
-                    
-                    if (jsonDict["phone"] as? String) == nil {
-                        phone = ""
-                    } else {
-                        phone = jsonDict["phone"] as! String
-                    }
-                    
-                    if (jsonDict["photo"] as? String) == nil {
-                        photo = ""
-                    } else {
-                        photo = jsonDict["photo"] as! String
-                    }
-                    
-                    let user = HyperTrackUser(id: jsonDict["id"] as! String, name: name, phone: phone, photo: photo)
-                    
+
+                    let user = HyperTrackUser.fromDict(dict: jsonDict)
                     guard let completionHandler = completionHandler else { return }
                     completionHandler(user, nil)
                 } catch {
-                    debugPrint("Error serializing user: ", error.localizedDescription)
+                    HTLogger.shared.error("Error serializing user: \(error.localizedDescription)")
                 }
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
+                HTLogger.shared.error("Error while createUser: \(htError.type.rawValue)")
+                guard let completionHandler = completionHandler else { return }
+                completionHandler(nil, htError)
+            }
+        }
+    }
+    
+    func getETA(currentLocationCoordinates: CLLocationCoordinate2D,
+                expectedPlaceCoordinates: CLLocationCoordinate2D,
+                vehicleType: String,
+                completionHandler: @escaping (_ eta: NSNumber?, _ error: HyperTrackError?) -> Void) {
+        
+        let currentLocationParam: String = String(currentLocationCoordinates.latitude)
+            + "," + String(currentLocationCoordinates.longitude)
+        let expectedPlaceParam: String = String(expectedPlaceCoordinates.latitude)
+            + "," + String(expectedPlaceCoordinates.longitude)
+        let url = "get_eta/?origin=" + currentLocationParam + "&destination=" +
+            expectedPlaceParam + "&vehicle_type=" + vehicleType
+        
+        HTTPRequest(method:.get, urlPath:url, jsonParams:[:]).makeRequest { response in
+            switch response.result {
+            case .success:
+                if let etaResponse = response.result.value as? [String : AnyObject],
+                    let etaInSeconds = etaResponse["duration"] as? NSNumber,
+                    etaInSeconds.doubleValue >= 0.0 {
+                        completionHandler(etaInSeconds, nil)
+                        return
+                }
+                    
+                let htError = HyperTrackError(HyperTrackErrorType.invalidETAError)
+                HTLogger.shared.error("Error while getETA: \(htError.type.rawValue)")
+                completionHandler(nil, htError)
+
+            case .failure:
+                // TODO: Generate better error here depending on response code
+                let htError = HyperTrackError(HyperTrackErrorType.serverError)
+                HTLogger.shared.error("Error while getETA: \(htError.type.rawValue)")
+                completionHandler(nil, htError)
+            }
+        }
+    }
+    
+    func cancelActions(userId: String, completionHandler: ((_ user: HyperTrackUser?, _ error: HyperTrackError?) -> Void)?) {
+        HTTPRequest(method:.post, urlPath:"users/\(userId)/cancel_actions/", jsonParams:[:]).makeRequest {
+            response in switch response.result {
+            case .success:
+                do {
+                    let json = try JSONSerialization.jsonObject(with: response.data!, options: [])
+                    guard let jsonDict = json as? [String : Any] else {
+                        let htError = HyperTrackError(HyperTrackErrorType.jsonError)
+                        guard let completionHandler = completionHandler else { return }
+                        completionHandler(nil, htError)
+                        return
+                    }
+                    
+                    let user = HyperTrackUser.fromDict(dict: jsonDict)
+                    guard let completionHandler = completionHandler else { return }
+                    completionHandler(user, nil)
+                } catch {
+                    HTLogger.shared.error("Error serializing user: \(error.localizedDescription)")
+                }
+            case .failure:
+                // TODO: Generate better error here depending on response code
+                let htError = HyperTrackError(HyperTrackErrorType.serverError)
+                HTLogger.shared.error("Error while cancelActions: \(htError.type.rawValue)")
+                guard let completionHandler = completionHandler else { return }
+                completionHandler(nil, htError)
+            }
+        }
+    }
+    
+    func registerDeviceToken(userId: String, deviceId: String, registrationId: String, completionHandler: ((_ error: HyperTrackError?) -> Void)?) {
+        var json = [String: String]()
+        json["user_id"] = userId
+        json["device_id"] = deviceId
+        json["registration_id"] = registrationId
+        
+        HTTPRequest(method:.post, urlPath:"apnsdevices/", jsonParams:json).makeRequest { response in
+            switch response.result {
+            case .success:
+                guard let completionHandler = completionHandler else { return }
+                completionHandler(nil)
+            case .failure:
+                // TODO: Generate better error here depending on response code
+                let htError = HyperTrackError(HyperTrackErrorType.serverError)
+                HTLogger.shared.error("Error while registerDeviceToken: \(htError.type.rawValue)")
+                guard let completionHandler = completionHandler else { return }
+                completionHandler(htError)
+            }
+        }
+    }
+    
+    func getSDKControls(userId: String, completionHandler: ((_ controls: HyperTrackSDKControls?, _ error: HyperTrackError?) -> Void)?) {
+        let urlPath = "users/\(userId)/controls/"
+        HTTPRequest(method:.get, urlPath:urlPath, jsonParams:[:]).makeRequest { response in
+            switch response.result {
+            case .success:
+                let controls = HyperTrackSDKControls.fromJson(data: response.data)
+                guard let completionHandler = completionHandler else { return }
+                completionHandler(controls, nil)
+            case .failure:
+                // TODO: Generate better error here depending on response code
+                let htError = HyperTrackError(HyperTrackErrorType.serverError)
+                HTLogger.shared.error("Error while getSDKControls: \(htError.type.rawValue)")
+                guard let completionHandler = completionHandler else { return }
+                completionHandler(nil, htError)
+            }
+        }
+    }
+    
+    func getSimulatePolyline(originLatlng: String, completionHandler: ((_ polyline: String?, _ error: HyperTrackError?) -> Void)?) {
+        let urlPath = "simulate/?origin=\(originLatlng)"
+        HTTPRequest(method:.get, urlPath:urlPath, jsonParams:[:]).makeRequest { response in
+            switch response.result {
+            case .success:
+                let result = response.result.value as! [String:String]
+                let polyline = result["time_aware_polyline"]
+                guard let completionHandler = completionHandler else { return }
+                completionHandler(polyline, nil)
+            case .failure:
+                // TODO: Generate better error here depending on response code
+                let htError = HyperTrackError(HyperTrackErrorType.serverError)
+                HTLogger.shared.error("Error while getSimulatePolyline: \(htError.type.rawValue)")
+                guard let completionHandler = completionHandler else { return }
+                completionHandler(nil, htError)
+            }
+        }
+    }
+    
+    func getUserPlaceline(userId: String, completionHandler: ((_ controls: HyperTrackPlaceline?, _ error: HyperTrackError?) -> Void)?) {
+        let urlPath = "users/\(userId)/placeline/"
+        HTTPRequest(method:.get, urlPath:urlPath, jsonParams:[:]).makeRequest { response in
+            switch response.result {
+            case .success:
+                let placeline = HyperTrackPlaceline.fromJson(data: response.data!)
+                guard let completionHandler = completionHandler else { return }
+                completionHandler(placeline, nil)
+            case .failure:
+                // TODO: Generate better error here depending on response code
+                let htError = HyperTrackError(HyperTrackErrorType.serverError)
+                HTLogger.shared.error("Error while getSDKControls: \(htError.type.rawValue)")
                 guard let completionHandler = completionHandler else { return }
                 completionHandler(nil, htError)
             }

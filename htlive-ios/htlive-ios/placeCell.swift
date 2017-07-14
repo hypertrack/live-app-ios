@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import HyperTrack
 
 class placeCell : UITableViewCell {
     
@@ -16,6 +17,41 @@ class placeCell : UITableViewCell {
     @IBOutlet weak var activityIcon: UIImageView!
     @IBOutlet weak var status: UILabel!
     @IBOutlet weak var stats: UILabel!
+    
+    
+    func setStats(activity : HyperTrackActivity) {
+        
+        self.startTime.text = activity.startedAt?.toString(dateFormat: "HH:mm")
+        self.endTime.text = activity.endedAt?.toString(dateFormat: "HH:mm")
+        if activity.activity == nil {
+            
+            self.status.text = "Stop"
+            self.stats.text = "xx min"
+            
+        } else {
+            
+            self.status.text = activity.activity
+            guard let distance = activity.distance else { return }
+            let distanceKM : Double = Double(distance)/1000
+            self.stats.text = "\(distanceKM) km"
+        }
+            
+        
+        
+        
+        
+//                print(activity.type)
+//                print(activity.distance)
+//                print(activity.place?.address)
+//                print(activity.activity)
+//                print("")
+        
+        
+        
+        
+
+        
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()

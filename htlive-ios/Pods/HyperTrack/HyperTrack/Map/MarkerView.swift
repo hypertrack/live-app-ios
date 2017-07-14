@@ -11,12 +11,16 @@ import UIKit
 
 class MarkerView : UIView {
     
-    @IBOutlet weak var triangle: UIImageView!
+    @IBOutlet weak var heroMarkerIcon: UIImageView!
     
     @IBOutlet weak var radiationCircle: UIImageView!
     
     @IBOutlet weak var radiationSize: NSLayoutConstraint!
     
+    @IBOutlet weak var annotationLabel : UILabel!
+    
+    @IBOutlet weak var subtitleLabel : UILabel!
+
     override func awakeFromNib() {
         radiate()
     }
@@ -38,5 +42,4 @@ class MarkerView : UIView {
     func stopRadiation() {
         radiationCircle.layer.removeAllAnimations()
     }
-    
 }

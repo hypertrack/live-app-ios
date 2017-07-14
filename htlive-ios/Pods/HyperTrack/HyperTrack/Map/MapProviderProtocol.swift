@@ -10,15 +10,17 @@ import Foundation
 import MapKit
 
 protocol MapProviderProtocol {
-  
-  var mapInteractionDelegate: HTMapInteractionDelegate? {get set}
-  
-  func zoomTo(visibleRegion: MKCoordinateRegion, animated: Bool)
-  func updateDestinationMarker(destinationAnnotation: MKPointAnnotation)
-  func updateHeroMarker(heroAnnotation: MKPointAnnotation, actionID: String)
-  func animateMarker(locations: [CLLocationCoordinate2D], currentIndex: Int, duration: TimeInterval)
-  func reFocusMap()
-  func updatePolyline(polyline: String)
-  func updateViewFocus()
-  func clearMap()
+    
+    var mapInteractionDelegate: HTViewInteractionInternalDelegate? {get set}
+    var mapViewDataSource: HTMapViewDataSource? {get set}
+    
+    func zoomTo(visibleRegion: MKCoordinateRegion, animated: Bool)
+    func updateDestinationMarker(showDestination: Bool, destinationAnnotation: HTMapAnnotation?)
+    func updateHeroMarker(userId: String, actionID: String, heroAnnotation: HTMapAnnotation, disableHeroMarkerRotation: Bool)
+    func animateMarker(userId: String, locations: [CLLocationCoordinate2D], currentIndex: Int, duration: TimeInterval, disableHeroMarkerRotation: Bool)
+    func reFocusMap(isInfoViewCardExpanded: Bool, isDestinationViewVisible: Bool)
+    func updatePolyline(polyline: String)
+    func updateViewFocus(isInfoViewCardExpanded: Bool, isDestinationViewVisible: Bool)
+    func clearMap()
+    func focusMapFor(userId : String?)
 }

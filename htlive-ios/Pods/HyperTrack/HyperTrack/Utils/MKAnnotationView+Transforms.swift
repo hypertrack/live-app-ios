@@ -17,9 +17,9 @@ struct MaxZoomSpan{
 }
 
 
-public extension MKAnnotationView {
-  
-  public func transformForMapSpan(_ span: MKCoordinateSpan, heading: CLLocationDirection) {
+internal extension MKAnnotationView {
+
+  internal func transformForMapSpan(_ span: MKCoordinateSpan, heading: CLLocationDirection) {
     
     let xSpanRatio = span.latitudeDelta / MaxZoomSpan.latitudeDelta
     let ySpanRatio = span.longitudeDelta / MaxZoomSpan.longitudeDelta
@@ -34,9 +34,9 @@ public extension MKAnnotationView {
   }
 }
 
-extension UIImage {
+internal extension UIImage {
     
-    public func imageRotatedByDegrees(degrees: CGFloat) -> UIImage {
+    internal func imageRotatedByDegrees(degrees: CGFloat) -> UIImage {
         
         let degreesToRadians: (CGFloat) -> CGFloat = {
             return $0 * (CGFloat.pi / 180.0)
