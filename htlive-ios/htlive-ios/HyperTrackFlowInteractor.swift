@@ -31,7 +31,7 @@ class HyperTrackFlowInteractor: NSObject {
     
     func presentFlowsIfNeeded(){
         for flowController in flows{
-            if(flowController.isFlowCompleted()){
+            if(!flowController.isFlowCompleted()){
                 flowController.startFlow(force: false, presentingController: topViewController()!)
             }
         }
@@ -62,6 +62,8 @@ class HyperTrackFlowInteractor: NSObject {
     }
     
     
-    
+    func presentDeeplinkFlow(){
+        
+    }
 
 }

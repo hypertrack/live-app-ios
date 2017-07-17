@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Data Source-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="htlive_ios" customModuleProvider="target" sceneMemberID="viewController">
@@ -96,6 +96,17 @@
                                 </constraints>
                                 <state key="normal" backgroundImage="shareCTA"/>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TJr-Q6-wkV" customClass="FSCalendar">
+                                <rect key="frame" x="0.0" y="70" width="375" height="300"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="ops-Lt-FWW"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="pfO-8k-Znn"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="XyY-gD-mMj"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -106,6 +117,9 @@
                             <constraint firstItem="0CE-eQ-4Bf" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="FWH-vn-zbV"/>
                             <constraint firstAttribute="trailing" secondItem="Bac-Nq-D3N" secondAttribute="trailing" constant="20" id="HlP-bP-p5n"/>
                             <constraint firstItem="a3O-NP-aeB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="TA0-3l-a1d"/>
+                            <constraint firstAttribute="trailing" secondItem="TJr-Q6-wkV" secondAttribute="trailing" id="TGx-rj-jzp"/>
+                            <constraint firstItem="TJr-Q6-wkV" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="ZJ2-OR-C4x"/>
+                            <constraint firstItem="TJr-Q6-wkV" firstAttribute="top" secondItem="0CE-eQ-4Bf" secondAttribute="bottom" id="eLg-E9-WsI"/>
                             <constraint firstItem="0CE-eQ-4Bf" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="f0U-eC-gcw"/>
                             <constraint firstItem="htP-64-wX6" firstAttribute="top" secondItem="0CE-eQ-4Bf" secondAttribute="bottom" id="f7k-m0-37u"/>
                             <constraint firstAttribute="trailing" secondItem="a3O-NP-aeB" secondAttribute="trailing" constant="20" id="gxR-kR-R3B"/>
@@ -115,6 +129,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="calendar" destination="TJr-Q6-wkV" id="Fcc-rg-g1Q"/>
+                        <outlet property="calendarTop" destination="eLg-E9-WsI" id="Er3-Ai-jir"/>
                         <outlet property="placeLineTable" destination="a3O-NP-aeB" id="806-E3-ZHK"/>
                     </connections>
                 </viewController>

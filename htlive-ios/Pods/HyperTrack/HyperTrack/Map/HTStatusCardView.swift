@@ -102,7 +102,7 @@ class HTStatusCardView: UIView {
         if (statusInfo.showActionDetailSummary) {
             // Update eta & distance data
             self.eta.text = "\(Int(statusInfo.timeElapsedMinutes)) min"
-            self.distanceLeft.text = "\(statusInfo.distanceCovered) mi"
+            self.distanceLeft.text = "\(statusInfo.distanceCovered) \(statusInfo.distanceUnit)"
             
             if (statusInfo.distanceLeft != nil) {
                 progress = statusInfo.distanceCovered / (statusInfo.distanceCovered + statusInfo.distanceLeft!)
@@ -158,10 +158,14 @@ class HTStatusCardView: UIView {
                 let seconds = timeInSeconds % 60
                 
                 expandedCard.timeElapsed.text = String(format: "%0.2d:%0.2d:%0.2d", hours, minutes, seconds)
-                expandedCard.distanceTravelled.text = "\(statusInfo.distanceCovered) mi"
+                expandedCard.distanceTravelled.text = "\(statusInfo.distanceCovered) \(statusInfo.distanceUnit)"
                 
                 if (statusInfo.speed != nil) {
-                    expandedCard.speed.text = "\(statusInfo.speed!) mph"
+                    if (statusInfo.distanceUnit == "mi") {
+                        expandedCard.speed.text = "\(statusInfo.speed!) mph"
+                    } else {
+                        expandedCard.speed.text = "\(statusInfo.speed!) kmph"
+                    }
                 } else {
                     expandedCard.speed.text = "--"
                 }

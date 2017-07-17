@@ -190,6 +190,16 @@ import MapKit
     }
     
     /**
+     Call this method to assign actions to the current user.
+     
+     - Parameter actionIds: Pass array of ActionIds casted as String
+     - Parameter callback: Pass instance of HyperTrack callback as parameter
+     */
+    @objc public class func assignActions(actionIds:[String], _ completionHandler: @escaping (_ action: HyperTrackUser?, _ error: HyperTrackError?) -> Void) {
+        Transmitter.sharedInstance.assignActions(actionIds, completionHandler)
+    }
+    
+    /**
      Call this method to get action model for a given actionId
      
      - Parameter actionId: Pass the action's unique id generated on HyperTrack API Server
