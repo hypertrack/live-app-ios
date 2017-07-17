@@ -88,9 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
 }
-
 
 extension AppDelegate {
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
@@ -98,6 +96,3 @@ extension AppDelegate {
        return  HyperTrackAppService.sharedInstance.applicationContinue(userActivity: userActivity, restorationHandler: restorationHandler)
     }
 }
-
-
-

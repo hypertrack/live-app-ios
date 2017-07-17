@@ -10,24 +10,18 @@ import Foundation
 
 class UserProfileVC: UIViewController {
     
-    @IBOutlet weak var name: CustomTextField!
-    
-    @IBOutlet weak var phone: CustomTextField!
+    @IBOutlet weak var firstNameTextField: CustomTextField!
+    @IBOutlet weak var lastNameTextField: CustomTextField!
+    @IBOutlet weak var phoneNumberTextField: CustomTextField!
     
     @IBAction func proceed(_ sender: Any) {
-        
-        guard name.text != "" else { name.shake(); return }
-        guard phone.text != "" else { phone.shake(); return }
-        
         self.performSegue(withIdentifier: "showPlaceline", sender: self)
-        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        name.becomeFirstResponder()
-        
+        firstNameTextField.becomeFirstResponder()
         // Do any additional setup after loading the view.
     }
     
@@ -35,16 +29,4 @@ class UserProfileVC: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }

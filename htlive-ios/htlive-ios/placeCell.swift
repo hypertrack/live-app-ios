@@ -39,7 +39,7 @@ class placeCell : UITableViewCell {
         refresher.layer.masksToBounds = false
         refresher.layer.shadowColor = UIColor.white.cgColor
         refresher.layer.shadowOpacity = 0
-        refresher.layer.opacity = 0.5add
+        refresher.layer.opacity = 0.5
         refresher.layer.shadowOffset = CGSize(width: 0, height: 1)
         refresher.layer.shadowRadius = 0
         
