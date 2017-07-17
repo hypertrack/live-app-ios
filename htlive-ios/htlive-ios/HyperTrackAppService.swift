@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import HyperTrack
 
 class HyperTrackAppService: NSObject {
     
@@ -36,13 +37,16 @@ class HyperTrackAppService: NSObject {
         return true
     }
     
-    
-    
-    
     func setUpSDKs(){
-        BuddyBuildSDK.setup()
-
+        setupHyperTrack()
+        setupBuddyBuild()
     }
 
-
+    func setupHyperTrack() {
+        HyperTrack.initialize("pk_test_efc7e2b08075118cd097599c7dcd05e33eb65afe")
+    }
+    
+    func setupBuddyBuild() {
+        BuddyBuildSDK.setup()
+    }
 }

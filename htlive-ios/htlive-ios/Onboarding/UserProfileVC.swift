@@ -19,8 +19,9 @@ class UserProfileVC: UIViewController {
     }
     
     @IBAction func saveProfile(_ sender: Any) {
-        // TODO: check for empty name or valid phone
-        // before creating the user
+        // TODO: check for empty name and validate phone
+        // before creating the user. Phone number must have
+        // country code.
         getOrCreateHyperTrackUser()
     }
 
@@ -37,8 +38,8 @@ class UserProfileVC: UIViewController {
     }
     
     func getOrCreateHyperTrackUser() {
-        let name = nameTextField.text!
-        let phone = phoneNumberTextField.text!
+        let name = nameTextField.text ?? ""
+        let phone = phoneNumberTextField.text ?? ""
 
         HyperTrack.getOrCreateUser(name, _phone: phone, phone) { (user, error) in
             if (error != nil) {
@@ -50,7 +51,24 @@ class UserProfileVC: UIViewController {
             
             if (user != nil) {
                 // User successfully created
+                
+                if (phone != "") {
+                    // If phone was given, send verification code
+                    self.sendVerificationCode()
+                }
             }
         }
+    }
+    
+    func sendVerificationCode() {
+        let requestService = RequestService.shared
+        requestService.resendHyperTrackCode(completionHandler: { (error) in
+            if (error != nil) {
+                // Handle error
+            } else {
+                // This means the verification text was sent successfully
+                // Move to the verification code view.
+            }
+        })
     }
 }

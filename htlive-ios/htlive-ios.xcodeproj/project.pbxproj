@@ -38,6 +38,7 @@
 		BBF7B3F11F1997C800DA355C /* HyperTrackAppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7B3F01F1997C800DA355C /* HyperTrackAppService.swift */; };
 		D79B41D1ADF2C7B3098EF4B8 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B923850CA9BCCA7AFAFE6B5C /* AssetsLibrary.framework */; };
 		DCA77CFD1F1D601C003C0BEC /* ValidateCodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA77CFC1F1D601C003C0BEC /* ValidateCodeVC.swift */; };
+		DCA77CFF1F1D78D1003C0BEC /* RequestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA77CFE1F1D78D1003C0BEC /* RequestService.swift */; };
 		DD53C9764BA003663FEC2B91 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE69D06DE0D45E789542761 /* CoreText.framework */; };
 /* End PBXBuildFile section */
 
@@ -78,6 +79,7 @@
 		BBF7B3ED1F19972C00DA355C /* BaseFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseFlowController.swift; sourceTree = "<group>"; };
 		BBF7B3F01F1997C800DA355C /* HyperTrackAppService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HyperTrackAppService.swift; sourceTree = "<group>"; };
 		DCA77CFC1F1D601C003C0BEC /* ValidateCodeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ValidateCodeVC.swift; path = Onboarding/ValidateCodeVC.swift; sourceTree = "<group>"; };
+		DCA77CFE1F1D78D1003C0BEC /* RequestService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestService.swift; sourceTree = "<group>"; };
 		FD47E529E549A1731A714D6D /* BuddyBuildSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BuddyBuildSDK.framework; sourceTree = "<group>"; };
 		FF9906AA2CE583E93780D301 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -213,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				BBF7B3F01F1997C800DA355C /* HyperTrackAppService.swift */,
+				DCA77CFE1F1D78D1003C0BEC /* RequestService.swift */,
 			);
 			name = Service;
 			sourceTree = "<group>";
@@ -396,6 +399,7 @@
 			files = (
 				33334BA61F0BA399001A970E /* UIViewExtension.swift in Sources */,
 				33334BA01F0B87A9001A970E /* ShareVC.swift in Sources */,
+				DCA77CFF1F1D78D1003C0BEC /* RequestService.swift in Sources */,
 				BBF7B3EC1F19972000DA355C /* InviteFlowController.swift in Sources */,
 				4BB596281F1CA10E00B2D830 /* RequestPermissionsVC.swift in Sources */,
 				4BB5962F1F1CA25000B2D830 /* AcceptInviteVC.swift in Sources */,
