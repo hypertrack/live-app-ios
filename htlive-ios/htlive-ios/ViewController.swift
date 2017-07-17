@@ -42,7 +42,6 @@ class ViewController: UIViewController {
         
         placeLineTable.register(UINib(nibName: "placeCell", bundle: nil), forCellReuseIdentifier: "placeCell")
         
-        HyperTrack.initialize("pk_10c06a1abad0cbb0067ab18cf75805f4a270ffce")
         HyperTrack.setUserId("2966354f-9ecc-44f8-a28b-3a804d5eb93c")
         HyperTrack.getPlaceline { (placeLine, error) in
             guard let fetchedPlaceLine = placeLine else { return }
