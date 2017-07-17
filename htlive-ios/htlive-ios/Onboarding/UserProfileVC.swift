@@ -1,15 +1,15 @@
 //
-//  OnboardVC.swift
+//  UserProfileVC.swift
 //  htlive-ios
 //
-//  Created by Vibes on 7/4/17.
+//  Created by Piyush on 17/07/17.
 //  Copyright © 2017 PZRT. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-class OnboardVC: UIViewController {
-
+class UserProfileVC: UIViewController {
+    
     @IBOutlet weak var name: CustomTextField!
     
     @IBOutlet weak var phone: CustomTextField!
@@ -27,24 +27,24 @@ class OnboardVC: UIViewController {
         super.viewDidLoad()
         
         name.becomeFirstResponder()
-
+        
         // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
