@@ -20,6 +20,38 @@ class placeCell : UITableViewCell {
     
     @IBOutlet weak var icon: UIImageView!
     
+    func loading() {
+        
+        self.startTime.text = "- : -"
+        self.endTime.text = "- : -"
+        self.stats.text = "Hang tight"
+        self.status.text = "Loading Placeline.."
+        self.icon.image = nil
+        addRefresher()
+        
+    }
+    
+    func addRefresher() {
+        
+        let refresher = UIActivityIndicatorView(frame : CGRect(x: 100, y: 23, width: 20, height: 20))
+        refresher.color = .black
+        
+        refresher.layer.masksToBounds = false
+        refresher.layer.shadowColor = UIColor.white.cgColor
+        refresher.layer.shadowOpacity = 0
+        refresher.layer.opacity = 0.5add
+        refresher.layer.shadowOffset = CGSize(width: 0, height: 1)
+        refresher.layer.shadowRadius = 0
+        
+        refresher.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+        refresher.layer.shouldRasterize = true
+        
+        refresher.startAnimating()
+        
+        self.addSubview(refresher)
+        
+    }
+    
     func setStats(activity : HyperTrackActivity) {
         
         self.startTime.text = activity.startedAt?.toString(dateFormat: "HH:mm")

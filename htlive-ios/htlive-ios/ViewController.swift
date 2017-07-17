@@ -67,6 +67,7 @@ class ViewController: UIViewController {
 extension ViewController : UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard segments.count != 0 else { return 1 }
         return segments.count
     }
     
@@ -87,7 +88,9 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         cell.layer.backgroundColor = UIColor.clear.cgColor
         if segments.count != 0 {
                 cell.setStats(activity: segments[indexPath.row])
-            }
+        } else {
+            cell.loading()
+        }
         return cell
         
     }
@@ -127,6 +130,9 @@ extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
     }
     
     func getPlacelineForDate(date : Date) {
+        
+        self.segments = []
+        self.placeLineTable.reloadData()
         
         HyperTrack.getPlaceline(date: date) { (placeLine, error) in
             guard let fetchedPlaceLine = placeLine else { return }
