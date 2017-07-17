@@ -114,8 +114,9 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
     func updateInfoView(isInfoViewShown: Bool, showActionDetailSummary: Bool, eta: Double?,
                         distanceLeft: Double?, status: String, userName: String,
                         lastUpdated: Date, timeElapsed: Double, distanceCovered: Double,
-                        speed: Int?, battery: Int?, photoUrl: URL?, startTime: Date?, endTime: Date?,
-                        origin: String?, destination: String?, showExpandedCardOnCompletion: Bool) {
+                        distanceUnit: String, speed: Int?, battery: Int?, photoUrl: URL?,
+                        startTime: Date?, endTime: Date?, origin: String?, destination: String?,
+                        showExpandedCardOnCompletion: Bool) {
         //  Check if InfoView is disabled
         if !isInfoViewShown {
             self.statusCard.isHidden = true
@@ -130,7 +131,7 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
         if (showActionDetailSummary) {
             // Update eta & distance data
             self.eta.text = "\(Int(timeElapsed)) min"
-            self.distanceLeft.text = "\(distanceCovered) mi"
+            self.distanceLeft.text = "\(distanceCovered) \(distanceUnit)"
             
             if (distanceLeft != nil) {
                 progress = distanceCovered / (distanceCovered + distanceLeft!)
@@ -145,9 +146,9 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
             
             if (distanceLeft != nil) {
                 if (eta != nil) {
-                    self.distanceLeft.text = "(\(distanceLeft!) mi)"
+                    self.distanceLeft.text = "(\(distanceLeft!) \(distanceUnit))"
                 } else {
-                    self.distanceLeft.text = "\(distanceLeft!) mi"
+                    self.distanceLeft.text = "\(distanceLeft!) \(distanceUnit)"
                 }
             } else {
                 self.distanceLeft.text = ""
@@ -184,10 +185,14 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
                 let seconds = timeInSeconds % 60
                 
                 expandedCard.timeElapsed.text = String(format: "%0.2d:%0.2d:%0.2d", hours, minutes, seconds)
-                expandedCard.distanceTravelled.text = "\(distanceCovered) mi"
+                expandedCard.distanceTravelled.text = "\(distanceCovered) \(distanceUnit)"
                 
                 if (speed != nil) {
-                    expandedCard.speed.text = "\(speed!) mph"
+                    if (distanceUnit == "mi") {
+                        expandedCard.speed.text = "\(speed!) mph"
+                    } else {
+                        expandedCard.speed.text = "\(speed!) kmph"
+                    }
                 } else {
                     expandedCard.speed.text = "--"
                 }
@@ -559,11 +564,18 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
             }
             statusInfo.timeElapsedMinutes = -1 * Double(timeElapsed! / 60)
         }
-        
+
+        if let distanceUnit = action.display?.distanceUnit {
+            statusInfo.distanceUnit = distanceUnit
+        }
         
         if let distance = action.distance {
             // Convert distance (meters) to miles and round to one decimal
-            statusInfo.distanceCovered = round(distance * 0.000621371 * 10) / 10
+            if (statusInfo.distanceUnit == "mi") {
+                statusInfo.distanceCovered = round(distance * 0.000621371 * 10) / 10
+            } else {
+                statusInfo.distanceCovered = round(distance / 1000)
+            }
         } else {
             statusInfo.distanceCovered  = 0.0
         }
@@ -599,9 +611,11 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
                 statusInfo.lastUpdated = heartbeat
             }
             
-            if let location = user.lastLocation {
-                if location.speed >= 0 {
+            if let location = user.lastLocation, (location.speed >= 0) {
+                if (statusInfo.distanceUnit == "mi") {
                     statusInfo.speed = Int(location.speed * 2.23693629)
+                } else {
+                    statusInfo.speed = Int(location.speed * 3.6)
                 }
             }
         }
@@ -636,7 +650,11 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
             
             if let distance = actionDisplay!.distanceRemaining {
                 // Convert distance (meters) to miles and round to one decimal
-                statusInfo.distanceLeft = round(Double(distance) * 0.000621371 * 10) / 10
+                if (statusInfo.distanceUnit == "mi") {
+                    statusInfo.distanceCovered = round(Double(distance) * 0.000621371 * 10) / 10
+                } else {
+                    statusInfo.distanceCovered = round(Double(distance) / 1000)
+                }
             }
             
             statusInfo.showActionDetailSummary = actionDisplay!.showSummary

@@ -29,24 +29,31 @@ import Foundation
     public let durationRemaining: Int?
     
     /**
-     Boolean indicating whether to show Action Summary or not
-     */
-    public var showSummary: Bool = false
-    
-    /**
      Distance remaining in meters for action to be completed
      */
     public let distanceRemaining: Int?
+    
+    /**
+     Distance unit (km or mi)
+     */
+    public let distanceUnit: String?
+    
+    /**
+     Boolean indicating whether to show Action Summary or not
+     */
+    public var showSummary: Bool = false
     
     internal init(statusText: String?,
                 subStatusText: String?,
                 durationRemaining: Int?,
                 distanceRemaining: Int?,
+                distanceUnit: String?,
                 showSummary: Bool?) {
         self.statusText = statusText
         self.subStatusText = subStatusText
         self.durationRemaining = durationRemaining
         self.distanceRemaining = distanceRemaining
+        self.distanceUnit = distanceUnit
         if (showSummary != nil) {
             self.showSummary = showSummary!
         }
@@ -58,6 +65,7 @@ import Foundation
             "subStatusText": self.subStatusText as Any,
             "durationRemaining": self.durationRemaining as Any,
             "distanceRemaining": self.distanceRemaining as Any,
+            "distanceMetric": self.distanceUnit as Any,
             "showSummary": self.showSummary as Any
             ] as [String:Any]
         return dict
@@ -83,6 +91,7 @@ import Foundation
                 subStatusText: dict["sub_status_text"] as? String,
                 durationRemaining: dict["duration_remaining"] as? Int,
                 distanceRemaining: dict["distance_remaining"] as? Int,
+                distanceUnit: dict["distance_unit"] as? String,
                 showSummary: dict["show_summary"] as? Bool
             )
             

@@ -1,4 +1,4 @@
-//
+ //
 //  HTRequestManager.swift
 //  HyperTrack
 //
@@ -348,6 +348,34 @@ class RequestManager {
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
                 HTLogger.shared.error("Error while createAndAssignAction: \(htError.type.rawValue)")
+                completionHandler(nil, htError)
+            }
+        }
+    }
+    
+    func assignActions(userId: String, _ params: [String:Any], completionHandler: @escaping (_ action: HyperTrackUser?,
+                                                                             _ error: HyperTrackError?) -> Void) {
+        let url = "users/" + userId + "/assign_actions/"
+        HTTPRequest(method:.post, urlPath:url, jsonParams:params).makeRequest { response in
+            switch response.result {
+            case .success:
+                do {
+                    let json = try JSONSerialization.jsonObject(with: response.data!, options:[])
+                    guard let jsonDict = json as? [String : Any] else {
+                        let htError = HyperTrackError(HyperTrackErrorType.jsonError)
+                        completionHandler(nil, htError)
+                        return
+                    }
+                    
+                    let user = HyperTrackUser.fromDict(dict: jsonDict)
+                    completionHandler(user, nil)
+                } catch {
+                    HTLogger.shared.error("Error serializing user: \(error.localizedDescription)")
+                }
+            case .failure:
+                // TODO: Generate better error here depending on response code
+                let htError = HyperTrackError(HyperTrackErrorType.serverError)
+                HTLogger.shared.error("Error while assignActions: \(htError.type.rawValue)")
                 completionHandler(nil, htError)
             }
         }
