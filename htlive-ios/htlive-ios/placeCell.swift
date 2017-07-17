@@ -18,6 +18,7 @@ class placeCell : UITableViewCell {
     @IBOutlet weak var status: UILabel!
     @IBOutlet weak var stats: UILabel!
     
+    @IBOutlet weak var icon: UIImageView!
     
     func setStats(activity : HyperTrackActivity) {
         
@@ -26,11 +27,16 @@ class placeCell : UITableViewCell {
         if activity.activity == nil {
             
             self.status.text = "Stop"
-            self.stats.text = "xx min"
+            self.icon.image = #imageLiteral(resourceName: "stop")
+            self.stats.text = activity.place?.address
             
         } else {
             
             self.status.text = activity.activity
+            if activity.activity == "Walk" { self.icon.image = #imageLiteral(resourceName: "walk") }
+            if activity.activity == "Drive" { self.icon.image = #imageLiteral(resourceName: "driving")}
+
+            
             guard let distance = activity.distance else { return }
             let distanceKM : Double = Double(distance)/1000
             self.stats.text = "\(distanceKM) km"

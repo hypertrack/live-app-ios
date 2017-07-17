@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var calendarHeight: NSLayoutConstraint!
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var placeLineTable: UITableView!
+    @IBOutlet weak var dateLabel: UILabel!
     var segments: [HyperTrackActivity] = []
     
     @IBOutlet weak var calendarArrow: UIImageView!
@@ -97,6 +98,7 @@ extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         print(date)
+        self.dateLabel.text = date.toString(dateFormat: "dd MMMM")
         getPlacelineForDate(date: date)
         collapseCalendar()
         
