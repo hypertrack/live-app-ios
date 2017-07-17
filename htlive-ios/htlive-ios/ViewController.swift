@@ -12,6 +12,7 @@ import FSCalendar
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var calendarHeight: NSLayoutConstraint!
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var placeLineTable: UITableView!
     var segments: [HyperTrackActivity] = []
@@ -20,22 +21,12 @@ class ViewController: UIViewController {
     @IBAction func calendarTap(_ sender: Any) {
         
         guard calendarTop.constant != 0 else {
-            calendarTop.constant = -300
-            
-            UIView.animate(withDuration: 0.2, animations: {
-                self.view.layoutIfNeeded()
-                self.calendar.layer.opacity = 0
-                self.calendarArrow.transform = self.calendarArrow.transform.rotated(by: CGFloat(Double.pi))
-            })
+       
+            collapseCalendar()
             return
         }
         
-        calendarTop.constant = 0
-        UIView.animate(withDuration: 0.2, animations: {
-            self.view.layoutIfNeeded()
-            self.calendar.layer.opacity = 1
-            self.calendarArrow.transform = self.calendarArrow.transform.rotated(by: CGFloat(-Double.pi))
-        })
+        expandCalendar()
         
     }
     
@@ -61,6 +52,7 @@ class ViewController: UIViewController {
             
         }
         
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -68,7 +60,7 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
+    
 }
 
 extension ViewController : UITableViewDataSource, UITableViewDelegate {
@@ -104,9 +96,44 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
 extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        print(date)
+        getPlacelineForDate(date: date)
+        collapseCalendar()
+        
         if monthPosition == .previous || monthPosition == .next {
             calendar.setCurrentPage(date, animated: true)
         }
+    }
+    
+    func collapseCalendar() {
+        
+        calendarTop.constant = -300
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.layoutIfNeeded()
+            self.calendar.layer.opacity = 0
+            self.calendarArrow.transform = self.calendarArrow.transform.rotated(by: CGFloat(Double.pi))
+        })
+    }
+    
+    func expandCalendar() {
+        calendarTop.constant = 0
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.layoutIfNeeded()
+            self.calendar.layer.opacity = 1
+            self.calendarArrow.transform = self.calendarArrow.transform.rotated(by: CGFloat(-Double.pi))
+        })
+    }
+    
+    func getPlacelineForDate(date : Date) {
+        
+        HyperTrack.getPlaceline(date: date) { (placeLine, error) in
+            guard let fetchedPlaceLine = placeLine else { return }
+            if let segments = fetchedPlaceLine.segments {
+                self.segments = segments
+                self.placeLineTable.reloadData()
+            }
+        }
+        
     }
 
 }

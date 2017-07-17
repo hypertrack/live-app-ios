@@ -135,6 +135,7 @@
                     <connections>
                         <outlet property="calendar" destination="TJr-Q6-wkV" id="Fcc-rg-g1Q"/>
                         <outlet property="calendarArrow" destination="yZx-fF-al3" id="xyJ-na-RaS"/>
+                        <outlet property="calendarHeight" destination="ops-Lt-FWW" id="XGC-WQ-azR"/>
                         <outlet property="calendarTop" destination="eLg-E9-WsI" id="Er3-Ai-jir"/>
                         <outlet property="placeLineTable" destination="a3O-NP-aeB" id="806-E3-ZHK"/>
                     </connections>
