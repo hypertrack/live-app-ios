@@ -17,9 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        HyperTrackAppService.sharedInstance.applicationDidFinishLaunchingWithOptions(launchOptions: launchOptions)
-        
-        return true
+       return HyperTrackAppService.sharedInstance.applicationDidFinishLaunchingWithOptions(launchOptions: launchOptions)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -92,4 +90,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 }
+
+
+extension AppDelegate {
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        // Handle Branch deeplink, if applicable
+       return  HyperTrackAppService.sharedInstance.applicationContinue(userActivity: userActivity, restorationHandler: restorationHandler)
+    }
+}
+
+
 
