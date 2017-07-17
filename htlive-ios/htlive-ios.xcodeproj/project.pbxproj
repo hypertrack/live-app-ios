@@ -37,6 +37,7 @@
 		BBF7B3EE1F19972C00DA355C /* BaseFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7B3ED1F19972C00DA355C /* BaseFlowController.swift */; };
 		BBF7B3F11F1997C800DA355C /* HyperTrackAppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7B3F01F1997C800DA355C /* HyperTrackAppService.swift */; };
 		D79B41D1ADF2C7B3098EF4B8 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B923850CA9BCCA7AFAFE6B5C /* AssetsLibrary.framework */; };
+		DCA77CFD1F1D601C003C0BEC /* ValidateCodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA77CFC1F1D601C003C0BEC /* ValidateCodeVC.swift */; };
 		DD53C9764BA003663FEC2B91 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE69D06DE0D45E789542761 /* CoreText.framework */; };
 /* End PBXBuildFile section */
 
@@ -76,6 +77,7 @@
 		BBF7B3EB1F19972000DA355C /* InviteFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InviteFlowController.swift; sourceTree = "<group>"; };
 		BBF7B3ED1F19972C00DA355C /* BaseFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseFlowController.swift; sourceTree = "<group>"; };
 		BBF7B3F01F1997C800DA355C /* HyperTrackAppService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HyperTrackAppService.swift; sourceTree = "<group>"; };
+		DCA77CFC1F1D601C003C0BEC /* ValidateCodeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ValidateCodeVC.swift; path = Onboarding/ValidateCodeVC.swift; sourceTree = "<group>"; };
 		FD47E529E549A1731A714D6D /* BuddyBuildSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BuddyBuildSDK.framework; sourceTree = "<group>"; };
 		FF9906AA2CE583E93780D301 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -157,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				4BB596291F1CA19D00B2D830 /* UserProfileVC.swift */,
+				DCA77CFC1F1D601C003C0BEC /* ValidateCodeVC.swift */,
 			);
 			name = Onboarding;
 			sourceTree = "<group>";
@@ -400,6 +403,7 @@
 				BBF7B3E51F1996A600DA355C /* HyperTrackFlowInteractor.swift in Sources */,
 				33334BA91F0BA425001A970E /* TextField.swift in Sources */,
 				4BB5962A1F1CA19D00B2D830 /* UserProfileVC.swift in Sources */,
+				DCA77CFD1F1D601C003C0BEC /* ValidateCodeVC.swift in Sources */,
 				33334B921F0B740A001A970E /* htlive_ios.xcdatamodeld in Sources */,
 				3354C1CE1F14EB820011506D /* placeCell.swift in Sources */,
 				3313D3A41F18D41F00BDF8E0 /* Date.swift in Sources */,
