@@ -8,11 +8,15 @@
 
 import UIKit
 import HyperTrack
+import FSCalendar
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var placeLineTable: UITableView!
     var segments: [HyperTrackActivity] = []
+    
+    @IBOutlet weak var calendarTop: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,4 +72,15 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         return cell
         
     }
+}
+
+
+extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
+    
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        if monthPosition == .previous || monthPosition == .next {
+            calendar.setCurrentPage(date, animated: true)
+        }
+    }
+
 }

@@ -35,10 +35,6 @@ class placeCell : UITableViewCell {
             let distanceKM : Double = Double(distance)/1000
             self.stats.text = "\(distanceKM) km"
         }
-            
-        
-        
-        
         
 //                print(activity.type)
 //                print(activity.distance)
@@ -46,11 +42,7 @@ class placeCell : UITableViewCell {
 //                print(activity.activity)
 //                print("")
         
-        
-        
-        
-
-        
+    
     }
     
     override func awakeFromNib() {

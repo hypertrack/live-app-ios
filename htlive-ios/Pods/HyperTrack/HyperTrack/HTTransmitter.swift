@@ -298,26 +298,47 @@ final class Transmitter {
         
         if let expectedPlace = actionParams.expectedPlace {
             action["expected_place"] = expectedPlace.toDict() as Any
-        }
-        else if let expectedPlaceID = actionParams.expectedPlaceId {
+        } else if let expectedPlaceID = actionParams.expectedPlaceId {
             action["expected_place_id"] = expectedPlaceID as Any
-        }else{
-            completionHandler(nil,HyperTrackError(HyperTrackErrorType.invalidParamsError))
+        } else {
+            completionHandler(nil, HyperTrackError(HyperTrackErrorType.invalidParamsError))
             return
         }
         
-        if let currentLocation = Settings.getLastKnownLocation() {
-            currentLocation.recordedAt = Date()
-            action["current_location"] = currentLocation.toDict()
+        self.getCurrentLocation(completionHandler: { (currentLocation, error) in
+            if (currentLocation != nil) {
+                action["current_location"] = HyperTrackLocation.init(locationCoordinate: currentLocation!.coordinate,
+                                                                     timeStamp: Date()).toDict()
+            }
+        })
+        
+        self.requestManager.createAndAssignAction(action, completionHandler: completionHandler)
+    }
+    
+    func assignActions(_ actionIds: [String], _ completionHandler: @escaping (_ action: HyperTrackUser?,
+                                                                              _ error: HyperTrackError?) -> Void) {
+        if (actionIds.isEmpty) {
+            completionHandler(nil, HyperTrackError(HyperTrackErrorType.invalidParamsError))
+            return
         }
         
-        self.requestManager.createAndAssignAction(action) { action, error in
-            if let action = action {
-                completionHandler(action, nil)
-            } else {
-                completionHandler(nil, error)
+        guard let userId = Settings.getUserId() else {
+            completionHandler(nil, HyperTrackError(HyperTrackErrorType.userIdError))
+            return
+        }
+        
+        var params = [
+            "action_ids":actionIds as Any
+        ] as [String: Any]
+        
+        self.getCurrentLocation(completionHandler: { (currentLocation, error) in
+            if (currentLocation != nil) {
+                params["current_location"] = HyperTrackLocation.init(locationCoordinate: currentLocation!.coordinate,
+                                                                     timeStamp: Date()).toDict()
             }
-        }        
+        })
+        
+        self.requestManager.assignActions(userId: userId, params, completionHandler: completionHandler)
     }
     
     func completeAction(actionId: String?) {

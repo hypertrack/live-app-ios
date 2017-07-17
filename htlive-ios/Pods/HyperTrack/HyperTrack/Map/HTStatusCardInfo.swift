@@ -18,6 +18,7 @@ class HTStatusCardInfo: NSObject {
     var etaMinutes: Double? = nil
     var distanceLeft: Double? = nil
     var distanceCovered: Double = 0
+    var distanceUnit = "mi"
     var status: String = ""
     var timeElapsedMinutes: Double = 0
     var showActionDetailSummary = false

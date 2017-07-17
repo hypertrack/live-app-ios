@@ -415,6 +415,7 @@ public enum HTMapProvider {
         var etaMinutes: Double? = nil
         var distanceLeft: Double? = nil
         var distanceCovered: Double = 0
+        var distanceUnit: String = "mi"
         var status: String = ""
         var timeElapsedMinutes: Double = 0
         var showActionDetailSummary = false
@@ -435,9 +436,17 @@ public enum HTMapProvider {
             timeElapsedMinutes = -1 * Double(timeElapsed! / 60)
         }
         
+        if let displayDistanceUnit = action.display?.distanceUnit {
+            distanceUnit = displayDistanceUnit
+        }
+        
         if let distance = action.distance {
-            // Convert distance (meters) to miles and round to one decimal
-            distanceCovered = round(distance * 0.000621371 * 10) / 10
+            if (distanceUnit == "mi") {
+                // Convert distance (meters) to miles and round to one decimal
+                distanceCovered = round(distance * 0.000621371 * 10) / 10
+            } else {
+                distanceCovered = round(distance / 1000)
+            }
         }
         
         if let user = action.user as HyperTrackUser? {
@@ -456,7 +465,11 @@ public enum HTMapProvider {
             
             if let location = user.lastLocation {
                 if location.speed >= 0 {
-                    speed = Int(location.speed * 2.23693629)
+                    if (distanceUnit == "mi") {
+                        speed = Int(location.speed * 2.23693629)
+                    } else {
+                        speed = Int(location.speed * 3.6)
+                    }
                 }
             }
         }
@@ -473,8 +486,12 @@ public enum HTMapProvider {
             }
             
             if let distance = actionDisplay!.distanceRemaining {
-                // Convert distance (meters) to miles and round to one decimal
-                distanceLeft = round(Double(distance) * 0.000621371 * 10) / 10
+                if (distanceUnit == "mi") {
+                    // Convert distance (meters) to miles and round to one decimal
+                    distanceLeft = round(Double(distance) * 0.000621371 * 10) / 10
+                } else {
+                    distanceLeft = round(Double(distance) / 1000)
+                }
             }
             
             showActionDetailSummary = actionDisplay!.showSummary
@@ -507,8 +524,8 @@ public enum HTMapProvider {
                                  eta: etaMinutes, distanceLeft: distanceLeft,
                                  status: status, userName: userName,
                                  lastUpdated: lastUpdated, timeElapsed: timeElapsedMinutes,
-                                 distanceCovered: distanceCovered, speed: speed,
-                                 battery: battery, photoUrl: photoUrl,
+                                 distanceCovered: distanceCovered, distanceUnit: distanceUnit,
+                                 speed: speed, battery: battery, photoUrl: photoUrl,
                                  startTime: action.assignedAt, endTime: action.endedAt,
                                  origin: startAddress, destination: completeAddress,
                                  showExpandedCardOnCompletion: showExpandedCardOnCompletion)
