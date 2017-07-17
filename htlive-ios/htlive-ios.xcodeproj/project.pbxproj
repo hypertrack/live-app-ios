@@ -26,6 +26,7 @@
 		4BB596281F1CA10E00B2D830 /* RequestPermissionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB596271F1CA10E00B2D830 /* RequestPermissionsVC.swift */; };
 		4BB5962A1F1CA19D00B2D830 /* UserProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB596291F1CA19D00B2D830 /* UserProfileVC.swift */; };
 		4BB5962F1F1CA25000B2D830 /* AcceptInviteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB5962E1F1CA25000B2D830 /* AcceptInviteVC.swift */; };
+		4BB596331F1CB48D00B2D830 /* Permissions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BB596321F1CB48D00B2D830 /* Permissions.storyboard */; };
 		6C0CCE1DCCAAE4E4B15AA5E5 /* Pods_htlive_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA1FE93D3C7A407B321E103 /* Pods_htlive_ios.framework */; };
 		709F5A4A4D1A2C4D62D67D7A /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B04F8C25B273501623851B5 /* CoreMedia.framework */; };
 		7214AC794737FD3C0D2555C4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6879260750573A1BEF59E3DE /* SystemConfiguration.framework */; };
@@ -61,6 +62,7 @@
 		4BB596271F1CA10E00B2D830 /* RequestPermissionsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RequestPermissionsVC.swift; path = Permissions/RequestPermissionsVC.swift; sourceTree = "<group>"; };
 		4BB596291F1CA19D00B2D830 /* UserProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserProfileVC.swift; path = Onboarding/UserProfileVC.swift; sourceTree = "<group>"; };
 		4BB5962E1F1CA25000B2D830 /* AcceptInviteVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AcceptInviteVC.swift; path = AcceptInvite/AcceptInviteVC.swift; sourceTree = "<group>"; };
+		4BB596321F1CB48D00B2D830 /* Permissions.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Permissions.storyboard; path = Permissions/Permissions.storyboard; sourceTree = "<group>"; };
 		4E6015A432434BE00CB7D490 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		60060C7769DD795A2A0823B6 /* Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		62C72BCF7451040D64AFF2A1 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -182,6 +184,7 @@
 		4BB596241F1CA0CD00B2D830 /* Permissions */ = {
 			isa = PBXGroup;
 			children = (
+				4BB596321F1CB48D00B2D830 /* Permissions.storyboard */,
 				4BB596271F1CA10E00B2D830 /* RequestPermissionsVC.swift */,
 			);
 			name = Permissions;
@@ -312,6 +315,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				33334B971F0B740A001A970E /* LaunchScreen.storyboard in Resources */,
+				4BB596331F1CB48D00B2D830 /* Permissions.storyboard in Resources */,
 				33334B941F0B740A001A970E /* Assets.xcassets in Resources */,
 				3354C1CC1F14DAE50011506D /* placeCell.xib in Resources */,
 				33334B8F1F0B740A001A970E /* Main.storyboard in Resources */,
