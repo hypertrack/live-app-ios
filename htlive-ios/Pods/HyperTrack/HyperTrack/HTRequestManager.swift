@@ -77,7 +77,8 @@ class HTTPRequest {
             "Content-Type": "application/json",
             "User-Agent": "HyperTrack iOS SDK/\(sdkVersion) (\(osVersion))",
             "App-ID": "\(appId ?? "")",
-            "Device-ID": "\(deviceId)"
+            "Device-ID": "\(deviceId)",
+            "Timezone": TimeZone.current.identifier
         ]
     }
     
@@ -92,7 +93,8 @@ class HTTPRequest {
             "Content-Type": "application/json",
             "User-Agent": "HyperTrack iOS SDK/\(sdkVersion) (\(osVersion))",
             "App-ID": "\(Bundle.main.bundleIdentifier)",
-            "Device-ID": "\(Settings.uniqueInstallationID)"
+            "Device-ID": "\(Settings.uniqueInstallationID)",
+            "Timezone": TimeZone.current.identifier
         ]
     }
     
@@ -107,7 +109,8 @@ class HTTPRequest {
             "Content-Type": "application/json",
             "User-Agent": "HyperTrack iOS SDK/\(sdkVersion) (\(osVersion))",
             "App-ID": "\(Bundle.main.bundleIdentifier)",
-            "Device-ID": "\(Settings.uniqueInstallationID)"
+            "Device-ID": "\(Settings.uniqueInstallationID)",
+            "Timezone": TimeZone.current.identifier
         ]
     }
     
@@ -532,8 +535,16 @@ class RequestManager {
         }
     }
     
-    func getUserPlaceline(userId: String, completionHandler: ((_ controls: HyperTrackPlaceline?, _ error: HyperTrackError?) -> Void)?) {
-        let urlPath = "users/\(userId)/placeline/"
+    func getUserPlaceline(date: Date? = nil, userId: String, completionHandler: ((_ controls: HyperTrackPlaceline?, _ error: HyperTrackError?) -> Void)?) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        var dateString = formatter.string(from: Date())
+        
+        if let date = date {
+            dateString = formatter.string(from: date)
+        }
+        
+        let urlPath = "users/\(userId)/placeline/?date=\(dateString)"
         HTTPRequest(method:.get, urlPath:urlPath, jsonParams:[:]).makeRequest { response in
             switch response.result {
             case .success:

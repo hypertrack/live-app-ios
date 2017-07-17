@@ -26,4 +26,7 @@ struct HTConstants {
         case HERO_MARKER = 1
         case HERO_MARKER_WITH_ETA = 2
     }
+    
+    
+   static let LocationPermissionChangeNotification = "LocationPermissionChangeNotification"
 }

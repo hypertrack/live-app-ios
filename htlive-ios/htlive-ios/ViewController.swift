@@ -16,11 +16,37 @@ class ViewController: UIViewController {
     @IBOutlet weak var placeLineTable: UITableView!
     var segments: [HyperTrackActivity] = []
     
+    @IBOutlet weak var calendarArrow: UIImageView!
+    @IBAction func calendarTap(_ sender: Any) {
+        
+        guard calendarTop.constant != 0 else {
+            calendarTop.constant = -300
+            
+            UIView.animate(withDuration: 0.2, animations: {
+                self.view.layoutIfNeeded()
+                self.calendar.layer.opacity = 0
+                self.calendarArrow.transform = self.calendarArrow.transform.rotated(by: CGFloat(Double.pi))
+            })
+            return
+        }
+        
+        calendarTop.constant = 0
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.layoutIfNeeded()
+            self.calendar.layer.opacity = 1
+            self.calendarArrow.transform = self.calendarArrow.transform.rotated(by: CGFloat(-Double.pi))
+        })
+        
+    }
+    
     @IBOutlet weak var calendarTop: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        calendarTop.constant = -300
+        calendar.layer.opacity = 0
         
         placeLineTable.register(UINib(nibName: "placeCell", bundle: nil), forCellReuseIdentifier: "placeCell")
         

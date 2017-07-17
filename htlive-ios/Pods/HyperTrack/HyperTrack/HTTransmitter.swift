@@ -17,6 +17,7 @@ final class Transmitter {
     let mockLocationManager:MockLocationManager
 
     let requestManager: RequestManager
+    let deviceInfoService : HTDeviceInfoService
     var ttlTimer: Timer?
     
     var isTracking:Bool {
@@ -36,6 +37,7 @@ final class Transmitter {
         EventsDatabaseManager.sharedInstance.createEventsTable()
         self.requestManager = RequestManager()
         self.mockLocationManager = MockLocationManager()
+        self.deviceInfoService = HTDeviceInfoService()
     }
     
     func initialize() {
@@ -463,14 +465,14 @@ final class Transmitter {
         delegate?.didFailWithError(error)
     }
     
-    func getPlacelineActivity(completionHandler: @escaping (_ placeline: HyperTrackPlaceline?, _ error: HyperTrackError?) -> Void) {
+    func getPlacelineActivity(date: Date? = nil, completionHandler: @escaping (_ placeline: HyperTrackPlaceline?, _ error: HyperTrackError?) -> Void) {
         // TODO: this method should not be in Transmitter, but needs access to request manager
         guard let userId = getUserId() else {
             completionHandler(nil, HyperTrackError(HyperTrackErrorType.userIdError))
             return
         }
         
-        requestManager.getUserPlaceline(userId: userId) { (placeline, error) in
+        requestManager.getUserPlaceline(date: date, userId: userId) { (placeline, error) in
             if (error != nil) {
                 completionHandler(nil, error)
                 return
