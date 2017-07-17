@@ -414,7 +414,7 @@ import MapKit
     /**
      Call this method to get the current placeline activity of the user.
      */
-    @objc public class func getPlaceline(completionHandler: @escaping (_ placeline: HyperTrackPlaceline?, _ error: HyperTrackError?) -> Void) {
-        return Transmitter.sharedInstance.getPlacelineActivity(completionHandler: completionHandler)
+    @objc public class func getPlaceline(date: Date? = nil, completionHandler: @escaping (_ placeline: HyperTrackPlaceline?, _ error: HyperTrackError?) -> Void) {
+        return Transmitter.sharedInstance.getPlacelineActivity(date: date, completionHandler: completionHandler)
     }
 }

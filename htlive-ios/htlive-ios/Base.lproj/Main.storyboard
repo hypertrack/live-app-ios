@@ -22,6 +22,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="htP-64-wX6">
+                                <rect key="frame" x="0.0" y="70" width="375" height="597"/>
+                            </mapView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TJr-Q6-wkV" customClass="FSCalendar">
+                                <rect key="frame" x="0.0" y="70" width="375" height="300"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="ops-Lt-FWW"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="pfO-8k-Znn"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="XyY-gD-mMj"/>
+                                </connections>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0CE-eQ-4Bf" userLabel="topBar">
                                 <rect key="frame" x="0.0" y="20" width="375" height="50"/>
                                 <subviews>
@@ -56,6 +70,7 @@
                                             </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="yZx-fF-al3" secondAttribute="trailing" constant="15" id="Fm2-cJ-yoM"/>
                                             <constraint firstItem="bQr-wB-ifC" firstAttribute="leading" secondItem="z5E-JK-tpW" secondAttribute="leading" constant="10" id="GDO-jW-OSw"/>
@@ -64,6 +79,9 @@
                                             <constraint firstAttribute="height" constant="50" id="jSc-zw-80L"/>
                                             <constraint firstItem="yZx-fF-al3" firstAttribute="centerY" secondItem="z5E-JK-tpW" secondAttribute="centerY" constant="1" id="ots-zb-9zc"/>
                                         </constraints>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="giT-Jv-tVA" appends="YES" id="y9K-9d-VFk"/>
+                                        </connections>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -77,9 +95,6 @@
                                     <constraint firstAttribute="trailing" secondItem="z5E-JK-tpW" secondAttribute="trailing" id="tKD-5B-UV6"/>
                                 </constraints>
                             </view>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="htP-64-wX6">
-                                <rect key="frame" x="0.0" y="70" width="375" height="597"/>
-                            </mapView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="a3O-NP-aeB">
                                 <rect key="frame" x="20" y="411" width="335" height="256"/>
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -96,17 +111,6 @@
                                 </constraints>
                                 <state key="normal" backgroundImage="shareCTA"/>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TJr-Q6-wkV" customClass="FSCalendar">
-                                <rect key="frame" x="0.0" y="70" width="375" height="300"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="300" id="ops-Lt-FWW"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="pfO-8k-Znn"/>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="XyY-gD-mMj"/>
-                                </connections>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -130,11 +134,19 @@
                     </view>
                     <connections>
                         <outlet property="calendar" destination="TJr-Q6-wkV" id="Fcc-rg-g1Q"/>
+                        <outlet property="calendarArrow" destination="yZx-fF-al3" id="xyJ-na-RaS"/>
+                        <outlet property="calendarHeight" destination="ops-Lt-FWW" id="XGC-WQ-azR"/>
                         <outlet property="calendarTop" destination="eLg-E9-WsI" id="Er3-Ai-jir"/>
+                        <outlet property="dateLabel" destination="bQr-wB-ifC" id="af9-m6-Cdg"/>
                         <outlet property="placeLineTable" destination="a3O-NP-aeB" id="806-E3-ZHK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="giT-Jv-tVA">
+                    <connections>
+                        <action selector="calendarTap:" destination="BYZ-38-t0r" id="jic-cB-RPQ"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="909.60000000000002" y="135.38230884557723"/>
         </scene>

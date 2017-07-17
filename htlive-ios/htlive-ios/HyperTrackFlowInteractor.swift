@@ -27,7 +27,7 @@ class HyperTrackFlowInteractor: NSObject {
         flows.append(permissionFlowController)
         flows.append(inviteFlowController)
     }
-    
+
     
     func presentFlowsIfNeeded(){
         for flowController in flows{

@@ -18,6 +18,39 @@ class placeCell : UITableViewCell {
     @IBOutlet weak var status: UILabel!
     @IBOutlet weak var stats: UILabel!
     
+    @IBOutlet weak var icon: UIImageView!
+    
+    func loading() {
+        
+        self.startTime.text = "- : -"
+        self.endTime.text = "- : -"
+        self.stats.text = "Hang tight"
+        self.status.text = "Loading Placeline.."
+        self.icon.image = nil
+        addRefresher()
+        
+    }
+    
+    func addRefresher() {
+        
+        let refresher = UIActivityIndicatorView(frame : CGRect(x: 100, y: 23, width: 20, height: 20))
+        refresher.color = .black
+        
+        refresher.layer.masksToBounds = false
+        refresher.layer.shadowColor = UIColor.white.cgColor
+        refresher.layer.shadowOpacity = 0
+        refresher.layer.opacity = 0.5add
+        refresher.layer.shadowOffset = CGSize(width: 0, height: 1)
+        refresher.layer.shadowRadius = 0
+        
+        refresher.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+        refresher.layer.shouldRasterize = true
+        
+        refresher.startAnimating()
+        
+        self.addSubview(refresher)
+        
+    }
     
     func setStats(activity : HyperTrackActivity) {
         
@@ -26,11 +59,16 @@ class placeCell : UITableViewCell {
         if activity.activity == nil {
             
             self.status.text = "Stop"
-            self.stats.text = "xx min"
+            self.icon.image = #imageLiteral(resourceName: "stop")
+            self.stats.text = activity.place?.address
             
         } else {
             
             self.status.text = activity.activity
+            if activity.activity == "Walk" { self.icon.image = #imageLiteral(resourceName: "walk") }
+            if activity.activity == "Drive" { self.icon.image = #imageLiteral(resourceName: "driving")}
+
+            
             guard let distance = activity.distance else { return }
             let distanceKM : Double = Double(distance)/1000
             self.stats.text = "\(distanceKM) km"

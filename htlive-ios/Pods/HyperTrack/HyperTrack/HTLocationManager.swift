@@ -9,6 +9,7 @@
 import Foundation
 import CoreLocation
 import CoreMotion
+import UIKit
 
 class LocationManager: NSObject {
     // Constants
@@ -94,6 +95,7 @@ class LocationManager: NSObject {
         self.locationManager.stopMonitoringVisits()
         self.locationManager.stopUpdatingLocation()
     }
+    
     
     func startPassiveTrackingService() {
         self.startLocationTracking()
@@ -224,6 +226,17 @@ extension LocationManager {
         return data
     }
     
+    func getDevicePower() -> [String:String?] {
+        let data = [
+            // TODO
+            "percentage": "0", // percentage
+            "charging": "0", // charging status
+            "source": "0",
+            "power_saver": "0"
+        ]
+        return data
+    }
+    
     func getActivity(activity:CMMotionActivity) -> String {
         if activity.automotive {
             return "automotive"
@@ -299,6 +312,20 @@ extension LocationManager {
             eventType:eventType,
             location:nil,
             data:self.getDeviceInfo()
+        )
+        event.save()
+        Transmitter.sharedInstance.callDelegateWithEvent(event: event)
+    }
+    
+    func saveDevicePowerChangedEvent() {
+        let eventType = "device.power.changed"
+        guard let userId = Settings.getUserId() else { return }
+        let event = HyperTrackEvent(
+            userId:userId,
+            recordedAt:Date(),
+            eventType:eventType,
+            location:nil,
+            data:self.getDevicePower()
         )
         event.save()
         Transmitter.sharedInstance.callDelegateWithEvent(event: event)
@@ -506,6 +533,10 @@ extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager,
                          didChangeAuthorization status: CLAuthorizationStatus) {
         HTLogger.shared.info("Did change authorization: \(status)")
+        let nc = NotificationCenter.default
+        nc.post(name:Notification.Name(rawValue:HTConstants.LocationPermissionChangeNotification),
+                object: nil,
+                userInfo: nil)
     }
     
     func locationManager(_ manager: CLLocationManager,

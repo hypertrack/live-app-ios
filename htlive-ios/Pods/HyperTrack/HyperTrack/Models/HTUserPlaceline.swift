@@ -85,7 +85,7 @@
 
 @objc public class HyperTrackPlaceline:NSObject {
     // TODO: should inherit from HyperTrackUser?
-    let id: String?
+    public let id: String?
     public let segments: [HyperTrackActivity]?
     
     init(id: String?,

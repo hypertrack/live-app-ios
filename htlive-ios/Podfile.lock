@@ -5,7 +5,7 @@ PODS:
   - CocoaAsyncSocket/GCD (7.5.1)
   - FSCalendar (2.7.9)
   - GzipSwift (3.1.4)
-  - HyperTrack (0.4.29):
+  - HyperTrack (0.4.30):
     - Alamofire (= 4.4.0)
     - GzipSwift
     - JustLog
@@ -27,7 +27,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: e0a7e93b2ffa411592ff87e58524fbbc9b95b4fa
   FSCalendar: a04b09f16f811bc92e82f3cf852a15225233b9d5
   GzipSwift: 11ddb2bf253b1cd7b60bb169da20f62ac4348769
-  HyperTrack: b524f79c024092684713ceef264d7690c0e569d7
+  HyperTrack: 8d85057cbc6264f4043cd2663fd9c140ad54ea0d
   JustLog: 035ff2d06efd8cae26aeaf05cb2471f03ee866bb
   SQLite.swift: 670c3e9e0a806bbfd56a3de5d530768dc0e6fe7c
   SwiftyBeaver: 9216b6e163c145628ccc7c0126df4287880d6e1e

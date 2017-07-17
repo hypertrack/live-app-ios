@@ -12,15 +12,33 @@ import FSCalendar
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var calendarHeight: NSLayoutConstraint!
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var placeLineTable: UITableView!
+    @IBOutlet weak var dateLabel: UILabel!
     var segments: [HyperTrackActivity] = []
+    
+    @IBOutlet weak var calendarArrow: UIImageView!
+    @IBAction func calendarTap(_ sender: Any) {
+        
+        guard calendarTop.constant != 0 else {
+       
+            collapseCalendar()
+            return
+        }
+        
+        expandCalendar()
+        
+    }
     
     @IBOutlet weak var calendarTop: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        calendarTop.constant = -300
+        calendar.layer.opacity = 0
         
         placeLineTable.register(UINib(nibName: "placeCell", bundle: nil), forCellReuseIdentifier: "placeCell")
         
@@ -35,6 +53,7 @@ class ViewController: UIViewController {
             
         }
         
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -42,12 +61,13 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
+    
 }
 
 extension ViewController : UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard segments.count != 0 else { return 1 }
         return segments.count
     }
     
@@ -68,7 +88,9 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         cell.layer.backgroundColor = UIColor.clear.cgColor
         if segments.count != 0 {
                 cell.setStats(activity: segments[indexPath.row])
-            }
+        } else {
+            cell.loading()
+        }
         return cell
         
     }
@@ -78,9 +100,48 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
 extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        print(date)
+        self.dateLabel.text = date.toString(dateFormat: "dd MMMM")
+        getPlacelineForDate(date: date)
+        collapseCalendar()
+        
         if monthPosition == .previous || monthPosition == .next {
             calendar.setCurrentPage(date, animated: true)
         }
+    }
+    
+    func collapseCalendar() {
+        
+        calendarTop.constant = -300
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.layoutIfNeeded()
+            self.calendar.layer.opacity = 0
+            self.calendarArrow.transform = self.calendarArrow.transform.rotated(by: CGFloat(Double.pi))
+        })
+    }
+    
+    func expandCalendar() {
+        calendarTop.constant = 0
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.layoutIfNeeded()
+            self.calendar.layer.opacity = 1
+            self.calendarArrow.transform = self.calendarArrow.transform.rotated(by: CGFloat(-Double.pi))
+        })
+    }
+    
+    func getPlacelineForDate(date : Date) {
+        
+        self.segments = []
+        self.placeLineTable.reloadData()
+        
+        HyperTrack.getPlaceline(date: date) { (placeLine, error) in
+            guard let fetchedPlaceLine = placeLine else { return }
+            if let segments = fetchedPlaceLine.segments {
+                self.segments = segments
+                self.placeLineTable.reloadData()
+            }
+        }
+        
     }
 
 }
