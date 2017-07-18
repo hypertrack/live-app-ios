@@ -121,18 +121,24 @@ class HTDeviceInfoService: NSObject {
             print("Location services are not enabled")
         }
         
-        let event = HyperTrackEvent(
-            userId:Transmitter.sharedInstance.getUserId()!,
-            recordedAt:Date(),
-            eventType:"device.location_config.changed",
-            location:nil,
-            data : ["enabled":isEnabled,
-                    "permission":isPermissionAccepted,
-                    "mock_enabled" : false
-            ]
-        )
-        event.save()
-        requestManager.postEvents(flush:true)
+        if(shouldPostEvents()){
+            let event = HyperTrackEvent(
+                userId:Transmitter.sharedInstance.getUserId()!,
+                recordedAt:Date(),
+                eventType:"device.location_config.changed",
+                location:nil,
+                data : ["enabled":isEnabled,
+                        "permission":isPermissionAccepted,
+                        "mock_enabled" : false
+                ]
+            )
+            event.save()
+            requestManager.postEvents(flush:true)
+        }
+    }
+    
+    func shouldPostEvents() -> Bool {
+        return Transmitter.sharedInstance.isTracking && ( Transmitter.sharedInstance.getUserId() != nil)
     }
     
     func locationConfigDidChange(_ notification: Notification) {
@@ -145,7 +151,7 @@ class HTDeviceInfoService: NSObject {
 
         saveLastKnownInfo(infoType: htBatteryLevelString, value: batteryLevelString)
 
-        if(Transmitter.sharedInstance.getUserId() != nil){
+        if(shouldPostEvents()){
             var chargingStatus  = "discharging"
             if(batteryState() == UIDeviceBatteryState.charging){
                 chargingStatus = "charging"
@@ -169,7 +175,7 @@ class HTDeviceInfoService: NSObject {
     
     func onNetworkStateChanged(state: String,isConnected: Bool){
         
-        if(Transmitter.sharedInstance.getUserId() != nil){
+        if(shouldPostEvents()){
             let event = HyperTrackEvent(
                 userId:Transmitter.sharedInstance.getUserId()!,
                 recordedAt:Date(),

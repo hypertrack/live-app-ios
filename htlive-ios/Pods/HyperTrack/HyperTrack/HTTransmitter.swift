@@ -130,12 +130,17 @@ final class Transmitter {
         }
     }
     
-    func createUser(_ name: String, _ phone: String, _ photo: UIImage?, _ completionHandler: @escaping (_ user: HyperTrackUser?, _ error: HyperTrackError?) -> Void) {
+    func createUser(_ name: String, _ phone: String, _ lookupID: String, _ photo: UIImage?, _ completionHandler: @escaping (_ user: HyperTrackUser?, _ error: HyperTrackError?) -> Void) {
+        var requestBody = ["name": name, "phone": phone, "lookup_id": lookupID]
+        
         if let photo = photo {
-            //Do image upload here, can't pass UIImage directly
+            // Convert image to base64 before upload
+            let imageData: NSData = UIImagePNGRepresentation(photo) as! NSData
+            let strBase64 = imageData.base64EncodedString(options: .lineLength64Characters)
+            requestBody["photo"] = strBase64
         }
         
-        self.requestManager.createUser(["name": name, "phone": phone]) { user, error in
+        self.requestManager.createUser(requestBody) { user, error in
             
             if (user != nil) {
                 self.setUserId(userId: (user?.id)!)
