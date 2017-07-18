@@ -14,10 +14,19 @@ class ShareVC: UIViewController  {
     
     @IBOutlet fileprivate weak var hyperTrackView: UIView!
     let locationManager = CLLocationManager()
+    var shortCode : String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // check if shortcode is provided
+        if(shortCode != nil){
+            trackActionForShortCode(shortCode: shortCode!)
+            return
+        }
+        
         var currentTrackingLookUpId = getCurrentlyTrackedLookUpId()
+        
         if(currentTrackingLookUpId != nil){
             trackHypertrackAction(lookUpId: currentTrackingLookUpId)
         }
@@ -45,6 +54,47 @@ class ShareVC: UIViewController  {
         // Dispose of any resources that can be recreated.
     }
     
+    func trackActionForShortCode(shortCode : String){
+        if (self.shortCode != nil) {
+            self.view.showActivityIndicator(animated: true)
+            HyperTrack.getActionsFromShortCode(shortCode, completionHandler: { (actions, error) in
+                
+                if (error !=  nil) {
+                    self.view.hideActivityIndicator(animate: true)
+                    self.showAlert(title: "Error", message: error?.type.rawValue)
+                    return
+                }
+                
+                if let actions = actions {
+                    if (actions.count > 0) {
+                        HyperTrack.trackActionFor(lookUpId: (actions.last?.lookupId)!, completionHandler: { (actions, error) in
+                            self.view.hideActivityIndicator(animate: true)
+                            
+                            if (error != nil) {
+                                self.showAlert(title: "Error", message: error?.type.rawValue)
+                                return
+                            }
+                            
+                        })
+                    } else {
+                        self.showAlert(title: "Error", message: "Unable to fetch details for this link. Please try again.")
+                        self.view.hideActivityIndicator(animate: true)
+                    }
+                    
+                } else{
+                    HyperTrack.trackActionFor(shortCode:shortCode, completionHandler: { (action, error) in
+                        self.view.hideActivityIndicator(animate: true)
+                        
+                        if (error != nil) {
+                            self.showAlert(title: "Error", message: error?.type.rawValue)
+                            return
+                        }
+                    })
+                }
+            })
+        }
+
+    }
     
     fileprivate var error: NSError {
         get {

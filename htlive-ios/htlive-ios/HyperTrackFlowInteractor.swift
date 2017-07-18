@@ -65,5 +65,12 @@ class HyperTrackFlowInteractor: NSObject {
     func presentDeeplinkFlow(){
         
     }
+    
+    func presentLiveLocationFlow(shortCode : String){
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        let liveLocationController = storyboard.instantiateViewController(withIdentifier: "ShareVC") as! ShareVC
+        liveLocationController.shortCode = shortCode
+        topViewController()?.present(liveLocationController, animated:true, completion: nil)
+    }
 
 }

@@ -44,7 +44,6 @@ class ViewController: UIViewController {
     @IBAction func onLiveLocationButtonClick(sender: UIButton) {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         let liveLocationController = storyboard.instantiateViewController(withIdentifier: "ShareVC") as! ShareVC
-//        let navController = UINavigationController(rootViewController: liveLocationController)
         self.present(liveLocationController, animated:true, completion: nil)
     }
     

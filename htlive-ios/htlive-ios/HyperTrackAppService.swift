@@ -13,6 +13,8 @@ class HyperTrackAppService: NSObject {
     
     let flowInteractor = HyperTrackFlowInteractor()
     static let sharedInstance = HyperTrackAppService()
+    
+    static fileprivate let prefix = "www."
 
     
     func applicationDidFinishLaunchingWithOptions(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -31,9 +33,13 @@ class HyperTrackAppService: NSObject {
     }
     
     func applicationContinue (userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
-     // handle deeplink here and ask flow interactor to start flows which are needed
-        
-        
+     // handle deeplink here and ask flow interactor to start flows which are needed        
+        if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
+            let url =  userActivity.webpageURL as NSURL?
+            if let lastPathComponent = url?.lastPathComponent{
+                flowInteractor.presentLiveLocationFlow(shortCode: lastPathComponent)
+            }
+        }
         return true
     }
     
