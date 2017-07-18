@@ -36,8 +36,8 @@ class RequestService {
             case .success:
                 completionHandler(nil)
             case .failure(let error):
-                print("Response error:", String(data: response.data!, encoding: .utf8))
-                completionHandler(error.localizedDescription)
+                let errorMsg = String(data: response.data!, encoding: .utf8)!
+                completionHandler(errorMsg)
             }
         }
     }

@@ -36,6 +36,7 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         phoneNumberTextField.delegate = self
         nameTextField.delegate = self
+        nameTextField.autocapitalizationType = .words
         // Do any additional setup after loading the view.
         
         NotificationCenter.default.addObserver(self,
