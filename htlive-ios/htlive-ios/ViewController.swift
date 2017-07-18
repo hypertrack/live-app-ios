@@ -109,21 +109,13 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         
     }
     
-    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-        let cell  = tableView.cellForRow(at: indexPath)
-        cell!.contentView.backgroundColor = .red
-    }
-    
-    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-        let cell  = tableView.cellForRow(at: indexPath)
-        cell!.contentView.backgroundColor = .clear
-    }
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         print(indexPath)
-        guard let cell = tableView.cellForRow(at: indexPath) as? placeCell else { return }
+        guard let cell = placeLineTable.cellForRow(at: indexPath) as? placeCell else { return }
+        placeLineTable.scrollToRow(at: indexPath, at: .middle, animated: true)
+
         cell.select()
         
     }
