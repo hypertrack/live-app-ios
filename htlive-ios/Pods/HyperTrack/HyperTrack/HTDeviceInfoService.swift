@@ -120,19 +120,21 @@ class HTDeviceInfoService: NSObject {
         } else {
             print("Location services are not enabled")
         }
+        if(Transmitter.sharedInstance.getUserId() != nil){
+            let event = HyperTrackEvent(
+                userId:Transmitter.sharedInstance.getUserId()!,
+                recordedAt:Date(),
+                eventType:"device.location_config.changed",
+                location:nil,
+                data : ["enabled":isEnabled,
+                        "permission":isPermissionAccepted,
+                        "mock_enabled" : false
+                ]
+            )
+            event.save()
+            requestManager.postEvents(flush:true)
+        }
         
-        let event = HyperTrackEvent(
-            userId:Transmitter.sharedInstance.getUserId()!,
-            recordedAt:Date(),
-            eventType:"device.location_config.changed",
-            location:nil,
-            data : ["enabled":isEnabled,
-                    "permission":isPermissionAccepted,
-                    "mock_enabled" : false
-            ]
-        )
-        event.save()
-        requestManager.postEvents(flush:true)
     }
     
     func locationConfigDidChange(_ notification: Notification) {

@@ -13,6 +13,12 @@ PODS:
   - JustLog (1.2.0):
     - CocoaAsyncSocket (~> 7.5.0)
     - SwiftyBeaver (~> 1.1.1)
+  - PhoneNumberKit (1.2.3):
+    - PhoneNumberKit/PhoneNumberKitCore (= 1.2.3)
+    - PhoneNumberKit/UIKit (= 1.2.3)
+  - PhoneNumberKit/PhoneNumberKitCore (1.2.3)
+  - PhoneNumberKit/UIKit (1.2.3):
+    - PhoneNumberKit/PhoneNumberKitCore
   - SQLite.swift (0.11.2):
     - SQLite.swift/standard (= 0.11.2)
   - SQLite.swift/standard (0.11.2)
@@ -21,6 +27,7 @@ PODS:
 DEPENDENCIES:
   - FSCalendar
   - HyperTrack
+  - PhoneNumberKit (~> 1.2)
 
 SPEC CHECKSUMS:
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
@@ -29,9 +36,10 @@ SPEC CHECKSUMS:
   GzipSwift: 11ddb2bf253b1cd7b60bb169da20f62ac4348769
   HyperTrack: 8d85057cbc6264f4043cd2663fd9c140ad54ea0d
   JustLog: 035ff2d06efd8cae26aeaf05cb2471f03ee866bb
+  PhoneNumberKit: 1e5cca669113fc361a8c82ec1ee559c62b8cd0f7
   SQLite.swift: 670c3e9e0a806bbfd56a3de5d530768dc0e6fe7c
   SwiftyBeaver: 9216b6e163c145628ccc7c0126df4287880d6e1e
 
-PODFILE CHECKSUM: 6170c1db17539e44616cd9d6062b1c9d76c0585c
+PODFILE CHECKSUM: 3d1b7355284f8e44b9890286e271c21b6b760420
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.3.0.beta.2
