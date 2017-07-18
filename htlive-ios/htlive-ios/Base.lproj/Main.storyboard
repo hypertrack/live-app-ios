@@ -285,6 +285,8 @@
                         <outlet property="bottomConstraint" destination="nof-bc-aoB" id="7tQ-ay-Tg5"/>
                         <outlet property="nameTextField" destination="21M-K4-XYS" id="Flt-cu-Vkc"/>
                         <outlet property="phoneNumberTextField" destination="Caw-s0-YlH" id="YdV-rh-50H"/>
+                        <outlet property="photoImage" destination="4oL-Tn-VIN" id="Ct6-eG-6at"/>
+                        <outlet property="topConstraint" destination="Ctp-jh-vKT" id="jIo-Sb-33c"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="showPlaceline" id="px2-sY-MMA"/>
                     </connections>
                 </viewController>

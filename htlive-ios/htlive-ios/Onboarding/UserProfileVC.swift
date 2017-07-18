@@ -14,12 +14,17 @@ import MBProgressHUD
 class UserProfileVC: UIViewController, UITextFieldDelegate {
     
     var onboardingViewDelegate:OnboardingViewDelegate? = nil
+
     let phoneNumberKit = PhoneNumberKit()
     
     @IBOutlet weak var nameTextField: CustomTextField!
     @IBOutlet weak var phoneNumberTextField: CustomPhoneTextField!
+    @IBOutlet weak var photoImage: UIImageView!
+    
+    let picker = UIImagePickerController()
     
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var topConstraint: NSLayoutConstraint!
 
     @IBAction func saveProfile(_ sender: Any) {
         getOrCreateHyperTrackUser()
@@ -46,9 +51,13 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
                                                selector: #selector(keyboardWillHide(notification:)),
                                                name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
+        // Text editing dismiss gesture
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self,
                                                                  action: #selector(UserProfileVC.dismissKeyboard))
         view.addGestureRecognizer(tap)
+        
+        // Image tap gesture
+        setImageDelegate()
     }
     
     func dismissKeyboard() {
@@ -59,6 +68,7 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
     func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             bottomConstraint.constant = keyboardSize.height + 10
+            topConstraint.constant = topConstraint.constant - keyboardSize.height - 10
             
             UIView.animate(withDuration: 0.5) {
                 self.view.layoutIfNeeded()
@@ -68,6 +78,7 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
     
     func keyboardWillHide(notification: NSNotification) {
         bottomConstraint.constant = 20
+        topConstraint.constant = 60
         
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
@@ -167,3 +178,65 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
     }
 }
 
+extension UserProfileVC : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func setImageDelegate() {
+        let imageTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self,
+                                                                      action: #selector(UserProfileVC.pickImage))
+        photoImage.addGestureRecognizer(imageTap)
+        picker.delegate = self
+        
+        photoImage.image = UIImage(named: "profile-1")?.withRenderingMode(.alwaysTemplate)
+        photoImage.tintColor = .white
+    }
+    
+    func pickImage() {
+        let actionSheetController: UIAlertController = UIAlertController(title: "Add a photo", message: "Where do you want your photo from?", preferredStyle: .actionSheet)
+        
+        let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            //
+        }
+        actionSheetController.addAction(cancelActionButton)
+        
+        let cameraActionButton = UIAlertAction(title: "From camera", style: .default)
+        { _ in
+            self.pickFromCamera()
+        }
+        actionSheetController.addAction(cameraActionButton)
+        
+        let libraryActionButton = UIAlertAction(title: "From library", style: .default)
+        { _ in
+            self.pickFromLibrary()
+        }
+        actionSheetController.addAction(libraryActionButton)
+        self.present(actionSheetController, animated: true, completion: nil)
+    }
+    
+    func pickFromCamera() {
+        picker.allowsEditing = true
+        picker.sourceType = .camera
+        picker.cameraCaptureMode = .photo
+        picker.modalPresentationStyle = .fullScreen
+        present(picker, animated: true, completion: nil)
+    }
+    
+    func pickFromLibrary() {
+        picker.allowsEditing = true
+        picker.sourceType = .photoLibrary
+        picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
+        present(picker, animated: true, completion: nil)
+    }
+    
+    //MARK: - Delegates
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [String : AnyObject])
+    {
+        let chosenImage = info[UIImagePickerControllerEditedImage] as! UIImage
+        photoImage.contentMode = .scaleAspectFit
+        photoImage.image = chosenImage
+        dismiss(animated:true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+}
