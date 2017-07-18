@@ -12,6 +12,8 @@ import PhoneNumberKit
 
 class UserProfileVC: UIViewController, UITextFieldDelegate {
     
+    var onboardingViewDelegate:OnboardingViewDelegate? = nil
+    
     @IBOutlet weak var nameTextField: CustomTextField!
     @IBOutlet weak var phoneNumberTextField: CustomPhoneTextField!
     
@@ -41,7 +43,8 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
                                                selector: #selector(keyboardWillHide(notification:)),
                                                name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self,
+                                                                 action: #selector(UserProfileVC.dismissKeyboard))
         view.addGestureRecognizer(tap)
     }
     
@@ -76,7 +79,7 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
             // The phone number text field has a tag of 1 in the storyboard
             if let country = (Locale.current as NSLocale).object(forKey: .countryCode) as? String {
                 let phoneNumberKit = PhoneNumberKit()
-                let countryCode = phoneNumberKit.countryCode(for: country) as! UInt64
+                let countryCode = phoneNumberKit.countryCode(for: country)!
                 phoneNumberTextField.text = "+\(countryCode) "
             }
         }

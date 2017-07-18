@@ -10,6 +10,8 @@ import UIKit
 
 class BaseFlowController: NSObject {
     
+    var interactorDelegate: HyperTrackFlowInteractorDelegate? = nil
+    
     func isFlowCompleted() -> Bool {
         return true
     }
