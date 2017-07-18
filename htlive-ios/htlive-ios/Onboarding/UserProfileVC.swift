@@ -13,6 +13,7 @@ import PhoneNumberKit
 class UserProfileVC: UIViewController, UITextFieldDelegate {
     
     var onboardingViewDelegate:OnboardingViewDelegate? = nil
+    let phoneNumberKit = PhoneNumberKit()
     
     @IBOutlet weak var nameTextField: CustomTextField!
     @IBOutlet weak var phoneNumberTextField: CustomPhoneTextField!
@@ -23,10 +24,25 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
         // TODO: check for empty name and validate phone
         // before creating the user. Phone number must have
         // country code.
+        let phoneNumber = phoneNumberTextField.text ?? ""
+        
+        if (phoneNumber != "") {
+            do {
+                _ = try phoneNumberKit.parse(phoneNumber)
+            }
+            catch {
+                alertError(msg: "Please enter a valid phone number")
+                return
+            }
+        }
+        
         getOrCreateHyperTrackUser()
     }
 
     @IBAction func skipProfile(_ sender: Any) {
+        // TODO: This should also getOrCreateUser if we don't have
+        // a saved user id.
+        
         self.performSegue(withIdentifier: "showPlaceline", sender: self)
     }
 
@@ -78,7 +94,6 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
         if (textField.tag == 1) {
             // The phone number text field has a tag of 1 in the storyboard
             if let country = (Locale.current as NSLocale).object(forKey: .countryCode) as? String {
-                let phoneNumberKit = PhoneNumberKit()
                 let countryCode = phoneNumberKit.countryCode(for: country)!
                 phoneNumberTextField.text = "+\(countryCode) "
             }
@@ -90,6 +105,13 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    func alertError(msg: String) {
+        let alert = UIAlertController(title: "Error", message: msg, preferredStyle: .alert)
+        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(defaultAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     func getOrCreateHyperTrackUser() {
         let name = nameTextField.text ?? ""
         let phone = phoneNumberTextField.text ?? ""
@@ -97,8 +119,7 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
         HyperTrack.getOrCreateUser(name, _phone: phone, phone) { (user, error) in
             if (error != nil) {
                 // Handle error on get or create user
-                let alert = UIAlertController(title: "Error", message: error?.type.rawValue, preferredStyle: .alert)
-                self.present(alert, animated: true, completion: nil)
+                self.alertError(msg: (error?.type.rawValue)!)
                 return
             }
             
@@ -108,6 +129,10 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
                 if (phone != "") {
                     // If phone was given, send verification code
                     self.sendVerificationCode()
+                } else {
+                    // So user was created but since there was no phone
+                    // number, just go to the placeline screen
+                    self.onboardingViewDelegate?.didSkipProfile()
                 }
             }
         }
@@ -118,9 +143,14 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
         requestService.resendHyperTrackCode(completionHandler: { (error) in
             if (error != nil) {
                 // Handle error
+                
             } else {
                 // This means the verification text was sent successfully
                 // Move to the verification code view.
+                let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+                let verifyController = storyboard.instantiateViewController(withIdentifier: "ValidateCodeVC") as! ValidateCodeVC
+                verifyController.onboardingViewDelegate = self.onboardingViewDelegate
+                self.present(verifyController, animated: true, completion: nil)
             }
         })
     }

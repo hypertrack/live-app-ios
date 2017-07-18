@@ -15,7 +15,7 @@ class RequestService {
     
     let baseUrl = "https://api.hypertrack.com/api/v1/"
     
-    func makeHyperTrackRequest(urlSuffix:String, body:[String:Any], completionHandler: @escaping (_ error: HyperTrackError?) -> Void) {
+    func makeHyperTrackRequest(urlSuffix:String, body:[String:Any], completionHandler: @escaping (_ error: Error?) -> Void) {
         guard let userId = HyperTrack.getUserId() else {
             // TODO: handle no user id
             return
@@ -32,19 +32,18 @@ class RequestService {
         Alamofire.request(url, method: .post, parameters: body, encoding: JSONEncoding.default, headers: headers).validate().responseJSON { response in
             switch response.result {
             case .success:
-                print("Validation Successful")
+                completionHandler(nil)
             case .failure(let error):
-                print(error)
-                print(String(data: response.data!, encoding: .utf8))
+                completionHandler(error)
             }
         }
     }
     
-    func resendHyperTrackCode(completionHandler: @escaping (_ error: HyperTrackError?) -> Void) {
+    func resendHyperTrackCode(completionHandler: @escaping (_ error: Error?) -> Void) {
         makeHyperTrackRequest(urlSuffix: "send_verification", body: [:], completionHandler: completionHandler)
     }
     
-    func validateHyperTrackCode(code: String, completionHandler: @escaping (_ error: HyperTrackError?) -> Void) {
+    func validateHyperTrackCode(code: String, completionHandler: @escaping (_ error: Error?) -> Void) {
         let body = ["verification_code": code]
         makeHyperTrackRequest(urlSuffix: "validate_code", body: body, completionHandler: completionHandler)
     }

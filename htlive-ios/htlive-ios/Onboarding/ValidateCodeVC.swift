@@ -10,7 +10,9 @@ import Foundation
 import HyperTrack
 
 class ValidateCodeVC: UIViewController {
+    
     let requestService = RequestService.shared
+    var onboardingViewDelegate:OnboardingViewDelegate? = nil
     
     @IBOutlet weak var verificationCode: UITextField!
     
@@ -26,6 +28,7 @@ class ValidateCodeVC: UIViewController {
                 } else {
                     // Verification code was validated.
                     // Move to the home/placeline screen
+                    self.onboardingViewDelegate?.didValidateCode()
                 }
             })
         } else {

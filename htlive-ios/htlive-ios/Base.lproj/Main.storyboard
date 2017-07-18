@@ -154,7 +154,7 @@
         <!--User ProfileVC-->
         <scene sceneID="mUt-40-0ml">
             <objects>
-                <viewController id="Osr-Xm-A97" customClass="UserProfileVC" customModule="htlive_ios" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="UserProfileVC" id="Osr-Xm-A97" customClass="UserProfileVC" customModule="htlive_ios" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6el-5O-Kkh"/>
                         <viewControllerLayoutGuide type="bottom" id="G6a-xw-A1D"/>
@@ -295,7 +295,7 @@
         <!--Validate CodeVC-->
         <scene sceneID="shf-rA-8Hj">
             <objects>
-                <viewController id="rUK-u6-MtQ" customClass="ValidateCodeVC" customModule="htlive_ios" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ValidateCodeVC" id="rUK-u6-MtQ" customClass="ValidateCodeVC" customModule="htlive_ios" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="GyO-Ng-Uha"/>
                         <viewControllerLayoutGuide type="bottom" id="K9B-TF-rKb"/>
