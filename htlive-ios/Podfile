@@ -12,6 +12,7 @@ target 'htlive-ios' do
 
   hypertrack_pods
   pod 'FSCalendar'
+  pod 'PhoneNumberKit', '~> 1.2'
   pod 'MBProgressHUD'
 
 end

@@ -13,8 +13,6 @@ class HyperTrackAppService: NSObject {
     
     let flowInteractor = HyperTrackFlowInteractor()
     static let sharedInstance = HyperTrackAppService()
-    
-    static fileprivate let prefix = "www."
 
     
     func applicationDidFinishLaunchingWithOptions(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -33,26 +31,22 @@ class HyperTrackAppService: NSObject {
     }
     
     func applicationContinue (userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
-     // handle deeplink here and ask flow interactor to start flows which are needed        
-        if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
-            let url =  userActivity.webpageURL as NSURL?
-            if let lastPathComponent = url?.lastPathComponent{
-                flowInteractor.presentLiveLocationFlow(shortCode: lastPathComponent)
-            }
-        }
+     // handle deeplink here and ask flow interactor to start flows which are needed
+        
+        
         return true
     }
     
     func setUpSDKs(){
-        BuddyBuildSDK.setup()
-        setUpHyperTrack()
+        setupHyperTrack()
+        setupBuddyBuild()
     }
-    
-    func setUpHyperTrack(){
+
+    func setupHyperTrack() {
         HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
-        HyperTrack.setUserId("27515522-2541-4deb-ae27-9b8f4587310e")
-        HyperTrack.requestAlwaysAuthorization()
-        HyperTrack.requestMotionAuthorization()
     }
     
+    func setupBuddyBuild() {
+        BuddyBuildSDK.setup()
+    }
 }

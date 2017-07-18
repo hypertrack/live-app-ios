@@ -44,21 +44,21 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <imageView userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="driving" translatesAutoresizingMaskIntoConstraints="NO" id="sQA-Gm-3Uq">
-                            <rect key="frame" x="101" y="18" width="32" height="32"/>
+                        <imageView userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="driving" translatesAutoresizingMaskIntoConstraints="NO" id="sQA-Gm-3Uq">
+                            <rect key="frame" x="96" y="22" width="32" height="24"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="32" id="p7Y-9N-ssi"/>
-                                <constraint firstAttribute="height" constant="32" id="rds-wJ-bYd"/>
+                                <constraint firstAttribute="height" constant="24" id="rds-wJ-bYd"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Driving" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fbI-sz-ad2">
-                            <rect key="frame" x="148" y="14" width="211" height="21"/>
+                            <rect key="frame" x="143" y="14" width="216" height="21"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NgB-6V-DrW">
-                            <rect key="frame" x="149" y="40" width="210" height="15"/>
+                            <rect key="frame" x="144" y="40" width="215" height="15"/>
                             <string key="text">30 min  |  12 Miles  |  3 events
 </string>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -81,7 +81,7 @@
                         <constraint firstAttribute="bottom" secondItem="iRb-qK-vUp" secondAttribute="bottom" id="Tom-G8-2yl"/>
                         <constraint firstItem="NgB-6V-DrW" firstAttribute="leading" secondItem="fbI-sz-ad2" secondAttribute="leading" constant="1" id="U4b-Ve-jKK"/>
                         <constraint firstItem="1xA-Ye-79X" firstAttribute="centerX" secondItem="6Q3-Ff-nyO" secondAttribute="centerX" id="Uh5-yp-Sjb"/>
-                        <constraint firstItem="sQA-Gm-3Uq" firstAttribute="leading" secondItem="iRb-qK-vUp" secondAttribute="trailing" constant="20" id="WHW-Ky-TNu"/>
+                        <constraint firstItem="sQA-Gm-3Uq" firstAttribute="leading" secondItem="iRb-qK-vUp" secondAttribute="trailing" constant="15" id="WHW-Ky-TNu"/>
                         <constraint firstItem="bM8-D9-XDu" firstAttribute="leading" secondItem="nIT-s6-beJ" secondAttribute="leading" id="dql-Xt-oj0"/>
                         <constraint firstItem="iRb-qK-vUp" firstAttribute="leading" secondItem="bM8-D9-XDu" secondAttribute="trailing" id="l5y-Ac-Q5d"/>
                         <constraint firstItem="1xA-Ye-79X" firstAttribute="top" secondItem="bM8-D9-XDu" secondAttribute="bottom" constant="10" id="tIw-PE-K7T"/>
@@ -122,6 +122,8 @@
             <connections>
                 <outlet property="activityIcon" destination="sQA-Gm-3Uq" id="N7P-FH-TId"/>
                 <outlet property="endTime" destination="1xA-Ye-79X" id="DME-fx-iBj"/>
+                <outlet property="icon" destination="sQA-Gm-3Uq" id="A6b-yt-cEs"/>
+                <outlet property="placeCard" destination="nIT-s6-beJ" id="l0R-8e-hwP"/>
                 <outlet property="startTime" destination="6Q3-Ff-nyO" id="YUg-mo-n4h"/>
                 <outlet property="stats" destination="NgB-6V-DrW" id="OaG-1Q-UXl"/>
                 <outlet property="status" destination="fbI-sz-ad2" id="390-PH-LWP"/>

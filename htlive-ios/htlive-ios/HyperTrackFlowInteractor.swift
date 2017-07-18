@@ -8,7 +8,13 @@
 
 import UIKit
 
-class HyperTrackFlowInteractor: NSObject {
+protocol HyperTrackFlowInteractorDelegate {
+    func haveStartedFlow(sender: BaseFlowController)
+    
+    func haveFinishedFlow(sender: BaseFlowController)
+}
+
+class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
     
     let onboardingFlowController = OnboardingFlowController()
     let permissionFlowController = PermissionsFlowController()
@@ -20,14 +26,17 @@ class HyperTrackFlowInteractor: NSObject {
         super.init()
         initializeFlows()
     }
-   
     
     func initializeFlows(){
-        flows.append(onboardingFlowController)
-        flows.append(permissionFlowController)
-        flows.append(inviteFlowController)
+        appendController(onboardingFlowController)
+        appendController(permissionFlowController)
+        appendController(inviteFlowController)
     }
-
+    
+    func appendController(_ controller: BaseFlowController) {
+        controller.interactorDelegate = self
+        flows.append(controller)
+    }
     
     func presentFlowsIfNeeded(){
         for flowController in flows{
@@ -36,8 +45,6 @@ class HyperTrackFlowInteractor: NSObject {
             }
         }
     }
-    
-    
     
     func topViewController() -> UIViewController? {
         var top = UIApplication.shared.keyWindow?.rootViewController
@@ -58,19 +65,24 @@ class HyperTrackFlowInteractor: NSObject {
     
     func showAcceptInviteFlow(){
         
-        
     }
-    
     
     func presentDeeplinkFlow(){
         
     }
     
-    func presentLiveLocationFlow(shortCode : String){
+   func presentLiveLocationFlow(shortCode : String){
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         let liveLocationController = storyboard.instantiateViewController(withIdentifier: "ShareVC") as! ShareVC
         liveLocationController.shortCode = shortCode
         topViewController()?.present(liveLocationController, animated:true, completion: nil)
     }
+    
+    func haveStartedFlow(sender: BaseFlowController) {
+        //
+    }
 
+    func haveFinishedFlow(sender: BaseFlowController) {
+        //
+    }
 }

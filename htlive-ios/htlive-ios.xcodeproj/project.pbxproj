@@ -17,13 +17,15 @@
 		33334B941F0B740A001A970E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33334B931F0B740A001A970E /* Assets.xcassets */; };
 		33334B971F0B740A001A970E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 33334B951F0B740A001A970E /* LaunchScreen.storyboard */; };
 		33334BA01F0B87A9001A970E /* ShareVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334B9F1F0B87A9001A970E /* ShareVC.swift */; };
-		33334BA21F0B87BD001A970E /* OnboardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334BA11F0B87BD001A970E /* OnboardVC.swift */; };
 		33334BA61F0BA399001A970E /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334BA51F0BA399001A970E /* UIViewExtension.swift */; };
 		33334BA91F0BA425001A970E /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334BA81F0BA425001A970E /* TextField.swift */; };
 		3354C1CC1F14DAE50011506D /* placeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3354C1CB1F14DAE50011506D /* placeCell.xib */; };
 		3354C1CE1F14EB820011506D /* placeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3354C1CD1F14EB820011506D /* placeCell.swift */; };
 		3BB04555AF6CF8533DD7E47A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F29BB026EF4C014377323EA /* QuartzCore.framework */; };
 		4A9EC7183BF7416C507967D3 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E6015A432434BE00CB7D490 /* CoreVideo.framework */; };
+		4BB596281F1CA10E00B2D830 /* RequestPermissionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB596271F1CA10E00B2D830 /* RequestPermissionsVC.swift */; };
+		4BB5962A1F1CA19D00B2D830 /* UserProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB596291F1CA19D00B2D830 /* UserProfileVC.swift */; };
+		4BB5962F1F1CA25000B2D830 /* AcceptInviteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB5962E1F1CA25000B2D830 /* AcceptInviteVC.swift */; };
 		6C0CCE1DCCAAE4E4B15AA5E5 /* Pods_htlive_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA1FE93D3C7A407B321E103 /* Pods_htlive_ios.framework */; };
 		709F5A4A4D1A2C4D62D67D7A /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B04F8C25B273501623851B5 /* CoreMedia.framework */; };
 		7214AC794737FD3C0D2555C4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6879260750573A1BEF59E3DE /* SystemConfiguration.framework */; };
@@ -43,6 +45,8 @@
 		BBF7B3EE1F19972C00DA355C /* BaseFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7B3ED1F19972C00DA355C /* BaseFlowController.swift */; };
 		BBF7B3F11F1997C800DA355C /* HyperTrackAppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7B3F01F1997C800DA355C /* HyperTrackAppService.swift */; };
 		D79B41D1ADF2C7B3098EF4B8 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B923850CA9BCCA7AFAFE6B5C /* AssetsLibrary.framework */; };
+		DCA77CFD1F1D601C003C0BEC /* ValidateCodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA77CFC1F1D601C003C0BEC /* ValidateCodeVC.swift */; };
+		DCA77CFF1F1D78D1003C0BEC /* RequestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA77CFE1F1D78D1003C0BEC /* RequestService.swift */; };
 		DD53C9764BA003663FEC2B91 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE69D06DE0D45E789542761 /* CoreText.framework */; };
 /* End PBXBuildFile section */
 
@@ -59,12 +63,14 @@
 		33334B961F0B740A001A970E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		33334B981F0B740A001A970E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		33334B9F1F0B87A9001A970E /* ShareVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareVC.swift; sourceTree = "<group>"; };
-		33334BA11F0B87BD001A970E /* OnboardVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardVC.swift; sourceTree = "<group>"; };
 		33334BA51F0BA399001A970E /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		33334BA81F0BA425001A970E /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		3354C1CB1F14DAE50011506D /* placeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = placeCell.xib; sourceTree = "<group>"; };
 		3354C1CD1F14EB820011506D /* placeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = placeCell.swift; sourceTree = "<group>"; };
 		460AC2866063016417D72344 /* Pods-htlive-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		4BB596271F1CA10E00B2D830 /* RequestPermissionsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RequestPermissionsVC.swift; path = Permissions/RequestPermissionsVC.swift; sourceTree = "<group>"; };
+		4BB596291F1CA19D00B2D830 /* UserProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserProfileVC.swift; path = Onboarding/UserProfileVC.swift; sourceTree = "<group>"; };
+		4BB5962E1F1CA25000B2D830 /* AcceptInviteVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AcceptInviteVC.swift; path = AcceptInvite/AcceptInviteVC.swift; sourceTree = "<group>"; };
 		4E6015A432434BE00CB7D490 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		60060C7769DD795A2A0823B6 /* Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		62C72BCF7451040D64AFF2A1 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -88,6 +94,8 @@
 		BBF7B3EB1F19972000DA355C /* InviteFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InviteFlowController.swift; sourceTree = "<group>"; };
 		BBF7B3ED1F19972C00DA355C /* BaseFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseFlowController.swift; sourceTree = "<group>"; };
 		BBF7B3F01F1997C800DA355C /* HyperTrackAppService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HyperTrackAppService.swift; sourceTree = "<group>"; };
+		DCA77CFC1F1D601C003C0BEC /* ValidateCodeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ValidateCodeVC.swift; path = Onboarding/ValidateCodeVC.swift; sourceTree = "<group>"; };
+		DCA77CFE1F1D78D1003C0BEC /* RequestService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestService.swift; sourceTree = "<group>"; };
 		FD47E529E549A1731A714D6D /* BuddyBuildSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BuddyBuildSDK.framework; sourceTree = "<group>"; };
 		FF9906AA2CE583E93780D301 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -137,6 +145,8 @@
 			isa = PBXGroup;
 			children = (
 				BB7D298C1F1D68FF00E72DCF /* Utility */,
+				4BB5962D1F1CA23800B2D830 /* AcceptInvite */,
+				4BB596241F1CA0CD00B2D830 /* Permissions */,
 				BBF7B3EF1F1997B900DA355C /* Service */,
 				BBF7B3EA1F1996F400DA355C /* FlowController */,
 				33334B931F0B740A001A970E /* Assets.xcassets */,
@@ -168,7 +178,8 @@
 		33334BA31F0B87C3001A970E /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				33334BA11F0B87BD001A970E /* OnboardVC.swift */,
+				4BB596291F1CA19D00B2D830 /* UserProfileVC.swift */,
+				DCA77CFC1F1D601C003C0BEC /* ValidateCodeVC.swift */,
 			);
 			name = Onboarding;
 			sourceTree = "<group>";
@@ -203,6 +214,20 @@
 				BB7D29951F1D690D00E72DCF /* UIView+Extension.swift */,
 			);
 			name = Utility;
+		4BB596241F1CA0CD00B2D830 /* Permissions */ = {
+			isa = PBXGroup;
+			children = (
+				4BB596271F1CA10E00B2D830 /* RequestPermissionsVC.swift */,
+			);
+			name = Permissions;
+			sourceTree = "<group>";
+		};
+		4BB5962D1F1CA23800B2D830 /* AcceptInvite */ = {
+			isa = PBXGroup;
+			children = (
+				4BB5962E1F1CA25000B2D830 /* AcceptInviteVC.swift */,
+			);
+			name = AcceptInvite;
 			sourceTree = "<group>";
 		};
 		BBF7B3EA1F1996F400DA355C /* FlowController */ = {
@@ -220,6 +245,7 @@
 			isa = PBXGroup;
 			children = (
 				BBF7B3F01F1997C800DA355C /* HyperTrackAppService.swift */,
+				DCA77CFE1F1D78D1003C0BEC /* RequestService.swift */,
 			);
 			name = Service;
 			sourceTree = "<group>";
@@ -384,6 +410,7 @@
 				"${BUILT_PRODUCTS_DIR}/HyperTrack.local/HyperTrack.framework",
 				"${BUILT_PRODUCTS_DIR}/JustLog/JustLog.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/PhoneNumberKit/PhoneNumberKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
 			);
@@ -396,6 +423,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HyperTrack.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JustLog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PhoneNumberKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
 			);
@@ -413,7 +441,10 @@
 			files = (
 				33334BA61F0BA399001A970E /* UIViewExtension.swift in Sources */,
 				33334BA01F0B87A9001A970E /* ShareVC.swift in Sources */,
+				DCA77CFF1F1D78D1003C0BEC /* RequestService.swift in Sources */,
 				BBF7B3EC1F19972000DA355C /* InviteFlowController.swift in Sources */,
+				4BB596281F1CA10E00B2D830 /* RequestPermissionsVC.swift in Sources */,
+				4BB5962F1F1CA25000B2D830 /* AcceptInviteVC.swift in Sources */,
 				33334B8C1F0B740A001A970E /* ViewController.swift in Sources */,
 				BBF7B3E51F1996A600DA355C /* HyperTrackFlowInteractor.swift in Sources */,
 				BB7D29981F1D690D00E72DCF /* MKMapView+Extension.swift in Sources */,
@@ -422,6 +453,8 @@
 				33334BA91F0BA425001A970E /* TextField.swift in Sources */,
 				33334BA21F0B87BD001A970E /* OnboardVC.swift in Sources */,
 				BB7D29991F1D690D00E72DCF /* NSData+Extension.swift in Sources */,
+				4BB5962A1F1CA19D00B2D830 /* UserProfileVC.swift in Sources */,
+				DCA77CFD1F1D601C003C0BEC /* ValidateCodeVC.swift in Sources */,
 				33334B921F0B740A001A970E /* htlive_ios.xcdatamodeld in Sources */,
 				3354C1CE1F14EB820011506D /* placeCell.swift in Sources */,
 				3313D3A41F18D41F00BDF8E0 /* Date.swift in Sources */,
@@ -559,6 +592,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "htlive-ios/htlive-ios.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = H4925W78YQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -570,6 +604,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "io.hypertrack.SendETA-iPhone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
@@ -582,17 +617,20 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "htlive-ios/htlive-ios.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = H4925W78YQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "htlive-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.hypertrack.SendETA-iPhone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
