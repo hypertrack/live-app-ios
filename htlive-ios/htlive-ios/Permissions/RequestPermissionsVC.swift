@@ -8,6 +8,7 @@
 
 import Foundation
 import HyperTrack
+import CoreLocation
 
 class RequestPermissionsVC : UIViewController {
     
@@ -17,8 +18,21 @@ class RequestPermissionsVC : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+        self.requestLocationDescriptionLabel.isHidden = true
+        self.enableLocationCTAButton.isHidden = true
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         self.radiate()
-        // Do any additional setup after loading the view.
+        
+        if (HyperTrack.locationServicesEnabled() && HyperTrack.locationAuthorizationStatus() == .authorizedAlways) {
+            self.proceedToNextScreen()
+            return
+        }
+        
+        self.requestLocationDescriptionLabel.isHidden = false
+        self.enableLocationCTAButton.isHidden = false
     }
     
     override func didReceiveMemoryWarning() {
@@ -32,31 +46,39 @@ class RequestPermissionsVC : UIViewController {
         self.checkForLocationSettings()
     }
     
-    private func checkForLocationSettings() {
+    func checkForLocationSettings() {
+        // Check if Location Services are enabled
+        if (!HyperTrack.locationServicesEnabled()) {
+            HyperTrack.requestLocationServices()
+            return
+        }
+        
+        // Request Motion Authorization Status
+        HyperTrack.requestMotionAuthorization()
+        
         // Check for Location Authorization Status (Always by default)
         if (HyperTrack.locationAuthorizationStatus() != .authorizedAlways) {
             HyperTrack.requestAlwaysAuthorization()
-            return
         }
         
-        // TODO Add motionAuthorizationStatus() API in HyperTrack SDK
-        
-        // Check for Motion Authorization Status
-        // if (HyperTrack.motionAuthorizationStatus()) {
-        //    HyperTrack.requestMotionAuthorization()
-        //    return
-        // }
-        
-        // Check if Location Services are enabled
-        if (HyperTrack.locationServicesEnabled()) {
-            // TODO Add API to requestLocationServices in HyperTrack SDK
-            return
-        }
-        
-        // TODO Proceed further if all required settings are enabled
+        self.proceedToNextScreen()
     }
     
-    func radiate() {
+    private func proceedToNextScreen() {
+        // Proceed further depending on if the user is signed up or not
+        if (HyperTrack.getUserId() != nil) {
+            let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+            let placelineController = storyboard.instantiateViewController(withIdentifier: "PlacelineVC") as! ViewController
+            self.present(placelineController, animated: true, completion: nil)
+            
+        } else {
+            let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+            let profileController = storyboard.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
+            self.present(profileController, animated: true, completion: nil)
+        }
+    }
+    
+    private func radiate() {
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(0), execute: {
             
             UIView.animate(withDuration: 2, delay: 0, options: [.repeat], animations: {

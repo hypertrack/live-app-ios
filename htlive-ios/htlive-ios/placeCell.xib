@@ -123,6 +123,7 @@
                 <outlet property="activityIcon" destination="sQA-Gm-3Uq" id="N7P-FH-TId"/>
                 <outlet property="endTime" destination="1xA-Ye-79X" id="DME-fx-iBj"/>
                 <outlet property="icon" destination="sQA-Gm-3Uq" id="A6b-yt-cEs"/>
+                <outlet property="placeCard" destination="nIT-s6-beJ" id="l0R-8e-hwP"/>
                 <outlet property="startTime" destination="6Q3-Ff-nyO" id="YUg-mo-n4h"/>
                 <outlet property="stats" destination="NgB-6V-DrW" id="OaG-1Q-UXl"/>
                 <outlet property="status" destination="fbI-sz-ad2" id="390-PH-LWP"/>

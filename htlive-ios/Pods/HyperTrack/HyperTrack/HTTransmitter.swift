@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import MapKit
+import CoreMotion
 
 final class Transmitter {
     static let sharedInstance = Transmitter()
@@ -456,6 +457,20 @@ final class Transmitter {
     
     func requestAlwaysAuthorization() {
         self.locationManager.requestAlwaysAuthorization()
+    }
+    
+    func motionAuthorizationStatus(_ completionHandler: @escaping (_ isAuthorized: Bool) -> Void) {
+        let coreMotionActivityManager = CMMotionActivityManager()
+        let today: Date = Date()
+        
+        coreMotionActivityManager.queryActivityStarting(
+            from: today, to: today, to: OperationQueue.main) { (activities, error) in
+                if (error != nil) {
+                    completionHandler(false)
+                } else {
+                    completionHandler(true)
+                }
+        }
     }
     
     func requestMotionAuthorization() {

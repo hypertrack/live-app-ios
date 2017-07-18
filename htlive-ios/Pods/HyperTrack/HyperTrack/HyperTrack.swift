@@ -8,6 +8,7 @@
 
 import Foundation
 import MapKit
+import CoreMotion
 
 /**
  HyperTrack is the easiest way to build live location features in your application. The SDK is built to collect accurate location data with battery efficiency. The SDK has methods to start and stop tracking, and implement use-cases like order tracking, mileage tracking. For more information, visit http://docs.hypertrack.com
@@ -367,6 +368,21 @@ import MapKit
     }
     
     /**
+     Call this method to check Motion Activity Authorization status.
+     
+     - Parameter completionHandler: The completion handler which is called with a 
+     Bool indicating whether motion activity is authorized or not.
+     */
+    @objc public class func motionAuthorizationStatus(completionHandler: @escaping (_ isAuthorized: Bool) -> Void) {
+        if (CMMotionActivityManager.isActivityAvailable() == false) {
+            completionHandler(true)
+            return
+        }
+        
+        Transmitter.sharedInstance.motionAuthorizationStatus(completionHandler)
+    }
+    
+    /**
      Call this method to request the motion permission.
      */
     @objc public class func requestMotionAuthorization() {
@@ -378,6 +394,28 @@ import MapKit
      */
     @objc public class func locationServicesEnabled() -> Bool {
         return CLLocationManager.locationServicesEnabled()
+    }
+    
+    /**
+     Call this method to request the motion permission.
+     */
+    @objc public class func requestLocationServices() {
+        guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+            return
+        }
+        
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                    HTLogger.shared.info("Location Services settings opened for user to enable it.")
+                })
+            } else {
+                if let url = URL(string: "App-Prefs:root=Privacy&path=LOCATION") {
+                    // If general location settings are disabled then open general location settings
+                    UIApplication.shared.openURL(url)
+                }
+            }
+        }
     }
     
     /**

@@ -20,6 +20,8 @@ class placeCell : UITableViewCell {
     
     @IBOutlet weak var icon: UIImageView!
     
+    @IBOutlet weak var placeCard: UIView!
+    
     func loading() {
         
         self.startTime.text = "- : -"
@@ -50,6 +52,23 @@ class placeCell : UITableViewCell {
         
         self.addSubview(refresher)
         
+    }
+    
+    func select() {
+        UIView.transition(with: placeCard, duration: 0.2, options: .transitionCrossDissolve, animations: {
+            self.placeCard.borderColor = pink
+            self.placeCard.borderWidth = 2
+        }, completion: nil)
+        
+    
+    }
+    
+    func deselect() {
+        
+        UIView.transition(with: placeCard, duration: 0.2, options: .transitionCrossDissolve, animations: {
+        self.placeCard.borderWidth = 1
+        self.placeCard.borderColor = UIColor.black.withAlphaComponent(0.05)
+        }, completion: nil)
     }
     
     func setStats(activity : HyperTrackActivity) {

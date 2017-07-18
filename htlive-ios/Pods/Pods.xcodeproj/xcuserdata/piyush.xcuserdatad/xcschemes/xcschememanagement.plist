@@ -6,68 +6,63 @@
 	<dict>
 		<key>Alamofire.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>1</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>CocoaAsyncSocket.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>2</integer>
-		</dict>
-		<key>CocoaMQTT.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>3</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>FSCalendar.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>13</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>GzipSwift.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>4</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>HyperTrack-HyperTrack.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>6</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>HyperTrack.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>5</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>JustLog.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>11</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
-		<key>MSWeakTimer.xcscheme</key>
+		<key>MBProgressHUD.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>7</integer>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>PhoneNumberKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>Pods-htlive-ios.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>8</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>SQLite.swift.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>9</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 		<key>SwiftyBeaver.xcscheme</key>
 		<dict>
-			<key>orderHint</key>
-			<integer>12</integer>
-		</dict>
-		<key>XCGLogger.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>10</integer>
+			<key>isShown</key>
+			<false/>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -77,12 +72,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1658A7E7CA947A060561BF3B57E020FE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>19FAD0A0B19B29B5BAA041FDB6BA87B5</key>
+		<key>360FAE428FD407C178693260252A325A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -92,7 +82,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>51B41F79C33B667928B74314CBCC458A</key>
+		<key>41FA54D12162DAD51D02FC58A2CD5034</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -102,37 +92,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>619483CB7B4E922220150DB8FD441428</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>620FBB9123AB2CCFABF956D47155DA59</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>680AB007C877A79D138B1AA6B09E4A9A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>76FD3E6B4371A9746A505D9FCED91C96</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>7E1E41D1203B4D2A4495B3C7A870B6E5</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>872C034101A27254C82CEB89E87FA345</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>88E9EC28B8B46C3631E6B242B50F4442</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8C5BD10883BD185426DD737247F56DEC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -152,37 +117,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>ABD4389FDB64A3A08564947A229D00B7</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>AC0D2D2B4EE7C873431AB3502859CA60</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BE67C3AC0335AE6508CDEF0B45AB9530</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>C5A2DB7A84B7B78E359870D2E1B24AA7</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>CDDE712C526DA56A868E43340E79B065</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D4A07B8ABC6D3CEC8CD4F149A4E17BDB</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E0ACD7ECF7CD8EBA449B4B58296B0833</key>
 		<dict>
 			<key>primary</key>
 			<true/>
