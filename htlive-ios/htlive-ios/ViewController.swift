@@ -10,6 +10,8 @@ import UIKit
 import HyperTrack
 import FSCalendar
 
+let pink = UIColor(red:0.83, green:0.27, blue:0.70, alpha:1.0)
+
 class ViewController: UIViewController {
 
     @IBOutlet weak var calendarHeight: NSLayoutConstraint!
@@ -72,6 +74,8 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
     }
     
     
+    
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
        return 72
@@ -82,6 +86,15 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         return 1
     }
     
+    
+    func getTopVisibleRow() {
+        
+        let array = placeLineTable.indexPathsForVisibleRows
+        print(array?[0].row)
+        
+    }
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! placeCell
@@ -91,9 +104,38 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         } else {
             cell.loading()
         }
+        cell.selectionStyle = .none
         return cell
         
     }
+    
+    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        let cell  = tableView.cellForRow(at: indexPath)
+        cell!.contentView.backgroundColor = .red
+    }
+    
+    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        let cell  = tableView.cellForRow(at: indexPath)
+        cell!.contentView.backgroundColor = .clear
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        print(indexPath)
+        guard let cell = tableView.cellForRow(at: indexPath) as? placeCell else { return }
+        cell.select()
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        
+        print(indexPath)
+        let cell = tableView.cellForRow(at: indexPath) as? placeCell
+        cell?.deselect()
+    }
+    
+    
 }
 
 
@@ -118,6 +160,7 @@ extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
             self.calendar.layer.opacity = 0
             self.calendarArrow.transform = self.calendarArrow.transform.rotated(by: CGFloat(Double.pi))
         })
+        
     }
     
     func expandCalendar() {
