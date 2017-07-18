@@ -35,6 +35,13 @@ class ShareVC: UIViewController  {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
+        self.view.showActivityIndicator()
+        locationManager.requestAlwaysAuthorization()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
         let hyperTrackMap = HyperTrack.map()
         
         hyperTrackMap.setHTViewCustomizationDelegate(customizationDelegate: self)
@@ -43,10 +50,8 @@ class ShareVC: UIViewController  {
         if (self.hyperTrackView != nil) {
             hyperTrackMap.embedIn(self.hyperTrackView)
         }
-        
-        locationManager.requestAlwaysAuthorization()
-        
-        
+
+        self.view.hideActivityIndicator()
     }
     
     override func didReceiveMemoryWarning() {
