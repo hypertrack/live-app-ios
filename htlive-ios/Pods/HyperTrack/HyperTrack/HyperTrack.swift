@@ -134,8 +134,8 @@ import MapKit
      - Parameter photo: The photo of the user that will be created on HyperTrack
      - Parameter completionHandler: The completion handler which is called with the newly created user on success or an error on failure
      */
-    @objc public class func createUser(_ name: String, _ phone: String, _ photo: UIImage?, completionHandler: @escaping (_ user: HyperTrackUser?, _ error: HyperTrackError?) -> Void) {
-        Transmitter.sharedInstance.createUser(name, phone, photo, completionHandler)
+    @objc public class func createUser(_ name: String, _ phone: String, _ lookupID: String, _ photo: UIImage?, completionHandler: @escaping (_ user: HyperTrackUser?, _ error: HyperTrackError?) -> Void) {
+        Transmitter.sharedInstance.createUser(name, phone, lookupID, photo, completionHandler)
     }
     
     /**
@@ -149,6 +149,20 @@ import MapKit
      */
     @objc public class func getOrCreateUser(_ name: String, _phone: String, _ lookupID: String, completionHandler: @escaping (_ user: HyperTrackUser?, _ error: HyperTrackError?) -> Void) {
         Transmitter.sharedInstance.createUser(name, _phone, lookupID, completionHandler)
+    }
+    
+    /**
+     Call this method to get or create a User on HyperTrack API Server for the current device
+     with given lookup_id. Refer to the documentation on creating a user
+     
+     - Parameter userName : Name of the user
+     - Parameter phone: E164 formatted phone number of the user
+     - Parameter lookupId: A unique id that you can add to the user to search
+     - Parameter photo: Image of the user
+     - Parameter completionHandler: The completion handler which is called with the newly created user on success or an error on failure
+     */
+    @objc public class func getOrCreateUser(_ name: String, _ phone: String, _ lookupID: String, _ photo: UIImage?, completionHandler: @escaping (_ user: HyperTrackUser?, _ error: HyperTrackError?) -> Void) {
+        Transmitter.sharedInstance.createUser(name, phone, lookupID, photo, completionHandler)
     }
     
     /**

@@ -14,7 +14,6 @@ import MBProgressHUD
 class UserProfileVC: UIViewController, UITextFieldDelegate {
     
     var onboardingViewDelegate:OnboardingViewDelegate? = nil
-
     let phoneNumberKit = PhoneNumberKit()
     
     @IBOutlet weak var nameTextField: CustomTextField!
@@ -22,6 +21,7 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var photoImage: UIImageView!
     
     let picker = UIImagePickerController()
+    var imagePicked:Bool = false
     
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var topConstraint: NSLayoutConstraint!
@@ -113,6 +113,13 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
     func getOrCreateHyperTrackUser() {
         let name = nameTextField.text ?? ""
         var phone = phoneNumberTextField.text ?? ""
+        var photo: UIImage? = nil
+        
+        if (imagePicked) {
+            if let image = photoImage.image {
+                photo = resizeImage(image: image, targetSize: CGSize(width: 200, height: 200))
+            }
+        }
         
         if (phone != "") {
             do {
@@ -124,10 +131,11 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
                 return
             }
         }
-        
+
         // Phone number is used as the user lookup id
         self.showActivityIndicator()
-        HyperTrack.getOrCreateUser(name, _phone: phone, phone) { (user, error) in
+
+        HyperTrack.getOrCreateUser(name, phone, phone, photo) { (user, error) in
             self.hideActivityIndicator()
             
             if (error != nil) {
@@ -138,6 +146,7 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
             
             if (user != nil) {
                 // User successfully created
+                print("User created:", user?.id)
                 
                 if (phone != "") {
                     // If phone was given, send verification code
@@ -226,6 +235,32 @@ extension UserProfileVC : UIImagePickerControllerDelegate, UINavigationControlle
         present(picker, animated: true, completion: nil)
     }
     
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+        let size = image.size
+        
+        let widthRatio  = targetSize.width  / image.size.width
+        let heightRatio = targetSize.height / image.size.height
+        
+        // Figure out what our orientation is, and use that to form the rectangle
+        var newSize: CGSize
+        if(widthRatio > heightRatio) {
+            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+        } else {
+            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+        }
+        
+        // This is the rect that we've calculated out and this is what is actually used below
+        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+        
+        // Actually do the resizing to the rect using the ImageContext stuff
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
+    }
+    
     //MARK: - Delegates
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String : AnyObject])
@@ -233,6 +268,7 @@ extension UserProfileVC : UIImagePickerControllerDelegate, UINavigationControlle
         let chosenImage = info[UIImagePickerControllerEditedImage] as! UIImage
         photoImage.contentMode = .scaleAspectFit
         photoImage.image = chosenImage
+        imagePicked = true
         dismiss(animated:true, completion: nil)
     }
     
