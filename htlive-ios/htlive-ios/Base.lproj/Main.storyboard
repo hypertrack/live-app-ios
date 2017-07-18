@@ -305,24 +305,23 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="43I-d9-Klx">
-                                <rect key="frame" x="118" y="110" width="178" height="30"/>
+                                <rect key="frame" x="60" y="110" width="294" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="30n-NT-iyd"/>
-                                    <constraint firstAttribute="width" constant="178" id="HcF-fa-GFo"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="78e-Wb-RzR"/>
                                 </constraints>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WRP-1g-buJ">
-                                <rect key="frame" x="30" y="345" width="354" height="45"/>
+                                <rect key="frame" x="30" y="295" width="354" height="45"/>
                                 <color key="backgroundColor" red="0.83116632700000004" green="0.26851508019999998" blue="0.70605748889999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="BL3-TZ-B6U"/>
                                     <constraint firstAttribute="width" constant="354" id="FX5-0M-Zzn"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" title="Resend verification">
+                                <state key="normal" title="Resend text">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -331,7 +330,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iaA-jt-LCj">
-                                <rect key="frame" x="30" y="239" width="354" height="45"/>
+                                <rect key="frame" x="30" y="210" width="354" height="45"/>
                                 <color key="backgroundColor" red="0.83116632700000004" green="0.26851508019999998" blue="0.70605748889999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="pCi-ec-7Hy"/>
@@ -352,15 +351,16 @@
                             <constraint firstItem="iaA-jt-LCj" firstAttribute="leading" secondItem="e3D-Xb-zsf" secondAttribute="leadingMargin" constant="10" id="HKL-V1-xTD"/>
                             <constraint firstAttribute="trailingMargin" secondItem="WRP-1g-buJ" secondAttribute="trailing" constant="10" id="PJD-uU-bff"/>
                             <constraint firstItem="43I-d9-Klx" firstAttribute="top" secondItem="GyO-Ng-Uha" secondAttribute="bottom" constant="90" id="Pyc-y2-q5E"/>
-                            <constraint firstItem="43I-d9-Klx" firstAttribute="leading" secondItem="e3D-Xb-zsf" secondAttribute="leadingMargin" constant="98" id="Uac-xp-Xxp"/>
-                            <constraint firstItem="WRP-1g-buJ" firstAttribute="top" secondItem="iaA-jt-LCj" secondAttribute="bottom" constant="61" id="ZUh-N2-XfA"/>
+                            <constraint firstItem="43I-d9-Klx" firstAttribute="leading" secondItem="e3D-Xb-zsf" secondAttribute="leadingMargin" constant="40" id="Qge-Ja-PGM"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="43I-d9-Klx" secondAttribute="trailing" constant="40" id="Vlx-w3-n7Z"/>
+                            <constraint firstItem="WRP-1g-buJ" firstAttribute="top" secondItem="iaA-jt-LCj" secondAttribute="bottom" constant="40" id="ZUh-N2-XfA"/>
                             <constraint firstAttribute="trailingMargin" secondItem="iaA-jt-LCj" secondAttribute="trailing" constant="10" id="gnG-fR-F7d"/>
                             <constraint firstItem="WRP-1g-buJ" firstAttribute="leading" secondItem="e3D-Xb-zsf" secondAttribute="leadingMargin" constant="10" id="sIK-WU-Bo9"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="43I-d9-Klx" secondAttribute="trailing" constant="98" id="uTw-VT-rzs"/>
-                            <constraint firstItem="iaA-jt-LCj" firstAttribute="top" secondItem="43I-d9-Klx" secondAttribute="bottom" constant="99" id="yez-wH-9qs"/>
+                            <constraint firstItem="iaA-jt-LCj" firstAttribute="top" secondItem="43I-d9-Klx" secondAttribute="bottom" constant="60" id="yez-wH-9qs"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="resendButton" destination="WRP-1g-buJ" id="0bn-4Y-PeB"/>
                         <outlet property="verificationCode" destination="43I-d9-Klx" id="zwq-le-XH4"/>
                     </connections>
                 </viewController>

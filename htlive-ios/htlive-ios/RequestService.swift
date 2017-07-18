@@ -15,14 +15,16 @@ class RequestService {
     
     let baseUrl = "https://api.hypertrack.com/api/v1/"
     
-    func makeHyperTrackRequest(urlSuffix:String, body:[String:Any], completionHandler: @escaping (_ error: Error?) -> Void) {
+    func makeHyperTrackRequest(urlSuffix:String, body:[String:Any], completionHandler: @escaping (_ error: String?) -> Void) {
         guard let userId = HyperTrack.getUserId() else {
             // TODO: handle no user id
+            completionHandler("Set a user id")
             return
         }
         
         guard let token = HyperTrack.getPublishableKey() else {
             // TODO: handle no publishable key
+            completionHandler("Set a publishable key")
             return
         }
         
@@ -34,16 +36,17 @@ class RequestService {
             case .success:
                 completionHandler(nil)
             case .failure(let error):
-                completionHandler(error)
+                print("Response error:", String(data: response.data!, encoding: .utf8))
+                completionHandler(error.localizedDescription)
             }
         }
     }
     
-    func resendHyperTrackCode(completionHandler: @escaping (_ error: Error?) -> Void) {
+    func sendHyperTrackCode(completionHandler: @escaping (_ error: String?) -> Void) {
         makeHyperTrackRequest(urlSuffix: "send_verification", body: [:], completionHandler: completionHandler)
     }
     
-    func validateHyperTrackCode(code: String, completionHandler: @escaping (_ error: Error?) -> Void) {
+    func validateHyperTrackCode(code: String, completionHandler: @escaping (_ error: String?) -> Void) {
         let body = ["verification_code": code]
         makeHyperTrackRequest(urlSuffix: "validate_code", body: body, completionHandler: completionHandler)
     }

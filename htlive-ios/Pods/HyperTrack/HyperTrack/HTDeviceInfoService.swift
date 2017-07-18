@@ -120,7 +120,8 @@ class HTDeviceInfoService: NSObject {
         } else {
             print("Location services are not enabled")
         }
-        if(Transmitter.sharedInstance.getUserId() != nil){
+        
+        if(shouldPostEvents()){
             let event = HyperTrackEvent(
                 userId:Transmitter.sharedInstance.getUserId()!,
                 recordedAt:Date(),
@@ -134,7 +135,10 @@ class HTDeviceInfoService: NSObject {
             event.save()
             requestManager.postEvents(flush:true)
         }
-        
+    }
+    
+    func shouldPostEvents() -> Bool {
+        return Transmitter.sharedInstance.isTracking && ( Transmitter.sharedInstance.getUserId() != nil)
     }
     
     func locationConfigDidChange(_ notification: Notification) {
@@ -147,7 +151,7 @@ class HTDeviceInfoService: NSObject {
 
         saveLastKnownInfo(infoType: htBatteryLevelString, value: batteryLevelString)
 
-        if(Transmitter.sharedInstance.getUserId() != nil){
+        if(shouldPostEvents()){
             var chargingStatus  = "discharging"
             if(batteryState() == UIDeviceBatteryState.charging){
                 chargingStatus = "charging"
@@ -171,7 +175,7 @@ class HTDeviceInfoService: NSObject {
     
     func onNetworkStateChanged(state: String,isConnected: Bool){
         
-        if(Transmitter.sharedInstance.getUserId() != nil){
+        if(shouldPostEvents()){
             let event = HyperTrackEvent(
                 userId:Transmitter.sharedInstance.getUserId()!,
                 recordedAt:Date(),
