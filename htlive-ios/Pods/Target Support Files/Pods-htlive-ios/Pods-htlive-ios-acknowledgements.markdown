@@ -83,7 +83,7 @@ SOFTWARE.
 
 
 
-## HyperTrack
+## HyperTrack.local
 
 Copyright (c) 2017 HyperTrack, Inc. (https://www.hypertrack.com)
 
