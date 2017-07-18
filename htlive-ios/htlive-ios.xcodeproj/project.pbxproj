@@ -28,6 +28,14 @@
 		709F5A4A4D1A2C4D62D67D7A /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B04F8C25B273501623851B5 /* CoreMedia.framework */; };
 		7214AC794737FD3C0D2555C4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6879260750573A1BEF59E3DE /* SystemConfiguration.framework */; };
 		B00C94962B65677DF4F6C7DB /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C72BCF7451040D64AFF2A1 /* CoreTelephony.framework */; };
+		BB7D29981F1D690D00E72DCF /* MKMapView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D298F1F1D690D00E72DCF /* MKMapView+Extension.swift */; };
+		BB7D29991F1D690D00E72DCF /* NSData+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D29901F1D690D00E72DCF /* NSData+Extension.swift */; };
+		BB7D299A1F1D690D00E72DCF /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D29911F1D690D00E72DCF /* String+Extension.swift */; };
+		BB7D299B1F1D690D00E72DCF /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D29921F1D690D00E72DCF /* ThemeManager.swift */; };
+		BB7D299C1F1D690D00E72DCF /* UIAlertView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D29931F1D690D00E72DCF /* UIAlertView+Extension.swift */; };
+		BB7D299D1F1D690D00E72DCF /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D29941F1D690D00E72DCF /* UIColor+Extension.swift */; };
+		BB7D299E1F1D690D00E72DCF /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D29951F1D690D00E72DCF /* UIView+Extension.swift */; };
+		BB7D29A01F1D7D7400E72DCF /* HTLiveConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D299F1F1D7D7400E72DCF /* HTLiveConstants.swift */; };
 		BBF7B3E51F1996A600DA355C /* HyperTrackFlowInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7B3E41F1996A600DA355C /* HyperTrackFlowInteractor.swift */; };
 		BBF7B3E71F1996C100DA355C /* OnboardingFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7B3E61F1996C100DA355C /* OnboardingFlowController.swift */; };
 		BBF7B3E91F1996EC00DA355C /* PermissionsFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7B3E81F1996EC00DA355C /* PermissionsFlowController.swift */; };
@@ -65,6 +73,14 @@
 		7B23EC95E2F4386FADC61EB1 /* Pods-htlive-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios.release.xcconfig"; sourceTree = "<group>"; };
 		8F29BB026EF4C014377323EA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		B923850CA9BCCA7AFAFE6B5C /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		BB7D298F1F1D690D00E72DCF /* MKMapView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "MKMapView+Extension.swift"; path = "Utility/MKMapView+Extension.swift"; sourceTree = "<group>"; };
+		BB7D29901F1D690D00E72DCF /* NSData+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSData+Extension.swift"; path = "Utility/NSData+Extension.swift"; sourceTree = "<group>"; };
+		BB7D29911F1D690D00E72DCF /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Extension.swift"; path = "Utility/String+Extension.swift"; sourceTree = "<group>"; };
+		BB7D29921F1D690D00E72DCF /* ThemeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThemeManager.swift; path = Utility/ThemeManager.swift; sourceTree = "<group>"; };
+		BB7D29931F1D690D00E72DCF /* UIAlertView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIAlertView+Extension.swift"; path = "Utility/UIAlertView+Extension.swift"; sourceTree = "<group>"; };
+		BB7D29941F1D690D00E72DCF /* UIColor+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIColor+Extension.swift"; path = "Utility/UIColor+Extension.swift"; sourceTree = "<group>"; };
+		BB7D29951F1D690D00E72DCF /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView+Extension.swift"; path = "Utility/UIView+Extension.swift"; sourceTree = "<group>"; };
+		BB7D299F1F1D7D7400E72DCF /* HTLiveConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTLiveConstants.swift; sourceTree = "<group>"; };
 		BBE69D06DE0D45E789542761 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		BBF7B3E41F1996A600DA355C /* HyperTrackFlowInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HyperTrackFlowInteractor.swift; sourceTree = "<group>"; };
 		BBF7B3E61F1996C100DA355C /* OnboardingFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingFlowController.swift; sourceTree = "<group>"; };
@@ -120,6 +136,7 @@
 		33334B881F0B740A001A970E /* htlive-ios */ = {
 			isa = PBXGroup;
 			children = (
+				BB7D298C1F1D68FF00E72DCF /* Utility */,
 				BBF7B3EF1F1997B900DA355C /* Service */,
 				BBF7B3EA1F1996F400DA355C /* FlowController */,
 				33334B931F0B740A001A970E /* Assets.xcassets */,
@@ -133,6 +150,7 @@
 				33334B981F0B740A001A970E /* Info.plist */,
 				33334B901F0B740A001A970E /* htlive_ios.xcdatamodeld */,
 				BBF7B3E41F1996A600DA355C /* HyperTrackFlowInteractor.swift */,
+				BB7D299F1F1D7D7400E72DCF /* HTLiveConstants.swift */,
 			);
 			path = "htlive-ios";
 			sourceTree = "<group>";
@@ -171,6 +189,20 @@
 				3313D3A31F18D41F00BDF8E0 /* Date.swift */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		BB7D298C1F1D68FF00E72DCF /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				BB7D298F1F1D690D00E72DCF /* MKMapView+Extension.swift */,
+				BB7D29901F1D690D00E72DCF /* NSData+Extension.swift */,
+				BB7D29911F1D690D00E72DCF /* String+Extension.swift */,
+				BB7D29921F1D690D00E72DCF /* ThemeManager.swift */,
+				BB7D29931F1D690D00E72DCF /* UIAlertView+Extension.swift */,
+				BB7D29941F1D690D00E72DCF /* UIColor+Extension.swift */,
+				BB7D29951F1D690D00E72DCF /* UIView+Extension.swift */,
+			);
+			name = Utility;
 			sourceTree = "<group>";
 		};
 		BBF7B3EA1F1996F400DA355C /* FlowController */ = {
@@ -329,7 +361,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F57E6697B5B7FBC18E5A82D1 /* [CP] Embed Pods Frameworks */ = {
@@ -341,9 +373,11 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
+				"${BUILT_PRODUCTS_DIR}/FSCalendar/FSCalendar.framework",
 				"${BUILT_PRODUCTS_DIR}/GzipSwift/Gzip.framework",
-				"${BUILT_PRODUCTS_DIR}/HyperTrack/HyperTrack.framework",
+				"${BUILT_PRODUCTS_DIR}/HyperTrack.local/HyperTrack.framework",
 				"${BUILT_PRODUCTS_DIR}/JustLog/JustLog.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
 			);
@@ -351,9 +385,11 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSCalendar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gzip.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HyperTrack.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JustLog.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
 			);
@@ -374,16 +410,24 @@
 				BBF7B3EC1F19972000DA355C /* InviteFlowController.swift in Sources */,
 				33334B8C1F0B740A001A970E /* ViewController.swift in Sources */,
 				BBF7B3E51F1996A600DA355C /* HyperTrackFlowInteractor.swift in Sources */,
+				BB7D29981F1D690D00E72DCF /* MKMapView+Extension.swift in Sources */,
+				BB7D29A01F1D7D7400E72DCF /* HTLiveConstants.swift in Sources */,
+				BB7D299A1F1D690D00E72DCF /* String+Extension.swift in Sources */,
 				33334BA91F0BA425001A970E /* TextField.swift in Sources */,
 				33334BA21F0B87BD001A970E /* OnboardVC.swift in Sources */,
+				BB7D29991F1D690D00E72DCF /* NSData+Extension.swift in Sources */,
 				33334B921F0B740A001A970E /* htlive_ios.xcdatamodeld in Sources */,
 				3354C1CE1F14EB820011506D /* placeCell.swift in Sources */,
 				3313D3A41F18D41F00BDF8E0 /* Date.swift in Sources */,
+				BB7D299C1F1D690D00E72DCF /* UIAlertView+Extension.swift in Sources */,
 				BBF7B3EE1F19972C00DA355C /* BaseFlowController.swift in Sources */,
+				BB7D299D1F1D690D00E72DCF /* UIColor+Extension.swift in Sources */,
+				BB7D299E1F1D690D00E72DCF /* UIView+Extension.swift in Sources */,
 				BBF7B3F11F1997C800DA355C /* HyperTrackAppService.swift in Sources */,
 				33334B8A1F0B740A001A970E /* AppDelegate.swift in Sources */,
 				BBF7B3E91F1996EC00DA355C /* PermissionsFlowController.swift in Sources */,
 				BBF7B3E71F1996C100DA355C /* OnboardingFlowController.swift in Sources */,
+				BB7D299B1F1D690D00E72DCF /* ThemeManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,7 +561,7 @@
 				INFOPLIST_FILE = "htlive-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.hypertrack.htlive;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.hypertrack.SendETA-iPhone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
@@ -540,7 +584,7 @@
 				INFOPLIST_FILE = "htlive-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.hypertrack.htlive;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.hypertrack.SendETA-iPhone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import HyperTrack
 
 class HyperTrackAppService: NSObject {
     
@@ -36,13 +37,16 @@ class HyperTrackAppService: NSObject {
         return true
     }
     
-    
-    
-    
     func setUpSDKs(){
         BuddyBuildSDK.setup()
-
+        setUpHyperTrack()
     }
-
-
+    
+    func setUpHyperTrack(){
+        HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
+        HyperTrack.setUserId("27515522-2541-4deb-ae27-9b8f4587310e")
+        HyperTrack.requestAlwaysAuthorization()
+        HyperTrack.requestMotionAuthorization()
+    }
+    
 }

@@ -1,11 +1,17 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
 
+def hypertrack_pods
+    #pod 'HyperTrack'
+    pod 'HyperTrack.local', :path => '~/hypertrack-ios-v3/HyperTrack.local.podspec'
+end
+
 target 'htlive-ios' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
-  pod 'HyperTrack'
+  hypertrack_pods
   pod 'FSCalendar'
+  pod 'MBProgressHUD'
 
 end
