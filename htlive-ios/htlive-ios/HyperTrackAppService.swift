@@ -52,6 +52,9 @@ class HyperTrackAppService: NSObject {
 
     func setupHyperTrack() {
         HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
+        if(HyperTrack.getUserId() != nil){
+            HyperTrack.startTracking()
+        }
     }
     
     func setupBuddyBuild() {
