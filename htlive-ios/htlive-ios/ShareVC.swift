@@ -64,6 +64,7 @@ class ShareVC: UIViewController  {
             self.view.showActivityIndicator(animated: true)
             HyperTrack.getActionsFromShortCode(shortCode, completionHandler: { (actions, error) in
                 
+                
                 if (error !=  nil) {
                     self.view.hideActivityIndicator(animate: true)
                     self.showAlert(title: "Error", message: error?.type.rawValue)
@@ -205,6 +206,9 @@ extension ShareVC:HTViewInteractionDelegate {
     }
     
     func trackHypertrackAction(lookUpId:String?) {
+        
+        self.view.showActivityIndicator()
+
         HyperTrack.trackActionFor(lookUpId: lookUpId!) { (actions, error) in
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) { // in half a second...
                 self.view.hideActivityIndicator(animate: true)
@@ -219,8 +223,14 @@ extension ShareVC:HTViewInteractionDelegate {
     
     func shareLink(action : HyperTrackAction) {
         
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        formatter.amSymbol = "AM"
+        formatter.pmSymbol = "PM"
+        
+        let dateString = formatter.string(from: action.eta!)
         // text to share
-        let text = "I'm on my way." + "Track me live " + action.trackingUrl!
+        let text = "I'm on my way. Will be there by " + dateString +  ". Track me live " + action.trackingUrl!
         
         // set up activity view controller
         let textToShare = [ text ]

@@ -81,7 +81,11 @@ class OnboardingFlowController: BaseFlowController, OnboardingViewDelegate {
     }
     
     func didCreatedUser(user: HyperTrackUser,currentController : UIViewController){
-        
+        let nc = NotificationCenter.default
+        nc.post(name:Notification.Name(rawValue:HTLiveConstants.userCreatedNotification),
+                object: nil,
+                userInfo: nil)
+
     }
     
     func didValidateCode(currentController : UIViewController){

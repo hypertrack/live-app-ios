@@ -52,18 +52,38 @@ class ViewController: UIViewController {
         
         placeLineTable.register(UINib(nibName: "placeCell", bundle: nil), forCellReuseIdentifier: "placeCell")
         
-        HyperTrack.getPlaceline { (placeLine, error) in
-            guard let fetchedPlaceLine = placeLine else { return }
-            if let segments = fetchedPlaceLine.segments {
-                    self.segments = segments
-                    self.placeLineTable.reloadData()
-            }
-            
-        }
-        
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.userCreated), name: NSNotification.Name(rawValue:HTLiveConstants.userCreatedNotification), object: nil)
+
+    }
+    
+    func userCreated(_ notification: Notification) {
+        getPlaceLineData()
     }
 
+    
+    override func viewWillAppear(_ animated: Bool) {
+        getPlaceLineData()
+    }
+    
+    
+    
+    func getPlaceLineData(){
+        if(HyperTrack.getUserId() != nil) {
+            HyperTrack.getPlaceline { (placeLine, error) in
+                guard let fetchedPlaceLine = placeLine else {
+                    return
+                }
+                if let segments = fetchedPlaceLine.segments {
+                    self.segments = segments
+                    self.placeLineTable.reloadData()
+                }
+                
+            }
+        }
+ 
+    }
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

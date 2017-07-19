@@ -11,4 +11,5 @@ import UIKit
 struct HTLiveConstants {
 
   public static let currentTrackedLookUpId = "currentTrackedLookUpId"
+    public static let userCreatedNotification =  "userCreatedNotification"
 }
