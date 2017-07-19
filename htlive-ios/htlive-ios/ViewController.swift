@@ -19,6 +19,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var placeLineTable: UITableView!
     @IBOutlet weak var dateLabel: UILabel!
     var segments: [HyperTrackActivity] = []
+    var selectedIndexPath : IndexPath? = nil
     
     @IBOutlet weak var calendarArrow: UIImageView!
     @IBAction func calendarTap(_ sender: Any) {
@@ -104,6 +105,10 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
             cell.loading()
         }
         cell.selectionStyle = .none
+        
+        if(selectedIndexPath?.row != indexPath.row){
+            cell.deselect()
+        }
         return cell
         
     }
@@ -116,7 +121,7 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         placeLineTable.scrollToRow(at: indexPath, at: .middle, animated: true)
         
         cell.select()
-        
+        selectedIndexPath = indexPath
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
