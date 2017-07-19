@@ -95,6 +95,8 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/GzipSwift/Gzip.framework"
   install_framework "$BUILT_PRODUCTS_DIR/HyperTrack/HyperTrack.framework"
   install_framework "$BUILT_PRODUCTS_DIR/JustLog/JustLog.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/MBProgressHUD/MBProgressHUD.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/PhoneNumberKit/PhoneNumberKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SQLite.swift/SQLite.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SwiftyBeaver/SwiftyBeaver.framework"
 fi
@@ -105,6 +107,8 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/GzipSwift/Gzip.framework"
   install_framework "$BUILT_PRODUCTS_DIR/HyperTrack/HyperTrack.framework"
   install_framework "$BUILT_PRODUCTS_DIR/JustLog/JustLog.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/MBProgressHUD/MBProgressHUD.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/PhoneNumberKit/PhoneNumberKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SQLite.swift/SQLite.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SwiftyBeaver/SwiftyBeaver.framework"
 fi
