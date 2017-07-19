@@ -28,8 +28,8 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
     }
     
     func initializeFlows(){
-        appendController(onboardingFlowController)
         appendController(permissionFlowController)
+        appendController(onboardingFlowController)
         appendController(inviteFlowController)
     }
     
@@ -39,14 +39,15 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
     }
     
     func presentFlowsIfNeeded(){
-        for flowController in flows{
-            if(!flowController.isFlowCompleted()){
-                flowController.startFlow(force: false, presentingController: topViewController()!)
+            for flowController in self.flows{
+                if(!flowController.isFlowCompleted()){
+                    flowController.startFlow(force: false, presentingController: HyperTrackFlowInteractor.topViewController()!)
+                    break
+                }
             }
-        }
     }
     
-    func topViewController() -> UIViewController? {
+     static func topViewController() -> UIViewController? {
         var top = UIApplication.shared.keyWindow?.rootViewController
         while true {
             if let presented = top?.presentedViewController {
@@ -75,7 +76,7 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         let liveLocationController = storyboard.instantiateViewController(withIdentifier: "ShareVC") as! ShareVC
         liveLocationController.shortCode = shortCode
-        topViewController()?.present(liveLocationController, animated:true, completion: nil)
+        HyperTrackFlowInteractor.topViewController()?.present(liveLocationController, animated:true, completion: nil)
     }
     
     func haveStartedFlow(sender: BaseFlowController) {
@@ -84,5 +85,6 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
 
     func haveFinishedFlow(sender: BaseFlowController) {
         //
+        presentFlowsIfNeeded()
     }
 }

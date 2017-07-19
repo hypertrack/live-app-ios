@@ -17,7 +17,10 @@ class HyperTrackAppService: NSObject {
     
     func applicationDidFinishLaunchingWithOptions(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         setUpSDKs()
-        flowInteractor.presentFlowsIfNeeded()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            self.flowInteractor.presentFlowsIfNeeded()
+        }
         return true
     }
     

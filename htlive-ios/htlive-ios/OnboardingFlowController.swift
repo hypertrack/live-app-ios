@@ -7,17 +7,48 @@
 //
 
 import UIKit
+import HyperTrack
 
 protocol OnboardingViewDelegate {
-    func didSkipProfile()
-    
-    func didValidateCode()
+    func didSkipProfile(currentController : UIViewController)
+    func didCreatedUser(user: HyperTrackUser,currentController : UIViewController)
+    func willGoToValidateCode(currentController : UIViewController, presentController: ValidateCodeVC)
+    func didValidateCode(currentController : UIViewController)
 }
+
+enum OnboardingState: Int {
+    
+    case OnboardingNotStarted = 0
+    case OnboardingSkipped = 1
+    case OnboardingCompleted = 2
+    
+}
+
+let onboardingStateKey = "onboardingStateKey"
 
 class OnboardingFlowController: BaseFlowController, OnboardingViewDelegate {
 
+    
+    var currentOnboardingState : OnboardingState
+    
+    override init() {
+        currentOnboardingState = OnboardingState(rawValue: UserDefaults.standard.integer(forKey: onboardingStateKey))!
+        super.init()
+    }
+    
+    
     override func isFlowCompleted() -> Bool {
-        return true
+        
+        if( HyperTrack.getUserId() == nil){
+            currentOnboardingState = OnboardingState.OnboardingNotStarted
+            UserDefaults.standard.set(OnboardingState.OnboardingNotStarted.rawValue, forKey: onboardingStateKey)
+            return false
+        }
+       
+        if(currentOnboardingState == OnboardingState.OnboardingSkipped || currentOnboardingState == OnboardingState.OnboardingCompleted ){
+                return true
+        }
+        return false
     }
     
     override func isFlowMandatory() -> Bool {
@@ -36,18 +67,36 @@ class OnboardingFlowController: BaseFlowController, OnboardingViewDelegate {
         return -1
     }
     
-    func didSkipProfile() {
+    func didSkipProfile(currentController : UIViewController){
         // This method is called from the user profile screen
         // whenever the profile was skipped or phone number
         // was not entered.
+        
+        UserDefaults.standard.set(OnboardingState.OnboardingSkipped.rawValue, forKey: onboardingStateKey)
+        currentController.dismiss(animated: true) { 
+            
+            
+        }
 
-        // TODO: Go to placeline screen from here
     }
-
-    func didValidateCode() {
+    
+    func didCreatedUser(user: HyperTrackUser,currentController : UIViewController){
+        
+    }
+    
+    func didValidateCode(currentController : UIViewController){
         // This method is called when we have successfully validated
         // the phone number on the validate code screen.
-
-        // TODO: Go to placeline screen from here
+        UserDefaults.standard.set(OnboardingState.OnboardingCompleted.rawValue, forKey: onboardingStateKey)
+        currentOnboardingState = OnboardingState.OnboardingCompleted
+        currentController.presentingViewController?.presentingViewController?.dismiss(animated: true) {
+            self.interactorDelegate?.haveFinishedFlow(sender: self)
+        }
     }
+    
+    func willGoToValidateCode(currentController : UIViewController , presentController: ValidateCodeVC){
+        
+       
+    }
+   
 }

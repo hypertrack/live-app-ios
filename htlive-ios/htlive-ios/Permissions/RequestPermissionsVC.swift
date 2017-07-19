@@ -16,23 +16,17 @@ class RequestPermissionsVC : UIViewController {
     @IBOutlet weak var requestLocationDescriptionLabel: UILabel!
     @IBOutlet weak var enableLocationCTAButton: UIButton!
     
+    var permissionDelegate:PermissionsDelegate? = nil
+
+    var pollingTimer: Timer?
+    var currentTimerHit = 0
+
     override func viewDidLoad() {
         super.viewDidLoad()
-    
-        self.requestLocationDescriptionLabel.isHidden = true
-        self.enableLocationCTAButton.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
         self.radiate()
-        
-        if (HyperTrack.locationServicesEnabled() && HyperTrack.locationAuthorizationStatus() == .authorizedAlways) {
-            self.proceedToNextScreen()
-            return
-        }
-        
-        self.requestLocationDescriptionLabel.isHidden = false
-        self.enableLocationCTAButton.isHidden = false
     }
     
     override func didReceiveMemoryWarning() {
@@ -53,34 +47,59 @@ class RequestPermissionsVC : UIViewController {
             return
         }
         
-        // Request Motion Authorization Status
-        HyperTrack.requestMotionAuthorization()
-        
         // Check for Location Authorization Status (Always by default)
         if (HyperTrack.locationAuthorizationStatus() != .authorizedAlways) {
-            HyperTrack.requestAlwaysAuthorization()
+            HyperTrack.requestAlwaysAuthorization(completionHandler: { (isAuthorized) in
+                if(isAuthorized){
+                  self.permissionDelegate?.didAcceptedLocationPermissions(currentController: self)
+                }else{
+                    self.permissionDelegate?.didDeniedLocationPermissions(currentController: self)
+                }
+                
+                if(HyperTrack.canAskMotionPermissions()){
+                    HyperTrack.requestMotionAuthorization()
+                    self.initializeTimer()
+
+                }else{
+                    
+                    self.dismissViewController()
+                
+                }
+            })
         }
-        
-        self.proceedToNextScreen()
     }
     
-    private func proceedToNextScreen() {
-        // Proceed further depending on if the user is signed up or not
-        if (HyperTrack.getUserId() != nil) {
-            let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-            let placelineController = storyboard.instantiateViewController(withIdentifier: "PlacelineVC") as! ViewController
-            self.present(placelineController, animated: true, completion: nil)
-            
-        } else {
-            let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-            let profileController = storyboard.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
-            self.present(profileController, animated: true, completion: nil)
+    func dismissViewController (){
+        self.dismiss(animated: true, completion: {
+            self.permissionDelegate?.didFinishedAskingPermissions(currentController: self)
+        })
+    }
+    
+    private func initializeTimer() {
+        pollingTimer = Timer.scheduledTimer(timeInterval: 1,
+                                            target: self, selector: #selector(checkForMotionPermission),
+                                            userInfo: nil, repeats: true)
+    }
+    
+    @objc private func checkForMotionPermission() {
+        currentTimerHit += 1
+        if(currentTimerHit == 5){
+            pollingTimer?.invalidate()
+            self.dismissViewController()
+            return
+        }
+        else{
+            HyperTrack.motionAuthorizationStatus(completionHandler: { (authorized) in
+                if(authorized){
+                    self.pollingTimer?.invalidate()
+                    self.dismissViewController()
+                }
+            })
         }
     }
     
     private func radiate() {
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(0), execute: {
-            
             UIView.animate(withDuration: 2, delay: 0, options: [.repeat], animations: {
                 self.radiationCircle.transform = CGAffineTransform(scaleX: 80, y: 80)
                 self.radiationCircle.alpha = 0

@@ -147,14 +147,14 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
             if (user != nil) {
                 // User successfully created
                 print("User created:", user!.id)
-                
+                self.onboardingViewDelegate?.didCreatedUser(user: user!,currentController:self)
                 if (phone != "") {
                     // If phone was given, send verification code
                     self.sendVerificationCode()
                 } else {
                     // So user was created but since there was no phone
                     // number, just go to the placeline screen
-                    self.onboardingViewDelegate?.didSkipProfile()
+                    self.onboardingViewDelegate?.didSkipProfile(currentController: self)
                 }
             }
         }
@@ -170,10 +170,16 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
             } else {
                 // This means the verification text was sent successfully
                 // Move to the verification code view.
-                let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-                let verifyController = storyboard.instantiateViewController(withIdentifier: "ValidateCodeVC") as! ValidateCodeVC
-                verifyController.onboardingViewDelegate = self.onboardingViewDelegate
-                self.present(verifyController, animated: true, completion: nil)
+//                self.dismiss(animated: false, completion: {
+                    let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+                    let verifyController = storyboard.instantiateViewController(withIdentifier: "ValidateCodeVC") as! ValidateCodeVC
+                    verifyController.onboardingViewDelegate = self.onboardingViewDelegate
+                    self.present(verifyController, animated: true, completion: nil)
+
+//                })
+                
+                //self.onboardingViewDelegate?.willGoToValidateCode(currentController: self,presentController: verifyController)
+                
             }
         })
     }

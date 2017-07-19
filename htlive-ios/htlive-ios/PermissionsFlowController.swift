@@ -7,7 +7,61 @@
 //
 
 import UIKit
+import HyperTrack
+
+protocol PermissionsDelegate {
+    func didDeniedLocationPermissions(currentController : UIViewController)
+    func didAcceptedLocationPermissions(currentController : UIViewController)
+    func didFinishedAskingPermissions(currentController : UIViewController)
+}
 
 class PermissionsFlowController: BaseFlowController {
+    
+    var hasAskedPermissions  = false
+
+    override func isFlowCompleted() -> Bool {
+        
+        if(hasAskedPermissions){
+            return true
+        }
+        
+        if (HyperTrack.locationServicesEnabled() && HyperTrack.locationAuthorizationStatus() == .authorizedAlways) {
+            return true
+        }
+        return false
+    }
+    
+    override func isFlowMandatory() -> Bool {
+        return false
+    }
+    
+    override func startFlow(force : Bool, presentingController:UIViewController){
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        let placelineController = storyboard.instantiateViewController(withIdentifier: "RequestPermissionsVC") as! RequestPermissionsVC
+        placelineController.permissionDelegate = self
+        presentingController.present(placelineController, animated: true, completion: nil)
+    }
+    
+    override func getFlowPriority() -> Int {
+        return -1
+    }
+}
+
+
+extension PermissionsFlowController:PermissionsDelegate {
+    
+    func didDeniedLocationPermissions(currentController : UIViewController){
+        
+    }
+    
+    func didAcceptedLocationPermissions(currentController : UIViewController){
+        
+    }
+   
+    func didFinishedAskingPermissions(currentController : UIViewController){
+        hasAskedPermissions = true
+        self.interactorDelegate?.haveFinishedFlow(sender: self)
+        
+    }
 
 }
