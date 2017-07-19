@@ -106,7 +106,7 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         }
         cell.selectionStyle = .none
         
-        if(selectedIndexPath?.row != indexPath.row){
+        if(selectedIndexPath?.row != indexPath.row) || (cell.status.text == "Loading Placeline.."){
             cell.normalize()
         }
         return cell
@@ -116,7 +116,6 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        print(indexPath)
         guard let cell = placeLineTable.cellForRow(at: indexPath) as? placeCell else { return }
         placeLineTable.scrollToRow(at: indexPath, at: .middle, animated: true)
         
@@ -126,7 +125,6 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         
-        print(indexPath)
         let cell = tableView.cellForRow(at: indexPath) as? placeCell
         cell?.deselect()
     }
