@@ -107,7 +107,7 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         cell.selectionStyle = .none
         
         if(selectedIndexPath?.row != indexPath.row){
-            cell.deselect()
+            cell.normalize()
         }
         return cell
         

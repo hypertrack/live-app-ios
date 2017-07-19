@@ -55,7 +55,8 @@ class placeCell : UITableViewCell {
     }
     
     func select() {
-        UIView.transition(with: placeCard, duration: 0.2, options: .transitionCrossDissolve, animations: {
+        guard self.status.text != "Loading Placeline.." else { return }
+        UIView.transition(with: placeCard, duration: 0.1, options: .transitionCrossDissolve, animations: {
             self.status.textColor = UIColor.white
             self.placeCard.backgroundColor = pink
         }, completion: nil)
@@ -65,10 +66,16 @@ class placeCell : UITableViewCell {
     
     func deselect() {
         
-        UIView.transition(with: placeCard, duration: 0.2, options: .transitionCrossDissolve, animations: {
+        UIView.transition(with: placeCard, duration: 0.05, options: .transitionCrossDissolve, animations: {
             self.status.textColor = UIColor.black
             self.placeCard.backgroundColor = UIColor.white
         }, completion: nil)
+    }
+    
+    func normalize() {
+        
+        self.status.textColor = UIColor.black
+        self.placeCard.backgroundColor = UIColor.white
     }
     
     func setStats(activity : HyperTrackActivity) {
