@@ -37,9 +37,9 @@ class PermissionsFlowController: BaseFlowController {
     
     override func startFlow(force : Bool, presentingController:UIViewController){
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        let placelineController = storyboard.instantiateViewController(withIdentifier: "RequestPermissionsVC") as! RequestPermissionsVC
-        placelineController.permissionDelegate = self
-        presentingController.present(placelineController, animated: true, completion: nil)
+        let requestPermissionsController = storyboard.instantiateViewController(withIdentifier: "RequestPermissionsVC") as! RequestPermissionsVC
+        requestPermissionsController.permissionDelegate = self
+        presentingController.present(requestPermissionsController, animated: true, completion: nil)
     }
     
     override func getFlowPriority() -> Int {

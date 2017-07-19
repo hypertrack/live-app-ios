@@ -43,11 +43,16 @@ class RequestService {
     }
     
     func sendHyperTrackCode(completionHandler: @escaping (_ error: String?) -> Void) {
-        makeHyperTrackRequest(urlSuffix: "send_verification", body: [:], completionHandler: completionHandler)
+        makeHyperTrackRequest(urlSuffix: "send_verification/", body: [:], completionHandler: completionHandler)
     }
     
     func validateHyperTrackCode(code: String, completionHandler: @escaping (_ error: String?) -> Void) {
         let body = ["verification_code": code]
-        makeHyperTrackRequest(urlSuffix: "validate_code", body: body, completionHandler: completionHandler)
+        makeHyperTrackRequest(urlSuffix: "validate_code/", body: body, completionHandler: completionHandler)
+    }
+    
+    func acceptHyperTrackInvite(accountId:String, completionHandler: @escaping (_ error: String?) -> Void) {
+        let body = ["account_id": accountId]
+        makeHyperTrackRequest(urlSuffix: "accept_invite/", body: body, completionHandler: completionHandler)
     }
 }
