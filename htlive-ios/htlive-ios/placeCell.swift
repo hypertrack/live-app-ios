@@ -56,8 +56,8 @@ class placeCell : UITableViewCell {
     
     func select() {
         UIView.transition(with: placeCard, duration: 0.2, options: .transitionCrossDissolve, animations: {
-            self.placeCard.borderColor = pink
-            self.placeCard.borderWidth = 2
+            self.status.textColor = UIColor.white
+            self.placeCard.backgroundColor = pink
         }, completion: nil)
         
     
@@ -66,8 +66,8 @@ class placeCell : UITableViewCell {
     func deselect() {
         
         UIView.transition(with: placeCard, duration: 0.2, options: .transitionCrossDissolve, animations: {
-        self.placeCard.borderWidth = 1
-        self.placeCard.borderColor = UIColor.black.withAlphaComponent(0.05)
+            self.status.textColor = UIColor.black
+            self.placeCard.backgroundColor = UIColor.white
         }, completion: nil)
     }
     

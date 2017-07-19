@@ -10,7 +10,7 @@ import UIKit
 import HyperTrack
 import FSCalendar
 
-let pink = UIColor(red:0.83, green:0.27, blue:0.70, alpha:1.0)
+let pink = UIColor(red:1.00, green:0.51, blue:0.87, alpha:1.0)
 
 class ViewController: UIViewController {
 
