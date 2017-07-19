@@ -100,7 +100,7 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! placeCell
         cell.layer.backgroundColor = UIColor.clear.cgColor
         if segments.count != 0 {
-                cell.setStats(activity: segments[indexPath.row])
+            cell.setStats(activity: segments[indexPath.row])
         } else {
             cell.loading()
         }
@@ -115,7 +115,7 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         print(indexPath)
         guard let cell = placeLineTable.cellForRow(at: indexPath) as? placeCell else { return }
         placeLineTable.scrollToRow(at: indexPath, at: .middle, animated: true)
-
+        
         cell.select()
         
     }
