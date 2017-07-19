@@ -144,8 +144,13 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
 extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        print(date)
+        
+//        let currentDate = Date()
+//        guard date > currentDate else { return }
         self.dateLabel.text = date.toString(dateFormat: "dd MMMM")
+        self.noResults = false
+        self.segments = []
+        self.placeLineTable.reloadData()
         getPlacelineForDate(date: date)
         collapseCalendar()
         
