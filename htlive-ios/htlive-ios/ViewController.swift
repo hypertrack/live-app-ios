@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var dateLabel: UILabel!
     var segments: [HyperTrackActivity] = []
     var selectedIndexPath : IndexPath? = nil
+    var noResults = false
     
     @IBOutlet weak var calendarArrow: UIImageView!
     @IBAction func calendarTap(_ sender: Any) {
@@ -45,11 +46,16 @@ class ViewController: UIViewController {
         
         placeLineTable.register(UINib(nibName: "placeCell", bundle: nil), forCellReuseIdentifier: "placeCell")
         
-        HyperTrack.setUserId("2966354f-9ecc-44f8-a28b-3a804d5eb93c")
         HyperTrack.getPlaceline { (placeLine, error) in
             guard let fetchedPlaceLine = placeLine else { return }
             if let segments = fetchedPlaceLine.segments {
                     self.segments = segments
+                
+                if segments.count == 0 {
+                    self.noResults = true
+                } else {
+                    self.noResults = false
+                }
                     self.placeLineTable.reloadData()
             }
             
@@ -74,8 +80,6 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
     }
     
     
-    
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
        return 72
@@ -85,7 +89,6 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         
         return 1
     }
-    
     
     func getTopVisibleRow() {
         
@@ -102,7 +105,12 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         if segments.count != 0 {
             cell.setStats(activity: segments[indexPath.row])
         } else {
-            cell.loading()
+            
+            if self.noResults {
+                cell.noResults()
+            } else {
+                cell.loading()
+            }
         }
         cell.selectionStyle = .none
         
@@ -175,6 +183,13 @@ extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
             guard let fetchedPlaceLine = placeLine else { return }
             if let segments = fetchedPlaceLine.segments {
                 self.segments = segments
+                
+                if segments.count == 0 {
+                    self.noResults = true
+                } else {
+                    self.noResults = false
+                }
+                
                 self.placeLineTable.reloadData()
             }
         }

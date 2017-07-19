@@ -33,6 +33,16 @@ class placeCell : UITableViewCell {
         
     }
     
+    func noResults() {
+        
+        self.startTime.text = "- : -"
+        self.endTime.text = "- : -"
+        self.stats.text = "No placeline today "
+        self.status.text = "Nothing here yet!"
+        self.icon.image = #imageLiteral(resourceName: "ninja")
+        
+    }
+    
     func addRefresher() {
         
         let refresher = UIActivityIndicatorView(frame : CGRect(x: 100, y: 23, width: 20, height: 20))
