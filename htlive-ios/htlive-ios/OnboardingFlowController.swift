@@ -59,7 +59,7 @@ class OnboardingFlowController: BaseFlowController, OnboardingViewDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         let userProfileController = storyboard.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
         userProfileController.onboardingViewDelegate = self
-        presentingController.present(userProfileController, animated:true, completion: nil)
+        presentingController.present(userProfileController, animated:false, completion: nil)
         return
     }
     
@@ -73,7 +73,7 @@ class OnboardingFlowController: BaseFlowController, OnboardingViewDelegate {
         // was not entered.
         
         UserDefaults.standard.set(OnboardingState.OnboardingSkipped.rawValue, forKey: onboardingStateKey)
-        currentController.dismiss(animated: true) { 
+        currentController.dismiss(animated: false) {
             
             
         }
@@ -93,7 +93,7 @@ class OnboardingFlowController: BaseFlowController, OnboardingViewDelegate {
         // the phone number on the validate code screen.
         UserDefaults.standard.set(OnboardingState.OnboardingCompleted.rawValue, forKey: onboardingStateKey)
         currentOnboardingState = OnboardingState.OnboardingCompleted
-        currentController.presentingViewController?.presentingViewController?.dismiss(animated: true) {
+        currentController.presentingViewController?.presentingViewController?.dismiss(animated: false) {
             self.interactorDelegate?.haveFinishedFlow(sender: self)
         }
     }

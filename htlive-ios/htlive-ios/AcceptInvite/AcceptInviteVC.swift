@@ -49,7 +49,10 @@ class AcceptInviteVC : UIViewController {
     }
     
     @IBAction func didTapSkipInviteButton(_ sender: Any) {
-        self.inviteDelegate?.didSkipInvite(currentController: self)
+        
+        self.dismiss(animated:true , completion: {
+            self.inviteDelegate?.didSkipInvite(currentController: self)
+        })
     }
     
     fileprivate func showAlert(title: String?, message: String?) {
