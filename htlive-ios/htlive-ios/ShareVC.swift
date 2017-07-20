@@ -20,16 +20,7 @@ class ShareVC: UIViewController  {
         super.viewDidLoad()
         
         // check if shortcode is provided
-        if(shortCode != nil){
-            trackActionForShortCode(shortCode: shortCode!)
-            return
-        }
-        
-        var currentTrackingLookUpId = getCurrentlyTrackedLookUpId()
-        
-        if(currentTrackingLookUpId != nil){
-            trackHypertrackAction(lookUpId: currentTrackingLookUpId)
-        }
+      
         
         // Do any additional setup after loading the view.
     }
@@ -51,6 +42,17 @@ class ShareVC: UIViewController  {
             hyperTrackMap.embedIn(self.hyperTrackView)
         }
 
+        if(shortCode != nil){
+            trackActionForShortCode(shortCode: shortCode!)
+            return
+        }
+        
+        var currentTrackingLookUpId = getCurrentlyTrackedLookUpId()
+        
+        if(currentTrackingLookUpId != nil){
+            trackHypertrackAction(lookUpId: currentTrackingLookUpId)
+        }
+        
         self.view.hideActivityIndicator()
     }
     

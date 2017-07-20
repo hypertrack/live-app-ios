@@ -14,5 +14,6 @@ target 'htlive-ios' do
   pod 'FSCalendar'
   pod 'PhoneNumberKit', '~> 1.2'
   pod 'MBProgressHUD'
+  pod 'Branch'
 
 end

@@ -12,6 +12,8 @@ class AcceptInviteVC : UIViewController {
     
     public var accountName:String?
     public var accountId:String?
+    public var userId:String?
+
     @IBOutlet weak var accountNameLabel: UILabel!
     
     var inviteDelegate:HyperTrackInviteDelegate? = nil
@@ -38,7 +40,10 @@ class AcceptInviteVC : UIViewController {
             if (error != nil) {
                 self.showAlert(title: "Error", message: error)
             } else {
-                self.inviteDelegate?.didAcceptInvite(currentController: self)
+                self.dismiss(animated:true , completion: { 
+                    self.inviteDelegate?.didAcceptInvite(currentController: self)
+                })
+                
             }
         }
     }

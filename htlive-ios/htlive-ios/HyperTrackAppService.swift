@@ -8,6 +8,7 @@
 
 import UIKit
 import HyperTrack
+import Branch
 
 class HyperTrackAppService: NSObject {
     
@@ -33,6 +34,12 @@ class HyperTrackAppService: NSObject {
     }
     
     func applicationContinue (userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        
+        if (Branch.getInstance().continue(userActivity)) {
+            // do nothing
+            return true
+        }
+
         // handle deeplink here and ask flow interactor to start flows which are needed
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
             let url =  userActivity.webpageURL as NSURL?
@@ -58,5 +65,20 @@ class HyperTrackAppService: NSObject {
     
     func setupBuddyBuild() {
         BuddyBuildSDK.setup()
+    }
+}
+
+
+
+extension HyperTrackAppService {
+    fileprivate func setupBranchDeeplink(launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) {
+        let branch: Branch = Branch.getInstance()
+        branch.initSession(launchOptions: launchOptions) { (params, error) in
+            if (error == nil), (params != nil), (params!["+clicked_branch_link"] as! Bool == true) {
+                // Branch deeplink was clicked, process the params to proceed further
+                print("Branch deeplink params: %@", params?.description as Any)
+//                DeepLinkService.deeplinkService.branchDeeplink(userId: params!["user_id"] as! String, accountId: params!["account_id"] as! String, accountName: params!["account_name"] as! String)
+            }
+        }
     }
 }

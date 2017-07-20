@@ -21,7 +21,9 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
     let inviteFlowController = InviteFlowController()
     
     var flows = [BaseFlowController]()
-
+    
+    var isPresentingAFlow = false
+    
     override init() {
         super.init()
         initializeFlows()
@@ -30,7 +32,6 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
     func initializeFlows(){
         appendController(permissionFlowController)
         appendController(onboardingFlowController)
-        appendController(inviteFlowController)
     }
     
     func appendController(_ controller: BaseFlowController) {
@@ -39,15 +40,19 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
     }
     
     func presentFlowsIfNeeded(){
+        if(!isPresentingAFlow){
             for flowController in self.flows{
                 if(!flowController.isFlowCompleted()){
                     flowController.startFlow(force: false, presentingController: HyperTrackFlowInteractor.topViewController()!)
+                    isPresentingAFlow = true
                     break
                 }
             }
+        }
     }
     
-     static func topViewController() -> UIViewController? {
+    
+    static func topViewController() -> UIViewController? {
         var top = UIApplication.shared.keyWindow?.rootViewController
         while true {
             if let presented = top?.presentedViewController {
@@ -63,16 +68,18 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
         return top
     }
     
-    
-    func showAcceptInviteFlow(){
-        
-    }
-    
     func presentDeeplinkFlow(){
         
     }
     
-   func presentLiveLocationFlow(shortCode : String){
+    func addAcceptInviteFlow(_ userId: String, _ accountId: String, _ accountName: String){
+        inviteFlowController.acccountId = accountId
+        inviteFlowController.userId = userId
+        inviteFlowController.accountName = accountName
+        appendController(inviteFlowController)
+    }
+    
+    func presentLiveLocationFlow(shortCode : String){
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         let liveLocationController = storyboard.instantiateViewController(withIdentifier: "ShareVC") as! ShareVC
         liveLocationController.shortCode = shortCode
@@ -82,9 +89,11 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
     func haveStartedFlow(sender: BaseFlowController) {
         //
     }
-
+    
     func haveFinishedFlow(sender: BaseFlowController) {
-        //
+        isPresentingAFlow = false
+        let index =  flows.index(of: sender)
+        flows.remove(at: index!)
         presentFlowsIfNeeded()
     }
 }
