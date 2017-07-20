@@ -17,10 +17,13 @@ class HyperTrackAppService: NSObject {
 
     func applicationDidFinishLaunchingWithOptions(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         setUpSDKs()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+
+        DispatchQueue.main.async( execute:{
             self.flowInteractor.presentFlowsIfNeeded()
-        }
+            self.setupBranchDeeplink()
+        })
+        
+        
         return true
     }
     
@@ -77,7 +80,7 @@ extension HyperTrackAppService {
             if (error == nil), (params != nil), (params!["+clicked_branch_link"] as! Bool == true) {
                 // Branch deeplink was clicked, process the params to proceed further
                 print("Branch deeplink params: %@", params?.description as Any)
-//                DeepLinkService.deeplinkService.branchDeeplink(userId: params!["user_id"] as! String, accountId: params!["account_id"] as! String, accountName: params!["account_name"] as! String)
+                self.flowInteractor.addAcceptInviteFlow(params!["user_id"] as! String, params!["account_id"] as! String, params!["account_name"] as! String)
             }
         }
     }

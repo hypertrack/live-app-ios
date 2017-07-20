@@ -77,6 +77,7 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
         inviteFlowController.userId = userId
         inviteFlowController.accountName = accountName
         appendController(inviteFlowController)
+        presentFlowsIfNeeded()
     }
     
     func presentLiveLocationFlow(shortCode : String){

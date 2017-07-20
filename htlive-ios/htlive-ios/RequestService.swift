@@ -53,6 +53,6 @@ class RequestService {
     
     func acceptHyperTrackInvite(accountId:String, completionHandler: @escaping (_ error: String?) -> Void) {
         let body = ["account_id": accountId]
-        makeHyperTrackRequest(urlSuffix: "accept_invite/", body: body, completionHandler: completionHandler)
+        makeHyperTrackRequest(urlSuffix: "accept_invite", body: body, completionHandler: completionHandler)
     }
 }

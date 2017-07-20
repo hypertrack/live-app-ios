@@ -70,7 +70,7 @@ class RequestPermissionsVC : UIViewController {
     }
     
     func dismissViewController (){
-        self.dismiss(animated: true, completion: {
+        self.dismiss(animated: false, completion: {
             self.permissionDelegate?.didFinishedAskingPermissions(currentController: self)
         })
     }
