@@ -43,7 +43,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>7</string>
+	<string>8</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -81,12 +81,12 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-    <key>branch_key</key>
-    <dict>
-        <key>live</key>
-        <string>key_live_gdCvQ1d2gOu202mKtHJqsdicqydVND3A</string>
-        <key>test</key>
-        <string>key_test_baCxKZfWoRxX67bGsVJuAkdazvbSPC3P</string>
-    </dict>
+	<key>branch_key</key>
+	<dict>
+		<key>live</key>
+		<string>key_live_gdCvQ1d2gOu202mKtHJqsdicqydVND3A</string>
+		<key>test</key>
+		<string>key_test_baCxKZfWoRxX67bGsVJuAkdazvbSPC3P</string>
+	</dict>
 </dict>
 </plist>
