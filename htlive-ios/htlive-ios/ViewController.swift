@@ -10,7 +10,7 @@ import UIKit
 import HyperTrack
 import FSCalendar
 
-let pink = UIColor(red:0.83, green:0.27, blue:0.70, alpha:1.0)
+let pink = UIColor(red:1.00, green:0.51, blue:0.87, alpha:1.0)
 
 class ViewController: UIViewController {
 
@@ -19,6 +19,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var placeLineTable: UITableView!
     @IBOutlet weak var dateLabel: UILabel!
     var segments: [HyperTrackActivity] = []
+    var selectedIndexPath : IndexPath? = nil
+    var noResults = false
     
     @IBOutlet weak var calendarArrow: UIImageView!
     @IBAction func calendarTap(_ sender: Any) {
@@ -70,17 +72,19 @@ class ViewController: UIViewController {
     func getPlaceLineData(){
         if(HyperTrack.getUserId() != nil) {
             HyperTrack.getPlaceline { (placeLine, error) in
-                guard let fetchedPlaceLine = placeLine else {
-                    return
-                }
-                if let segments = fetchedPlaceLine.segments {
+            guard let fetchedPlaceLine = placeLine else { return }
+            if let segments = fetchedPlaceLine.segments {
                     self.segments = segments
+                if segments.count == 0 {
+                    self.noResults = true
+                } else {
+                    self.noResults = false
+                }
                     self.placeLineTable.reloadData()
                 }
                 
             }
         }
- 
     }
     
     
@@ -100,8 +104,6 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
     }
     
     
-    
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
        return 72
@@ -111,7 +113,6 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         
         return 1
     }
-    
     
     func getTopVisibleRow() {
         
@@ -126,11 +127,20 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! placeCell
         cell.layer.backgroundColor = UIColor.clear.cgColor
         if segments.count != 0 {
-                cell.setStats(activity: segments[indexPath.row])
+            cell.setStats(activity: segments[indexPath.row])
         } else {
-            cell.loading()
+            
+            if self.noResults {
+                cell.noResults()
+            } else {
+                cell.loading()
+            }
         }
         cell.selectionStyle = .none
+        
+        if(selectedIndexPath?.row != indexPath.row) || (cell.status.text == "Loading Placeline.."){
+            cell.normalize()
+        }
         return cell
         
     }
@@ -138,17 +148,15 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        print(indexPath)
         guard let cell = placeLineTable.cellForRow(at: indexPath) as? placeCell else { return }
         placeLineTable.scrollToRow(at: indexPath, at: .middle, animated: true)
-
-        cell.select()
         
+        cell.select()
+        selectedIndexPath = indexPath
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         
-        print(indexPath)
         let cell = tableView.cellForRow(at: indexPath) as? placeCell
         cell?.deselect()
     }
@@ -160,8 +168,13 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
 extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        print(date)
+        
+//        let currentDate = Date()
+//        guard date > currentDate else { return }
         self.dateLabel.text = date.toString(dateFormat: "dd MMMM")
+        self.noResults = false
+        self.segments = []
+        self.placeLineTable.reloadData()
         getPlacelineForDate(date: date)
         collapseCalendar()
         
@@ -199,6 +212,13 @@ extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
             guard let fetchedPlaceLine = placeLine else { return }
             if let segments = fetchedPlaceLine.segments {
                 self.segments = segments
+                
+                if segments.count == 0 {
+                    self.noResults = true
+                } else {
+                    self.noResults = false
+                }
+                
                 self.placeLineTable.reloadData()
             }
         }

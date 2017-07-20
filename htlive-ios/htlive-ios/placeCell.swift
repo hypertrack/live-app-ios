@@ -33,6 +33,16 @@ class placeCell : UITableViewCell {
         
     }
     
+    func noResults() {
+        
+        self.startTime.text = "- : -"
+        self.endTime.text = "- : -"
+        self.stats.text = "No placeline today "
+        self.status.text = "Nothing here yet!"
+        self.icon.image = #imageLiteral(resourceName: "ninja")
+        
+    }
+    
     func addRefresher() {
         
         let refresher = UIActivityIndicatorView(frame : CGRect(x: 100, y: 23, width: 20, height: 20))
@@ -55,9 +65,10 @@ class placeCell : UITableViewCell {
     }
     
     func select() {
-        UIView.transition(with: placeCard, duration: 0.2, options: .transitionCrossDissolve, animations: {
-            self.placeCard.borderColor = pink
-            self.placeCard.borderWidth = 2
+        guard self.status.text != "Loading Placeline.." else { return }
+        UIView.transition(with: placeCard, duration: 0.1, options: .transitionCrossDissolve, animations: {
+            self.status.textColor = UIColor.white
+            self.placeCard.backgroundColor = pink
         }, completion: nil)
         
     
@@ -65,10 +76,16 @@ class placeCell : UITableViewCell {
     
     func deselect() {
         
-        UIView.transition(with: placeCard, duration: 0.2, options: .transitionCrossDissolve, animations: {
-        self.placeCard.borderWidth = 1
-        self.placeCard.borderColor = UIColor.black.withAlphaComponent(0.05)
+        UIView.transition(with: placeCard, duration: 0.05, options: .transitionCrossDissolve, animations: {
+            self.status.textColor = UIColor.black
+            self.placeCard.backgroundColor = UIColor.white
         }, completion: nil)
+    }
+    
+    func normalize() {
+        
+        self.status.textColor = UIColor.black
+        self.placeCard.backgroundColor = UIColor.white
     }
     
     func setStats(activity : HyperTrackActivity) {

@@ -15,19 +15,19 @@
             <rect key="frame" x="0.0" y="0.0" width="364" height="86"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nIT-s6-beJ" userLabel="placeCard">
-                    <rect key="frame" x="0.0" y="0.0" width="364" height="68"/>
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nIT-s6-beJ" userLabel="placeCard">
+                    <rect key="frame" x="0.0" y="-2" width="364" height="68"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iRb-qK-vUp" userLabel="verticalDivider">
                             <rect key="frame" x="80" y="0.0" width="1" height="68"/>
-                            <color key="backgroundColor" red="0.84705882352941175" green="0.8666666666666667" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.079331517584097858" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="1" id="Cg3-Zl-NfW"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bM8-D9-XDu" userLabel="horizontalDivider">
                             <rect key="frame" x="0.0" y="33.5" width="80" height="1"/>
-                            <color key="backgroundColor" red="0.84705882352941175" green="0.8666666666666667" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.080000000000000002" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="DNd-sD-8gr"/>
                             </constraints>
