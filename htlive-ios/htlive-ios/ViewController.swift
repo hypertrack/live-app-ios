@@ -55,7 +55,14 @@ class ViewController: UIViewController {
         placeLineTable.register(UINib(nibName: "placeCell", bundle: nil), forCellReuseIdentifier: "placeCell")
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.userCreated), name: NSNotification.Name(rawValue:HTLiveConstants.userCreatedNotification), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
 
+    }
+    
+    
+    func onForegroundNotification(_ notification: Notification){
+        getPlaceLineData()
     }
     
     func userCreated(_ notification: Notification) {
@@ -74,7 +81,7 @@ class ViewController: UIViewController {
             HyperTrack.getPlaceline { (placeLine, error) in
             guard let fetchedPlaceLine = placeLine else { return }
             if let segments = fetchedPlaceLine.segments {
-                    self.segments = segments
+                self.segments = segments.reversed()
                 if segments.count == 0 {
                     self.noResults = true
                 } else {
@@ -211,7 +218,7 @@ extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
         HyperTrack.getPlaceline(date: date) { (placeLine, error) in
             guard let fetchedPlaceLine = placeLine else { return }
             if let segments = fetchedPlaceLine.segments {
-                self.segments = segments
+                self.segments = segments.reversed()
                 
                 if segments.count == 0 {
                     self.noResults = true
