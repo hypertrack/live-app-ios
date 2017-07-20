@@ -229,9 +229,10 @@ extension UserProfileVC : UIImagePickerControllerDelegate, UINavigationControlle
     
     func pickFromCamera() {
         picker.allowsEditing = true
-        picker.sourceType = .camera
         picker.cameraCaptureMode = .photo
         picker.modalPresentationStyle = .fullScreen
+        picker.sourceType = UIImagePickerController.isSourceTypeAvailable(.camera) ? .camera : .photoLibrary
+        picker.cameraDevice = UIImagePickerController.isCameraDeviceAvailable(.front) ? .front : .rear
         present(picker, animated: true, completion: nil)
     }
     
