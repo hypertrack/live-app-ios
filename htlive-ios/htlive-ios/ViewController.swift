@@ -245,24 +245,13 @@ extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
 
 }
 
-extension ViewController: MFMailComposeViewControllerDelegate{
+extension ViewController {
    
     func onTap(sender:UITapGestureRecognizer) {
-        let mailComposeViewController = configuredMailComposeViewController()
-        if MFMailComposeViewController.canSendMail() {
-            self.present(mailComposeViewController, animated: true, completion: nil)
-        } else {
-            self.showSendMailErrorAlert()
-        }
+      shareLogs()
     }
     
-    func configuredMailComposeViewController() -> MFMailComposeViewController {
-        let mailComposerVC = MFMailComposeViewController()
-        mailComposerVC.mailComposeDelegate = self
-        mailComposerVC.setToRecipients(["ravi@hypertrack.io"])
-        let subject = "Hypertrack logs" + HyperTrack.getUserId()!
-        mailComposerVC.setSubject(subject)
-        mailComposerVC.setMessageBody("", isHTML: false)
+    func shareLogs() {
         
         if let baseURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first {
 
@@ -273,33 +262,21 @@ extension ViewController: MFMailComposeViewControllerDelegate{
                                                                 return true
             })!
             
-            
+            var urlPaths = [URL]()
             for case let fileURL as URL in enumerator {
                 if(fileURL.absoluteString.hasSuffix("txt")){
+                    
                     if let fileData = NSData(contentsOfFile: fileURL.path) {
-                        mailComposerVC.addAttachmentData(fileData as Data, mimeType: "text/rtf", fileName: "HyperTrack.log")
+                        urlPaths.append(fileURL)
+                        let activityController = UIActivityViewController(activityItems: urlPaths, applicationActivities: nil)
+                        self.present(activityController, animated: true, completion: nil)
+                        break
+
                     }
                 }
-            
             }
+            
         }
         
-        
-        return mailComposerVC
     }
-    
-    func showSendMailErrorAlert() {
-        let sendMailErrorAlert = UIAlertView(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", delegate: self, cancelButtonTitle: "OK")
-        sendMailErrorAlert.show()
-    }
-    
-
-    
-    
-    public func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?){
-    
-        controller.dismiss(animated: true, completion: nil)
-    }
-    
-    
 }
