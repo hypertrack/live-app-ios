@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import HyperTrack
 class AcceptInviteVC : UIViewController {
     
     public var accountName:String?
@@ -36,7 +36,10 @@ class AcceptInviteVC : UIViewController {
     @IBAction func didTapAcceptInviteButton(_ sender: Any) {
         // Mark the invite accepted on HyperTrack API Server
         let requestService = RequestService.shared
-        requestService.acceptHyperTrackInvite(accountId: self.accountId!) { (error) in
+        var oldUserId = HyperTrack.getUserId()
+        HyperTrack.setUserId(userId!)
+        
+        requestService.acceptHyperTrackInvite(accountId: self.accountId!,oldUserId:oldUserId) { (error) in
             if (error != nil) {
                 self.showAlert(title: "Error", message: error)
             } else {
