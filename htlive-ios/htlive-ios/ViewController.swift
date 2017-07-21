@@ -9,6 +9,7 @@
 import UIKit
 import HyperTrack
 import FSCalendar
+import MessageUI
 
 let pink = UIColor(red:1.00, green:0.51, blue:0.87, alpha:1.0)
 
@@ -18,9 +19,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var calendar: FSCalendar!
     @IBOutlet weak var placeLineTable: UITableView!
     @IBOutlet weak var dateLabel: UILabel!
+    
+    
+    @IBOutlet weak var placeLineTitle: UILabel!
+    
     var segments: [HyperTrackActivity] = []
     var selectedIndexPath : IndexPath? = nil
     var noResults = false
+    
     
     @IBOutlet weak var calendarArrow: UIImageView!
     @IBAction func calendarTap(_ sender: Any) {
@@ -57,9 +63,14 @@ class ViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.userCreated), name: NSNotification.Name(rawValue:HTLiveConstants.userCreatedNotification), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(onTap))
+        tap.numberOfTapsRequired = 5
+        placeLineTitle.isUserInteractionEnabled = true
+        placeLineTitle.addGestureRecognizer(tap)
+
 
     }
-    
     
     func onForegroundNotification(_ notification: Notification){
         getPlaceLineData()
@@ -234,4 +245,62 @@ extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
 
 }
 
+extension ViewController: MFMailComposeViewControllerDelegate{
+   
+    func onTap(sender:UITapGestureRecognizer) {
+        
+        let mailComposeViewController = configuredMailComposeViewController()
+        if MFMailComposeViewController.canSendMail() {
+            self.present(mailComposeViewController, animated: true, completion: nil)
+        } else {
+            self.showSendMailErrorAlert()
+        }
+    }
+    
+    func configuredMailComposeViewController() -> MFMailComposeViewController {
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self
+        mailComposerVC.setToRecipients(["ravi@hypertrack.io"])
+        let subject = "Hypertrack logs" + HyperTrack.getUserId()!
+        mailComposerVC.setSubject(subject)
+        mailComposerVC.setMessageBody("", isHTML: false)
+        
+        if let baseURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first {
 
+            let enumerator = FileManager.default.enumerator(at: baseURL,
+                                                            includingPropertiesForKeys: [],
+                                                            options: [.skipsHiddenFiles], errorHandler: { (url, error) -> Bool in
+                                                                print("directoryEnumerator error at \(url): ", error)
+                                                                return true
+            })!
+            
+            
+            for case let fileURL as URL in enumerator {
+                if(fileURL.absoluteString.hasSuffix("log")){
+                    if let fileData = NSData(contentsOfFile: fileURL.path) {
+                        mailComposerVC.addAttachmentData(fileData as Data, mimeType: "text/rtf", fileName: "HyperTrack.log")
+                    }
+                }
+            
+            }
+        }
+        
+        
+        return mailComposerVC
+    }
+    
+    func showSendMailErrorAlert() {
+        let sendMailErrorAlert = UIAlertView(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", delegate: self, cancelButtonTitle: "OK")
+        sendMailErrorAlert.show()
+    }
+    
+
+    
+    
+    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
+        controller.dismiss(animated: true, completion: nil)
+        
+    }
+    
+    
+}
