@@ -33,6 +33,8 @@ class ShareVC: UIViewController  {
     
     override func viewDidAppear(_ animated: Bool) {
         
+        self.view.hideActivityIndicator()
+
         let hyperTrackMap = HyperTrack.map()
         
         hyperTrackMap.setHTViewCustomizationDelegate(customizationDelegate: self)
@@ -53,7 +55,6 @@ class ShareVC: UIViewController  {
             trackHypertrackAction(lookUpId: currentTrackingLookUpId)
         }
         
-        self.view.hideActivityIndicator()
     }
     
     override func didReceiveMemoryWarning() {
@@ -90,6 +91,9 @@ class ShareVC: UIViewController  {
                     }
                     
                 } else{
+                    
+                    self.view.hideActivityIndicator(animate: true)
+
                     HyperTrack.trackActionFor(shortCode:shortCode, completionHandler: { (action, error) in
                         self.view.hideActivityIndicator(animate: true)
                         
