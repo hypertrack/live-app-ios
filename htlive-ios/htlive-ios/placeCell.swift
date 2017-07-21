@@ -66,6 +66,9 @@ class placeCell : UITableViewCell {
     
     func select() {
         guard self.status.text != "Loading Placeline.." else { return }
+        guard self.status.text != "Nothing here yet!" else { return }
+
+        
         UIView.transition(with: placeCard, duration: 0.1, options: .transitionCrossDissolve, animations: {
             self.status.textColor = UIColor.white
             self.placeCard.backgroundColor = pink
