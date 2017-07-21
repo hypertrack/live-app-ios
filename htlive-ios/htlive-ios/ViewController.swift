@@ -65,7 +65,7 @@ class ViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(onTap))
-        tap.numberOfTapsRequired = 5
+        tap.numberOfTapsRequired = 2
         placeLineTitle.isUserInteractionEnabled = true
         placeLineTitle.addGestureRecognizer(tap)
 
@@ -248,7 +248,6 @@ extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
 extension ViewController: MFMailComposeViewControllerDelegate{
    
     func onTap(sender:UITapGestureRecognizer) {
-        
         let mailComposeViewController = configuredMailComposeViewController()
         if MFMailComposeViewController.canSendMail() {
             self.present(mailComposeViewController, animated: true, completion: nil)
@@ -276,7 +275,7 @@ extension ViewController: MFMailComposeViewControllerDelegate{
             
             
             for case let fileURL as URL in enumerator {
-                if(fileURL.absoluteString.hasSuffix("log")){
+                if(fileURL.absoluteString.hasSuffix("txt")){
                     if let fileData = NSData(contentsOfFile: fileURL.path) {
                         mailComposerVC.addAttachmentData(fileData as Data, mimeType: "text/rtf", fileName: "HyperTrack.log")
                     }
@@ -297,9 +296,9 @@ extension ViewController: MFMailComposeViewControllerDelegate{
 
     
     
-    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
+    public func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?){
+    
         controller.dismiss(animated: true, completion: nil)
-        
     }
     
     
