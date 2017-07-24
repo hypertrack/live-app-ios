@@ -15,5 +15,5 @@ target 'htlive-ios' do
   pod 'PhoneNumberKit', '~> 1.2'
   pod 'MBProgressHUD'
   pod 'Branch'
-
+  pod 'Crashlytics'
 end
