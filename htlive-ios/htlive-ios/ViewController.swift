@@ -186,14 +186,18 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
             self.mapView.remove(polyLine!)
 
         }
-        showDataOnMapForActivity(activithy: segments[indexPath.row])
-        cell.select()
-        
-        if(selectedIndexPath != nil && selectedIndexPath?.row != indexPath.row){
-            var  oldCell = self.placeLineTable.cellForRow(at: selectedIndexPath!) as? placeCell
-            oldCell?.normalize()
+        if(!self.noResults){
+            
+            showDataOnMapForActivity(activithy: segments[indexPath.row])
+            cell.select()
+            
+            if(selectedIndexPath != nil && selectedIndexPath?.row != indexPath.row){
+                var  oldCell = self.placeLineTable.cellForRow(at: selectedIndexPath!) as? placeCell
+                oldCell?.normalize()
+            }
+            selectedIndexPath = indexPath
+
         }
-        selectedIndexPath = indexPath
         
     }
     
@@ -241,6 +245,7 @@ extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
         self.dateLabel.text = date.toString(dateFormat: "dd MMMM")
         self.noResults = false
         self.segments = []
+        self.placeLineTable.reloadData()
         getPlacelineForDate(date: date)
         collapseCalendar()
         
@@ -272,6 +277,8 @@ extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
     func getPlacelineForDate(date : Date) {
         
         self.segments = []
+        self.placeLineTable.reloadData()
+        
         HyperTrack.getPlaceline(date: date) { (placeLine, error) in
             guard let fetchedPlaceLine = placeLine else { return }
             if let segments = fetchedPlaceLine.segments {

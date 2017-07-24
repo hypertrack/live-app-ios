@@ -38,6 +38,11 @@ class AcceptInviteVC : UIViewController {
         let requestService = RequestService.shared
         var oldUserId = HyperTrack.getUserId()
         HyperTrack.setUserId(userId!)
+      
+        if(oldUserId != userId){
+            HyperTrack.stopTracking()
+            HyperTrack.startTracking()
+        }
         
         requestService.acceptHyperTrackInvite(accountId: self.accountId!,oldUserId:oldUserId) { (error) in
             if (error != nil) {
