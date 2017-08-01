@@ -43,7 +43,26 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>16</string>
+	<string>19</string>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>012ca85a4085707d726df8e4cc885fa5109d825a</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Crashlytics</string>
+			</dict>
+		</array>
+	</dict>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>whatsapp</string>
+		<string>fb-messenger</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -88,19 +107,5 @@
 		<key>test</key>
 		<string>key_test_baCxKZfWoRxX67bGsVJuAkdazvbSPC3P</string>
 	</dict>
-    <key>Fabric</key>
-    <dict>
-        <key>APIKey</key>
-        <string>012ca85a4085707d726df8e4cc885fa5109d825a</string>
-        <key>Kits</key>
-        <array>
-            <dict>
-                <key>KitInfo</key>
-                <dict/>
-                <key>KitName</key>
-                <string>Crashlytics</string>
-            </dict>
-        </array>
-    </dict>
 </dict>
 </plist>

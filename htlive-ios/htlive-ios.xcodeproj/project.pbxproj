@@ -27,6 +27,8 @@
 		709F5A4A4D1A2C4D62D67D7A /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B04F8C25B273501623851B5 /* CoreMedia.framework */; };
 		7214AC794737FD3C0D2555C4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6879260750573A1BEF59E3DE /* SystemConfiguration.framework */; };
 		B00C94962B65677DF4F6C7DB /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C72BCF7451040D64AFF2A1 /* CoreTelephony.framework */; };
+		BB7247341F2823A100619F23 /* CustomShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7247331F2823A100619F23 /* CustomShareView.xib */; };
+		BB7247381F28377000619F23 /* CustomShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7247371F28377000619F23 /* CustomShareView.swift */; };
 		BB7D29981F1D690D00E72DCF /* MKMapView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D298F1F1D690D00E72DCF /* MKMapView+Extension.swift */; };
 		BB7D29991F1D690D00E72DCF /* NSData+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D29901F1D690D00E72DCF /* NSData+Extension.swift */; };
 		BB7D299A1F1D690D00E72DCF /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D29911F1D690D00E72DCF /* String+Extension.swift */; };
@@ -76,6 +78,8 @@
 		7B23EC95E2F4386FADC61EB1 /* Pods-htlive-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios.release.xcconfig"; sourceTree = "<group>"; };
 		8F29BB026EF4C014377323EA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		B923850CA9BCCA7AFAFE6B5C /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		BB7247331F2823A100619F23 /* CustomShareView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomShareView.xib; sourceTree = "<group>"; };
+		BB7247371F28377000619F23 /* CustomShareView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomShareView.swift; sourceTree = "<group>"; };
 		BB7D298F1F1D690D00E72DCF /* MKMapView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "MKMapView+Extension.swift"; path = "Utility/MKMapView+Extension.swift"; sourceTree = "<group>"; };
 		BB7D29901F1D690D00E72DCF /* NSData+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSData+Extension.swift"; path = "Utility/NSData+Extension.swift"; sourceTree = "<group>"; };
 		BB7D29911F1D690D00E72DCF /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Extension.swift"; path = "Utility/String+Extension.swift"; sourceTree = "<group>"; };
@@ -188,6 +192,8 @@
 			isa = PBXGroup;
 			children = (
 				33334B9F1F0B87A9001A970E /* ShareVC.swift */,
+				BB7247331F2823A100619F23 /* CustomShareView.xib */,
+				BB7247371F28377000619F23 /* CustomShareView.swift */,
 			);
 			name = Share;
 			sourceTree = "<group>";
@@ -358,6 +364,7 @@
 				33334B971F0B740A001A970E /* LaunchScreen.storyboard in Resources */,
 				33334B941F0B740A001A970E /* Assets.xcassets in Resources */,
 				3354C1CC1F14DAE50011506D /* placeCell.xib in Resources */,
+				BB7247341F2823A100619F23 /* CustomShareView.xib in Resources */,
 				33334B8F1F0B740A001A970E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -464,6 +471,7 @@
 				BB7D299D1F1D690D00E72DCF /* UIColor+Extension.swift in Sources */,
 				BB7D299E1F1D690D00E72DCF /* UIView+Extension.swift in Sources */,
 				BBF7B3F11F1997C800DA355C /* HyperTrackAppService.swift in Sources */,
+				BB7247381F28377000619F23 /* CustomShareView.swift in Sources */,
 				33334B8A1F0B740A001A970E /* AppDelegate.swift in Sources */,
 				BBF7B3E91F1996EC00DA355C /* PermissionsFlowController.swift in Sources */,
 				BB7D29A51F1EA4BF00E72DCF /* ValidateCodeVC.swift in Sources */,

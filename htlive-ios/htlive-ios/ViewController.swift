@@ -374,7 +374,7 @@ extension ViewController : MKMapViewDelegate {
 
     func centerMapOnLocation(location: CLLocation)
     {
-        focusMarkers(markers: annotations, width: 0.005)
+        focusMarkers(markers: annotations, width: 0.01)
 //        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
 //                                                                  regionRadius * 2.0, regionRadius * 2.0)
 //        mapView.setRegion(coordinateRegion, animated: true)
@@ -494,16 +494,16 @@ extension ViewController : MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         let marker = MKAnnotationView()
-        marker.frame = CGRect(x:0,y:0,width:30.0,height:30.0)
+        marker.frame = CGRect(x:0,y:0,width:20.0,height:20.0)
         let bundle = Bundle(for: ViewController.self)
         if let title = annotation.title{
             if(title == "start"){
-                marker.image =  UIImage.init(named: "stopOrEnd", in: bundle, compatibleWith: nil)?.resizeImage(newWidth: 30.0)
+                marker.image =  UIImage.init(named: "stopOrEnd", in: bundle, compatibleWith: nil)?.resizeImage(newWidth: 20.0)
             }else if (title == "stop"){
-                marker.image =  UIImage.init(named: "stopOrEnd", in: bundle, compatibleWith: nil)?.resizeImage(newWidth: 30.0)
+                marker.image =  UIImage.init(named: "destinationMarkerc", in: bundle, compatibleWith: nil)?.resizeImage(newWidth: 20.0)
             }
             else if (title == "point"){
-                marker.image =  UIImage.init(named: "origin", in: bundle, compatibleWith: nil)?.resizeImage(newWidth: 30.0)
+                marker.image =  UIImage.init(named: "origin", in: bundle, compatibleWith: nil)?.resizeImage(newWidth: 20.0)
 
             }
         }

@@ -9,18 +9,21 @@
 import UIKit
 import HyperTrack
 import MapKit
+import CoreGraphics
+import Contacts
+import MessageUI
 
 class ShareVC: UIViewController  {
     
     @IBOutlet fileprivate weak var hyperTrackView: UIView!
     let locationManager = CLLocationManager()
     var shortCode : String?
-    
+    var hyperTrackMap : HTMap? = nil
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // check if shortcode is provided
-      
+        
         
         // Do any additional setup after loading the view.
     }
@@ -34,26 +37,32 @@ class ShareVC: UIViewController  {
     override func viewDidAppear(_ animated: Bool) {
         
         self.view.hideActivityIndicator()
-
-        let hyperTrackMap = HyperTrack.map()
         
-        hyperTrackMap.setHTViewCustomizationDelegate(customizationDelegate: self)
-        hyperTrackMap.setHTViewInteractionDelegate(interactionDelegate: self)
-        
-        if (self.hyperTrackView != nil) {
-            hyperTrackMap.embedIn(self.hyperTrackView)
+        if(hyperTrackMap == nil){
+          
+            hyperTrackMap = HyperTrack.map()
+            hyperTrackMap?.enableLiveLocationSharingView = true
+            
+            hyperTrackMap?.setHTViewCustomizationDelegate(customizationDelegate: self)
+            hyperTrackMap?.setHTViewInteractionDelegate(interactionDelegate: self)
+            
+            if (self.hyperTrackView != nil) {
+                hyperTrackMap?.embedIn(self.hyperTrackView)
+            }
         }
-
-        if(shortCode != nil){
-            trackActionForShortCode(shortCode: shortCode!)
-            return
-        }
         
-        var currentTrackingLookUpId = getCurrentlyTrackedLookUpId()
+      
         
-        if(currentTrackingLookUpId != nil){
-            trackHypertrackAction(lookUpId: currentTrackingLookUpId)
-        }
+        //        if(shortCode != nil){
+        //            trackActionForShortCode(shortCode: shortCode!)
+        //            return
+        //        }
+        //
+        //        var currentTrackingLookUpId = getCurrentlyTrackedLookUpId()
+        //
+        //        if(currentTrackingLookUpId != nil){
+        //            trackHypertrackAction(lookUpId: currentTrackingLookUpId)
+        //        }
         
     }
     
@@ -93,7 +102,7 @@ class ShareVC: UIViewController  {
                 } else{
                     
                     self.view.hideActivityIndicator(animate: true)
-
+                    
                     HyperTrack.trackActionFor(shortCode:shortCode, completionHandler: { (action, error) in
                         self.view.hideActivityIndicator(animate: true)
                         
@@ -105,7 +114,7 @@ class ShareVC: UIViewController  {
                 }
             })
         }
-
+        
     }
     
     fileprivate var error: NSError {
@@ -126,7 +135,7 @@ class ShareVC: UIViewController  {
 
 extension ShareVC:HTViewCustomizationDelegate{
     
-    func enableLiveLocationSharingView(map: HTMap) -> Bool {
+    func showInfoViewForActionID(map: HTMap, actionID: String) -> Bool{
         return true
     }
 }
@@ -152,15 +161,16 @@ extension ShareVC:HTViewInteractionDelegate {
         }
     }
     
+    
     func didTapStartLiveLocationSharing(place : HyperTrackPlace) {
-        self.view.showActivityIndicator()
+        
         startLiveLocationSharingAction(lookUpId: nil, place: place) { (lookUpId, error) in
-            self.view.hideActivityIndicator()
             if let _ = error {
                 self.showAlert(title: "Error", message: error?.localizedDescription)
                 return
             }
             else{
+                
                 self.saveLookUpId(lookUpId: lookUpId!)
             }
             
@@ -168,13 +178,26 @@ extension ShareVC:HTViewInteractionDelegate {
     }
     
     func didTapStopLiveLocationSharing(actionId : String){
-        self.view.showActivityIndicator()
-        HyperTrack.completeAction(actionId)
-        deleteTrackedLookUpId()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { // in half a second...
-            self.view.hideActivityIndicator(animate: true)
-        }
+//        self.view.showActivityIndicator()
         
+        let alert = UIAlertController(title: "End Tracking", message: "Are you sure ?", preferredStyle: .alert)
+        
+        let no: UIAlertAction = UIAlertAction.init(title: "No", style: .cancel, handler: {(alert: UIAlertAction!) in
+        })
+        
+        let yes :UIAlertAction = UIAlertAction.init(title: "Yes", style: .default, handler: {(alert: UIAlertAction!) in
+             HyperTrack.completeAction(actionId)
+        })
+
+        alert.addAction(no)
+        alert.addAction(yes)
+
+        self.present(alert, animated: true, completion: nil)
+
+    }
+    
+    func didTapShareLiveLocationLink(action : HyperTrackAction){
+        self.shareLink(action: action)
     }
     
     func startLiveLocationSharingAction(lookUpId : String?, place : HyperTrackPlace?, completion: @escaping ((_ lookUpId:String?,Error?) -> Void)) {
@@ -204,6 +227,8 @@ extension ShareVC:HTViewInteractionDelegate {
                         return
                     }
                 })
+                
+                
                 self.shareLink(action: action)
                 completion(action.lookupId,nil)
                 return
@@ -213,8 +238,8 @@ extension ShareVC:HTViewInteractionDelegate {
     
     func trackHypertrackAction(lookUpId:String?) {
         
-        self.view.showActivityIndicator()
-
+        //        self.view.showActivityIndicator()
+        
         HyperTrack.trackActionFor(lookUpId: lookUpId!) { (actions, error) in
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) { // in half a second...
                 self.view.hideActivityIndicator(animate: true)
@@ -234,21 +259,44 @@ extension ShareVC:HTViewInteractionDelegate {
         formatter.amSymbol = "AM"
         formatter.pmSymbol = "PM"
         
-        let dateString = formatter.string(from: action.eta!)
-        // text to share
-        let text = "I'm on my way. Will be there by " + dateString +  ". Track me live " + action.trackingUrl!
+        let shareView: CustomShareView = Bundle.main.loadNibNamed("CustomShareView", owner: self, options: nil)?.first as! CustomShareView
         
-        // set up activity view controller
-        let textToShare = [ text ]
-        let activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
+        shareView.shareDelegate = self
         
-        // exclude some activity types from the list (optional)
-        activityViewController.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook ]
+        if(action.eta != nil){
+            
+            let dateString = formatter.string(from: action.eta!)
+            
+            var etaMinutes = 0.0
+            
+            let actionDisplay = action.display
+            if (actionDisplay != nil) {
+                if let duration = actionDisplay!.durationRemaining {
+                    let timeRemaining = duration
+                    etaMinutes = Double(timeRemaining / 60)
+                    shareView.etaLabel.text = "You're " + etaMinutes.description + " min away!"
+                }
+            }
+            // text to share
+            let text = "I'm on my way. Will be there by " + dateString +  ". Track me live " + action.trackingUrl!
+            shareView.linkText = text
+        }
+        else{
+            shareView.etaLabel.text = ""
+            let text = "I'm on my way. Track me live " + action.trackingUrl!
+            shareView.linkText = text
+        }
         
-        // present the view controller
-        self.present(activityViewController, animated: true, completion: nil)
         
+        self.view.addSubview(shareView)
+        
+        shareView.linkLabel.text = action.trackingUrl!
+        
+        shareView.frame = CGRect(x:0,y:(self.view.frame.height + (shareView.frame.size.height)),width : self.view.frame.size.width,height:shareView.frame.size.height)
+        UIView.animate(withDuration: 0.5, animations: {
+            shareView.frame = CGRect(x:0,y:(self.view.frame.height-(shareView.frame.size.height)),width : self.view.frame.size.width,height:shareView.frame.size.height)
+            
+        })
     }
     
     func saveLookUpId(lookUpId : String?){
@@ -265,3 +313,57 @@ extension ShareVC:HTViewInteractionDelegate {
     }
     
 }
+
+extension ShareVC : CustomShareViewDelegate,MFMessageComposeViewControllerDelegate{
+    
+    func didClickOnShare(view : CustomShareView){
+        //set up activity view controller
+        let textToShare = [view.linkText]
+        let activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
+        
+        // exclude some activity types from the list (optional)
+        activityViewController.excludedActivityTypes = [ UIActivityType.airDrop ]
+        
+        // present the view controller
+        self.present(activityViewController, animated: true, completion: nil)
+        
+    }
+    func didClickOnMessenger(view : CustomShareView){
+        let urlStr = "fb-messenger://share?link=" + view.linkLabel.text!
+        if let url = URL.init(string: urlStr) {
+            NSLog(urlStr)
+            if(UIApplication.shared.canOpenURL(url)){
+                UIApplication.shared.open(url, options: [:], completionHandler: { (shared) in
+                })
+            }
+        }
+    }
+    func didClickOnWhatsapp(view : CustomShareView){
+        let urlStr = "whatsapp://send?text=" +  view.linkLabel.text!
+        if let url = URL.init(string: urlStr) {
+            if(UIApplication.shared.canOpenURL(url)){
+                UIApplication.shared.open(url, options: [:], completionHandler: { (shared) in
+                })
+            }
+        }
+    }
+   
+    func didClickOnMessages(view : CustomShareView){
+        
+        if MFMessageComposeViewController.canSendText() == true {
+            let messageController = MFMessageComposeViewController()
+            messageController.messageComposeDelegate  = self
+            messageController.body = view.linkText
+            self.present(messageController, animated: true, completion: nil)
+        } else {
+            //handle text messaging not available
+        }
+    }
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult){
+        controller.dismiss(animated: true, completion: nil)
+    }
+
+}
+
+
