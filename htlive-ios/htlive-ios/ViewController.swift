@@ -170,6 +170,8 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         
         if(selectedIndexPath?.row != indexPath.row) || (cell.status.text == "Loading Placeline.."){
             cell.normalize()
+        }else if (selectedIndexPath?.row == indexPath.row){
+            cell.select()
         }
         return cell
         
@@ -181,6 +183,7 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         guard let cell = placeLineTable.cellForRow(at: indexPath) as? placeCell else { return }
         placeLineTable.scrollToRow(at: indexPath, at: .middle, animated: true)
         self.mapView.removeAnnotations(annotations)
+        self.mapView.removeOverlays(self.mapView.overlays)
         annotations = [MKPointAnnotation]()
         if(polyLine != nil){
             self.mapView.remove(polyLine!)
@@ -368,30 +371,17 @@ extension ViewController : MKMapViewDelegate {
         }
         
         
-        focusMarkers(markers: annotations,width: 0.1)
+        focusMarkers(markers: annotations,width: 0.01)
     }
     
 
     func centerMapOnLocation(location: CLLocation)
     {
-        focusMarkers(markers: annotations, width: 0.01)
-//        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
-//                                                                  regionRadius * 2.0, regionRadius * 2.0)
-//        mapView.setRegion(coordinateRegion, animated: true)
+        focusMarkers(markers: annotations, width: 0.5)
     }
     
     func focusMarkers(markers : [MKPointAnnotation?],width:Double){
-        
-//        if(markers.count == 1){
-//            var region : MKCoordinateRegion?
-//            region =    MKCoordinateRegionMake(
-//                (markers.first!!.coordinate),
-//                MKCoordinateSpanMake(0.005, 0.005))
-//            self.mapView.setRegion(region!, animated: true)
-//            return
-//        }
-        
-        var zoomRect:MKMapRect = MKMapRectNull
+      var zoomRect:MKMapRect = MKMapRectNull
         
         for index in 0..<markers.count {
             let annotation = markers[index]
@@ -498,13 +488,13 @@ extension ViewController : MKMapViewDelegate {
         let bundle = Bundle(for: ViewController.self)
         if let title = annotation.title{
             if(title == "start"){
-                marker.image =  UIImage.init(named: "stopOrEnd", in: bundle, compatibleWith: nil)?.resizeImage(newWidth: 20.0)
+                let image = UIImage.init(named: "stopOrEnd", in: bundle, compatibleWith: nil)
+                marker.image =  image?.resizeImage(newWidth: 15.0)
             }else if (title == "stop"){
-                marker.image =  UIImage.init(named: "destinationMarkerc", in: bundle, compatibleWith: nil)?.resizeImage(newWidth: 20.0)
+                marker.image =  UIImage.init(named: "destinationMarker", in: bundle, compatibleWith: nil)?.resizeImage(newWidth: 30.0)
             }
             else if (title == "point"){
-                marker.image =  UIImage.init(named: "origin", in: bundle, compatibleWith: nil)?.resizeImage(newWidth: 20.0)
-
+                marker.image =  UIImage.init(named: "origin", in: bundle, compatibleWith: nil)?.resizeImage(newWidth: 15.0)
             }
         }
     

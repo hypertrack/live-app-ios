@@ -12,8 +12,6 @@ import HyperTrack
 
 class placeCell : UITableViewCell {
     
-    @IBOutlet weak var startTime: UILabel!
-    @IBOutlet weak var endTime: UILabel!
     @IBOutlet weak var activityIcon: UIImageView!
     @IBOutlet weak var status: UILabel!
     @IBOutlet weak var stats: UILabel!
@@ -21,11 +19,11 @@ class placeCell : UITableViewCell {
     @IBOutlet weak var icon: UIImageView!
     
     @IBOutlet weak var placeCard: UIView!
-    
+    @IBOutlet weak var circleView: UIView!
+    @IBOutlet weak var startLabel: UILabel!
+
     func loading() {
-        
-        self.startTime.text = "- : -"
-        self.endTime.text = "- : -"
+        self.startLabel.text = "- : -"
         self.stats.text = "Hang tight"
         self.status.text = "Loading Placeline.."
         self.icon.image = nil
@@ -34,9 +32,7 @@ class placeCell : UITableViewCell {
     }
     
     func noResults() {
-        
-        self.startTime.text = "- : -"
-        self.endTime.text = "- : -"
+        self.startLabel.text = "- : -"
         self.stats.text = "No placeline today "
         self.status.text = "Nothing here yet!"
         self.icon.image = #imageLiteral(resourceName: "ninja")
@@ -74,7 +70,7 @@ class placeCell : UITableViewCell {
             self.placeCard.backgroundColor = pink
         }, completion: nil)
         
-    
+        circleView.backgroundColor = UIColor.white;
     }
     
     func deselect() {
@@ -83,20 +79,23 @@ class placeCell : UITableViewCell {
             self.status.textColor = UIColor.black
             self.placeCard.backgroundColor = UIColor.white
         }, completion: nil)
+        
+        circleView.backgroundColor = pink
+
+        
     }
     
     func normalize() {
-        
+        circleView.backgroundColor = pink
         self.status.textColor = UIColor.black
         self.placeCard.backgroundColor = UIColor.white
     }
     
     func setStats(activity : HyperTrackActivity) {
         
-        self.startTime.text = activity.startedAt?.toString(dateFormat: "HH:mm")
-        self.endTime.text = activity.endedAt?.toString(dateFormat: "HH:mm")
+        self.startLabel.text = activity.startedAt?.toString(dateFormat: "HH:mm")
+
         if activity.activity == nil {
-            
             self.status.text = "Stop"
             self.icon.image = #imageLiteral(resourceName: "stop")
             self.stats.text = activity.place?.address
@@ -110,7 +109,24 @@ class placeCell : UITableViewCell {
             
             guard let distance = activity.distance else { return }
             let distanceKM : Double = Double(distance)/1000
-            self.stats.text = "\(distanceKM) km"
+            var subtitleText = ""
+            
+            if let startedAt = activity.startedAt {
+                var timeElapsed: Double?
+                
+                if activity.endedAt != nil {
+                    timeElapsed = startedAt.timeIntervalSince(activity.endedAt!)
+                } else {
+                    timeElapsed = startedAt.timeIntervalSinceNow
+                }
+                var timeElapsedMinutes = -1 * Double(timeElapsed! / 60)
+                subtitleText = subtitleText + "\(timeElapsedMinutes.rounded()) min  | "
+            }
+            
+            subtitleText = subtitleText + "\(distanceKM) km"
+            self.stats.text = subtitleText
+
+            
         }
         
 //                print(activity.type)
@@ -124,6 +140,8 @@ class placeCell : UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        circleView.backgroundColor = pink
+        circleView.asCircle()
         // Initialization code
     }
     
@@ -131,5 +149,13 @@ class placeCell : UITableViewCell {
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state
+    }
+}
+
+
+extension UIView{
+    func asCircle(){
+        self.layer.cornerRadius = self.frame.width / 2;
+        self.layer.masksToBounds = true
     }
 }
