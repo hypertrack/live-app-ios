@@ -148,7 +148,6 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         
         let array = placeLineTable.indexPathsForVisibleRows
         print(array?[0].row)
-        
     }
     
     

@@ -14,6 +14,8 @@ class HyperTrackAppService: NSObject {
     
     let flowInteractor = HyperTrackFlowInteractor()
     static let sharedInstance = HyperTrackAppService()
+    
+    var currentLookUpID : String?
 
     func applicationDidFinishLaunchingWithOptions(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         setUpSDKs()
