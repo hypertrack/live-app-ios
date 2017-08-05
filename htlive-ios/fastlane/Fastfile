@@ -1,0 +1,84 @@
+fastlane_version "1.50.0"
+
+default_platform :ios
+
+$changeLog = “”
+platform :ios do
+  before_all do
+    ENV["SLACK_URL"] = "https://hooks.slack.com/services/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" # Webhook URL created in Slack
+    notification(message:"Build Started! , Enter ChangeLog -> ”)
+
+  end
+
+  desc "Installs FixCode which disables the \"Fix Issue\" button in Xcode"
+  lane :xcode do
+    install_xcode_plugin(
+      url: "https://github.com/fastlane/FixCode/releases/download/0.2.0/FixCode.xcplugin.zip"
+    )
+  end
+
+  desc "Runs all the unit and ui tests"
+  lane :test do
+    cocoapods
+    scan(skip_slack: false)
+  end
+
+  desc "Creates new screenshots and uploads them to iTunes Connect"
+  lane :screens do
+    cocoapods
+    match(app_identifier: "io.hypertrack.SendETA-iPhone", type: "development")
+    snapshot
+    frameit
+    deliver(app: 925311796, app_identifier: "io.hypertrack.SendETA-iPhone", skip_metadata: true, force: true)
+  end
+
+  desc "Submits a new Beta Build to Apple TestFlight"
+  lane :beta do
+    increment_build_number_in_plist
+    $changelog = prompt(
+   	 text: "Changelog: \n”,
+    	 multi_line_end_keyword: “YO”
+    )
+    gym(configuration: "Internal Beta")
+    pilot(app_identifier: "io.hypertrack.SendETA-iPhone")
+    notification(message:"Build Succeded!”)
+    end
+
+  desc "Deploys a new version to the App Store"
+  lane :deploy do
+    cocoapods
+    match(app_identifier: "io.hypertrack.SendETA-iPhone", type: "appstore")
+    gym(configuration: "Release")
+    deliver(force: true)
+  end
+
+  after_all do |lane|
+    # This block is called, only if the executed lane was successful
+     slack(
+        message: “Changelog : \n” + $changelog,
+	default_payloads: [],
+      )
+       
+	file = File.open(“../known_issues.txt”, "rb")
+	contents = file.read
+     slack(
+        message: "Known Issues: \n” + contents,
+	default_payloads: [],
+      ) 
+
+     buildNumber = get_build_number_from_plist
+     slack(
+        message: “Build uploaded to TestFlight. Build Number : “ + buildNumber,
+        success: true
+      )
+    notification(message:"Build Deployed! -> ” + buildNumber)
+
+  end
+
+  error do |lane, exception|
+      slack(
+        message: exception.message,
+        success: false
+      )
+  end
+end

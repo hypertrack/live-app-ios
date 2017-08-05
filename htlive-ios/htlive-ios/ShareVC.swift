@@ -26,7 +26,8 @@ class ShareVC: UIViewController  {
     var selectedLocation : HyperTrackPlace?
     var currentAction : HyperTrackAction?
     var alertController : UIAlertController?
-
+    var shareView: CustomShareView?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -74,6 +75,14 @@ class ShareVC: UIViewController  {
         return false
     }
     
+    func isMyUserId(action : HyperTrackAction)-> Bool{
+        if let userId = action.user?.id {
+            if (HyperTrack.getUserId() == userId){
+                return true
+            }
+        }
+        return false
+    }
     override func viewWillAppear(_ animated: Bool) {
         
         self.view.showActivityIndicator()
@@ -345,7 +354,10 @@ extension ShareVC:HTViewInteractionDelegate {
     }
     
     func showShareLiveLocationView(action : HyperTrackAction){
+        
         let shareView: ShareLiveLocationView = Bundle.main.loadNibNamed("ShareLiveLocationView", owner: self, options: nil)?.first as! ShareLiveLocationView
+        
+        
         shareView.shareDelegate = self
         
         if(action.eta != nil){
@@ -356,6 +368,11 @@ extension ShareVC:HTViewInteractionDelegate {
                     let timeRemaining = duration
                     etaMinutes = Double(timeRemaining / 60)
                     shareView.etaLabel.text = "You're " + etaMinutes.description + " min away!"
+
+                    if let name = action.user?.name {
+                        shareView.etaLabel.text = name + " is " + etaMinutes.description + " min away!"
+                    }
+                    
                 }
             }
         }
@@ -377,10 +394,11 @@ extension ShareVC:HTViewInteractionDelegate {
         formatter.dateFormat = "h:mm a"
         formatter.amSymbol = "AM"
         formatter.pmSymbol = "PM"
+        if(shareView == nil){
+            shareView = Bundle.main.loadNibNamed("CustomShareView", owner: self, options: nil)?.first as! CustomShareView
+        }
         
-        let shareView: CustomShareView = Bundle.main.loadNibNamed("CustomShareView", owner: self, options: nil)?.first as! CustomShareView
-        
-        shareView.shareDelegate = self
+        shareView?.shareDelegate = self
         
         if(action.eta != nil){
             
@@ -393,30 +411,30 @@ extension ShareVC:HTViewInteractionDelegate {
                 if let duration = actionDisplay!.durationRemaining {
                     let timeRemaining = duration
                     etaMinutes = Double(timeRemaining / 60)
-                    shareView.etaLabel.text = "You're " + etaMinutes.description + " min away!"
+                    shareView?.etaLabel.text = "You're " + etaMinutes.description + " min away!"
                 }
             }
             // text to share
             let text = "I'm on my way. Will be there by " + dateString +  ". Track me live " + action.trackingUrl!
-            shareView.linkText = text
+            shareView?.linkText = text
         }
         else{
-            shareView.etaLabel.text = ""
+            shareView?.etaLabel.text = ""
             let text = "I'm on my way. Track me live " + action.trackingUrl!
-            shareView.linkText = text
+            shareView?.linkText = text
         }
         
         
-        self.view.addSubview(shareView)
+        self.view.addSubview(shareView!)
         
-        shareView.linkLabel.text = action.trackingUrl!
-        presentViewAnimatedFromBottom(view: shareView)
+        shareView?.linkLabel.text = action.trackingUrl!
+        presentViewAnimatedFromBottom(view: shareView!)
     }
     
     func presentViewAnimatedFromBottom(view : UIView){
         
         view.frame = CGRect(x:0,y:(self.view.frame.height + (view.frame.size.height)),width : self.view.frame.size.width,height:view.frame.size.height)
-        UIView.animate(withDuration: 0.5, animations: {
+        UIView.animate(withDuration: 0.1, animations: {
             view.frame = CGRect(x:0,y:(self.view.frame.height-(view.frame.size.height)),width : self.view.frame.size.width,height:view.frame.size.height)
             
         })

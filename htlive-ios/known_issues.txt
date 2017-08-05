@@ -1,0 +1,12 @@
+* [ ] Cancel previous actions
+* [ ] Summary ui 
+* [ ] Expandable cards
+* [ ] Marker color
+* [ ] Animate marker coordinates
+* [ ] pedometer data for activity accuracy
+* [ ] SDK footprint benchmarking
+* [ ] React native crash
+* [ ] Refocus button
+* [ ] Update card if action is getting updated
+* [ ] View on top of view
+* [ ] Stop tracking from others live location view

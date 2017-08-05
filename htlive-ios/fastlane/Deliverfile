@@ -1,0 +1,3 @@
+username "ravi@hypertrack.io" # the iTunes Connect login email address
+
+copyright "#{Time.now.year} Hypertrack"
