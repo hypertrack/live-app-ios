@@ -75,8 +75,12 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" alpha="0.5" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UTm-8C-qtO">
-                            <rect key="frame" x="345" y="15" width="22" height="18"/>
-                            <state key="normal" image="closeBlack"/>
+                            <rect key="frame" x="332" y="5" width="35" height="35"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="35" id="J3b-Vc-qM1"/>
+                                <constraint firstAttribute="height" constant="35" id="co8-bt-fKZ"/>
+                            </constraints>
+                            <state key="normal" image="crossWithMargin"/>
                             <connections>
                                 <action selector="closeShare:" destination="hd8-3U-lT6" eventType="touchUpInside" id="lMJ-yn-hfz"/>
                             </connections>
@@ -84,13 +88,11 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="UTm-8C-qtO" firstAttribute="top" secondItem="j6H-sU-b47" secondAttribute="top" constant="15" id="2Nl-Wp-oK5"/>
+                        <constraint firstItem="UTm-8C-qtO" firstAttribute="top" secondItem="j6H-sU-b47" secondAttribute="top" constant="5" id="2Nl-Wp-oK5"/>
                         <constraint firstItem="5SF-a3-yXj" firstAttribute="top" secondItem="j6H-sU-b47" secondAttribute="top" constant="15" id="4gC-EL-xVX"/>
                         <constraint firstItem="5SF-a3-yXj" firstAttribute="width" secondItem="j6H-sU-b47" secondAttribute="width" multiplier="0.7" id="BTv-TW-hYM"/>
                         <constraint firstAttribute="trailing" secondItem="UTm-8C-qtO" secondAttribute="trailing" constant="8" id="K0t-Dh-Xn9"/>
-                        <constraint firstItem="UTm-8C-qtO" firstAttribute="leading" secondItem="5SF-a3-yXj" secondAttribute="trailing" constant="25.5" id="KNs-Ku-ozb"/>
                         <constraint firstItem="9bo-vs-ncu" firstAttribute="leading" secondItem="j6H-sU-b47" secondAttribute="leading" id="MGs-BS-2nW"/>
-                        <constraint firstItem="9bo-vs-ncu" firstAttribute="top" secondItem="UTm-8C-qtO" secondAttribute="bottom" constant="20" id="XzY-r3-gRA"/>
                         <constraint firstItem="5SF-a3-yXj" firstAttribute="centerX" secondItem="j6H-sU-b47" secondAttribute="centerX" id="ZAW-pU-8I5"/>
                         <constraint firstAttribute="bottom" secondItem="9bo-vs-ncu" secondAttribute="bottom" constant="4" id="bqY-B9-scU"/>
                         <constraint firstAttribute="trailing" secondItem="9bo-vs-ncu" secondAttribute="trailing" id="l31-aI-Kwx"/>
@@ -179,7 +181,7 @@
         </view>
     </objects>
     <resources>
-        <image name="closeBlack" width="78" height="79"/>
+        <image name="crossWithMargin" width="171" height="156"/>
         <image name="imessage" width="61" height="61"/>
         <image name="messenger" width="60" height="60"/>
         <image name="share" width="60" height="60"/>

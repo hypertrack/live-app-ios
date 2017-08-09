@@ -13,6 +13,8 @@ protocol CustomShareViewDelegate : class {
     func didClickOnMessenger(view : CustomShareView)
     func didClickOnWhatsapp(view : CustomShareView)
     func didClickOnMessages(view : CustomShareView)
+    func didClickCloseButton(view : CustomShareView)
+
 }
 
 
@@ -40,7 +42,7 @@ class CustomShareView: UIView {
     
 
     @IBAction func copyLink(_ sender: Any) {
-        UIPasteboard.general.string = self.linkLabel.text
+        UIPasteboard.general.string = self.linkText
         self.copyLinkButton.setTitle("Copied!", for: UIControlState.normal)
         self.copyLinkButton.backgroundColor = UIColor.white
         self.copyLinkButton.setTitleColor(UIColor.black, for: UIControlState.normal)
@@ -49,7 +51,11 @@ class CustomShareView: UIView {
     
     @IBAction func closeShare(_ sender: Any) {
    
-        UIView.animate(withDuration: 0.5) { 
+        if let delegate = shareDelegate{
+            delegate.didClickCloseButton(view: self)
+        }
+    
+        UIView.animate(withDuration: 0.5) {
             
             self.removeFromSuperview()
         }

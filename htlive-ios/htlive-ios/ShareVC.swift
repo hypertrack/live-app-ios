@@ -16,52 +16,74 @@ import MessageUI
 class ShareVC: UIViewController  {
     
     @IBOutlet fileprivate weak var hyperTrackView: UIView!
-    let locationManager = CLLocationManager()
     var shortCode : String?
     var hyperTrackMap : HTMap? = nil
     var currentLookUpId : String? = nil
     var isDeeplinked = false
     var liveLocationAlert : LiveLocationAlertView? = nil
-    var isAlertShown = false
     var selectedLocation : HyperTrackPlace?
     var currentAction : HyperTrackAction?
     var alertController : UIAlertController?
     var shareView: CustomShareView?
-    
+    var activityViewController : UIActivityViewController? = nil
     override func viewDidLoad() {
         super.viewDidLoad()
         
-         liveLocationAlert = Bundle.main.loadNibNamed("LiveLocationAlert", owner: self, options: nil)?.first as? LiveLocationAlertView
+        liveLocationAlert = Bundle.main.loadNibNamed("LiveLocationAlert", owner: self, options: nil)?.first as? LiveLocationAlertView
         // check if shortcode is provided
         if let shortCode = self.shortCode {
             self.isDeeplinked = true
-            HyperTrack.getActionsFromShortCode(shortCode, completionHandler: { (actions, error) in
-                if let htActions = actions {
-                    self.currentLookUpId =  htActions.last?.lookupId
-                    self.currentAction = actions?.last
-                    HyperTrack.trackActionFor(lookUpId: self.currentLookUpId!, completionHandler: { (actions, error) in
+                HyperTrack.getActionsFromShortCode(shortCode, completionHandler: { (actions, error) in
+                    
+                    if let _ = error {
+                        self.showAlertAndDismissController(title: "Error", message: error?.errorMessage)
+                        return
+                    }
+                    
+                    if let htActions = actions {
+                        self.currentLookUpId =  htActions.last?.lookupId
+                        self.currentAction = actions?.last
+                        HyperTrack.trackActionFor(lookUpId: self.currentLookUpId!, completionHandler: { (actions, error) in
+                            
+                            if let _ = error {
+                                self.showAlertAndDismissController(title: "Error", message: error?.errorMessage)
+                                return
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                if let actions = actions {
+                                    if (!self.doesLookUpIdHasMyUserId(actions: actions)){
+                                        if(!(actions.last?.isCompleted())!){
+                                            self.showShareLiveLocationView(action: (actions.last)!)
+                                        }
+                                        HyperTrackAppService.sharedInstance.currentAction = actions.last
+                                    }
+                                    self.showHypertrackView()
+
+                                }
+                            }
+                            
+                        })
+                    }
+                    
+                })                        }
+        else if(HyperTrackAppService.sharedInstance.getCurrentLookUPId() != nil) {
+            self.isDeeplinked = true
+                HyperTrack.trackActionFor(lookUpId: HyperTrackAppService.sharedInstance.getCurrentLookUPId()!, completionHandler: { (actions, error) in
+                    if let _ = error {
+                        self.liveLocationAlert?.activityIndicator.stopAnimating()
+                        self.changeToStartTrackingButton()
+                        self.showAlertAndDismissController(title: "Error", message: error?.errorMessage)
+                        return
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         if (!self.doesLookUpIdHasMyUserId(actions: actions!)){
                             self.showShareLiveLocationView(action: (actions?.last)!)
+                            HyperTrackAppService.sharedInstance.currentAction = actions?.last
                         }
                         self.showHypertrackView()
-                    })
-                }
-                
-            })
-            
-            // Do any additional setup after loading the view.
-        }
-        else if(HyperTrackAppService.sharedInstance.currentLookUpID != nil) {
-            self.isDeeplinked = true
-            HyperTrack.trackActionFor(lookUpId: HyperTrackAppService.sharedInstance.currentLookUpID!, completionHandler: { (actions, error) in
-                if (!self.doesLookUpIdHasMyUserId(actions: actions!)){
-                    self.showShareLiveLocationView(action: (actions?.last)!)
-                }
-                self.currentLookUpId =  actions?.last?.lookupId
-                self.currentAction = actions?.last
-                self.showHypertrackView()
-            })
-        }
+                    }
+                })
+            }
     }
     
     func doesLookUpIdHasMyUserId(actions : [HyperTrackAction]) -> Bool{
@@ -84,17 +106,17 @@ class ShareVC: UIViewController  {
         return false
     }
     override func viewWillAppear(_ animated: Bool) {
-        
+        super.viewWillAppear(animated)
         self.view.showActivityIndicator()
-        locationManager.requestAlwaysAuthorization()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         
+        super.viewDidAppear(animated)
         self.view.hideActivityIndicator()
         
         if(!isDeeplinked){
-           showHypertrackView()
+            showHypertrackView()
         }
     }
     
@@ -135,9 +157,21 @@ class ShareVC: UIViewController  {
         
         self.present(alert, animated: true, completion: nil)
     }
+    
+    fileprivate func showAlertAndDismissController(title: String?, message: String?) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let ok : UIAlertAction = UIAlertAction.init(title: "OK", style: .cancel) { (action) in
+            self.dismiss(animated: true, completion: nil)
+        }
+        alert.addAction(ok)
+        
+        self.present(alert, animated: true, completion: nil)
+    }
 
     
-
+    
+    
     
     func changeToConfirmLocatinButton(){
         self.liveLocationAlert?.closeButton.isHidden = true
@@ -157,38 +191,32 @@ class ShareVC: UIViewController  {
     
     func changeToStopTrackingButton(){
         self.liveLocationAlert?.closeButton.isHidden = false
-
+        
         self.liveLocationAlert?.mainLabel.text = "Are you sure?"
-        self.liveLocationAlert?.actionButton.removeTarget(self, action: #selector(confirmLocation(_:)), for: UIControlEvents.touchUpInside)
+        self.liveLocationAlert?.actionButton.removeTarget(self, action: #selector(stopTracking(_:)), for: UIControlEvents.touchUpInside)
         self.liveLocationAlert?.actionButton.setTitle("End Tracking", for: UIControlState.normal)
         self.liveLocationAlert?.actionButton.addTarget(self, action: #selector(stopTracking(_:)), for: UIControlEvents.touchUpInside)
     }
     
-
+    
     func stopTracking(_ sender: Any) {
-        HyperTrack.completeAction((currentAction?.id)!)
-        HyperTrackAppService.sharedInstance.currentLookUpID = nil
-        self.liveLocationAlert?.removeFromSuperview()
-        self.isAlertShown = false
+        HyperTrackAppService.sharedInstance.completeAction()
     }
+    
+    func showCustomAlert(){
+        self.view.addSubview(liveLocationAlert!)
+        presentViewAnimatedFromBottom(view:liveLocationAlert!)
+    }
+    
+    func removeCustomAlert(){
+        self.liveLocationAlert?.activityIndicator.stopAnimating()
+        self.liveLocationAlert?.removeFromSuperview()
+    }
+    
     
     func confirmLocation(_ sender: Any){
         self.selectedLocation  = hyperTrackMap?.confirmLocation()
-       // isAlertShown  = false
         changeToStartTrackingButton()
-        //        self.didSelectedLocation = true
-        //        if( currentUserAnnotation == nil){
-        //            if let location = Transmitter.sharedInstance.locationManager.getLastKnownLocation(){
-        //                let currentLocationAnnotation = HTMapAnnotation()
-        //                currentLocationAnnotation.title = "You"
-        //                currentLocationAnnotation.coordinate = location.coordinate
-        //                currentLocationAnnotation.location = location
-        //                currentLocationAnnotation.type = HTConstants.MarkerType.HERO_MARKER
-        //                mapProvider?.addMarker(heroAnnotation: currentLocationAnnotation)
-        //                self.currentUserAnnotation = currentLocationAnnotation
-        //            }
-        //        }
-        //        self.focusMarkers()
     }
     
     func startTracking(_ sender: Any) {
@@ -202,29 +230,23 @@ class ShareVC: UIViewController  {
                 return
             }
             else{
-                self.liveLocationAlert?.activityIndicator.stopAnimating()
-                self.liveLocationAlert?.removeFromSuperview()
-                self.isAlertShown = false
                 
+                self.removeCustomAlert()
                 self.shareLink(action: action!)
                 self.saveLookUpId(lookUpId: action?.lookupId!)
             }
             
         }
-    
+        
     }
     func showStopTrackingAlert(){
-        
         changeToStopTrackingButton()
-        if(!isAlertShown){
-            self.view.addSubview(liveLocationAlert!)
-            presentViewAnimatedFromBottom(view:liveLocationAlert!)
-            isAlertShown = true
-        }
-        
+        liveLocationAlert?.removeFromSuperview()
+        self.view.addSubview(liveLocationAlert!)
+        presentViewAnimatedFromBottom(view:liveLocationAlert!)
     }
     
-
+    
     
 }
 
@@ -242,21 +264,12 @@ extension ShareVC:HTViewInteractionDelegate {
     func didSelectLocation(place : HyperTrackPlace?){
         self.changeToStartTrackingButton()
         self.selectedLocation = place
-        if(!isAlertShown){
-            self.view.addSubview(liveLocationAlert!)
-            presentViewAnimatedFromBottom(view:liveLocationAlert!)
-            isAlertShown = true
-
-        }
+        showCustomAlert()
     }
     
     func willChooseLocationOnMap(){
         self.changeToConfirmLocatinButton()
-        if(!isAlertShown){
-            self.view.addSubview(liveLocationAlert!)
-            presentViewAnimatedFromBottom(view:liveLocationAlert!)
-            isAlertShown = true
-        }
+        showCustomAlert()
     }
     
     func didTapBackButton(_ sender: Any) {
@@ -265,7 +278,6 @@ extension ShareVC:HTViewInteractionDelegate {
     
     
     func didTapJoinLiveLocationSharing(action : HyperTrackAction? ){
-        self.view.showActivityIndicator()
         startLiveLocationSharingAction(lookUpId: action?.lookupId, place: action?.expectedPlace) { (action, error) in
             self.view.hideActivityIndicator()
             if let _ = error {
@@ -297,17 +309,17 @@ extension ShareVC:HTViewInteractionDelegate {
         
         showStopTrackingAlert()
         
-
-//        let alert=UIAlertController(title: "End Tracking", message: "Are you sure ?", preferredStyle: UIAlertControllerStyle.alert);
-//        //no event handler (just close dialog box)
-//        alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.cancel, handler: nil));
-//        //event handler with closure
-//        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
-//            HyperTrack.completeAction(actionId)
-//            
-//        }))
-//            
-//        present(alert, animated: true, completion: nil)
+        
+        //        let alert=UIAlertController(title: "End Tracking", message: "Are you sure ?", preferredStyle: UIAlertControllerStyle.alert);
+        //        //no event handler (just close dialog box)
+        //        alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.cancel, handler: nil));
+        //        //event handler with closure
+        //        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+        //            HyperTrack.completeAction(actionId)
+        //
+        //        }))
+        //
+        //        present(alert, animated: true, completion: nil)
     }
     
     func didTapShareLiveLocationLink(action : HyperTrackAction){
@@ -329,28 +341,34 @@ extension ShareVC:HTViewInteractionDelegate {
             htActionParams.lookupId = lookUpId!
         }
         
-        HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
-            if let error = error {
-                completion(nil,NSError(domain: error.type.rawValue, code: 0, userInfo: nil) as Error)
-                return
-            }
-            if let action = action {
-                
-                HyperTrack.trackActionFor(lookUpId: action.lookupId!, completionHandler: { (actions, error) in
-                    if (error != nil) {
-                        completion(nil,NSError(domain: (error?.type.rawValue)!, code: 0, userInfo: nil) as Error)
-                        return
-                    }
+        
+        HyperTrack.cancelPendingActions { (user, error) in
+            HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
+                if let error = error {
+                    completion(nil,NSError(domain: error.type.rawValue, code: 0, userInfo: nil) as Error)
+                    return
+                }
+                if let action = action {
                     
-                    self.currentLookUpId =  actions?.last?.lookupId
-                    self.currentAction = actions?.last
-                    HyperTrackAppService.sharedInstance.currentLookUpID = action.lookupId
-                })
-                
-                completion(action,nil)
-                return
-            }
-        })
+                    HyperTrack.trackActionFor(lookUpId: action.lookupId!, completionHandler: { (actions, error) in
+                        if (error != nil) {
+                            completion(nil,NSError(domain: (error?.type.rawValue)!, code: 0, userInfo: nil) as Error)
+                            return
+                        }
+                        
+                        self.currentLookUpId =  actions?.last?.lookupId
+                        HyperTrackAppService.sharedInstance.currentAction = actions?.last
+                        HyperTrackAppService.sharedInstance.setCurrentLookUpId(lookUpID: action.lookupId!)
+                    })
+                    
+                    completion(action,nil)
+                    return
+                }
+            })
+        }
+        
+        
+        
     }
     
     func showShareLiveLocationView(action : HyperTrackAction){
@@ -368,7 +386,7 @@ extension ShareVC:HTViewInteractionDelegate {
                     let timeRemaining = duration
                     etaMinutes = Double(timeRemaining / 60)
                     shareView.etaLabel.text = "You're " + etaMinutes.description + " min away!"
-
+                    
                     if let name = action.user?.name {
                         shareView.etaLabel.text = name + " is " + etaMinutes.description + " min away!"
                     }
@@ -414,13 +432,14 @@ extension ShareVC:HTViewInteractionDelegate {
                     shareView?.etaLabel.text = "You're " + etaMinutes.description + " min away!"
                 }
             }
+            
             // text to share
-            let text = "I'm on my way. Will be there by " + dateString +  ". Track me live " + action.trackingUrl!
+            let text = "See you at " + dateString + ".See my live location and share yours "  + action.trackingUrl!
             shareView?.linkText = text
         }
         else{
             shareView?.etaLabel.text = ""
-            let text = "I'm on my way. Track me live " + action.trackingUrl!
+            let text = "See my live location and share yours " + action.trackingUrl!
             shareView?.linkText = text
         }
         
@@ -434,7 +453,7 @@ extension ShareVC:HTViewInteractionDelegate {
     func presentViewAnimatedFromBottom(view : UIView){
         
         view.frame = CGRect(x:0,y:(self.view.frame.height + (view.frame.size.height)),width : self.view.frame.size.width,height:view.frame.size.height)
-        UIView.animate(withDuration: 0.1, animations: {
+        UIView.animate(withDuration: 0.3, animations: {
             view.frame = CGRect(x:0,y:(self.view.frame.height-(view.frame.size.height)),width : self.view.frame.size.width,height:view.frame.size.height)
             
         })
@@ -457,20 +476,52 @@ extension ShareVC:HTViewInteractionDelegate {
 
 extension ShareVC : CustomShareViewDelegate,MFMessageComposeViewControllerDelegate{
     
+    func didClickCloseButton(view : CustomShareView){
+        
+    }
     func didClickOnShare(view : CustomShareView){
+        
+        self.shareView?.removeFromSuperview()
         //set up activity view controller
-        let textToShare = [view.linkText]
-        let activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
-        
+        let textToShare = ["hello"]
+        self.activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
         // exclude some activity types from the list (optional)
-        activityViewController.excludedActivityTypes = [ UIActivityType.airDrop ]
+        self.activityViewController?.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
         
-        // present the view controller
-        self.present(activityViewController, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            
+            self.activityViewController?.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook ]
+            
+            // present the view controller
+            
+            self.activityViewController?.completionHandler = {(activityType, completed:Bool) in
+                if !completed {
+                    //cancelled
+                    return
+                }
+                
+                //shared successfully
+                
+                //below is how you would detect for different sharing services
+                var activity:String = "other"
+                if activityType == UIActivityType.postToTwitter {
+                    activity = "twitter"
+                }
+                if activityType == UIActivityType.mail {
+                    activity = "mail"
+                }
+                //more code here if you like
+            }
+            
+            self.present((self.activityViewController)!, animated: true, completion: nil)
+            
+
+        }
+        // exclude some activity types from the list (optional)
         
     }
     func didClickOnMessenger(view : CustomShareView){
-        let urlStr = "fb-messenger://share?link=" + view.linkLabel.text!
+        let urlStr = "fb-messenger://share?link=" +  (view.linkText?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!)!
         if let url = URL.init(string: urlStr) {
             NSLog(urlStr)
             if(UIApplication.shared.canOpenURL(url)){
@@ -480,7 +531,7 @@ extension ShareVC : CustomShareViewDelegate,MFMessageComposeViewControllerDelega
         }
     }
     func didClickOnWhatsapp(view : CustomShareView){
-        let urlStr = "whatsapp://send?text=" +  view.linkLabel.text!
+        let urlStr = "whatsapp://send?text=" +  (view.linkText?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!)!
         if let url = URL.init(string: urlStr) {
             if(UIApplication.shared.canOpenURL(url)){
                 UIApplication.shared.open(url, options: [:], completionHandler: { (shared) in
@@ -514,13 +565,13 @@ extension ShareVC:ShareLiveLocationDelegate{
         view.activityIndicator.startAnimating()
         startLiveLocationSharingAction(lookUpId: self.currentLookUpId, place: self.currentAction?.expectedPlace) { (action, error) in
             view.activityIndicator.stopAnimating()
-
+            
             if let _ = error {
                 self.showAlert(title: "Error", message: error?.localizedDescription)
                 return
             }
             else{
-
+                
                 view.removeFromSuperview()
                 self.saveLookUpId(lookUpId: action?.lookupId!)
             }

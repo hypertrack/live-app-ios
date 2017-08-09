@@ -14,8 +14,25 @@ class HyperTrackAppService: NSObject {
     
     let flowInteractor = HyperTrackFlowInteractor()
     static let sharedInstance = HyperTrackAppService()
+    var currentAction : HyperTrackAction? = nil
+    func getCurrentLookUPId () -> String? {
+       return UserDefaults.standard.string(forKey: "currentLookUpID")
+    }
     
-    var currentLookUpID : String?
+    func setCurrentLookUpId(lookUpID : String){
+        UserDefaults.standard.set(lookUpID, forKey: "currentLookUpID")
+    }
+    
+    func deleteCurrentLookUpId(){
+        UserDefaults.standard.removeObject(forKey: "currentLookUpID")
+    }
+    
+    func completeAction(){
+        if let currentAction  = self.currentAction{
+            HyperTrack.completeAction(currentAction.id!)
+            HyperTrackAppService.sharedInstance.deleteCurrentLookUpId()
+        }
+    }
 
     func applicationDidFinishLaunchingWithOptions(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         setUpSDKs()
@@ -23,10 +40,26 @@ class HyperTrackAppService: NSObject {
         DispatchQueue.main.async( execute:{
             self.flowInteractor.presentFlowsIfNeeded()
             self.setupBranchDeeplink()
+            
         })
         
         
         return true
+    }
+    
+    func startTrackingIfPartOfExistingTrip(){
+        if(getCurrentLookUPId() != nil){
+            HyperTrack.trackActionFor(lookUpId: HyperTrackAppService.sharedInstance.getCurrentLookUPId()!, completionHandler: { (actions, error) in
+                if(actions != nil){
+                    if let action = actions?.last {
+                        if(action.isCompleted()){
+                            self.deleteCurrentLookUpId()
+                        }
+                    }
+                    
+                }
+            })
+        }
     }
     
     func applicationDidBecomeActive() {
@@ -63,17 +96,40 @@ class HyperTrackAppService: NSObject {
 
     func setupHyperTrack() {
         HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
+        HyperTrack.setEventsDelegate(eventDelegate: self)
+        
+    
         if(HyperTrack.getUserId() != nil){
             HyperTrack.startTracking()
+            if(self.getCurrentLookUPId() != nil){
+                HyperTrack.trackActionFor(lookUpId: self.getCurrentLookUPId()!, completionHandler: { (actions, error) in
+                    if let _ = error {
+                        return
+                    }
+                    self.currentAction = actions?.last
+                })
+            }
         }
     }
     
     func setupBuddyBuild() {
         BuddyBuildSDK.setup()
     }
+    
 }
 
-
+extension HyperTrackAppService : HTEventsDelegate {
+ 
+    func didEnterMonitoredDestinationRegionForAction(forAction : HyperTrackAction){
+        HyperTrack.completeAction(forAction.id!)
+    }
+    
+    func didShowSummary(forAction : HyperTrackAction){
+        if (forAction.lookupId == self.getCurrentLookUPId()){
+            self.deleteCurrentLookUpId()
+        }
+    }
+}
 
 extension HyperTrackAppService {
     fileprivate func setupBranchDeeplink(launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) {

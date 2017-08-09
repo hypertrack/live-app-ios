@@ -1,12 +1,6 @@
-* [ ] Cancel previous actions
-* [ ] Summary ui 
-* [ ] Expandable cards
-* [ ] Marker color
-* [ ] Animate marker coordinates
-* [ ] pedometer data for activity accuracy
+* [ ] Cancel previous actions throwing error always
 * [ ] SDK footprint benchmarking
-* [ ] React native crash
 * [ ] Refocus button
 * [ ] Update card if action is getting updated
-* [ ] View on top of view
-* [ ] Stop tracking from others live location view
+* [ ] LiveLocation view not working when a tracking is in progress and a new link is clicked 
+* [ ] Placeline Time issues

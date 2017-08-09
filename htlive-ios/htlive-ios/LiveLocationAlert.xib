@@ -37,12 +37,12 @@
                     <rect key="frame" x="178.5" y="82.5" width="20" height="20"/>
                 </activityIndicatorView>
                 <button hidden="YES" opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xfb-wV-3aN">
-                    <rect key="frame" x="347" y="10" width="20" height="20"/>
+                    <rect key="frame" x="332" y="10" width="35" height="35"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="20" id="1iK-1Q-twQ"/>
-                        <constraint firstAttribute="height" constant="20" id="VuZ-Sa-KMu"/>
+                        <constraint firstAttribute="width" constant="35" id="1iK-1Q-twQ"/>
+                        <constraint firstAttribute="height" constant="35" id="VuZ-Sa-KMu"/>
                     </constraints>
-                    <state key="normal" backgroundImage="closeBlack"/>
+                    <state key="normal" backgroundImage="crossWithMargin"/>
                     <connections>
                         <action selector="close:" destination="iN0-l3-epB" eventType="touchUpInside" id="85D-Ts-PSB"/>
                     </connections>
@@ -78,6 +78,6 @@
         </view>
     </objects>
     <resources>
-        <image name="closeBlack" width="78" height="79"/>
+        <image name="crossWithMargin" width="171" height="156"/>
     </resources>
 </document>

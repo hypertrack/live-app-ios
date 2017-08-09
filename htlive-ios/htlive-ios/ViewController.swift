@@ -50,7 +50,9 @@ class ViewController: UIViewController {
     @IBAction func onLiveLocationButtonClick(sender: UIButton) {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         let liveLocationController = storyboard.instantiateViewController(withIdentifier: "ShareVC") as! ShareVC
-        self.present(liveLocationController, animated:true, completion: nil)
+        self.present(liveLocationController, animated: true) { 
+         NSLog("presented")
+        }
     }
     
 

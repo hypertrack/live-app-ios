@@ -55,12 +55,12 @@
                     </connections>
                 </button>
                 <button opaque="NO" alpha="0.5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RrD-SS-Xma">
-                    <rect key="frame" x="340" y="10" width="25" height="25"/>
+                    <rect key="frame" x="340" y="10" width="35" height="35"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="25" id="F9W-Jd-fTP"/>
-                        <constraint firstAttribute="height" constant="25" id="U6p-ad-aXl"/>
+                        <constraint firstAttribute="width" constant="35" id="F9W-Jd-fTP"/>
+                        <constraint firstAttribute="height" constant="35" id="U6p-ad-aXl"/>
                     </constraints>
-                    <state key="normal" backgroundImage="closeBlack"/>
+                    <state key="normal" backgroundImage="crossWithMargin"/>
                     <connections>
                         <action selector="onClose:" destination="iN0-l3-epB" eventType="touchUpInside" id="etS-eL-wT3"/>
                     </connections>
@@ -85,7 +85,7 @@
                 <constraint firstItem="o2f-02-0mq" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="pTI-ga-nOj"/>
                 <constraint firstItem="zBs-5d-e5X" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="29.5" id="rXw-qN-VcG"/>
                 <constraint firstAttribute="trailing" secondItem="zBs-5d-e5X" secondAttribute="trailing" constant="29.5" id="tfS-1w-S6H"/>
-                <constraint firstAttribute="trailing" secondItem="RrD-SS-Xma" secondAttribute="trailing" constant="10" id="xN5-J6-Ww3"/>
+                <constraint firstAttribute="trailing" secondItem="RrD-SS-Xma" secondAttribute="trailing" id="xN5-J6-Ww3"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
@@ -100,6 +100,6 @@
         </view>
     </objects>
     <resources>
-        <image name="closeBlack" width="78" height="79"/>
+        <image name="crossWithMargin" width="171" height="156"/>
     </resources>
 </document>
