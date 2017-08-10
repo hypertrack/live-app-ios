@@ -137,6 +137,16 @@ class ShareVC: UIViewController  {
         
     }
     
+    func showShareSheetWithText(text:String){
+        let textToShare : Array = [text]
+        let activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
+        activityViewController.completionWithItemsHandler = { activityType, complete, returnedItems, error in
+        }
+        DispatchQueue.main.async {
+            self.present(activityViewController, animated: true, completion: nil)
+        }
+    }s
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -481,45 +491,8 @@ extension ShareVC : CustomShareViewDelegate,MFMessageComposeViewControllerDelega
         
     }
     func didClickOnShare(view : CustomShareView){
-        
         self.shareView?.removeFromSuperview()
-        //set up activity view controller
-        let textToShare = ["hello"]
-        self.activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
-        // exclude some activity types from the list (optional)
-        self.activityViewController?.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
-        
-        DispatchQueue.main.async {
-            
-            self.activityViewController?.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook ]
-            
-            // present the view controller
-            
-            self.activityViewController?.completionHandler = {(activityType, completed:Bool) in
-                if !completed {
-                    //cancelled
-                    return
-                }
-                
-                //shared successfully
-                
-                //below is how you would detect for different sharing services
-                var activity:String = "other"
-                if activityType == UIActivityType.postToTwitter {
-                    activity = "twitter"
-                }
-                if activityType == UIActivityType.mail {
-                    activity = "mail"
-                }
-                //more code here if you like
-            }
-            
-            self.present((self.activityViewController)!, animated: true, completion: nil)
-            
-
-        }
-        // exclude some activity types from the list (optional)
-        
+        self.showShareSheetWithText(text: view.linkText!)
     }
     func didClickOnMessenger(view : CustomShareView){
         let urlStr = "fb-messenger://share?link=" +  (view.linkText?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!)!
