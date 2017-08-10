@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import HyperTrack
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -89,6 +90,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 }
+
+// Remote Notification
+extension AppDelegate {
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        HyperTrack.didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: deviceToken)
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+        HyperTrack.didReceiveRemoteNotification(userInfo: userInfo)
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        HyperTrack.didFailToRegisterForRemoteNotificationsWithError(error: error)
+    }
+    
+    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
+        if notificationSettings.types != .none {
+            application.registerForRemoteNotifications()
+        }
+    }
+}
+
+
 
 extension AppDelegate {
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {

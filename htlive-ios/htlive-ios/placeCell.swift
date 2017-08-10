@@ -119,23 +119,13 @@ class placeCell : UITableViewCell {
                 } else {
                     timeElapsed = startedAt.timeIntervalSinceNow
                 }
-                var timeElapsedMinutes = -1 * Double(timeElapsed! / 60)
+                let timeElapsedMinutes = -1 * Double(timeElapsed! / 60)
                 subtitleText = subtitleText + "\(timeElapsedMinutes.rounded()) min  | "
             }
             
             subtitleText = subtitleText + "\(distanceKM) km"
             self.stats.text = subtitleText
-
-            
         }
-        
-//                print(activity.type)
-//                print(activity.distance)
-//                print(activity.place?.address)
-//                print(activity.activity)
-//                print("")
-        
-    
     }
     
     override func awakeFromNib() {

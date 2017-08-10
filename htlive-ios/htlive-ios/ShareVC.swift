@@ -145,7 +145,7 @@ class ShareVC: UIViewController  {
         DispatchQueue.main.async {
             self.present(activityViewController, animated: true, completion: nil)
         }
-    }s
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

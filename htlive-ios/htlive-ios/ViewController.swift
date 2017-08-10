@@ -146,10 +146,8 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         return 1
     }
     
-    func getTopVisibleRow() {
-        
+    func getTopVisibleRow() {        
         let array = placeLineTable.indexPathsForVisibleRows
-        print(array?[0].row)
     }
     
     
@@ -334,7 +332,7 @@ extension ViewController {
             for case let fileURL as URL in enumerator {
                 if(fileURL.absoluteString.hasSuffix("txt")){
                     
-                    if let fileData = NSData(contentsOfFile: fileURL.path) {
+                    if NSData(contentsOfFile: fileURL.path) != nil {
                         urlPaths.append(fileURL)
                         let activityController = UIActivityViewController(activityItems: urlPaths, applicationActivities: nil)
                         self.present(activityController, animated: true, completion: nil)
