@@ -26,6 +26,14 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="htP-64-wX6">
                                 <rect key="frame" x="0.0" y="70" width="320" height="498"/>
                             </mapView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="a3O-NP-aeB">
+                                <rect key="frame" x="20" y="350" width="280" height="218"/>
+                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="yEj-5Y-PfZ"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="TwO-6A-Tic"/>
+                                </connections>
+                            </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TJr-Q6-wkV" customClass="FSCalendar">
                                 <rect key="frame" x="0.0" y="70" width="320" height="300"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -96,14 +104,6 @@
                                     <constraint firstAttribute="trailing" secondItem="z5E-JK-tpW" secondAttribute="trailing" id="tKD-5B-UV6"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="a3O-NP-aeB">
-                                <rect key="frame" x="20" y="350" width="280" height="218"/>
-                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="yEj-5Y-PfZ"/>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="TwO-6A-Tic"/>
-                                </connections>
-                            </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bac-Nq-D3N">
                                 <rect key="frame" x="240" y="488" width="60" height="60"/>
                                 <constraints>
