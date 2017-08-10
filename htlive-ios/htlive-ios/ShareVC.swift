@@ -201,6 +201,7 @@ class ShareVC: UIViewController  {
     
     func stopTracking(_ sender: Any) {
         HyperTrackAppService.sharedInstance.completeAction()
+        removeCustomAlert()
     }
     
     func showCustomAlert(){
