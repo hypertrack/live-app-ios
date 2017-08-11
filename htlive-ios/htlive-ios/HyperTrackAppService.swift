@@ -29,6 +29,7 @@ class HyperTrackAppService: NSObject {
     
     func completeAction(){
         if let currentAction  = self.currentAction{
+            // check for current user
             HyperTrack.completeAction(currentAction.id!)
             HyperTrackAppService.sharedInstance.deleteCurrentLookUpId()
         }

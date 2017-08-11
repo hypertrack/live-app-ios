@@ -22,10 +22,10 @@ class ShareVC: UIViewController  {
     var isDeeplinked = false
     var liveLocationAlert : LiveLocationAlertView? = nil
     var selectedLocation : HyperTrackPlace?
-    var currentAction : HyperTrackAction?
     var alertController : UIAlertController?
     var shareView: CustomShareView?
     var activityViewController : UIActivityViewController? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,7 +42,6 @@ class ShareVC: UIViewController  {
                     
                     if let htActions = actions {
                         self.currentLookUpId =  htActions.last?.lookupId
-                        self.currentAction = actions?.last
                         HyperTrack.trackActionFor(lookUpId: self.currentLookUpId!, completionHandler: { (actions, error) in
                             
                             if let _ = error {
@@ -61,10 +60,8 @@ class ShareVC: UIViewController  {
 
                                 }
                             }
-                            
                         })
                     }
-                    
                 })                        }
         else if(HyperTrackAppService.sharedInstance.getCurrentLookUPId() != nil) {
             self.isDeeplinked = true
@@ -139,11 +136,11 @@ class ShareVC: UIViewController  {
     
     func showShareSheetWithText(text:String){
         let textToShare : Array = [text]
-        let activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
-        activityViewController.completionWithItemsHandler = { activityType, complete, returnedItems, error in
+         self.activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
+         self.activityViewController?.completionWithItemsHandler = { activityType, complete, returnedItems, error in
         }
         DispatchQueue.main.async {
-            self.present(activityViewController, animated: true, completion: nil)
+            self.present(self.activityViewController!, animated: false, completion: nil)
         }
     }
     
@@ -385,8 +382,6 @@ extension ShareVC:HTViewInteractionDelegate {
     func showShareLiveLocationView(action : HyperTrackAction){
         
         let shareView: ShareLiveLocationView = Bundle.main.loadNibNamed("ShareLiveLocationView", owner: self, options: nil)?.first as! ShareLiveLocationView
-        
-        
         shareView.shareDelegate = self
         
         if(action.eta != nil){
@@ -537,20 +532,24 @@ extension ShareVC:ShareLiveLocationDelegate{
     func didClickOnShareLiveLocation(view : ShareLiveLocationView){
         view.shareLocationButton.setTitle("", for: UIControlState.normal)
         view.activityIndicator.startAnimating()
-        startLiveLocationSharingAction(lookUpId: self.currentLookUpId, place: self.currentAction?.expectedPlace) { (action, error) in
-            view.activityIndicator.stopAnimating()
-            
-            if let _ = error {
-                self.showAlert(title: "Error", message: error?.localizedDescription)
-                return
-            }
-            else{
+        
+        if let expectedPlace = HyperTrackAppService.sharedInstance.currentAction?.expectedPlace{
+            startLiveLocationSharingAction(lookUpId: self.currentLookUpId, place: expectedPlace ) { (action, error) in
+                view.activityIndicator.stopAnimating()
                 
-                view.removeFromSuperview()
-                self.saveLookUpId(lookUpId: action?.lookupId!)
+                if let _ = error {
+                    self.showAlert(title: "Error", message: error?.localizedDescription)
+                    return
+                }
+                else{
+                    
+                    view.removeFromSuperview()
+                    self.saveLookUpId(lookUpId: action?.lookupId!)
+                }
+                
             }
-            
         }
+       
     }
 }
 
