@@ -224,8 +224,7 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
        annotation.coordinate = CLLocationCoordinate2DMake((activity.place?.location?.coordinates.last)!, (activity.place?.location?.coordinates.first)!)
        annotations.append(annotation)
        self.mapView.addAnnotation(annotation)
-        centerMapOnLocation(location: CLLocation.init(latitude:(activity.place?.location?.coordinates.first)!, longitude: (activity.place?.location?.coordinates.last)!))
-    
+       centerMapOnAnnotation(annotation:annotation)
     }
     
     
@@ -373,18 +372,22 @@ extension ViewController : MKMapViewDelegate {
             self.mapView.addAnnotation(startAnnotation)
         }
         
-        
-        focusMarkers(markers: annotations,width: 0.01)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            let mapEdgePadding = UIEdgeInsets(top: 160, left: 40, bottom: (290.0/667.0) * (self.view.frame.size.height), right: 40)
+            self.mapView.setVisibleMapRect((self.polyLine?.boundingMapRect)!,edgePadding: mapEdgePadding ,animated: true)
+        }
     }
     
 
-    func centerMapOnLocation(location: CLLocation)
+    func centerMapOnAnnotation(annotation: MKPointAnnotation)
     {
-        focusMarkers(markers: annotations, width: 0.5)
+        let span = MKCoordinateSpanMake(0.008,0.008)
+        let region = MKCoordinateRegion(center: annotation.coordinate, span: span)
+        mapView.setRegion(region, animated: true)
     }
     
-    func focusMarkers(markers : [MKPointAnnotation?],width:Double){
-      var zoomRect:MKMapRect = MKMapRectNull
+    func getVisibleRectForAnnotation(markers : [MKPointAnnotation?],width:Double) -> MKMapRect{
+        var zoomRect:MKMapRect = MKMapRectNull
         
         for index in 0..<markers.count {
             let annotation = markers[index]
@@ -398,6 +401,13 @@ extension ViewController : MKMapViewDelegate {
                 }
             }
         }
+        return zoomRect
+    }
+    
+    func focusMarkers(markers : [MKPointAnnotation?],width:Double){
+     
+        let zoomRect = getVisibleRectForAnnotation(markers: markers, width: width)
+        
         if(!MKMapRectIsNull(zoomRect)){
             let mapEdgePadding = UIEdgeInsets(top: 160, left: 40, bottom: (290.0/667.0) * (self.view.frame.size.height), right: 40)
             mapView.setVisibleMapRect(zoomRect, edgePadding: mapEdgePadding, animated: true)
@@ -477,7 +487,7 @@ extension ViewController : MKMapViewDelegate {
             return MKOverlayRenderer()
         }
         
-        let renderer = MKPolylineRenderer(polyline: polyline)
+        let renderer = CustomPolyline(polyline: polyline)
         renderer.lineWidth = 3.0
         renderer.strokeColor = UIColor(red:0.40, green:0.39, blue:0.49, alpha:1.0)
         
@@ -504,8 +514,21 @@ extension ViewController : MKMapViewDelegate {
         marker.annotation = annotation
         return marker
     }
+    
+    
 }
 
+class CustomPolyline: MKPolylineRenderer {
+    
+    override func applyStrokeProperties(to context: CGContext, atZoomScale zoomScale: MKZoomScale) {
+        super.applyStrokeProperties(to: context, atZoomScale: zoomScale)
+       // UIGraphicsPushContext(context)
+
+        if let ctx = UIGraphicsGetCurrentContext() {
+            ctx.setLineWidth(self.lineWidth)
+        }
+    }
+}
 
 extension UIImage {
     func resizeImage(newWidth: CGFloat) -> UIImage {

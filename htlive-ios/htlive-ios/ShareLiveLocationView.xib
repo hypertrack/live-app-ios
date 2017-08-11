@@ -93,6 +93,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="activityIndicator" destination="Vsc-dF-ObV" id="rM1-qr-zQu"/>
+                <outlet property="cloaseButton" destination="RrD-SS-Xma" id="wL2-2V-COg"/>
                 <outlet property="etaLabel" destination="8aq-P7-1Rl" id="XYQ-6d-oUP"/>
                 <outlet property="shareLocationButton" destination="o2f-02-0mq" id="cW5-F3-18A"/>
             </connections>

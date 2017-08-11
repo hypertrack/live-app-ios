@@ -16,6 +16,8 @@ import MessageUI
 class ShareVC: UIViewController  {
     
     @IBOutlet fileprivate weak var hyperTrackView: UIView!
+    @IBOutlet fileprivate weak var shareLocationButton: UIButton!
+   
     var shortCode : String?
     var hyperTrackMap : HTMap? = nil
     var currentLookUpId : String? = nil
@@ -25,10 +27,10 @@ class ShareVC: UIViewController  {
     var alertController : UIAlertController?
     var shareView: CustomShareView?
     var activityViewController : UIActivityViewController? = nil
-    
+    @IBOutlet weak var shareLocationActivityIndicator: UIActivityIndicatorView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         liveLocationAlert = Bundle.main.loadNibNamed("LiveLocationAlert", owner: self, options: nil)?.first as? LiveLocationAlertView
         // check if shortcode is provided
         if let shortCode = self.shortCode {
@@ -204,9 +206,7 @@ class ShareVC: UIViewController  {
         self.liveLocationAlert?.actionButton.setTitle("End Tracking", for: UIControlState.normal)
         self.liveLocationAlert?.actionButton.addTarget(self, action: #selector(stopTracking(_:)), for: UIControlEvents.touchUpInside)
     }
-    
-    
-    func stopTracking(_ sender: Any) {
+        func stopTracking(_ sender: Any) {
         HyperTrackAppService.sharedInstance.completeAction()
         removeCustomAlert()
     }
@@ -396,7 +396,6 @@ extension ShareVC:HTViewInteractionDelegate {
                     if let name = action.user?.name {
                         shareView.etaLabel.text = name + " is " + etaMinutes.description + " min away!"
                     }
-                    
                 }
             }
         }
@@ -408,8 +407,40 @@ extension ShareVC:HTViewInteractionDelegate {
         shareView.frame = CGRect(x:0,y:(self.view.frame.height + (shareView.frame.size.height)),width : self.view.frame.size.width,height:shareView.frame.size.height)
         UIView.animate(withDuration: 0.5, animations: {
             shareView.frame = CGRect(x:0,y:(self.view.frame.height-(shareView.frame.size.height)),width : self.view.frame.size.width,height:shareView.frame.size.height)
-            
         })
+        
+        shareView.cloaseButton.isHidden = false
+        shareView.cloaseButton.addTarget(self, action: #selector(showShareLocationButton(_:)), for: UIControlEvents.touchUpInside)
+
+    }
+    
+    @IBAction func shareLocation(_ sender: Any) {
+        if let expectedPlace = HyperTrackAppService.sharedInstance.currentAction?.expectedPlace{
+            self.shareLocationButton.setTitle("", for: UIControlState.normal)
+            shareLocationActivityIndicator.startAnimating()
+
+            startLiveLocationSharingAction(lookUpId: self.currentLookUpId, place: expectedPlace ) { (action, error) in
+                self.shareLocationButton.setTitle("Share Your Location", for: UIControlState.normal)
+                self.shareLocationActivityIndicator.stopAnimating()
+                if let _ = error {
+                    self.showAlert(title: "Error", message: error?.localizedDescription)
+                    return
+                }
+                else{
+                    self.shareLocationButton.isHidden = true
+                    self.saveLookUpId(lookUpId: action?.lookupId!)
+                }
+                
+            }
+        }
+    }
+    
+    
+
+    
+    func showShareLocationButton(_ sender: Any){
+        self.shareLocationButton.isHidden = false
+        self.hyperTrackView.bringSubview(toFront: self.shareLocationButton)
     }
     
     func shareLink(action : HyperTrackAction) {

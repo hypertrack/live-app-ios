@@ -21,6 +21,8 @@ class ShareLiveLocationView: UIView {
     }
     */
     
+    @IBOutlet weak var cloaseButton: UIButton!
+   
     weak var shareDelegate : ShareLiveLocationDelegate? = nil
  
     @IBOutlet weak var etaLabel: UILabel!
