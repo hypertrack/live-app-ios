@@ -194,7 +194,7 @@ class ShareVC: UIViewController  {
         self.liveLocationAlert?.closeButton.isHidden = true
         self.liveLocationAlert?.mainLabel.text = "Looks good?"
         self.liveLocationAlert?.actionButton.removeTarget(self, action: #selector(confirmLocation(_:)), for: UIControlEvents.touchUpInside)
-        self.liveLocationAlert?.actionButton.setTitle("Start Tracking", for: UIControlState.normal)
+        self.liveLocationAlert?.actionButton.setTitle("Start Sharing", for: UIControlState.normal)
         self.liveLocationAlert?.actionButton.addTarget(self, action: #selector(startTracking(_:)), for: UIControlEvents.touchUpInside)
     }
     
@@ -203,7 +203,7 @@ class ShareVC: UIViewController  {
         
         self.liveLocationAlert?.mainLabel.text = "Are you sure?"
         self.liveLocationAlert?.actionButton.removeTarget(self, action: #selector(stopTracking(_:)), for: UIControlEvents.touchUpInside)
-        self.liveLocationAlert?.actionButton.setTitle("End Tracking", for: UIControlState.normal)
+        self.liveLocationAlert?.actionButton.setTitle("Stop Sharing", for: UIControlState.normal)
         self.liveLocationAlert?.actionButton.addTarget(self, action: #selector(stopTracking(_:)), for: UIControlEvents.touchUpInside)
     }
         func stopTracking(_ sender: Any) {
@@ -391,10 +391,10 @@ extension ShareVC:HTViewInteractionDelegate {
                 if let duration = actionDisplay!.durationRemaining {
                     let timeRemaining = duration
                     etaMinutes = Double(timeRemaining / 60)
-                    shareView.etaLabel.text = "You're " + etaMinutes.description + " min away!"
+                    shareView.etaLabel.text = "You're \(Int(etaMinutes)) min away!"
                     
                     if let name = action.user?.name {
-                        shareView.etaLabel.text = name + " is " + etaMinutes.description + " min away!"
+                        shareView.etaLabel.text = name + " is \(Int(etaMinutes)) min away!"
                     }
                 }
             }
@@ -466,17 +466,17 @@ extension ShareVC:HTViewInteractionDelegate {
                 if let duration = actionDisplay!.durationRemaining {
                     let timeRemaining = duration
                     etaMinutes = Double(timeRemaining / 60)
-                    shareView?.etaLabel.text = "You're " + etaMinutes.description + " min away!"
+                    shareView?.etaLabel.text = "You're \(Int(etaMinutes)) min away!"
                 }
             }
             
             // text to share
-            let text = "See you at " + dateString + ".See my live location and share yours "  + action.trackingUrl!
+            let text = "Will be there by " + dateString + ". See my live location and share yours. "  + action.trackingUrl!
             shareView?.linkText = text
         }
         else{
             shareView?.etaLabel.text = ""
-            let text = "See my live location and share yours " + action.trackingUrl!
+            let text = "See my live location and share yours. " + action.trackingUrl!
             shareView?.linkText = text
         }
         
