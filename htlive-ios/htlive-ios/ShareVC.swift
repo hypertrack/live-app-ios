@@ -447,8 +447,8 @@ extension ShareVC:HTViewInteractionDelegate {
         
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
-        formatter.amSymbol = "AM"
-        formatter.pmSymbol = "PM"
+        formatter.locale = Locale.init(identifier: "en_US") 
+     
         if(shareView == nil){
             shareView = Bundle.main.loadNibNamed("CustomShareView", owner: self, options: nil)?.first as! CustomShareView
         }
@@ -529,6 +529,9 @@ extension ShareVC : CustomShareViewDelegate,MFMessageComposeViewControllerDelega
                 })
             }
         }
+        
+        self.shareView?.removeFromSuperview()
+
     }
     func didClickOnWhatsapp(view : CustomShareView){
         let urlStr = "whatsapp://send?text=" +  (view.linkText?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!)!
@@ -538,6 +541,9 @@ extension ShareVC : CustomShareViewDelegate,MFMessageComposeViewControllerDelega
                 })
             }
         }
+        
+        self.shareView?.removeFromSuperview()
+
     }
     
     func didClickOnMessages(view : CustomShareView){
@@ -550,6 +556,9 @@ extension ShareVC : CustomShareViewDelegate,MFMessageComposeViewControllerDelega
         } else {
             //handle text messaging not available
         }
+        
+        self.shareView?.removeFromSuperview()
+
     }
     
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult){
