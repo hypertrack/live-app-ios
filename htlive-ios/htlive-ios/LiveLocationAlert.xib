@@ -20,7 +20,7 @@
                     <rect key="frame" x="66" y="67.5" width="245" height="49.5"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                    <state key="normal" title="Start Sharing">
+                    <state key="normal" title="Start Live Location">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>

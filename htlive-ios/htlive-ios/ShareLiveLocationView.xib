@@ -25,8 +25,8 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Share your location back so they can see you on the map" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="kuF-Ga-L4n">
-                            <rect key="frame" x="46.5" y="42.5" width="223" height="47.5"/>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Share back location so they can see you too" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="kuF-Ga-L4n">
+                            <rect key="frame" x="70.5" y="42.5" width="175" height="47.5"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -38,7 +38,7 @@
                         <constraint firstItem="8aq-P7-1Rl" firstAttribute="top" secondItem="zBs-5d-e5X" secondAttribute="top" constant="10" id="KIs-e9-Yxi"/>
                         <constraint firstAttribute="bottom" secondItem="kuF-Ga-L4n" secondAttribute="bottom" id="cfn-PR-cWF"/>
                         <constraint firstItem="8aq-P7-1Rl" firstAttribute="leading" secondItem="zBs-5d-e5X" secondAttribute="leading" constant="8" id="d4z-FV-q0n"/>
-                        <constraint firstItem="kuF-Ga-L4n" firstAttribute="width" secondItem="zBs-5d-e5X" secondAttribute="width" multiplier="223/316" id="eA5-0D-x7V"/>
+                        <constraint firstItem="kuF-Ga-L4n" firstAttribute="width" secondItem="zBs-5d-e5X" secondAttribute="width" multiplier="175/316" id="eA5-0D-x7V"/>
                         <constraint firstItem="kuF-Ga-L4n" firstAttribute="centerX" secondItem="zBs-5d-e5X" secondAttribute="centerX" id="g0z-c8-GPg"/>
                         <constraint firstItem="kuF-Ga-L4n" firstAttribute="top" secondItem="8aq-P7-1Rl" secondAttribute="bottom" constant="6" id="s3F-RK-AG2"/>
                     </constraints>
@@ -47,7 +47,7 @@
                     <rect key="frame" x="56.5" y="119" width="262.5" height="46"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                    <state key="normal" title="Share My Live Location">
+                    <state key="normal" title="Share Live Location">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>

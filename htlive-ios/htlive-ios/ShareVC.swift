@@ -31,6 +31,7 @@ class ShareVC: UIViewController  {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        shareLocationButton.shadow()
         liveLocationAlert = Bundle.main.loadNibNamed("LiveLocationAlert", owner: self, options: nil)?.first as? LiveLocationAlertView
         // check if shortcode is provided
         if let shortCode = self.shortCode {
@@ -52,14 +53,15 @@ class ShareVC: UIViewController  {
                             }
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                 if let actions = actions {
-                                    if (!self.doesLookUpIdHasMyUserId(actions: actions)){
-                                        if(!(actions.last?.isCompleted())!){
-                                            self.showShareLiveLocationView(action: (actions.last)!)
+                                    if actions.count > 0 {
+                                        if (!self.doesLookUpIdHasMyUserId(actions: actions)){
+                                            if(!(actions.last?.isCompleted())!){
+                                                self.showShareLiveLocationView(action: (actions.last)!)
+                                            }
+                                            HyperTrackAppService.sharedInstance.currentAction = actions.last
                                         }
-                                        HyperTrackAppService.sharedInstance.currentAction = actions.last
+                                        self.showHypertrackView()
                                     }
-                                    self.showHypertrackView()
-
                                 }
                             }
                         })
@@ -74,12 +76,21 @@ class ShareVC: UIViewController  {
                         self.showAlertAndDismissController(title: "Error", message: error?.errorMessage)
                         return
                     }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        if (!self.doesLookUpIdHasMyUserId(actions: actions!)){
-                            self.showShareLiveLocationView(action: (actions?.last)!)
-                            HyperTrackAppService.sharedInstance.currentAction = actions?.last
+                    if let actions = actions {
+                        if actions.count > 0 {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                if (!self.doesLookUpIdHasMyUserId(actions: actions)){
+                                    self.showShareLiveLocationView(action: (actions.last)!)
+                                    HyperTrackAppService.sharedInstance.currentAction = actions.last
+                                }
+                                self.showHypertrackView()
+                            }
                         }
-                        self.showHypertrackView()
+                        else{
+                            self.showAlertAndDismissController(title: "Something went wrong.", message: "Try again later")
+                        }
+                    }else{
+                        self.showAlertAndDismissController(title: "Something went wrong.", message: "Try again later")
                     }
                 })
             }
@@ -124,6 +135,9 @@ class ShareVC: UIViewController  {
         if(hyperTrackMap == nil){
             
             hyperTrackMap = HyperTrack.map()
+            hyperTrackMap?.showBackButton = false
+            hyperTrackMap?.showReFocusButton = false
+            hyperTrackMap?.showTrafficForMapView = false
             hyperTrackMap?.enableLiveLocationSharingView = true
             
             hyperTrackMap?.setHTViewCustomizationDelegate(customizationDelegate: self)
@@ -175,7 +189,15 @@ class ShareVC: UIViewController  {
         }
         alert.addAction(ok)
         
-        self.present(alert, animated: true, completion: nil)
+        if (self.isBeingPresented){
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        else{
+            self.present(alert, animated: true, completion: nil)
+
+        }
     }
 
     
@@ -194,7 +216,7 @@ class ShareVC: UIViewController  {
         self.liveLocationAlert?.closeButton.isHidden = true
         self.liveLocationAlert?.mainLabel.text = "Looks good?"
         self.liveLocationAlert?.actionButton.removeTarget(self, action: #selector(confirmLocation(_:)), for: UIControlEvents.touchUpInside)
-        self.liveLocationAlert?.actionButton.setTitle("Start Sharing", for: UIControlState.normal)
+        self.liveLocationAlert?.actionButton.setTitle("Share Live Location", for: UIControlState.normal)
         self.liveLocationAlert?.actionButton.addTarget(self, action: #selector(startTracking(_:)), for: UIControlEvents.touchUpInside)
     }
     
@@ -420,7 +442,7 @@ extension ShareVC:HTViewInteractionDelegate {
             shareLocationActivityIndicator.startAnimating()
 
             startLiveLocationSharingAction(lookUpId: self.currentLookUpId, place: expectedPlace ) { (action, error) in
-                self.shareLocationButton.setTitle("Share Your Location", for: UIControlState.normal)
+                self.shareLocationButton.setTitle("Share Live Location", for: UIControlState.normal)
                 self.shareLocationActivityIndicator.stopAnimating()
                 if let _ = error {
                     self.showAlert(title: "Error", message: error?.localizedDescription)

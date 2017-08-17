@@ -108,7 +108,7 @@ class placeCell : UITableViewCell {
 
             
             guard let distance = activity.distance else { return }
-            let distanceKM : Double = Double(distance)/1000
+            let distanceKM : Double = (Double(distance)/1000.0).roundTo(places: 2)
             var subtitleText = ""
             
             if let startedAt = activity.startedAt {
@@ -119,11 +119,11 @@ class placeCell : UITableViewCell {
                 } else {
                     timeElapsed = startedAt.timeIntervalSinceNow
                 }
-                let timeElapsedMinutes = -1 * Double(timeElapsed! / 60)
-                subtitleText = subtitleText + "\(timeElapsedMinutes.rounded()) min  | "
+                let timeElapsedMinutes = floor((-1 * Double(timeElapsed! / 60)).roundTo(places: 1))
+                subtitleText = subtitleText + "\(timeElapsedMinutes.description) min  | "
             }
             
-            subtitleText = subtitleText + "\(distanceKM) km"
+            subtitleText = subtitleText + "\(distanceKM.description) km"
             self.stats.text = subtitleText
         }
     }
@@ -139,6 +139,15 @@ class placeCell : UITableViewCell {
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state
+    }
+}
+
+
+extension Double {
+    /// Rounds the double to decimal places value
+    func roundTo(places:Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
     }
 }
 

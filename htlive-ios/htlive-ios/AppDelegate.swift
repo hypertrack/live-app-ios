@@ -17,7 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
         //application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
         return HyperTrackAppService.sharedInstance.applicationDidFinishLaunchingWithOptions(launchOptions: launchOptions)
     }
@@ -99,7 +98,13 @@ extension AppDelegate {
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-        HyperTrack.didReceiveRemoteNotification(userInfo: userInfo)
+        
+        
+        if (HyperTrack.isHyperTrackNotification(userInfo: userInfo)){
+            HyperTrack.didReceiveRemoteNotification(userInfo: userInfo)
+        }
+        
+        // Do any additional handling for your application's notifications.
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {

@@ -221,10 +221,12 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
     func drawPointForActivity(activity : HyperTrackActivity){
        let annotation =  MKPointAnnotation()
        annotation.title = "point"
-       annotation.coordinate = CLLocationCoordinate2DMake((activity.place?.location?.coordinates.last)!, (activity.place?.location?.coordinates.first)!)
-       annotations.append(annotation)
-       self.mapView.addAnnotation(annotation)
-       centerMapOnAnnotation(annotation:annotation)
+        if let place = activity.place{
+            annotation.coordinate = CLLocationCoordinate2DMake((place.location?.coordinates.last)!, (place.location?.coordinates.first)!)
+            annotations.append(annotation)
+            self.mapView.addAnnotation(annotation)
+            centerMapOnAnnotation(annotation:annotation)
+        }
     }
     
     

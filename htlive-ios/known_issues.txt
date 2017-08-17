@@ -1,6 +1,1 @@
-* [ ] Cancel previous actions throwing error always
-* [ ] SDK footprint benchmarking
-* [ ] Refocus button
-* [ ] Update card if action is getting updated
 * [ ] LiveLocation view not working when a tracking is in progress and a new link is clicked 
-* [ ] Placeline Time issues
