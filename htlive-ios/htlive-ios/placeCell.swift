@@ -119,8 +119,12 @@ class placeCell : UITableViewCell {
                 } else {
                     timeElapsed = startedAt.timeIntervalSinceNow
                 }
-                let timeElapsedMinutes = floor((-1 * Double(timeElapsed! / 60)).roundTo(places: 1))
-                subtitleText = subtitleText + "\(timeElapsedMinutes.description) min  | "
+                let timeElapsedMinutes = Int(floor((-1 * Double(timeElapsed! / 60))))
+                var timeText = "\(timeElapsedMinutes.description) min  | "
+                if (timeElapsedMinutes < 1){
+                   timeText =   "\(Int(-1 * timeElapsed!).description ) sec  | "
+                }
+                subtitleText = subtitleText + timeText
             }
             
             subtitleText = subtitleText + "\(distanceKM.description) km"

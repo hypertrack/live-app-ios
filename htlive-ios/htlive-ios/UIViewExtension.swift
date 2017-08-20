@@ -33,7 +33,7 @@ extension UIView {
         }
     }
     
-    @IBInspectable var borderColor: UIColor? {
+    @IBInspectable var htBorderColor: UIColor? {
         get {
             return UIColor(cgColor: layer.borderColor!)
         }
@@ -75,7 +75,7 @@ extension UIView {
     
     func setGrayBorder() {
         
-        self.borderColor = gray3
+        self.htBorderColor = gray3
         self.borderWidth = 1
         self.cornerRadius = 4
     }

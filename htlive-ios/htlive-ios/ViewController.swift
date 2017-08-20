@@ -79,16 +79,21 @@ class ViewController: UIViewController {
     }
     
     func onForegroundNotification(_ notification: Notification){
+        calendar.select(Date())
+        self.dateLabel.text = Date().toString(dateFormat: "dd MMMM")
         getPlaceLineData()
     }
     
     func userCreated(_ notification: Notification) {
+        calendar.select(Date())
+        self.dateLabel.text = Date().toString(dateFormat: "dd MMMM")
         getPlaceLineData()
     }
 
     
     override func viewWillAppear(_ animated: Bool) {
         calendar.select(Date())
+        self.dateLabel.text = Date().toString(dateFormat: "dd MMMM")
         getPlaceLineData()
     }
     
