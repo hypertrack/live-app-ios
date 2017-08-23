@@ -11,6 +11,7 @@ import HyperTrack
 import FSCalendar
 import MessageUI
 import MapKit
+import Alamofire
 
 let pink = UIColor(red:1.00, green:0.51, blue:0.87, alpha:1.0)
 
@@ -48,13 +49,40 @@ class ViewController: UIViewController {
     @IBOutlet weak var calendarTop: NSLayoutConstraint!
     
     @IBAction func onLiveLocationButtonClick(sender: UIButton) {
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        let liveLocationController = storyboard.instantiateViewController(withIdentifier: "ShareVC") as! ShareVC
-        self.present(liveLocationController, animated: true) { 
-         NSLog("presented")
+        
+        let reachabilityManager = Alamofire.NetworkReachabilityManager(host: "www.google.com")
+
+        if (reachabilityManager?.isReachable)! {
+            let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+            let liveLocationController = storyboard.instantiateViewController(withIdentifier: "ShareVC") as! ShareVC
+            self.present(liveLocationController, animated: true) {
+                NSLog("presented")
+            }
+        }else{
+            showAlert(title: "Internet not available", message: "To share live location, Please check your internet connectivity and try again")
         }
     }
     
+    
+    fileprivate func showAlert(title: String?, message: String?) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let ok : UIAlertAction = UIAlertAction.init(title: "OK", style: .cancel) { (action) in
+        }
+
+        alert.addAction(ok)
+        
+        if (self.isBeingPresented){
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        else{
+            self.present(alert, animated: true, completion: nil)
+            
+        }
+    }
+
 
     
     override func viewDidLoad() {

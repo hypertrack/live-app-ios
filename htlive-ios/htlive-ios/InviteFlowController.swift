@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import HyperTrack
 protocol HyperTrackInviteDelegate {
     func didAcceptInvite(currentController : UIViewController)
     func didSkipInvite(currentController : UIViewController)
@@ -19,6 +19,7 @@ class InviteFlowController: BaseFlowController {
     var userId : String?
     var acccountId : String?
     var accountName : String?
+    var autoAccept = false
 
     var hasCompletedFlow  = false
 
@@ -38,13 +39,33 @@ class InviteFlowController: BaseFlowController {
     }
     
     override func startFlow(force : Bool, presentingController:UIViewController){
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        let acceptInviteController = storyboard.instantiateViewController(withIdentifier: "AcceptInviteVC") as! AcceptInviteVC
-        acceptInviteController.inviteDelegate = self
-        acceptInviteController.accountName = accountName
-        acceptInviteController.accountId = acccountId
-        acceptInviteController.userId = userId
-        presentingController.present(acceptInviteController, animated: true, completion: nil)
+        
+        if (autoAccept == true){
+            let oldUserId = HyperTrack.getUserId()
+            HyperTrack.setUserId(userId!)
+            
+            if(oldUserId != userId){
+                HyperTrack.stopTracking()
+                HyperTrack.startTracking()
+            }
+            RequestService.shared.acceptHyperTrackInvite(accountId: self.acccountId!, oldUserId: oldUserId
+            , completionHandler: { (error) in
+
+            })
+            
+            self.interactorDelegate?.haveFinishedFlow(sender: self)
+
+        }
+        else{
+            let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+            let acceptInviteController = storyboard.instantiateViewController(withIdentifier: "AcceptInviteVC") as! AcceptInviteVC
+            acceptInviteController.inviteDelegate = self
+            acceptInviteController.accountName = accountName
+            acceptInviteController.accountId = acccountId
+            acceptInviteController.userId = userId
+            presentingController.present(acceptInviteController, animated: true, completion: nil)
+
+        }
     }
     
     override func getFlowPriority() -> Int {

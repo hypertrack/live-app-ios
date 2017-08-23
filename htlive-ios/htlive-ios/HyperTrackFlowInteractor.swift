@@ -20,6 +20,8 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
     let permissionFlowController = PermissionsFlowController()
     let inviteFlowController = InviteFlowController()
     
+    var liveLocationViewControllers  = [ShareVC]()
+    
     var flows = [BaseFlowController]()
     
     var isPresentingAFlow = false
@@ -72,6 +74,15 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
         
     }
     
+    func acceptInvitation(_ userId: String, _ accountId: String, _ accountName: String){
+        inviteFlowController.acccountId = accountId
+        inviteFlowController.userId = userId
+        inviteFlowController.accountName = accountName
+        inviteFlowController.autoAccept = true
+        appendController(inviteFlowController)
+        presentFlowsIfNeeded()
+    }
+    
     func addAcceptInviteFlow(_ userId: String, _ accountId: String, _ accountName: String){
         inviteFlowController.acccountId = accountId
         inviteFlowController.userId = userId
@@ -85,6 +96,7 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
         let liveLocationController = storyboard.instantiateViewController(withIdentifier: "ShareVC") as! ShareVC
         liveLocationController.shortCode = shortCode
         HyperTrackFlowInteractor.topViewController()?.present(liveLocationController, animated:true, completion: nil)
+//        liveLocationViewControllers.append(liveLocationController)
     }
     
     func haveStartedFlow(sender: BaseFlowController) {

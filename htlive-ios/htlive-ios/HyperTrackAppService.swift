@@ -76,6 +76,7 @@ class HyperTrackAppService: NSObject {
         
         if (Branch.getInstance().continue(userActivity)) {
             // do nothing
+                        
             return true
         }
 
@@ -136,10 +137,16 @@ extension HyperTrackAppService {
     fileprivate func setupBranchDeeplink(launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) {
         let branch: Branch = Branch.getInstance()
         branch.initSession(launchOptions: launchOptions) { (params, error) in
-            if (error == nil), (params != nil), (params!["+clicked_branch_link"] as! Bool == true) {
+            if (error == nil), (params != nil), (params!["+clicked_branch_link"] as? Bool == true) {
                 // Branch deeplink was clicked, process the params to proceed further
                 print("Branch deeplink params: %@", params?.description as Any)
-                self.flowInteractor.addAcceptInviteFlow(params!["user_id"] as! String, params!["account_id"] as! String, params!["account_name"] as! String)
+                
+                if (params!["auto_accept"] as? Bool == true){
+                    self.flowInteractor.acceptInvitation(params!["user_id"] as! String, params!["account_id"] as! String, params!["account_name"] as! String)
+                }else{
+                    self.flowInteractor.addAcceptInviteFlow(params!["user_id"] as! String, params!["account_id"] as! String, params!["account_name"] as! String)
+
+                }
             }
         }
     }

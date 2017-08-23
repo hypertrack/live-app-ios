@@ -380,9 +380,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S1c-M9-75H">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S1c-M9-75H" customClass="MKMapView" customModule="htlive_ios" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
+                                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.5" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="dYt-Mw-kal">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                    </mapView>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tov-PE-wRp">
                                         <rect key="frame" x="35" y="526" width="250" height="32"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -400,10 +403,14 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="dYt-Mw-kal" firstAttribute="top" secondItem="S1c-M9-75H" secondAttribute="top" id="543-X4-tpV"/>
+                                    <constraint firstItem="dYt-Mw-kal" firstAttribute="leading" secondItem="S1c-M9-75H" secondAttribute="leading" id="7Sr-Sq-ZNU"/>
                                     <constraint firstItem="sOp-lF-2jo" firstAttribute="centerX" secondItem="tov-PE-wRp" secondAttribute="centerX" id="7XA-3v-rQy"/>
                                     <constraint firstAttribute="bottom" secondItem="tov-PE-wRp" secondAttribute="bottom" constant="10" id="9l5-yt-muZ"/>
+                                    <constraint firstAttribute="bottom" secondItem="dYt-Mw-kal" secondAttribute="bottom" id="NAd-3J-wO1"/>
                                     <constraint firstItem="tov-PE-wRp" firstAttribute="leading" secondItem="S1c-M9-75H" secondAttribute="leading" constant="35" id="Rbt-4N-y91"/>
                                     <constraint firstAttribute="trailing" secondItem="tov-PE-wRp" secondAttribute="trailing" constant="35" id="esP-SK-yUj"/>
+                                    <constraint firstAttribute="trailing" secondItem="dYt-Mw-kal" secondAttribute="trailing" id="jLc-R4-wds"/>
                                     <constraint firstItem="sOp-lF-2jo" firstAttribute="centerY" secondItem="tov-PE-wRp" secondAttribute="centerY" id="xMi-4G-dAt"/>
                                 </constraints>
                             </view>
@@ -447,17 +454,17 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We need your Location permission to let you share your live location with your friends and family." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pXs-VI-whZ" userLabel="RequestLocationDescription">
-                                <rect key="frame" x="30" y="266" width="260" height="80"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We need your Location permission to let you share your live location with your friends and family." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="pXs-VI-whZ" userLabel="RequestLocationDescription">
+                                <rect key="frame" x="30" y="266" width="260" height="140"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="80" id="1Am-61-sht"/>
+                                    <constraint firstAttribute="height" constant="140" id="1Am-61-sht"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LPW-n1-Ufj" userLabel="EnableLocationCTA">
-                                <rect key="frame" x="30" y="406" width="260" height="45"/>
+                                <rect key="frame" x="30" y="466" width="260" height="45"/>
                                 <color key="backgroundColor" red="0.83146530389999995" green="0.26543092730000001" blue="0.70410579439999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="ZWb-RA-WW0"/>
@@ -504,7 +511,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wiR-21-XuQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1155" y="-60"/>
+            <point key="canvasLocation" x="-1155" y="-60.2112676056338"/>
         </scene>
         <!--Accept InviteVC-->
         <scene sceneID="vU8-e4-8Xe">

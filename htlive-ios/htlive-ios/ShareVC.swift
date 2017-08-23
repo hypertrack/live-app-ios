@@ -33,9 +33,34 @@ class ShareVC: UIViewController  {
         super.viewDidLoad()
         shareLocationButton.shadow()
         liveLocationAlert = Bundle.main.loadNibNamed("LiveLocationAlert", owner: self, options: nil)?.first as? LiveLocationAlertView
-        // check if shortcode is provided
+    }
+    
+    func doesLookUpIdHasMyUserId(actions : [HyperTrackAction]) -> Bool{
+        for action in actions {
+            if let userId = action.user?.id {
+                if (HyperTrack.getUserId() == userId){
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    
+    func isMyUserId(action : HyperTrackAction)-> Bool{
+        if let userId = action.user?.id {
+            if (HyperTrack.getUserId() == userId){
+                return true
+            }
+        }
+        return false
+    }
+   
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.view.showActivityIndicator()
         if let shortCode = self.shortCode {
             self.isDeeplinked = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 HyperTrack.getActionsFromShortCode(shortCode, completionHandler: { (actions, error) in
                     
                     if let _ = error {
@@ -58,7 +83,6 @@ class ShareVC: UIViewController  {
                                             if(!(actions.last?.isCompleted())!){
                                                 self.showShareLiveLocationView(action: (actions.last)!)
                                             }
-                                            HyperTrackAppService.sharedInstance.currentAction = actions.last
                                         }
                                         self.showHypertrackView()
                                     }
@@ -66,9 +90,13 @@ class ShareVC: UIViewController  {
                             }
                         })
                     }
-                })                        }
+                })
+            }
+        }
         else if(HyperTrackAppService.sharedInstance.getCurrentLookUPId() != nil) {
             self.isDeeplinked = true
+            self.currentLookUpId =  HyperTrackAppService.sharedInstance.getCurrentLookUPId()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 HyperTrack.trackActionFor(lookUpId: HyperTrackAppService.sharedInstance.getCurrentLookUPId()!, completionHandler: { (actions, error) in
                     if let _ = error {
                         self.liveLocationAlert?.activityIndicator.stopAnimating()
@@ -94,34 +122,11 @@ class ShareVC: UIViewController  {
                     }
                 })
             }
-    }
-    
-    func doesLookUpIdHasMyUserId(actions : [HyperTrackAction]) -> Bool{
-        for action in actions {
-            if let userId = action.user?.id {
-                if (HyperTrack.getUserId() == userId){
-                    return true
-                }
             }
-        }
-        return false
-    }
-    
-    func isMyUserId(action : HyperTrackAction)-> Bool{
-        if let userId = action.user?.id {
-            if (HyperTrack.getUserId() == userId){
-                return true
-            }
-        }
-        return false
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.view.showActivityIndicator()
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
         super.viewDidAppear(animated)
         self.view.hideActivityIndicator()
         
@@ -199,10 +204,6 @@ class ShareVC: UIViewController  {
 
         }
     }
-
-    
-    
-    
     
     func changeToConfirmLocatinButton(){
         self.liveLocationAlert?.closeButton.isHidden = true
@@ -276,7 +277,13 @@ class ShareVC: UIViewController  {
         presentViewAnimatedFromBottom(view:liveLocationAlert!)
     }
     
-    
+    override func viewDidDisappear(_ animated: Bool) {
+        if(self.currentLookUpId == HyperTrackAppService.sharedInstance.getCurrentLookUPId()){
+            
+        }else{
+            HyperTrack.removeActions()
+        }
+    }
     
 }
 
@@ -303,7 +310,7 @@ extension ShareVC:HTViewInteractionDelegate {
     }
     
     func didTapBackButton(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+         HyperTrackFlowInteractor.topViewController()?.dismiss(animated: true, completion: nil)
     }
     
     
@@ -336,20 +343,7 @@ extension ShareVC:HTViewInteractionDelegate {
     }
     
     func didTapStopLiveLocationSharing(actionId : String){
-        
         showStopTrackingAlert()
-        
-        
-        //        let alert=UIAlertController(title: "End Tracking", message: "Are you sure ?", preferredStyle: UIAlertControllerStyle.alert);
-        //        //no event handler (just close dialog box)
-        //        alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.cancel, handler: nil));
-        //        //event handler with closure
-        //        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
-        //            HyperTrack.completeAction(actionId)
-        //
-        //        }))
-        //
-        //        present(alert, animated: true, completion: nil)
     }
     
     func didTapShareLiveLocationLink(action : HyperTrackAction){
@@ -472,7 +466,7 @@ extension ShareVC:HTViewInteractionDelegate {
         formatter.locale = Locale.init(identifier: "en_US") 
      
         if(shareView == nil){
-            shareView = Bundle.main.loadNibNamed("CustomShareView", owner: self, options: nil)?.first as! CustomShareView
+            shareView = Bundle.main.loadNibNamed("CustomShareView", owner: self, options: nil)?.first as? CustomShareView
         }
         
         shareView?.shareDelegate = self

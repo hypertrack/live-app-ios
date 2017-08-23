@@ -74,8 +74,7 @@ class OnboardingFlowController: BaseFlowController, OnboardingViewDelegate {
         
         UserDefaults.standard.set(OnboardingState.OnboardingSkipped.rawValue, forKey: onboardingStateKey)
         currentController.dismiss(animated: false) {
-            
-            
+            self.interactorDelegate?.haveFinishedFlow(sender: self)
         }
 
     }
