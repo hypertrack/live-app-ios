@@ -300,7 +300,6 @@ For starter project - lets keep it simple and use UIActivityViewController to do
     }
 ```
 
-// add a gif here
 
 
 ### Step 8. Tracking an Ongoing Live Location Trip 
@@ -343,7 +342,6 @@ To proceed further, you will need two devices. Once your friend  with other devi
  
  Now to see the result, go to the other device and set up the user. After that click on 'Track a Live Location Trip' and paste/enter the lookupId which you have recieved from the first user. 
 
- // add a gif here
  
 ### Step 9. Join the trip
 In this step we will see how your friend can share his live location and join the trip. To join the trip , an action with the same lookupId needs to be created. This step is similar to Step 6. But this time it is a lookupId of an existing trip unlike a new one in Step 6.
@@ -361,11 +359,6 @@ For starter project - add this code to create and assign action when the user pr
                 }
             })
 ```
-// add a gif here
-
-## Building Blocks
-
-
 
 
 
