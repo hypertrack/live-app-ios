@@ -35,10 +35,15 @@ Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup), an
         HyperTrack.initialize("YOUR_PUBLISHABLE_KEY")
 ```
 
+## Build Placeline in your app 
+// talk about placeline api and the format
 
 
 
 ## Build Live Location Sharing using HyperTrack in 30 Minutes
+
+// Talk about live location here 
+
 
 - [Setup](#setup)
   - [Get API Keys](#step-1-get-api-keys)
@@ -48,6 +53,8 @@ Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup), an
   - [Show Live Location View](#step-5-show-live-location-view)
   - [Create And Track Action](#step-6-create-and-track-action)
   - [Share Your Trip](#step-7-share-your-trip)
+  - [Tracking an Ongoing Live Location Trip](#step-8-tracking-an-ongoing-live-location-trip)
+  - [Join the Trip](#step-9-join-the-trip)
 
   
 ### Setup 
@@ -194,11 +201,30 @@ As described earlier , A lookpupId is an identifier which identifies a live loca
 
    }
 ```
+You can share your lookupId to the other person by different ways. 
+1. You can use the UIActivityViewController to share it through any of the messenger app
+2. You can use your backend to send the lookupId 
+
+For starter project - lets keep it simple and use UIActivityViewController to do the job for us.
+```swift
+
+ func didTapShareLiveLocationLink(action : HyperTrackAction){
+        if let lookupId = action.lookupId {
+            let textToShare : Array = [lookupId]
+            let activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
+            activityViewController.completionWithItemsHandler = { activityType, complete, returnedItems, error in
+            }
+            self.present(activityViewController, animated: false, completion: nil)
+  
+        }
+    }
+    
+```
+// add a gif here
 
 
-
-### Track Action 
-
+### Step 8. Tracking an Ongoing Live Location Trip 
+To proceed further, you will need two devices. Once your friend  with other device received a look up id (either through your own backend or through a messenger app), you can use it to track him or join the trip. To track him you can use the following function. Although the tracking has started in the sdk, but to visualize it , you need to embed the hypertrack's map in your app. 
 ```swift
   HyperTrack.trackActionFor(lookUpId: LOOK_UP_ID, completionHandler: { (actions, error) in
             
@@ -207,14 +233,60 @@ As described earlier , A lookpupId is an identifier which identifies a live loca
             }
                 if let actions = actions {
                     if actions.count > 0 {
-                        
+                       // embed your map view here  
                     }
                 }
         })
  ```
  
-### Join the trip
+ For starter project - You have to enter the lookupId that you have received when you click on 'Track a trip'. In code ,add the following code in the selector of track button.
+ 
+ ```swift
+  HyperTrack.trackActionFor(lookUpId: LOOK_UP_ID, completionHandler: { (actions, error) in
+            
+            if let _ = error {
+                return
+            }
+                if let actions = actions {
+                    if actions.count > 0 {
+                       // embed your map view here  
+                    }
+                }
+        })
+ ```
+ 
+ // add a gif here
+ 
+### Step 9. Join the trip
+Now your friend also want to share live location and join the trip. To join the trip , an action with the same lookupId needs to be created. This step is similar to Step 6. But this time it is a lookupId of an existing trip unlike a new one in Step 6.
 
+For starter project - add this code to create and assign action when the user press 'Share Live Location' button.
+```swift
+        let htActionParams = HyperTrackActionParams()
+        htActionParams.expectedPlace = place
+        htActionParams.type = "visit"
+        htActionParams.lookupId = 'lookupId'
+        
+HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
+                if let error = error {
+                    return
+                }
+                if let action = action {
+                    
+                    HyperTrack.trackActionFor(lookUpId: action.lookupId!, completionHandler: { (actions, error) in
+                        if (error != nil) {
+                            return
+                        }
+                        
+                        self.currentLookUpId =  actions?.last?.lookupId
+                    })
+                    
+                    completion(action,nil)
+                    return
+                }
+            })
+```
+// add a gif here
 
 ## Building Blocks
 
