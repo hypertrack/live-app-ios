@@ -43,9 +43,11 @@ Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup), an
  - [Get Placeline in your app](#get-placeline-in-your-app)
 
 ### Placeline
-The HyperTrack mobile SDK collects location and activity data for your users. This data is available as a Placeline, which represents activity segments of the user. The Placeline object includes segments like stop, walk, and drive. An example JSON representation is given below.
+The HyperTrack mobile SDK collects location and activity data for your users. This data is available as a Placeline, which represents activity segments of the user. The Placeline object includes segments like stop, walk, and drive.
 
 ### Placeline Format
+Placeline object contains a lots of detailed information about the activity like the start time, end time, location.
+An example JSON representation is given below.
 ```
 [
     {
