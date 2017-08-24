@@ -9,7 +9,7 @@ Hypertrack Live
 
 Through hypertrack live you can share your live location with friends through your favorite messaging app when on the way to meet up. You can also see your activities organized as chronological cards so that tapping on each card gives you the locations of the activity.
 
-![Live Location Sharing](assets/placeline.gif) ![Placeline](assets/placeline.gif)
+![Live Location Sharing](assets/live_location.gif) ![Placeline](assets/placeline.gif)
 
 - [How to use](how-to-use)
 - [Build Live Location features](build-live-location-features)
@@ -224,6 +224,7 @@ For starter project - lets keep it simple and use UIActivityViewController to do
     }
     
 ```
+
 // add a gif here
 
 
@@ -253,39 +254,34 @@ To proceed further, you will need two devices. Once your friend  with other devi
             }
                 if let actions = actions {
                     if actions.count > 0 {
-                       // embed your map view here  
+                         let map = HyperTrack.map()
+                         map.enableLiveLocationSharingView = true
+                         map.setHTViewInteractionDelegate(interactionDelegate: self)
+                            if (self.hypertrackView != nil) {
+                                    self.hyperTrackMap = map
+                                   self.hyperTrackMap?.embedIn(self.hypertrackView)
+                             }
                     }
                 }
         })
  ```
  
+ Now to see the result, go to the other device and set up the user. After that click on 'Track a Live Location Trip' and paste/enter the lookupId which you have recieved from the first user. 
+
  // add a gif here
  
 ### Step 9. Join the trip
-Now your friend also want to share live location and join the trip. To join the trip , an action with the same lookupId needs to be created. This step is similar to Step 6. But this time it is a lookupId of an existing trip unlike a new one in Step 6.
+In this step we will see how your friend can share his live location and join the trip. To join the trip , an action with the same lookupId needs to be created. This step is similar to Step 6. But this time it is a lookupId of an existing trip unlike a new one in Step 6.
 
 For starter project - add this code to create and assign action when the user press 'Share Live Location' button.
 ```swift
-        let htActionParams = HyperTrackActionParams()
-        htActionParams.expectedPlace = place
-        htActionParams.type = "visit"
-        htActionParams.lookupId = 'lookupId'
-        
-HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
+         let htActionParams = HyperTrackActionParams()
+            htActionParams.expectedPlace = expectedPlace
+            htActionParams.type = "visit"
+            htActionParams.lookupId = self.lookupIdTextField.text!
+            
+            HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
                 if let error = error {
-                    return
-                }
-                if let action = action {
-                    
-                    HyperTrack.trackActionFor(lookUpId: action.lookupId!, completionHandler: { (actions, error) in
-                        if (error != nil) {
-                            return
-                        }
-                        
-                        self.currentLookUpId =  actions?.last?.lookupId
-                    })
-                    
-                    completion(action,nil)
                     return
                 }
             })
