@@ -24,7 +24,7 @@ The  Placeline is powered by HyperTrack mobile SDK which collects location and a
 
 ## Live Location Sharing
 The other important feature of Hypertrack Live powered by hypertrack SDK is Live Location Sharing. 
-Live Location Sharing has become a primary need for many consumer apps. Especially it can improve the user experience a lot when the transaction starts online but requires people to meet offline.It is super useful when you want to coordinate with your friends , telling and knowing how close everybody else is, when you are on your way to an event. It helps you in solving the daily anxiety of “where are you?”.
+Live Location Sharing has become a primary need for many consumer apps. Especially it can improve the user experience a lot when the transaction starts online but requires people to meet offline. It helps you in solving the daily anxiety of “where are you?”.
 
 ![Live Location Sharing](assets/live_location.gif) 
 
