@@ -97,7 +97,7 @@ class HyperTrackAppService: NSObject {
     }
 
     func setupHyperTrack() {
-        HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
+        HyperTrack.initialize(YOUR_PUBLISHABLE_KEY)
         HyperTrack.setEventsDelegate(eventDelegate: self)
         
     
