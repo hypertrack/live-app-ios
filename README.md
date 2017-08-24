@@ -37,6 +37,7 @@ Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup), an
  - [Placeline](#placeline)
  - [Placeline Format](#placeline-format)
  - [Setup](#setup)
+ - [Create a Hypertrack User](#create-a-hypertrack-user)
  - [Get Placeline in your app](#get-placeline-in-your-app)
 
 ### Placeline
@@ -97,8 +98,27 @@ An example JSON representation is given below.
 ### Setup
 Set up HyperTrack by following the instructions from [here](https://docs.hypertrack.com/sdks/ios/setup.html).
 
+#### Create a HyperTrack User
+The next  thing that you need to do is create a Hypertrack User. It helps Hypertrack to tag the location/activity data of a user and in turn help us to share status of your live location to your friends. More details about the function is present here(https://docs.hypertrack.com/sdks/ios/basic.html#step-1-create-sdk-user). 
+
+```swift
+     HyperTrack.getOrCreateUser(userName, _phone : "", "") { (user, error) in
+                
+                if (error != nil) {
+                    // Handle error on get or create user
+                    return
+                }
+                
+                if (user != nil) {
+                    // User successfully created
+                    print("User created:", user!.id ?? "")
+                    HyperTrack.startTracking()
+                   }
+                }
+            }
+```
 ### Get Placeline in your app
-You just have to implement the below function and you are all set to use the rich activity data in your app.
+Once the user is created you just have to implement the below function and you are all set to use the rich activity data in your app.
 
 ```swift
  HyperTrack.getPlaceline { (placeLine, error) in
