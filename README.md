@@ -15,7 +15,7 @@ Hypertrack live helps you share your live location with friends through your fav
 - [Live Location Sharing](#live-location-sharing)
 - [Usage](#usage)
 - [Build Placeline in your app](#build-placeline-in-your-app)
-- [Build Live Location Sharing in your app](#build-live-location-sharing-using-hypertrack-in-30-minutes)
+- [Build Live Location Sharing in your app](#build-live-location-sharing-using-hypertrak)
 - [Documentation](#documentation)
 - [Contribute](#contribute)
 - [Support](#support)
@@ -77,7 +77,7 @@ Set up HyperTrack by following the instructions from [here](https://docs.hypertr
 The next  thing that you need to do is create a Hypertrack User. It helps Hypertrack to tag the location/activity data of a user and in turn help us to share status of your live location to your friends. More details about the function is present here(https://docs.hypertrack.com/sdks/ios/basic.html#step-1-create-sdk-user). 
 
 ```swift
-     HyperTrack.getOrCreateUser(userName, _phone : "", "") { (user, error) in
+     HyperTrack.createUser(userName) { (user, error) in
               
                 if (error != nil) {
                     // Handle error on get or create user
@@ -103,13 +103,13 @@ Once the user is created, to enable tracking for the user you need to call start
 Once the user is created you just have to implement the below function and you are all set to use the rich activity data in your app.
 
 ```swift
- HyperTrack.getPlaceline { (placeLine, error) in
+HyperTrack.getPlaceline { (placeLine, error) in
             guard let fetchedPlaceLine = placeLine else { return }
             if let segments = fetchedPlaceLine.segments {
                 // process the segment here 
             
             }
-        }
+       }
 ```
 
 
@@ -170,10 +170,12 @@ If you are not using the starter project set up HyperTrack by following the inst
 #### Step 4. Create a HyperTrack User
 The next  thing that you need to do is create a Hypertrack User. It helps Hypertrack to tag the location/activity data of a user and in turn help us to share status of your live location to your friends. More details about the function is present here(https://docs.hypertrack.com/sdks/ios/basic.html#step-1-create-sdk-user). 
 
+When the user is created to start tracking his location and activity , we have to call ```swift HyperTrack.startTracking()```
+
 For starter project go to UserProfileViewController.swift. When the user press login, take the name of the user and use the below function to create a user.
 
 ```swift
-     HyperTrack.getOrCreateUser(userName!, _phone : "", "") { (user, error) in
+     HyperTrack.createUser(userName!) { (user, error) in
                 
                 if (error != nil) {
                     // Handle error on get or create user
