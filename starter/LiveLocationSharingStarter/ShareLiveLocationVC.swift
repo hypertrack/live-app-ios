@@ -15,6 +15,8 @@ class ShareLiveLocationVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Share Live Location"
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -24,7 +26,7 @@ class ShareLiveLocationVC: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
 
-        // step 5. Embed hypertrack map in your view
+        //  Start a Live Location Trip : Step 1. embed hypertrack's map in your view
        
         // get an instance of hypertrack's map view (it's a location picker + map view)
         hyperTrackMap = HyperTrack.map()
@@ -69,29 +71,9 @@ extension ShareLiveLocationVC:HTViewInteractionDelegate {
     
     func didSelectLocation(place : HyperTrackPlace?){
     
-        // step 6: This is the callback which gets called when the user select a location. Create an action and assign it.
+        //  Start a Live Location Trip : Step 2. This is the callback which gets called when the user select a location. Create an action and assign it.
         
-        let htActionParams = HyperTrackActionParams()
-        htActionParams.expectedPlace = place
-        htActionParams.type = "visit"
-        htActionParams.lookupId = UUID().uuidString
-        
-        HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
-            if let error = error {
-                return
-            }
-            if let action = action {
-                
-                HyperTrack.trackActionFor(lookUpId: action.lookupId!, completionHandler: { (actions, error) in
-                    if (error != nil) {
-                        return
-                    }
-                    
-                })
-                
-                return
-            }
-        })
+       
     }
     
 
@@ -100,7 +82,7 @@ extension ShareLiveLocationVC:HTViewInteractionDelegate {
     }
     
     func didTapStopLiveLocationSharing(actionId : String){
-        // step 6: This is the callback when user want to stop the trip. Complete the action here
+        //This is the callback when user want to stop the trip. Complete the action
 
         HyperTrack.completeAction(actionId)
     }
@@ -108,7 +90,7 @@ extension ShareLiveLocationVC:HTViewInteractionDelegate {
     func didTapShareLiveLocationLink(action : HyperTrackAction){
         if let lookupId = action.lookupId {
             
-          //  Step 7: This is the callback when the user wants to share his location to his friends. Create a activity view controller to share it through messenger apps
+          //  Start a Live Location Trip : Step 3 : This is the callback when the user wants to share his location to his friends. Create a activity view controller to share it through messenger apps
             
             let textToShare : Array = [lookupId]
             let activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)

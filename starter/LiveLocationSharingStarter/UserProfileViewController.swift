@@ -14,6 +14,8 @@ class UserProfileViewController: UIViewController {
     @IBOutlet weak var userNameLabel: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Create User"
+
 
         // Do any additional setup after loading the view.
     }
@@ -36,22 +38,7 @@ class UserProfileViewController: UIViewController {
             
             // Basic Setup - Step 4 : Create a HyperTrack User
 
-            HyperTrack.createUser(userName!) { (user, error) in
-                if (error != nil) {
-                    // Handle error on get or create user
-                    print("recieved error while creating user. error : " + (error?.errorMessage)!)
-                    return
-                }
-                
-                if (user != nil) {
-                    // User successfully created
-                    print("User created:", user!.id ?? "")
-                    HyperTrack.startTracking()
-                    self.showAlert(title:"Step 4  completed", message: "Yay Hypertrack User is Created",buttonTitle: "OK, What's Next ?" ){(action) in
-                        self.dismiss(animated:true, completion: nil)
-                    }
-                }
-            }
+
         }
     }
     

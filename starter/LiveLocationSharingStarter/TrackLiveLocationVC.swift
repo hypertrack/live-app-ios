@@ -21,6 +21,7 @@ class TrackLiveLocationVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         shareLiveLocation.isHidden = true
+        self.title = "Track Live Location"
         // Do any additional setup after loading the view.
     }
 
@@ -42,29 +43,9 @@ class TrackLiveLocationVC: UIViewController {
         self.lookupIdTextField.resignFirstResponder()
         self.shareLiveLocation.isHidden = false
         
-        // Step 8. User clicked on track button. Start a tracking session for the lookup id entered by user.
+        // Track or Join an Ongoing Trip - Step 1. User clicked on track button. Start a tracking session for the lookup id entered by user.
         
-        HyperTrack.trackActionFor(lookUpId: lookupIdTextField.text!, completionHandler: { (actions, error) in
-            
-            if let _ = error {
-                return
-            }
-            if let actions = actions {
-                if actions.count > 0 {
-                    
-                    self.expectedPlace = actions.last?.expectedPlace
 
-                    let map = HyperTrack.map()
-                    map.enableLiveLocationSharingView = true
-                    map.setHTViewInteractionDelegate(interactionDelegate: self)
-                    if (self.hypertrackView != nil) {
-                        self.hyperTrackMap = map
-                        self.hyperTrackMap?.embedIn(self.hypertrackView)
-                    }
-                }
-            }
-        })
-        
     }
     
     
@@ -72,21 +53,11 @@ class TrackLiveLocationVC: UIViewController {
    
         self.shareLiveLocation.isHidden = true
         
-        if let expectedPlace = self.expectedPlace{
+        if self.expectedPlace != nil{
            
-            // Step 9. User want to join an ongoing trip. Create and assign an action for the same place and lookup id of the ongoing trip
+            // Track or Join an Ongoing Trip - Step 2. User want to join an ongoing trip. Create and assign an action for the same place and lookup id of the ongoing trip
 
-                let htActionParams = HyperTrackActionParams()
-                htActionParams.expectedPlace = expectedPlace
-                htActionParams.type = "visit"
-                htActionParams.lookupId = self.lookupIdTextField.text!
-                
-                HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
-                    if let error = error {
-                        return
-                    }
-                    
-                })
+              
         }
         
     }

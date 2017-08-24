@@ -19,10 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Basic Setup - Step 3: initialize hypertrack sdk and request for permissions here
         
-        HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
-        HyperTrack.requestAlwaysAuthorization()
-        HyperTrack.requestMotionAuthorization()
-
         
         return true
     }
