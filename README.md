@@ -9,12 +9,9 @@ Hypertrack Live
 
 Through hypertrack live you can share your live location with friends through your favorite messaging app when on the way to meet up. You can also see your activities organized as chronological cards so that tapping on each card gives you the locations of the activity.
 
-![Live Location Sharing](assets/live_location.gif) ![Placeline](assets/placeline.gif)
-
 - [How to use](#how-to-use)
 - [Build Placeline in your app](#build-placeline-in-your-app)
 - [Build Live Location Sharing in your app](#build-live-location-sharing-using-hypertrack-in-30-minutes)
-- [Building Blocks](#building-blocks)
 
 
 
@@ -44,6 +41,8 @@ Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup), an
 
 ### Placeline
 The HyperTrack mobile SDK collects location and activity data for your users. This data is available as a Placeline, which represents activity segments of the user. The Placeline object includes segments like stop, walk, and drive.
+
+![Placeline](assets/placeline.gif)
 
 ### Placeline Format
 Placeline object contains a lots of detailed information about the activity like the start time, end time, location.
@@ -117,8 +116,7 @@ You just have to implement the below function and you are all set to use the ric
 
 Live Location Sharing has become a primary need for many consumer apps. Especially it can improve the user experience a lot when the transaction starts online but requires people to meet offline.It is super useful when you want to coordinate with your friends , telling and knowing how close everybody else is, when you are on your way to an event. It helps you in solving the daily anxiety of “where are you?”.
 
-![Alt Text](https://media.giphy.com/media/l4FGl4Swc4whZkNlm/giphy.gif)
-
+![Live Location Sharing](assets/live_location.gif) 
 
 Use the following tutorial to build  live location sharing feature in your app.
 
