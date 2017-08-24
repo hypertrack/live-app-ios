@@ -3,7 +3,7 @@
 
 def hypertrack_pods
     pod 'HyperTrack'
-    # pod 'HyperTrack.local', :path => '~/hypertrack-ios-v3/HyperTrack.local.podspec'
+    #pod 'HyperTrack.local', :path => '~/hypertrack-ios-v3/HyperTrack.local.podspec'
 end
 
 target 'htlive-ios' do

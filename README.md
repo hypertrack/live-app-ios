@@ -170,7 +170,7 @@ For starter project go to ```UserProfileViewController.swift```. When the user p
      HyperTrack.createUser(userName!) { (user, error) in
                 if (error != nil) {
                     // Handle error on get or create user
-                     print("recieved error while creating user. error : " + (error?.errorMessage)!)
+                    print("recieved error while creating user. error : " + (error?.errorMessage)!)
                     return
                 }
                 
@@ -184,6 +184,8 @@ For starter project go to ```UserProfileViewController.swift```. When the user p
                 }
             }
 ```
+
+![Create User](assets/create_user.gif) 
 
 ### Start a Live Location Trip
 
@@ -220,6 +222,9 @@ func didSelectLocation(place : HyperTrackPlace?){
     
 }
 ```
+
+![Select Location](assets/select_location.gif) 
+
 #### Step 2. Create and Track Action
 
 When the user select a location you will get a callback in ```didSelectLocation``` function of ```HTViewInteractionDelegate``` extension. This is the right time to start a trip. For starting a trip , you need to create a session which can be achieved by creating a 'visit' [action](https://docs.hypertrack.com/api/entities/action.html).  
@@ -236,6 +241,7 @@ For starter project goto ```ShareLiveLocationVC.swift``` and add the below code 
         
         HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
             if let error = error {
+                print("recieved error while creating and assigning action. error : " + (error?.errorMessage)!)
                 return
             }
             if let action = action {
@@ -261,6 +267,8 @@ Also implement the following function in the extension(```ShareLiveLocationVC:HT
         HyperTrack.completeAction(actionId)  
     }
  ```
+ 
+![Start Trip](assets/start_trip.gif) 
 
 #### Step 3. Share Your Trip
 As described earlier , A ```lookpupId``` is an identifier which identifies a live location trip. When you want to share your trip, your trip's ```lookupId``` needs to be shared.
@@ -298,6 +306,7 @@ To track him you can use the following function. Although the tracking has start
   HyperTrack.trackActionFor(lookUpId: LOOK_UP_ID, completionHandler: { (actions, error) in
             
             if let _ = error {
+                print("recieved error while tracking via lookupId. error : " + (error?.errorMessage)!)
                 return
             }
                 if let actions = actions {
@@ -314,10 +323,12 @@ For starter project - You have to enter the ```lookupId``` in the textfield that
   HyperTrack.trackActionFor(lookUpId: LOOK_UP_ID, completionHandler: { (actions, error) in
             
             if let _ = error {
+                print("recieved error while tracking via lookupId. error : " + (error?.errorMessage)!)
                 return
             }
                 if let actions = actions {
                     if actions.count > 0 {
+                         self.expectedPlace = actions.last?.expectedPlace
                          let map = HyperTrack.map()
                          map.enableLiveLocationSharingView = true
                          map.setHTViewInteractionDelegate(interactionDelegate: self)
@@ -332,23 +343,28 @@ For starter project - You have to enter the ```lookupId``` in the textfield that
  
 Now to see the result, go to the other device and set up the user. After that click on 'Track a Live Location Trip' and paste/enter the ```lookupId``` which you recieved from the first user. 
 
+![Track Friend](assets/track_friend.gif) 
+
  
 #### Step 2. Join the trip
 In this step we will see how your friend can share his live location and join the trip. To join the trip , an action with the same lookupId needs to be created. This step is similar to Step 6. But this time it is a lookupId of an existing trip unlike a new one in Step 6.
 
 For starter project - add this code to create and assign action when the user press 'Share Live Location' button.
 ```swift
-         let htActionParams = HyperTrackActionParams()
-            htActionParams.expectedPlace = expectedPlace
-            htActionParams.type = "visit"
-            htActionParams.lookupId = self.lookupIdTextField.text!
+          let htActionParams = HyperTrackActionParams()
+          htActionParams.expectedPlace = expectedPlace
+          htActionParams.type = "visit"
+          htActionParams.lookupId = self.lookupIdTextField.text!
             
-            HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
+          HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
                 if let error = error {
+                    print("recieved error while create and assign action. error : " + (error?.errorMessage)!)
                     return
                 }
             })
 ```
+![Multi User Trip](assets/multi_user_trip.gif) 
+
 
 ## Documentation
 For detailed documentation of the APIs, customizations and what all you can build using HyperTrack, please visit the official [docs](https://docs.hypertrack.com/).
