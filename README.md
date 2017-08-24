@@ -11,9 +11,10 @@ Through hypertrack live you can share your live location with friends through yo
 
 ![Live Location Sharing](assets/live_location.gif) ![Placeline](assets/placeline.gif)
 
-- [How to use](how-to-use)
-- [Build Live Location features](build-live-location-features)
-- [Building Blocks](building-blocks)
+- [How to use](#how-to-use)
+- [Build Placeline in your app](#build-placeline-in-your-app)
+- [Build Live Location Sharing in your app](#build-live-location-sharing-using-hypertrack-in-30-minutes)
+- [Building Blocks](#building-blocks)
 
 
 
@@ -47,7 +48,7 @@ Live Location Sharing has become a primary need for many consumer apps. Especial
 ![Alt Text](https://media.giphy.com/media/l4FGl4Swc4whZkNlm/giphy.gif)
 
 
-Use the following tutorial to build your live location sharing feature in your app.
+Use the following tutorial to build  live location sharing feature in your app.
 
 - [Setup](#setup)
   - [Get API Keys](#step-1-get-api-keys)
@@ -64,7 +65,8 @@ Use the following tutorial to build your live location sharing feature in your a
 ### Setup 
 
 #### Step 1. Get API Keys
-Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup)
+Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup).
+
 #### Step 2. Use Starter Project
 We have created a starter project so that building Live Location Sharing becomes very easy and quick. It will prevent you from the hassle of creating a new project and the workflow to enable live location sharing. If you want to directly build the flow in your own app or wanted to create a new project, you can ignore this step.
 
@@ -80,13 +82,14 @@ $ pod install
 ```
 
 #### Step 3. Setup HyperTrack SDK
-If you are not using the starter project set up HyperTrack by following the instructions from [here](https://docs.hypertrack.com/sdks/ios/setup.html). Otherwise initialize the SDK by putting the following code :  
+If you are not using the starter project set up HyperTrack by following the instructions from [here](https://docs.hypertrack.com/sdks/ios/setup.html). Otherwise initialize the SDK by putting the following code in AppDelegate
 ```swift
 // AppDelegate.swift
         HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
         HyperTrack.requestLocationServices()
+        HyperTrack.requestMotionAuthorization()
 ```
-in AppDelegate in the following function like : 
+ in the following function like : 
 
 ```swift
  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -96,13 +99,12 @@ in AppDelegate in the following function like :
         HyperTrack.requestLocationServices()
         return true
     }
-
 ```
 
 #### Step 4. Create a HyperTrack User
-The next logical thing that you need to do is create a Hypertrack User. It helps Hypertrack to tag the location/activity data of a user and in turn help us to share status of your live location to your friends. More details about the function is present here(https://docs.hypertrack.com/sdks/ios/basic.html#step-1-create-sdk-user). 
+The next  thing that you need to do is create a Hypertrack User. It helps Hypertrack to tag the location/activity data of a user and in turn help us to share status of your live location to your friends. More details about the function is present here(https://docs.hypertrack.com/sdks/ios/basic.html#step-1-create-sdk-user). 
 
-For starter project - UserProfileViewController.swift. When the user press login, take the name of the user and use the below function to create a user.
+For starter project go to UserProfileViewController.swift. When the user press login, take the name of the user and use the below function to create a user.
 
 ```swift
      HyperTrack.getOrCreateUser(userName, _phone : "", "") { (user, error) in
@@ -126,7 +128,8 @@ For starter project - UserProfileViewController.swift. When the user press login
 ### Step 5. Show Live Location View
 Now since we have a Hypertrack User, we can start a live location view to him so that he can choose a location where he wants to go. This view is a combination of location picker and a map view. Once the user selects a location with the help of our inbuilt location picker, than the sdk gives a callback to the app with the selected location so that the app can start a trip. 
 
-For starter project - ShareLiveLocationVC.swift. Embed the live location view in your ViewController's view.
+For starter project go to ShareLiveLocationVC.swift. Embed the live location view in your ViewController's view. This should be done in - override 'func viewDidAppear(_ animated: Bool)'
+
 ```swift
         // get an instance of hypertrack's map view (it's a location picker + map view)
         hyperTrackMap = HyperTrack.map()
@@ -160,35 +163,32 @@ A lookpupId is an identifier created by you for the live location trip. We chose
 
 For starter project goto ShareLiveLocationVC.swift and add the below code when you get a callback of location selection.
 ```swift
-        let htActionParams = HyperTrackActionParams()
+    let htActionParams = HyperTrackActionParams()
         htActionParams.expectedPlace = place
         htActionParams.type = "visit"
         htActionParams.lookupId = UUID().uuidString
         
-HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
-                if let error = error {
-                    return
-                }
-                if let action = action {
+        HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
+            if let error = error {
+                return
+            }
+            if let action = action {
+                
+                HyperTrack.trackActionFor(lookUpId: action.lookupId!, completionHandler: { (actions, error) in
+                    if (error != nil) {
+                        return
+                    }
                     
-                    HyperTrack.trackActionFor(lookUpId: action.lookupId!, completionHandler: { (actions, error) in
-                        if (error != nil) {
-                            return
-                        }
-                        
-                        self.currentLookUpId =  actions?.last?.lookupId
-                    })
-                    
-                    completion(action,nil)
-                    return
-                }
-            })
+                })
+                
+                return
+            }
+        })
 ```
 
 Also implement the following function in the extension(ShareLiveLocationVC:HTViewInteractionDelegate) so that when the user clicks stop , the action gets completed.
 
 ```swift
-
 // HTViewInteractionDelegate callback when user clicks stop live location sharing, You should mark your action as complete 
 // when this is called.
 func didTapStopLiveLocationSharing(actionId : String){
@@ -222,7 +222,6 @@ For starter project - lets keep it simple and use UIActivityViewController to do
   
         }
     }
-    
 ```
 
 // add a gif here
