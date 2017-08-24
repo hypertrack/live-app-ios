@@ -7,43 +7,36 @@ Hypertrack Live
 
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/licenses/MIT) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  [![Slack Status](http://slack.hypertrack.com/badge.svg)](http://slack.hypertrack.com)
 
-Through hypertrack live you can share your live location with friends through your favorite messaging app when on the way to meet up. You can also see your activities organized as chronological cards so that tapping on each card gives you the locations of the activity.
+Through hypertrack live you can share your live location with friends through your favorite messaging app when on the way to meet up. You can also see your activities organized as chronological cards so that tapping on each card gives you the locations of the activity. 
 
-- [How to use](#how-to-use)
+- [Placeline](#placeline)
+- [Live Location Sharing](#live-location-sharing)
 - [Build Placeline in your app](#build-placeline-in-your-app)
 - [Build Live Location Sharing in your app](#build-live-location-sharing-using-hypertrack-in-30-minutes)
 
 
+## Placeline
+One of the core feature of Hypertrack Live is Placeline. Placeline is useful in tracking your daily activity with near-zero battery impact. You will feel the magic of automatic in its ability to use GPS, WiFi, network, accelerometer, pedometer, gyroscope and other sensors to deliver accuracy.
 
-## How to use
+![Placeline](assets/placeline.gif)
 
-```bash
-# Clone this repository
-$ git clone https://github.com/hypertrack/hypertrack-live-ios.git
+The  Placeline is powered by HyperTrack mobile SDK which collects location and activity data for your users. The Placeline object includes segments like stop, walk, and drive. 
 
-# Go into the repository
-$ cd hypertrack-live-ios/htlive-ios
+## Live Location Sharing
+The other important feature of Hypertrack Live powered by hypertrack SDK is Live Location Sharing. 
+Live Location Sharing has become a primary need for many consumer apps. Especially it can improve the user experience a lot when the transaction starts online but requires people to meet offline.It is super useful when you want to coordinate with your friends , telling and knowing how close everybody else is, when you are on your way to an event. It helps you in solving the daily anxiety of “where are you?”.
 
-# Install dependencies
-$ pod install
-```
+![Live Location Sharing](assets/live_location.gif) 
 
-Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup), and add the publishable key to setUpHypertrack function in [HyperTrackAppService.swift](https://github.com/hypertrack/hypertrack-live-ios/blob/master/htlive-ios/htlive-ios/HyperTrackAppService.swift) file.
-```swift
-        HyperTrack.initialize("YOUR_PUBLISHABLE_KEY")
-```
+
 
 ## Build Placeline in your app 
- - [Placeline](#placeline)
  - [Placeline Format](#placeline-format)
  - [Setup](#setup)
  - [Create a Hypertrack User](#create-a-hypertrack-user)
  - [Get Placeline in your app](#get-placeline-in-your-app)
 
-### Placeline
-The HyperTrack mobile SDK collects location and activity data for your users. This data is available as a Placeline, which represents activity segments of the user. The Placeline object includes segments like stop, walk, and drive.
 
-![Placeline](assets/placeline.gif)
 
 ### Placeline Format
 Placeline object contains a lots of detailed information about the activity like the start time, end time, location.
@@ -134,9 +127,6 @@ Once the user is created you just have to implement the below function and you a
 
 ## Build Live Location Sharing using HyperTrack in 30 Minutes
 
-Live Location Sharing has become a primary need for many consumer apps. Especially it can improve the user experience a lot when the transaction starts online but requires people to meet offline.It is super useful when you want to coordinate with your friends , telling and knowing how close everybody else is, when you are on your way to an event. It helps you in solving the daily anxiety of “where are you?”.
-
-![Live Location Sharing](assets/live_location.gif) 
 
 Use the following tutorial to build  live location sharing feature in your app.
 
