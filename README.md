@@ -152,7 +152,7 @@ If you are not using the starter project set up HyperTrack by following the inst
 
 ```swift
  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
+        HyperTrack.initialize(YOUR_PUBLISHABLE_KEY)
         HyperTrack.requestAlwaysAuthorization()
         HyperTrack.requestMotionAuthorization()
         return true
