@@ -96,9 +96,6 @@ An example JSON representation is given below.
 ]
 ```
 ### Setup
-#### Get API Keys
-Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup).
-#### Setup HyperTrack SDK
 Set up HyperTrack by following the instructions from [here](https://docs.hypertrack.com/sdks/ios/setup.html).
 
 ### Get Placeline in your app
