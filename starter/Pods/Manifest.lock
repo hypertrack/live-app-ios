@@ -1,0 +1,41 @@
+PODS:
+  - Alamofire (4.4.0)
+  - CocoaAsyncSocket (7.5.1):
+    - CocoaAsyncSocket/GCD (= 7.5.1)
+  - CocoaAsyncSocket/GCD (7.5.1)
+  - GzipSwift (3.1.4)
+  - HyperTrack.local (0.4.40):
+    - Alamofire (= 4.4.0)
+    - GzipSwift
+    - JustLog
+    - SQLite.swift (= 0.11.2)
+  - JustLog (1.2.0):
+    - CocoaAsyncSocket (~> 7.5.0)
+    - SwiftyBeaver (~> 1.1.1)
+  - MBProgressHUD (1.0.0)
+  - SQLite.swift (0.11.2):
+    - SQLite.swift/standard (= 0.11.2)
+  - SQLite.swift/standard (0.11.2)
+  - SwiftyBeaver (1.1.4)
+
+DEPENDENCIES:
+  - HyperTrack.local (from `~/hypertrack-ios-v3/HyperTrack.local.podspec`)
+  - MBProgressHUD
+
+EXTERNAL SOURCES:
+  HyperTrack.local:
+    :path: ~/hypertrack-ios-v3/HyperTrack.local.podspec
+
+SPEC CHECKSUMS:
+  Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
+  CocoaAsyncSocket: e0a7e93b2ffa411592ff87e58524fbbc9b95b4fa
+  GzipSwift: 11ddb2bf253b1cd7b60bb169da20f62ac4348769
+  HyperTrack.local: 14591e3e67dc00b88c4faafa648d3e9bce4c52d7
+  JustLog: 035ff2d06efd8cae26aeaf05cb2471f03ee866bb
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  SQLite.swift: 670c3e9e0a806bbfd56a3de5d530768dc0e6fe7c
+  SwiftyBeaver: 9216b6e163c145628ccc7c0126df4287880d6e1e
+
+PODFILE CHECKSUM: b6ca844ca2f5c2af0163dfc49c872a71a6ba0de0
+
+COCOAPODS: 1.3.0.beta.2
