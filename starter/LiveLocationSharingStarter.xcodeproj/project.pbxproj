@@ -20,6 +20,7 @@
 		BB9AB4461F4A7404002F653F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB9AB4441F4A7404002F653F /* LaunchScreen.storyboard */; };
 		BB9AB4511F4A7404002F653F /* LiveLocationSharingStarterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9AB4501F4A7404002F653F /* LiveLocationSharingStarterTests.swift */; };
 		BB9AB45C1F4A7404002F653F /* LiveLocationSharingStarterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9AB45B1F4A7404002F653F /* LiveLocationSharingStarterUITests.swift */; };
+		BBCA54CC1F4F0C8E00A10751 /* geofence.gpx in Resources */ = {isa = PBXBuildFile; fileRef = BBCA54CB1F4F0C8E00A10751 /* geofence.gpx */; };
 		EE1E878F6567F1EDD1394A64 /* Pods_LiveLocationSharingStarterTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDA50F04D1A58E0915DCCB8E /* Pods_LiveLocationSharingStarterTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +64,7 @@
 		BB9AB4571F4A7404002F653F /* LiveLocationSharingStarterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LiveLocationSharingStarterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB9AB45B1F4A7404002F653F /* LiveLocationSharingStarterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveLocationSharingStarterUITests.swift; sourceTree = "<group>"; };
 		BB9AB45D1F4A7404002F653F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BBCA54CB1F4F0C8E00A10751 /* geofence.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = geofence.gpx; path = LiveLocationSharingStarter/geofence.gpx; sourceTree = "<group>"; };
 		D54270AD14CB30C7DC265C79 /* Pods-LiveLocationSharingStarter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveLocationSharingStarter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiveLocationSharingStarter/Pods-LiveLocationSharingStarter.debug.xcconfig"; sourceTree = "<group>"; };
 		DA35A7303F07A3FC3F266E78 /* Pods-LiveLocationSharingStarterTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveLocationSharingStarterTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiveLocationSharingStarterTests/Pods-LiveLocationSharingStarterTests.release.xcconfig"; sourceTree = "<group>"; };
 		E0E5F2BBF47C4C9974BDE172 /* Pods-LiveLocationSharingStarterUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveLocationSharingStarterUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiveLocationSharingStarterUITests/Pods-LiveLocationSharingStarterUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 		BB9AB42F1F4A7404002F653F = {
 			isa = PBXGroup;
 			children = (
+				BBCA54CB1F4F0C8E00A10751 /* geofence.gpx */,
 				BB9AB43A1F4A7404002F653F /* LiveLocationSharingStarter */,
 				BB9AB44F1F4A7404002F653F /* LiveLocationSharingStarterTests */,
 				BB9AB45A1F4A7404002F653F /* LiveLocationSharingStarterUITests */,
@@ -302,6 +305,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB9AB4461F4A7404002F653F /* LaunchScreen.storyboard in Resources */,
+				BBCA54CC1F4F0C8E00A10751 /* geofence.gpx in Resources */,
 				BB9AB4431F4A7404002F653F /* Assets.xcassets in Resources */,
 				BB9AB4411F4A7404002F653F /* Main.storyboard in Resources */,
 			);

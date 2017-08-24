@@ -26,9 +26,16 @@ class ShareLiveLocationVC: UIViewController {
 
         // step 5. Embed hypertrack map in your view
        
-       
-        
-        
+        // get an instance of hypertrack's map view (it's a location picker + map view)
+        hyperTrackMap = HyperTrack.map()
+        // enable live location sharing
+        hyperTrackMap?.enableLiveLocationSharingView = true
+        hyperTrackMap?.showConfirmLocationButton = true
+        // gives callbacks when a user interacts with the map, like when he selects a location or press a refocus button
+        hyperTrackMap?.setHTViewInteractionDelegate(interactionDelegate: self)
+        if (self.hypertrackView != nil) {
+            hyperTrackMap?.embedIn(self.hypertrackView)
+        }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
             if (self.hyperTrackMap == nil){
@@ -64,6 +71,27 @@ extension ShareLiveLocationVC:HTViewInteractionDelegate {
     
         // step 6: This is the callback which gets called when the user select a location. Create an action and assign it.
         
+        let htActionParams = HyperTrackActionParams()
+        htActionParams.expectedPlace = place
+        htActionParams.type = "visit"
+        htActionParams.lookupId = UUID().uuidString
+        
+        HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
+            if let error = error {
+                return
+            }
+            if let action = action {
+                
+                HyperTrack.trackActionFor(lookUpId: action.lookupId!, completionHandler: { (actions, error) in
+                    if (error != nil) {
+                        return
+                    }
+                    
+                })
+                
+                return
+            }
+        })
     }
     
 

@@ -34,11 +34,24 @@ class UserProfileViewController: UIViewController {
             showAlert(title: "Enter your name", message: "Please enter your name and then press login.")
         }else{
             
-            // Step 4 : Create a HyperTrack User
+            // Basic Setup - Step 4 : Create a HyperTrack User
 
-        
-        
-        
+            HyperTrack.createUser(userName!) { (user, error) in
+                if (error != nil) {
+                    // Handle error on get or create user
+                    print("recieved error while creating user. error : " + (error?.errorMessage)!)
+                    return
+                }
+                
+                if (user != nil) {
+                    // User successfully created
+                    print("User created:", user!.id ?? "")
+                    HyperTrack.startTracking()
+                    self.showAlert(title:"Step 4  completed", message: "Yay Hypertrack User is Created",buttonTitle: "OK, What's Next ?" ){(action) in
+                        self.dismiss(animated:true, completion: nil)
+                    }
+                }
+            }
         }
     }
     
