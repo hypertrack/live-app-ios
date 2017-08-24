@@ -48,7 +48,7 @@ The HyperTrack mobile SDK collects location and activity data for your users. Th
 ### Placeline Format
 Placeline object contains a lots of detailed information about the activity like the start time, end time, location.
 An example JSON representation is given below.
-```
+```json
 [
     {
         "time_aware_polyline": "aiseFr_ajVcs{ykxAAA????fA{A????LO????l@t@????r@bA????PT????HL????r@`A????`CcDA",
