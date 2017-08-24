@@ -1,5 +1,5 @@
 <a href="https://hypertrack.com/">
-    <img src="https://www.hypertrack.com/images/logo.svg" alt="Hypertrack logo" title="Hypertrack" align="right" height="90" />
+    <img src="https://www.hypertrack.com/images/logo.svg" alt="Hypertrack logo" title="Hypertrack" align="right" height="70" />
 </a>
 
 Live Location Sharing and Activity Tracking 
@@ -62,11 +62,12 @@ Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup), an
  - [Placeline Format](#placeline-format)
  - [Setup](#setup)
  - [Create a Hypertrack User](#create-a-hypertrack-user)
+ - [Start Tracking](#start-tracking)
  - [Get Placeline in your app](#get-placeline-in-your-app)
 
 
 
-### Placeline Format
+#### Placeline Format
 Placeline object contains a lots of detailed information about the activity like the start time, end time, location.
 An example JSON representation is given below.
 ```json
@@ -116,7 +117,7 @@ An example JSON representation is given below.
     }
 ]
 ```
-### Setup
+#### Setup
 Set up HyperTrack by following the instructions from [here](https://docs.hypertrack.com/sdks/ios/setup.html).
 
 #### Create a HyperTrack User
@@ -124,7 +125,7 @@ The next  thing that you need to do is create a Hypertrack User. It helps Hypert
 
 ```swift
      HyperTrack.getOrCreateUser(userName, _phone : "", "") { (user, error) in
-                
+              
                 if (error != nil) {
                     // Handle error on get or create user
                     return
@@ -138,7 +139,14 @@ The next  thing that you need to do is create a Hypertrack User. It helps Hypert
                 }
             }
 ```
-### Get Placeline in your app
+
+#### Start Tracking
+Once the user is created, to enable tracking for the user you need to call startTracking method
+```swift
+                    HyperTrack.startTracking()
+```
+
+#### Get Placeline in your app
 Once the user is created you just have to implement the below function and you are all set to use the rich activity data in your app.
 
 ```swift
