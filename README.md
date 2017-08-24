@@ -42,8 +42,12 @@ Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup), an
 
 ## Build Live Location Sharing using HyperTrack in 30 Minutes
 
-// Talk about live location here 
+Live Location Sharing has become a primary need for many consumer apps. Especially it can improve the user experience a lot when the transaction starts online but requires people to meet offline.It is super useful when you want to coordinate with your friends , telling and knowing how close everybody else is, when you are on your way to an event. It helps you in solving the daily anxiety of “where are you?”.
 
+![Alt Text](https://media.giphy.com/media/l4FGl4Swc4whZkNlm/giphy.gif)
+
+
+Use the following tutorial to build your live location sharing feature in your app.
 
 - [Setup](#setup)
   - [Get API Keys](#step-1-get-api-keys)
