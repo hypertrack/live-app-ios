@@ -13,6 +13,9 @@ Through hypertrack live you can share your live location with friends through yo
 - [Live Location Sharing](#live-location-sharing)
 - [Build Placeline in your app](#build-placeline-in-your-app)
 - [Build Live Location Sharing in your app](#build-live-location-sharing-using-hypertrack-in-30-minutes)
+- [Documentation](#documentation)
+- [Contribute](#contribute)
+- [Support](#support)
 
 
 ## Placeline
@@ -367,5 +370,15 @@ For starter project - add this code to create and assign action when the user pr
             })
 ```
 
+## Documentation
+For detailed documentation of the APIs, customizations and what all you can build using HyperTrack, please visit the official [docs](https://docs.hypertrack.com/).
+
+## Contribute
+Feel free to clone, use, and contribute back via [pull requests](https://help.github.com/articles/about-pull-requests/). We'd love to see your pull requests - send them in! Please use the [issues tracker](https://github.com/hypertrack/hypertrack-live-ios/issues) to raise bug reports and feature requests.
+
+We are excited to see what live location feature you build in your app using this project. Do ping us at help@hypertrack.io once you build one, and we would love to feature your app on our blog!
+
+## Support
+Join our [Slack community](http://slack.hypertrack.com) for instant responses, or interact with our growing [community](https://community.hypertrack.com). You can also email us at help@hypertrack.com.
 
 
