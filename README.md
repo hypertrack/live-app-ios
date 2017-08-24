@@ -229,7 +229,7 @@ You will need two things to create an action.
 1. ```expectedPlace``` - This is the destination for the visit that you want to do. You have it after you select the destination
 2. ```lookupId``` - A ```lookpupId``` is an identifier created by you for the live location trip. A ```lookupId``` is what needs to be shared to the other person , so they can join your trip and share there location. We chose it to be the UUID. You can use your own internal identifiers. 
 
-For starter project goto ShareLiveLocationVC.swift and add the below code when you get a callback of location selection.
+For starter project goto ```ShareLiveLocationVC.swift``` and add the below code when you get a callback of location selection.
 ```swift
         let htActionParams = HyperTrackActionParams()
         htActionParams.expectedPlace = place
@@ -254,14 +254,13 @@ For starter project goto ShareLiveLocationVC.swift and add the below code when y
         })
 ```
 
-Also implement the following function in the extension(ShareLiveLocationVC:HTViewInteractionDelegate) so that when the user clicks stop , the action gets completed.
+Also implement the following function in the extension(```ShareLiveLocationVC:HTViewInteractionDelegate```) so that when the user clicks stop , the action gets completed.
 
 ```swift
 // HTViewInteractionDelegate callback when user clicks stop live location sharing, You should mark your action as complete 
 // when this is called.
-func didTapStopLiveLocationSharing(actionId : String){
-        HyperTrack.completeAction(actionId)
-    
+    func didTapStopLiveLocationSharing(actionId : String){
+        HyperTrack.completeAction(actionId)  
     }
  ```
 
@@ -271,15 +270,14 @@ As described earlier , A ```lookpupId``` is an identifier which identifies a liv
 // HTViewInteractionDelegate callback when user clicks share my trip to others
   func didTapShareLiveLocationLink(action : HyperTrackAction){
 
-   }
+  }
 ```
 You can share your ```lookupId``` to the other person by different ways. 
-1. You can use the ```UIActivityViewController``` to share it through any of the messenger app
-2. You can use your backend to send the lookupId 
+1. You can use the ```UIActivityViewController``` to share it through any of the messenger app.
+2. You can use your backend to send the ```lookupId```. 
 
 For starter project - lets keep it simple and use ```UIActivityViewController``` to do the job for us.
 ```swift
-
  func didTapShareLiveLocationLink(action : HyperTrackAction){
         if let lookupId = action.lookupId {
             let textToShare : Array = [lookupId]
@@ -294,9 +292,10 @@ For starter project - lets keep it simple and use ```UIActivityViewController```
 
 
 ### Track or Join an Ongoing Trip
+If you have completed the steps in above section, you have a user who has started his live location session. Now you want that your friends should be able to join the session so that you can see their location as well. Once your friend with other device receives a ```lookupId``` (either through your own backend or through a messenger app), you can use it to track him or join the trip by few lines of code described in the following steps.
 
-#### Step 1. Tracking an Ongoing Live Location Trip 
-To proceed further, you will need two devices. Once your friend  with other device received a ```lookupId``` (either through your own backend or through a messenger app), you can use it to track him or join the trip. To track him you can use the following function. Although the tracking has started in the sdk, but to visualize it , you need to embed the hypertrack's map in your app. 
+#### Step 1. Tracking an Ongoing Live Location Trip
+To track him you can use the following function. Although the tracking has started in the sdk, but to visualize it , you need to embed the hypertrack's map in your tracking view controller. 
 ```swift
   HyperTrack.trackActionFor(lookUpId: LOOK_UP_ID, completionHandler: { (actions, error) in
             
@@ -311,7 +310,7 @@ To proceed further, you will need two devices. Once your friend  with other devi
         })
  ```
  
- For starter project - You have to enter the ```lookupId``` that you have received when you click on 'Track a trip'. In code ,add the following code in the selector of track button.
+For starter project - You have to enter the ```lookupId``` in the textfield that you have received from your friend who has started the session. Add the following code in the selector of track button in ```TrackLiveLocationVC```.
  
  ```swift
   HyperTrack.trackActionFor(lookUpId: LOOK_UP_ID, completionHandler: { (actions, error) in
@@ -333,7 +332,7 @@ To proceed further, you will need two devices. Once your friend  with other devi
         })
  ```
  
- Now to see the result, go to the other device and set up the user. After that click on 'Track a Live Location Trip' and paste/enter the ```lookupId``` which you recieved from the first user. 
+Now to see the result, go to the other device and set up the user. After that click on 'Track a Live Location Trip' and paste/enter the ```lookupId``` which you recieved from the first user. 
 
  
 #### Step 2. Join the trip
