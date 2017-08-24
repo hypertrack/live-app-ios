@@ -125,6 +125,9 @@ For starter project go to UserProfileViewController.swift. When the user press l
                 }
             }
 ```
+
+
+
 ### Step 5. Show Live Location View
 Now since we have a Hypertrack User, we can start a live location view to him so that he can choose a location where he wants to go. This view is a combination of location picker and a map view. Once the user selects a location with the help of our inbuilt location picker, than the sdk gives a callback to the app with the selected location so that the app can start a trip. 
 
@@ -163,7 +166,7 @@ A lookpupId is an identifier created by you for the live location trip. We chose
 
 For starter project goto ShareLiveLocationVC.swift and add the below code when you get a callback of location selection.
 ```swift
-    let htActionParams = HyperTrackActionParams()
+        let htActionParams = HyperTrackActionParams()
         htActionParams.expectedPlace = place
         htActionParams.type = "visit"
         htActionParams.lookupId = UUID().uuidString
