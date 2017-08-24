@@ -85,8 +85,8 @@ $ pod install
 If you are not using the starter project set up HyperTrack by following the instructions from [here](https://docs.hypertrack.com/sdks/ios/setup.html). Otherwise initialize the SDK by putting the following code in AppDelegate
 ```swift
 // AppDelegate.swift
-        HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
-        HyperTrack.requestLocationServices()
+        HyperTrack.initialize("YOUR_PUBLISHABLE_KEY")
+        HyperTrack.requestAlwaysAuthorization()
         HyperTrack.requestMotionAuthorization()
 ```
  in the following function like : 
@@ -107,7 +107,7 @@ The next  thing that you need to do is create a Hypertrack User. It helps Hypert
 For starter project go to UserProfileViewController.swift. When the user press login, take the name of the user and use the below function to create a user.
 
 ```swift
-     HyperTrack.getOrCreateUser(userName, _phone : "", "") { (user, error) in
+     HyperTrack.getOrCreateUser(userName!, _phone : "", "") { (user, error) in
                 
                 if (error != nil) {
                     // Handle error on get or create user
