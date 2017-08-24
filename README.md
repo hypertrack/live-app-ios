@@ -25,7 +25,7 @@ Through hypertrack live you can share your live location with friends through yo
 $ git clone https://github.com/hypertrack/hypertrack-live-ios.git
 
 # Go into the repository
-$ cd hypertrack-live-ios
+$ cd hypertrack-live-ios/htlive-ios
 
 # Install dependencies
 $ pod install
@@ -37,8 +37,81 @@ Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup), an
 ```
 
 ## Build Placeline in your app 
-// talk about placeline api and the format
+ - [Placeline](#placeline)
+ - [Placeline Format](#placeline-format)
+ - [Setup](#setup)
+ - [Get Placeline in your app](#get-placeline-in-your-app)
 
+### Placeline
+The HyperTrack mobile SDK collects location and activity data for your users. This data is available as a Placeline, which represents activity segments of the user. The Placeline object includes segments like stop, walk, and drive. An example JSON representation is given below.
+
+### Placeline Format
+```
+[
+    {
+        "time_aware_polyline": "aiseFr_ajVcs{ykxAAA????fA{A????LO????l@t@????r@bA????PT????HL????r@`A????`CcDA",
+        "distance": 310.47333797811655,
+        "user_id": "4e2a8344-9864-4473-864f-e223dec208b3",
+        "type": "trip",
+        "encoded_polyline": "aiseFr_ajVAA??fA{A??LO??l@t@??r@bA??PT??HL??r@`A??`CcD",
+        "activity": "Walk",
+        "duration": 95738.982,
+        "ended_at": "2017-07-14T02:41:01.739000+00:00",
+        "started_at": "2017-07-13T00:05:22.757000+00:00",
+        "trip_id": "5c7a0e2e-35ce-4482-baa3-34f837146071",
+        "id": "5c7a0e2e-35ce-4482-baa3-34f837146071_1499904322"
+    },
+    {
+        "id": "885cb75c-c642-4df2-9d0e-8b9bf0d9547b",
+        "user_id": "4e2a8344-9864-4473-864f-e223dec208b3",
+        "place": {
+            "id": "83f46d89-cacd-4a1a-9007-507dbd5a4d7c",
+            "name": "",
+            "location": {
+                "type": "Point",
+                "coordinates": [-122.3985203814826,
+                    37.7869638230917
+                ]
+            },
+            "address": "182 2nd St, San Francisco, CA 94105, USA",
+            "locality": "South Beach",
+            "landmark": "",
+            "zip_code": "94105",
+            "city": "SF",
+            "state": "CA",
+            "country": "US"
+        },
+        "started_at": "2017-07-14T02:41:02.046000Z",
+        "ended_at": null,
+        "duration": 3211.898782,
+        "lookup_id": "D2E0C7FD-D1D3-4C1E-9307-82AD6F70BC9D",
+        "step_count": 301,
+        "step_distance": 210,
+        "created_at": "2017-07-14T02:41:02.409459Z",
+        "modified_at": "2017-07-14T02:41:02.409487Z",
+        "type": "stop"
+    }
+]
+```
+### Setup
+#### Get API Keys
+Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup).
+#### Setup HyperTrack SDK
+Set up HyperTrack by following the instructions from [here](https://docs.hypertrack.com/sdks/ios/setup.html).
+
+### Get Placeline in your app
+You just have to implement the below function and you are all set to use the rich activity data in your app.
+
+```swift
+ HyperTrack.getPlaceline { (placeLine, error) in
+            guard let fetchedPlaceLine = placeLine else { return }
+            if let segments = fetchedPlaceLine.segments {
+                // process the segment
+            
+            }
+            
+        }
+```
 
 
 ## Build Live Location Sharing using HyperTrack in 30 Minutes
@@ -50,7 +123,7 @@ Live Location Sharing has become a primary need for many consumer apps. Especial
 
 Use the following tutorial to build  live location sharing feature in your app.
 
-- [Setup](#setup)
+- [Steps](#setup)
   - [Get API Keys](#step-1-get-api-keys)
   - [Use Starter Project](#step-2-use-starter-project)
   - [Setup HyperTrack SDK](#step-3-setup-hypertrack-sdk)
@@ -62,7 +135,7 @@ Use the following tutorial to build  live location sharing feature in your app.
   - [Join the Trip](#step-9-join-the-trip)
 
   
-### Setup 
+### Steps 
 
 #### Step 1. Get API Keys
 Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup).
