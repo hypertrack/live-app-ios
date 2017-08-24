@@ -185,6 +185,8 @@ For starter project go to ```UserProfileViewController.swift```. When the user p
             }
 ```
 
+![Create User](assets/create_user.gif) 
+
 ### Start a Live Location Trip
 
 #### Step 1. Show Live Location View
@@ -220,6 +222,9 @@ func didSelectLocation(place : HyperTrackPlace?){
     
 }
 ```
+
+![Select Location](assets/select_location.gif) 
+
 #### Step 2. Create and Track Action
 
 When the user select a location you will get a callback in ```didSelectLocation``` function of ```HTViewInteractionDelegate``` extension. This is the right time to start a trip. For starting a trip , you need to create a session which can be achieved by creating a 'visit' [action](https://docs.hypertrack.com/api/entities/action.html).  
@@ -261,6 +266,8 @@ Also implement the following function in the extension(```ShareLiveLocationVC:HT
         HyperTrack.completeAction(actionId)  
     }
  ```
+ 
+![Start Trip](assets/start_trip.gif) 
 
 #### Step 3. Share Your Trip
 As described earlier , A ```lookpupId``` is an identifier which identifies a live location trip. When you want to share your trip, your trip's ```lookupId``` needs to be shared.
@@ -318,6 +325,9 @@ For starter project - You have to enter the ```lookupId``` in the textfield that
             }
                 if let actions = actions {
                     if actions.count > 0 {
+                    
+                         self.expectedPlace = actions.last?.expectedPlace
+
                          let map = HyperTrack.map()
                          map.enableLiveLocationSharingView = true
                          map.setHTViewInteractionDelegate(interactionDelegate: self)
@@ -331,6 +341,8 @@ For starter project - You have to enter the ```lookupId``` in the textfield that
  ```
  
 Now to see the result, go to the other device and set up the user. After that click on 'Track a Live Location Trip' and paste/enter the ```lookupId``` which you recieved from the first user. 
+
+![Track Friend](assets/track_friend.gif) 
 
  
 #### Step 2. Join the trip
@@ -349,6 +361,7 @@ For starter project - add this code to create and assign action when the user pr
                 }
             })
 ```
+![Multi User Trip](assets/multi_user_trip.gif) 
 
 ## Documentation
 For detailed documentation of the APIs, customizations and what all you can build using HyperTrack, please visit the official [docs](https://docs.hypertrack.com/).
