@@ -1,5 +1,5 @@
 <a href="https://hypertrack.com/">
-    <img src="https://www.hypertrack.com/images/logo.svg" alt="Hypertrack logo" title="Hypertrack" align="right" height="80" />
+    <img src="https://www.hypertrack.com/images/logo.svg" alt="Hypertrack logo" title="Hypertrack" align="right" height="90" />
 </a>
 
 Live Location Sharing and Activity Tracking 
@@ -54,8 +54,8 @@ Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup), an
         HyperTrack.initialize("YOUR_PUBLISHABLE_KEY")
 ```
 
-#### To build live location sharing follow this [tutorial](#build-live-location-sharing-using-hypertrack-in-30-minutes)
-#### To build placeline in your app follow this [tutorial](#build-placeline-in-your-app)
+#### To build live location sharing follow this [tutorial](#build-live-location-sharing-using-hypertrack-in-30-minutes).
+#### To build placeline in your app follow this [tutorial](#build-placeline-in-your-app).
 
 
 ## Build Placeline in your app 
