@@ -9,16 +9,16 @@
 import UIKit
 
 protocol HTStausCardActionDelegate : class  {
-    func startSharingLiveLocation(user : HTTrackedUser? ,indexPath: IndexPath?)
-    func stopSharingLiveLocation(user: HTTrackedUser?,indexPath: IndexPath)
-    func userClickedOnPhone(user : HTTrackedUser?,indexPath:IndexPath)
+    func startSharingLiveLocation(userId : String? ,indexPath: IndexPath?)
+    func stopSharingLiveLocation(userId : String?,indexPath: IndexPath)
+    func userClickedOnPhone(userId : String?,indexPath:IndexPath)
 }
 
 class HTStatusCarouselCell: HTScalingCarouselCell,HTStausCardDelegate {
 
     var statusCard : HTStatusCardView?
     var button : UIButton?
-    var user : HTTrackedUser?
+    var userId : String?
     var indexPath : IndexPath?
     weak var actionDelegate : HTStausCardActionDelegate?
     var statusCardInfo : HTStatusCardInfo?
@@ -48,7 +48,6 @@ class HTStatusCarouselCell: HTScalingCarouselCell,HTStausCardDelegate {
         mainView.frame = contentView.bounds
         statusCard?.frame =  CGRect(x:0,y:0,width:(statusCard?.frame.width)!,height:contentView.frame.height)
        statusCard?.center = contentView.center
-       print(statusCard?.center)
        button?.frame = CGRect(x:0,y:contentView.frame.height - 80,width:contentView.frame.width - 40, height:60)
         button?.center.x = contentView.center.x
     }
@@ -82,7 +81,7 @@ class HTStatusCarouselCell: HTScalingCarouselCell,HTStausCardDelegate {
     
     func shareLiveLocation(){
         if self.actionDelegate != nil {
-            self.actionDelegate?.startSharingLiveLocation(user: user, indexPath: indexPath)
+            self.actionDelegate?.startSharingLiveLocation(userId: userId, indexPath: indexPath)
         }
         
     }
@@ -101,13 +100,13 @@ class HTStatusCarouselCell: HTScalingCarouselCell,HTStausCardDelegate {
             if (statusCardInfo?.isCurrentUser)! {
                 
                 if (statusCardInfo?.isCompletedOrCanceled)! {
-                    actionDelegate.startSharingLiveLocation(user: user, indexPath: indexPath)
+                    actionDelegate.startSharingLiveLocation(userId: userId, indexPath: indexPath)
                     
                 } else {
-                   actionDelegate.stopSharingLiveLocation(user: user, indexPath: indexPath!)
+                   actionDelegate.stopSharingLiveLocation(userId: userId, indexPath: indexPath!)
                 }
             } else {
-                actionDelegate.userClickedOnPhone(user: user, indexPath: indexPath!)
+                actionDelegate.userClickedOnPhone(userId: userId, indexPath: indexPath!)
             }
         }
     }

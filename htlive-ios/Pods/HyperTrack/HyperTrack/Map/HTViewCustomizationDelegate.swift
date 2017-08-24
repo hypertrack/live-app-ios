@@ -9,21 +9,61 @@
 import Foundation
 import MapKit
 
+
+@objc internal protocol HTViewCustomizationInternalDelegate {
+
+    @objc optional func heroMarkerImageForActionID( actionID: String) -> UIImage?
+    @objc optional func heroMarkerViewForActionID(actionID: String) -> MKAnnotationView?
+    @objc optional func disableHeroMarkerRotationForActionID( actionID: String) -> Bool
+    @objc optional func showStartMarker( actionID: String) -> Bool
+    @objc optional func startMarkerImageForActionID( actionID: String) -> UIImage?
+    @objc optional func startMarkerViewForActionID( actionID: String) -> MKAnnotationView?
+    @objc optional func showExpectedPlaceMarker( actionID: String) -> Bool
+    @objc optional func expectedPlaceMarkerImageForActionID( actionID: String) -> UIImage?
+    @objc optional func expectedPlaceMarkerViewForActionID( actionID: String) -> MKAnnotationView?
+    @objc optional func showAddressViewForActionID( actionID: String) -> Bool
+    @objc optional func showInfoViewForActionID( actionID: String) -> Bool
+    @objc optional func showCallButtonInInfoViewForActionID( actionID: String) -> Bool
+    @objc optional func showActionSummaryOnCompletion(actionID: String) -> Bool
+}
+
 /**
  Delegate protocol for map customizations. Use the given methods to customize your map view.
  */
 @objc public protocol HTViewCustomizationDelegate {
     
+    
     /**
-     Implement this method to set initial position for HyperTrack map.
-     This method requires a CLLocationCoordinate2D object which defines the
-     initial position.
+     Call this method to set/unset traffic layer on mapview.
+     
+     Note: Traffic layer is enabled by default.
      
      - Parameter mapView: The map view where hero marker is placed
-     - Returns: CLLocationCoordinate2D denoting the initial position for the map.
+     - Returns: Bool to show/hide traffic layer.
      */
-    @objc optional func initialCoordinatesFor(map: HTMap) -> CLLocationCoordinate2D
+    @objc optional func showTrafficForMapView(map: HTMap) -> Bool
     
+    /**
+     Call this method to show/hide refocus button.
+     
+     Note: ReFocus button is enabled by default.
+     
+     - Parameter mapView: The map view where hero marker is placed
+     - Returns: Bool to show/hide refocus button.
+     */
+    @objc optional func showReFocusButton(map: HTMap) -> Bool
+    
+    /**
+     Call this method to show/hide back button alongside the address view.
+     
+     Note: Back button is enabled by default.
+     
+     - Parameter mapView: The map view where hero marker is placed
+     - Returns: Bool to show/hide back button.
+     */
+    @objc optional func showBackButton(map: HTMap) -> Bool
+
+ 
     /**
      Call this method to provide a image to the hero marker. This image should
      be oriented to the north so that bearing of marker is perfect.
@@ -163,43 +203,15 @@ import MapKit
     @objc optional func showActionSummaryOnCompletion(map: HTMap, actionID: String) -> Bool
     
     /**
-     Call this method to set/unset traffic layer on mapview.
+     Call this method to show/hide call button to the user on the info card of an action.
      
-     Note: Traffic layer is enabled by default.
-     
-     - Parameter mapView: The map view where hero marker is placed
-     - Returns: Bool to show/hide traffic layer.
-     */
-    @objc optional func showTrafficForMapView(map: HTMap) -> Bool
-    
-    /**
-     Call this method to show/hide refocus button.
-     
-     Note: ReFocus button is enabled by default.
+     Note: Call button is enabled by default.
      
      - Parameter mapView: The map view where hero marker is placed
-     - Returns: Bool to show/hide refocus button.
+     - Returns: Bool to show/hide call button.
      */
-    @objc optional func showReFocusButton(map: HTMap) -> Bool
+    @objc optional func showCallButton(map: HTMap) -> Bool
     
-    /**
-     Call this method to show/hide back button alongside the address view.
-     
-     Note: Back button is enabled by default.
 
-     - Parameter mapView: The map view where hero marker is placed
-     - Returns: Bool to show/hide back button.
-     */
-    @objc optional func showBackButton(map: HTMap) -> Bool
     
-    /**
-     Call this method to enable live location sharing view (hero markers with 
-     user's info and his ETA to the destination).
-     
-     Note: Live Location Sharing view is disabled by default.
-     
-     - Parameter mapView: The map view where hero marker is placed
-     - Returns: Bool to enable/disable live location sharing view.
-     */
-    @objc optional func enableLiveLocationSharingView(map: HTMap) -> Bool
 }

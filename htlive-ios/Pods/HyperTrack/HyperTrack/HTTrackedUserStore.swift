@@ -13,6 +13,7 @@ internal protocol TrackedUserStoreDelegate {
     func onActionsRemoved()
     func onTrackableUserFetch(userIds:[String])
     func onTrackableUserUpdate(userIds:[String])
+    func didUpdateActions(oldActions : [String:HyperTrackAction]? , newActions: [String:HyperTrackAction]?)
 }
 
 struct TrackerConstants {
@@ -23,6 +24,7 @@ final class HTTrackedUserStore {
     var trackedUserDataSource = HTTrackedUserDataSource()
     var pollingTimer: Timer?
     var delegate : TrackedUserStoreDelegate?
+
     
     func getActionIds() -> [String]{
         return trackedUserDataSource.getActionIdsList()
@@ -48,7 +50,7 @@ final class HTTrackedUserStore {
         return trackedUserDataSource.getActionIds(userId:userId)
     }
     
-    func getTrackedUser(userId : String) -> HTTrackedUser {
+    func getTrackedUser(userId : String) -> HTTrackedUser? {
         return trackedUserDataSource.getTrackedUser(userId: userId);
     }
     
@@ -86,7 +88,8 @@ final class HTTrackedUserStore {
         self.fetchDetailsFor(lookUpId: lookUpId, completionHandler: { (users, error) in
             // Process trackAction response
             self.trackedUserDataSource.lookupId = lookUpId
-            self.processTrackActionResponse(users, error, completionHandler: completionHandler)
+            self.processTrackActionResponse(lookUpId:lookUpId, users, error, completionHandler: completionHandler)
+
         })
     }
     
@@ -115,9 +118,9 @@ final class HTTrackedUserStore {
     }
     
     func removeActions(_ actionIds: [String]? = nil) {
+        self.clearAction()
+        stopUpdatesTimer()
         if (actionIds == nil) {
-            self.clearAction()
-            self.pollingTimer?.invalidate()
             self.delegate?.onActionsRemoved()
             return
         }
@@ -141,7 +144,7 @@ final class HTTrackedUserStore {
     
     private func fetchDetailsFor(actionID: String,
                                  completionHandler: @escaping (_ users: [HTTrackedUser]?,
-                                                               _ error: HyperTrackError?) -> Void) {
+        _ error: HyperTrackError?) -> Void) {
         RequestManager().fetchDetailsForActions([actionID]) { (users, error) in
             
             if let error = error {
@@ -157,7 +160,7 @@ final class HTTrackedUserStore {
     
     private func fetchDetailsFor(actionIds: [String],
                                  completionHandler: @escaping (_ users: [HTTrackedUser]?,
-                                                               _ error: HyperTrackError?) -> Void) {
+        _ error: HyperTrackError?) -> Void) {
         
         RequestManager().fetchUserDetailsForActions(actionIds) { (users, error) in
             if let error = error {
@@ -173,7 +176,7 @@ final class HTTrackedUserStore {
     
     private func fetchDetailsFor(lookUpId: String,
                                  completionHandler: @escaping (_ users: [HTTrackedUser]?,
-                                                               _ error: HyperTrackError?) -> Void) {
+        _ error: HyperTrackError?) -> Void) {
         RequestManager().fetchDetailsForActionsByLookUpId(lookUpId, completionHandler: { (users, error) in
             if let error = error {
                 completionHandler(nil, error)
@@ -201,20 +204,75 @@ final class HTTrackedUserStore {
         if let users = users {
             // Update Tracked Users and Actions
             self.clearAction()
-            self.pollingTimer?.invalidate()
+            stopUpdatesTimer()
             self.trackedUserDataSource.addTrackedUsers(users: users)
             
             // Update data on the map
             self.delegate?.onTrackableUserFetch(userIds: self.trackedUserDataSource.getUserIdsList())
             
-            // Start timer to poll for updates
-            self.initializeTimer()
+            // Start timer to poll for updates when a look up id is tracked
+            if trackedUserDataSource.lookupId != nil {
+                self.initializeTimer()
+            }
+            else if trackedUserDataSource.getActionIdsList().count > 0 {
+                for actionId in trackedUserDataSource.getActionIdsList(){
+                    if let action = trackedUserDataSource.getAction(actionId: actionId){
+                        if !((action.isCompleted())){
+                            initializeTimer()
+                        }
+                    }
+                }
+            }
             
             // Return success callback
             if let completionHandler = completionHandler {
                 completionHandler(self.trackedUserDataSource.getActionsList(), nil)
             }
         }
+    }
+    
+    private func processTrackActionResponse(lookUpId : String?, _ users: [HTTrackedUser]?,
+                                            _ error: HyperTrackError?,
+                                            completionHandler: ((_ actions: [HyperTrackAction]?,
+        _ error: HyperTrackError?) -> Void)?){
+        if (error != nil) {
+            // Return error callback
+            if let completionHandler = completionHandler {
+                completionHandler(nil, error)
+            }
+            return
+        }
+        
+        if let users = users {
+            // Update Tracked Users and Actions
+            self.clearAction()
+            self.trackedUserDataSource.lookupId = lookUpId
+            stopUpdatesTimer()
+            self.trackedUserDataSource.addTrackedUsers(users: users)
+            
+            // Update data on the map
+            self.delegate?.onTrackableUserFetch(userIds: self.trackedUserDataSource.getUserIdsList())
+            
+            // Start timer to poll for updates when a look up id is tracked
+            if trackedUserDataSource.lookupId != nil {
+                self.initializeTimer()
+            }
+            else if trackedUserDataSource.getActionIdsList().count > 0 {
+                for actionId in trackedUserDataSource.getActionIdsList(){
+                    if let action = trackedUserDataSource.getAction(actionId: actionId){
+                        if !((action.isCompleted())){
+                            initializeTimer()
+                        }
+                    }
+                }
+            }
+            
+            // Return success callback
+            if let completionHandler = completionHandler {
+                completionHandler(self.trackedUserDataSource.getActionsList(), nil)
+            }
+        }
+
     }
     
     private func clearAction() {
@@ -232,25 +290,34 @@ final class HTTrackedUserStore {
     @objc private func updateLocations() {
         if let lookUpId = trackedUserDataSource.lookupId {
             fetchDetailsFor(lookUpId: lookUpId, completionHandler: { (users, error) in
-                
+                let oldActions = self.trackedUserDataSource.trackedActionsMap
                 self.clearAction()
                 self.trackedUserDataSource.lookupId = lookUpId
                 self.trackedUserDataSource.addTrackedUsers(users: users)
+                let newActions = self.trackedUserDataSource.trackedActionsMap
+                self.delegate?.didUpdateActions(oldActions: oldActions, newActions: newActions)
                 
                 if (users != nil) {
-                    self.delegate?.onTrackableUserUpdate(userIds: self.trackedUserDataSource.getUserIdsList())
+                    if(self.pollingTimer?.isValid)!{
+                        self.delegate?.onTrackableUserUpdate(userIds: self.trackedUserDataSource.getUserIdsList())
+                    }
                 }
             })
             
-        } else if trackedUserDataSource.getActionIdsList().count > 0  {
-            fetchDetailsFor(actionIds: trackedUserDataSource.getActionIdsList(),
+        } else if trackedUserDataSource.getUnCompleteActionIdsList().count > 0  {
+            
+            fetchDetailsFor(actionIds: trackedUserDataSource.getUnCompleteActionIdsList(),
                             completionHandler: { (users, error) in
-                
+                let oldActions = self.trackedUserDataSource.trackedActionsMap
                 self.clearAction()
                 self.trackedUserDataSource.addTrackedUsers(users: users)
-                
+                let newActions = self.trackedUserDataSource.trackedActionsMap
+                self.delegate?.didUpdateActions(oldActions: oldActions, newActions: newActions)
+
                 if (users != nil) {
-                    self.delegate?.onTrackableUserUpdate(userIds: self.trackedUserDataSource.getUserIdsList())
+                    if(self.pollingTimer?.isValid)!{
+                        self.delegate?.onTrackableUserUpdate(userIds: self.trackedUserDataSource.getUserIdsList())
+                    }
                 }
             })
         }

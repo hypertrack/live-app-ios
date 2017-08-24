@@ -10,4 +10,5 @@ import Foundation
 
 class StartMarkerView : UIView {
     
+    @IBOutlet weak var startMarkerImage: UIImageView!
 }

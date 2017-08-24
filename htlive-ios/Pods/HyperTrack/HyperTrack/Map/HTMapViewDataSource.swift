@@ -28,12 +28,12 @@ class HTMapViewDataSource: NSObject {
     }
     
     func addMapViewModel(_ actionId : String){
-        var mapViewModel = HTMapViewModel()
+        let mapViewModel = HTMapViewModel()
         mapViewModelList[actionId] = mapViewModel
     }
     
     func removeMapViewModel(actionId : String){
-        if  let mapViewModel = mapViewModelList[actionId] {
+        if  mapViewModelList[actionId] != nil {
             mapViewModelList.removeValue(forKey: actionId)
         }
     }
@@ -53,7 +53,7 @@ class HTMapViewDataSource: NSObject {
     }
     
     func getDestinationMarker(actionId:String) -> HTMapAnnotation?{
-        if var mapViewModel = self.getMapViewModel(actionId: actionId){
+        if let mapViewModel = self.getMapViewModel(actionId: actionId){
             return mapViewModel.destinationMarker
         }
         return nil

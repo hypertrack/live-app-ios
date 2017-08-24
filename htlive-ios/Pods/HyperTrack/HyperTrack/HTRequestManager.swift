@@ -76,7 +76,7 @@ class HTTPRequest {
             "Authorization": "token \(publishableKey)",
             "Content-Type": "application/json",
             "User-Agent": "HyperTrack iOS SDK/\(sdkVersion) (\(osVersion))",
-            "App-ID": "\(appId ?? "")",
+            "App-ID": "\(appId )",
             "Device-ID": "\(deviceId)",
             "Timezone": TimeZone.current.identifier
         ]
@@ -92,7 +92,7 @@ class HTTPRequest {
             "Authorization": "token \(publishableKey)",
             "Content-Type": "application/json",
             "User-Agent": "HyperTrack iOS SDK/\(sdkVersion) (\(osVersion))",
-            "App-ID": "\(Bundle.main.bundleIdentifier)",
+            "App-ID": "\(appId )",
             "Device-ID": "\(Settings.uniqueInstallationID)",
             "Timezone": TimeZone.current.identifier
         ]
@@ -108,7 +108,7 @@ class HTTPRequest {
             "Authorization": "token \(publishableKey)",
             "Content-Type": "application/json",
             "User-Agent": "HyperTrack iOS SDK/\(sdkVersion) (\(osVersion))",
-            "App-ID": "\(Bundle.main.bundleIdentifier)",
+            "App-ID": "\(appId )",
             "Device-ID": "\(Settings.uniqueInstallationID)",
             "Timezone": TimeZone.current.identifier
         ]
@@ -228,7 +228,7 @@ class RequestManager {
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
-                HTLogger.shared.error("Error while getAction: \(htError.type.rawValue)")
+                HTLogger.shared.error("Error while getAction: \(htError.errorMessage)")
                 completionHandler(nil, htError)
             }
         }
@@ -246,7 +246,7 @@ class RequestManager {
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
-                HTLogger.shared.error("Error while getActionFromShortCode: \(htError.type.rawValue)")
+                HTLogger.shared.error("Error while getActionFromShortCode: \(htError.errorMessage)")
                 completionHandler(nil, htError)
             }
         }
@@ -266,7 +266,7 @@ class RequestManager {
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
-                HTLogger.shared.error("Error while fetchDetailsForActions: \(htError.type.rawValue)")
+                HTLogger.shared.error("Error while fetchDetailsForActions: \(htError.errorMessage)")
                 completionHandler(nil, htError)
             }
         }
@@ -287,7 +287,7 @@ class RequestManager {
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
-                HTLogger.shared.error("Error while fetchDetailsForActionsByShortCodes: \(htError.type.rawValue)")
+                HTLogger.shared.error("Error while fetchDetailsForActionsByShortCodes: \(htError.errorMessage)")
                 completionHandler(nil, htError)
             }
         }
@@ -306,7 +306,7 @@ class RequestManager {
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
-                HTLogger.shared.error("Error while fetchDetailsForActionsByLookUpId: \(htError.type.rawValue)")
+                HTLogger.shared.error("Error while fetchDetailsForActionsByLookUpId: \(htError.errorMessage)")
                 completionHandler(nil, htError)
             }
         }
@@ -324,7 +324,7 @@ class RequestManager {
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
-                HTLogger.shared.error("Error while fetchUserDetailsForActions: \(htError.type.rawValue)")
+                HTLogger.shared.error("Error while fetchUserDetailsForActions: \(htError.errorMessage)")
                 completionHandler(nil, htError)
             }
         }
@@ -350,7 +350,7 @@ class RequestManager {
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
-                HTLogger.shared.error("Error while createAndAssignAction: \(htError.type.rawValue)")
+                HTLogger.shared.error("Error while createAndAssignAction: \(htError.errorMessage)")
                 completionHandler(nil, htError)
             }
         }
@@ -378,7 +378,7 @@ class RequestManager {
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
-                HTLogger.shared.error("Error while assignActions: \(htError.type.rawValue)")
+                HTLogger.shared.error("Error while assignActions: \(htError.errorMessage)")
                 completionHandler(nil, htError)
             }
         }
@@ -406,7 +406,7 @@ class RequestManager {
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
-                HTLogger.shared.error("Error while createUser: \(htError.type.rawValue)")
+                HTLogger.shared.error("Error while createUser: \(htError.errorMessage)")
                 guard let completionHandler = completionHandler else { return }
                 completionHandler(nil, htError)
             }
@@ -436,13 +436,13 @@ class RequestManager {
                 }
                     
                 let htError = HyperTrackError(HyperTrackErrorType.invalidETAError)
-                HTLogger.shared.error("Error while getETA: \(htError.type.rawValue)")
+                HTLogger.shared.error("Error while getETA: \(htError.errorMessage)")
                 completionHandler(nil, htError)
 
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
-                HTLogger.shared.error("Error while getETA: \(htError.type.rawValue)")
+                HTLogger.shared.error("Error while getETA: \(htError.errorMessage)")
                 completionHandler(nil, htError)
             }
         }
@@ -470,7 +470,7 @@ class RequestManager {
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
-                HTLogger.shared.error("Error while cancelActions: \(htError.type.rawValue)")
+                HTLogger.shared.error("Error while cancelActions: \(htError.errorMessage)")
                 guard let completionHandler = completionHandler else { return }
                 completionHandler(nil, htError)
             }
@@ -491,7 +491,7 @@ class RequestManager {
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
-                HTLogger.shared.error("Error while registerDeviceToken: \(htError.type.rawValue)")
+                HTLogger.shared.error("Error while registerDeviceToken: \(htError.errorMessage)")
                 guard let completionHandler = completionHandler else { return }
                 completionHandler(htError)
             }
@@ -509,7 +509,7 @@ class RequestManager {
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
-                HTLogger.shared.error("Error while getSDKControls: \(htError.type.rawValue)")
+                HTLogger.shared.error("Error while getSDKControls: \(htError.errorMessage)")
                 guard let completionHandler = completionHandler else { return }
                 completionHandler(nil, htError)
             }
@@ -528,13 +528,63 @@ class RequestManager {
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
-                HTLogger.shared.error("Error while getSimulatePolyline: \(htError.type.rawValue)")
+                HTLogger.shared.error("Error while getSimulatePolyline: \(htError.errorMessage)")
                 guard let completionHandler = completionHandler else { return }
                 completionHandler(nil, htError)
             }
         }
     }
     
+    
+    func findPlaces(searchText:String?, cordinate: CLLocationCoordinate2D? , completionHandler: ((_ places: [HyperTrackPlace]?, _ error: HyperTrackError?) -> Void)?){
+        
+        let escapedString = searchText?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+        var urlPath = "places/search/?q=" + escapedString!
+        if(cordinate != nil){
+            urlPath = urlPath + "&lat=" + (cordinate?.latitude.description)! + "&lon=" + (cordinate?.longitude.description)!
+        }
+    
+        HTTPRequest(method:.get, urlPath:urlPath, jsonParams:[:]).makeRequest { response in
+            switch response.result {
+            case .success:
+                let places  = HyperTrackPlace.multiPlacesFromJson(data:response.data)
+                completionHandler!(places, nil)
+                break
+                
+            case .failure:
+                // TODO: Generate better error here depending on response code
+                let htError = HyperTrackError(HyperTrackErrorType.serverError)
+                HTLogger.shared.error("Error while findPlaces: \(htError.errorMessage)")
+                guard let completionHandler = completionHandler else { return }
+                completionHandler(nil, htError)
+            }
+        }
+
+    }
+    
+    func createPlace(geoJson : HTGeoJSONLocation,completionHandler: ((_ place: HyperTrackPlace?, _ error: HyperTrackError?) -> Void)?){
+        let urlPath = "places/"
+        var json = [String: String]()
+        json["location"] = geoJson.toJson()
+    
+        HTTPRequest(method:.post, urlPath:urlPath, jsonParams:json).makeRequest { response in
+            switch response.result {
+            case .success:
+                let places  = HyperTrackPlace.fromJson(text: String.init(data: response.data!, encoding: .utf8)!)
+                completionHandler!(places, nil)
+                break
+                
+            case .failure:
+                // TODO: Generate better error here depending on response code
+                let htError = HyperTrackError(HyperTrackErrorType.serverError)
+                HTLogger.shared.error("Error while findPlaces: \(htError.errorMessage)")
+                completionHandler!(nil, htError)
+
+            }
+        }
+    }
+    
+            
     func getUserPlaceline(date: Date? = nil, userId: String, completionHandler: ((_ controls: HyperTrackPlaceline?, _ error: HyperTrackError?) -> Void)?) {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -554,7 +604,7 @@ class RequestManager {
             case .failure:
                 // TODO: Generate better error here depending on response code
                 let htError = HyperTrackError(HyperTrackErrorType.serverError)
-                HTLogger.shared.error("Error while getSDKControls: \(htError.type.rawValue)")
+                HTLogger.shared.error("Error while getSDKControls: \(htError.errorMessage)")
                 guard let completionHandler = completionHandler else { return }
                 completionHandler(nil, htError)
             }

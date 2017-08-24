@@ -26,7 +26,7 @@ class HTDeviceInfoService: NSObject {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { 
             NotificationCenter.default.addObserver(self, selector: #selector(self.batteryLevelDidChange), name: .UIDeviceBatteryLevelDidChange, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(self.locationConfigDidChange), name: NSNotification.Name(rawValue: HTConstants.LocationPermissionChangeNotification), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(self.locationConfigDidChange), name: NSNotification.Name(rawValue: HTConstants.HTLocationPermissionChangeNotification), object: nil)
             self.startNetworkReachabilityObserver()
             self.postEventForLocationConfigChange()
             self.onBatteryChanged()
@@ -118,12 +118,13 @@ class HTDeviceInfoService: NSObject {
                 break
             }
         } else {
-            print("Location services are not enabled")
+            HTLogger.shared.info("Location services are not enabled")
         }
         
-        if(shouldPostEvents()){
+        if(Settings.getUserId() != nil){
+            
             let event = HyperTrackEvent(
-                userId:Transmitter.sharedInstance.getUserId()!,
+                userId:Settings.getUserId()!,
                 recordedAt:Date(),
                 eventType:"device.location_config.changed",
                 location:nil,
@@ -137,10 +138,6 @@ class HTDeviceInfoService: NSObject {
         }
     }
     
-    func shouldPostEvents() -> Bool {
-        return Transmitter.sharedInstance.isTracking && ( Transmitter.sharedInstance.getUserId() != nil)
-    }
-    
     func locationConfigDidChange(_ notification: Notification) {
         postEventForLocationConfigChange()
     }
@@ -151,14 +148,15 @@ class HTDeviceInfoService: NSObject {
 
         saveLastKnownInfo(infoType: htBatteryLevelString, value: batteryLevelString)
 
-        if(shouldPostEvents()){
+        HTLogger.shared.info("battery status : " + batteryLevelString )
+        if(Settings.getUserId() != nil){
             var chargingStatus  = "discharging"
             if(batteryState() == UIDeviceBatteryState.charging){
                 chargingStatus = "charging"
             }
             
             let event = HyperTrackEvent(
-                userId:Transmitter.sharedInstance.getUserId()!,
+                userId:Settings.getUserId()!,
                 recordedAt:Date(),
                 eventType:"device.power.changed",
                 location:nil,
@@ -175,9 +173,10 @@ class HTDeviceInfoService: NSObject {
     
     func onNetworkStateChanged(state: String,isConnected: Bool){
         
-        if(shouldPostEvents()){
+        HTLogger.shared.info("device.radio.changed :" + state)
+        if(Settings.getUserId() != nil){
             let event = HyperTrackEvent(
-                userId:Transmitter.sharedInstance.getUserId()!,
+                userId:Settings.getUserId()!,
                 recordedAt:Date(),
                 eventType:"device.radio.changed",
                 location:nil,

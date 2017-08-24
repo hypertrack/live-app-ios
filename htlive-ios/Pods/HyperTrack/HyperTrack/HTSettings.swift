@@ -21,6 +21,7 @@ class Settings {
     static let activityString = "HyperTrackActivityString"
     static let activityRecordedAtString = "HyperTrackActivityRecordedAt"
     static let activityConfidenceString = "HyperTrackActivityConfidence"
+    static let activityLocationString = "HyperTrackActivityLocationString"
 
     static let lastKnownLocationString = "HyperTrackLastKnownLocation"
     static let isAtStopString = "HyperTrackIsAtStop"
@@ -36,7 +37,9 @@ class Settings {
     static let batchDurationString = "HyperTrackBatchDuration"
     
     static let mockCoordinatesString = "HyperTrackMockCoordinates"
-    
+    static let savedPlacesString = "HyperTrackSavedPlaces"
+    static let savedUser = "HyperTrackSavedUser"
+
     static func getBundle() -> Bundle? {
         let bundleRoot = Bundle(for: HyperTrack.self)
         return Bundle(path: "\(bundleRoot.bundlePath)/HyperTrack.bundle")
@@ -208,6 +211,18 @@ class Settings {
         return UserDefaults.standard.string(forKey: activityString)
     }
     
+    static func setActivityLocation(location:HyperTrackLocation) {
+        let locationJSON = location.toJson()
+        UserDefaults.standard.set(locationJSON, forKey: activityLocationString)
+        UserDefaults.standard.synchronize()
+    }
+    
+    static func getActivityLocation() -> HyperTrackLocation? {
+        guard let locationString = UserDefaults.standard.string(forKey: lastKnownLocationString) else { return nil}
+        let htLocation = HyperTrackLocation.fromJson(text: locationString)
+        return htLocation
+    }
+    
     static func setActivityRecordedAt(activityRecordedAt: Date) {
         UserDefaults.standard.set(activityRecordedAt.iso8601, forKey: activityRecordedAtString)
         UserDefaults.standard.synchronize()
@@ -280,6 +295,59 @@ class Settings {
     static func getMockCoordinates() -> [TimedCoordinates]? {
         if let object = UserDefaults.standard.string(forKey: mockCoordinatesString) {
             return timedCoordinatesFromStringArray(coordinatesString: object)
+        }
+        return nil
+    }
+    
+    
+    
+    static func addPlaceToSavedPlaces(place : HyperTrackPlace){
+            var savedPlaces = getAllSavedPlaces()
+            if(savedPlaces != nil){
+                if(!HTGenericUtils.checkIfContains(places: savedPlaces!, inputPlace: place)){
+                    savedPlaces?.append(place)
+                }
+            }else{
+                savedPlaces = [place]
+            }
+            
+            var savedPlacesDictArray = [[String:Any]]()
+            for htPlace in savedPlaces! {
+                 let htPlaceDict = htPlace.toDict()
+                savedPlacesDictArray.append(htPlaceDict)
+                
+            }
+            
+            var jsonDict = [String : Any]()
+            jsonDict["results"] = savedPlacesDictArray
+           
+            do {
+                    let jsonData = try JSONSerialization.data(withJSONObject: jsonDict, options: JSONSerialization.WritingOptions.prettyPrinted)
+                    UserDefaults.standard.set(jsonData,forKey:savedPlacesString)
+                    UserDefaults.standard.synchronize()
+            } catch {
+                HTLogger.shared.error("Error in getting actions from json: " + error.localizedDescription)
+            }
+    }
+    
+    
+    static func getAllSavedPlaces() -> [HyperTrackPlace]?{
+        if let jsonData = UserDefaults.standard.data(forKey: savedPlacesString){
+                let htPlaces = HyperTrackPlace.multiPlacesFromJson(data: jsonData)
+                return htPlaces
+            }
+            return []
+    }
+    
+    static func saveUser(user: HyperTrackUser){
+            let jsonData = user.toJson()
+            UserDefaults.standard.set(jsonData,forKey:savedUser)
+            UserDefaults.standard.synchronize()
+    }
+    
+    static func getUser() -> HyperTrackUser? {
+        if let jsonData = UserDefaults.standard.string(forKey: savedUser){
+            return HyperTrackUser.fromJson(text: jsonData)
         }
         return nil
     }

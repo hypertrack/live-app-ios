@@ -8,8 +8,24 @@
 
 import Foundation
 import CoreLocation
-import CoreMotion
 import UIKit
+import CoreMotion
+
+protocol LocationEventsDelegate : class {
+     func locationManager(_ manager: LocationManager, didEnterRegion region: CLRegion)
+     func locationManager(_ manager: LocationManager, didExitRegion region: CLRegion)
+     func locationManager(_ manager: LocationManager,didUpdateLocations locations: [CLLocation])
+     func locationManager(_ manager: LocationManager,
+                         didVisit visit: CLVisit)
+     func locationManager(_ manager: LocationManager,
+                         didChangeAuthorization status: CLAuthorizationStatus)
+}
+enum LocationInRegion : String {
+    case BELONGS_TO_REGION = "BELONGS_TO_REGION"
+    case BELONGS_OUTSIDE_REGION =  "BELONGS_OUTSIDE_REGION"
+    case CANNOT_DETERMINE = "CANNOT_DETERMINE"
+}
+
 
 class LocationManager: NSObject {
     // Constants
@@ -18,21 +34,16 @@ class LocationManager: NSObject {
     
     // Managers
     let locationManager = CLLocationManager()
-    let pedometer = CMPedometer()
     var requestManager: RequestManager
-    var motionManager: CMMotionActivityManager
     
     // State variables
     var isHeartbeatSetup: Bool = false
     var isFirstLocation: Bool = false
-    
-    lazy var activityQueue:OperationQueue = {
-        var queue = OperationQueue()
-        queue.name = "Activity queue"
-        queue.maxConcurrentOperationCount = 1
-        return queue
-    }()
-    
+    let pedometer = CMPedometer()
+
+    var locationPermissionCompletionHandler : ((_ isAuthorized: Bool) -> Void)? = nil
+    weak var locationEventsDelegate : LocationEventsDelegate? = nil
+ 
     var isTracking:Bool {
         get {
             return Settings.getTracking()
@@ -47,13 +58,12 @@ class LocationManager: NSObject {
     
     override init() {
         self.requestManager = RequestManager()
-        self.motionManager = CMMotionActivityManager()
-        
         super.init()
         locationManager.distanceFilter = kFilterDistance
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.delegate = self
+        locationManager.activityType = CLActivityType.automotiveNavigation
     }
     
     func allowBackgroundLocationUpdates() {
@@ -62,6 +72,18 @@ class LocationManager: NSObject {
         } else {
             // Fallback on earlier versions
         }
+    }
+    
+    func requestLocation(){
+        if #available(iOS 9.0, *) {
+            self.locationManager.requestLocation()
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
+    func onActivityChange(ativity : CMMotionActivity){
+        
     }
 
     func updateLocationManager(filterDistance: CLLocationDistance, pausesLocationUpdatesAutomatically: Bool = false) {
@@ -76,6 +98,10 @@ class LocationManager: NSObject {
         return self.locationManager.location
     }
     
+    func getLastKnownHeading() -> CLHeading?{
+       return self.locationManager.heading
+    }
+    
     func setRegularLocationManager() {
         self.updateLocationManager(filterDistance: kFilterDistance)
     }
@@ -88,34 +114,23 @@ class LocationManager: NSObject {
         self.locationManager.startMonitoringVisits()
         self.locationManager.startMonitoringSignificantLocationChanges()
         self.locationManager.startUpdatingLocation()
+        NotificationCenter.default.addObserver(self, selector: #selector(onAppTerminate(_:)), name: Notification.Name.UIApplicationWillTerminate, object: nil)
+
+    }
+    
+    func onAppTerminate(_ notification: Notification){
+            self.locationManager.startUpdatingLocation()
     }
     
     func stopLocationTracking() {
         self.locationManager.stopMonitoringSignificantLocationChanges()
         self.locationManager.stopMonitoringVisits()
         self.locationManager.stopUpdatingLocation()
+        NotificationCenter.default.removeObserver(self)
     }
-    
-    
+
     func startPassiveTrackingService() {
         self.startLocationTracking()
-        self.requestManager.startTimer()
-        self.motionManager.startActivityUpdates(to: self.activityQueue) { activity in
-            guard let cmActivity = activity else { return }
-            self.saveActivityChanged(activity: cmActivity)
-        }
-        
-        if !self.isTracking {
-            // Tracking started for the first time
-            self.saveTrackingStarted()
-            self.isFirstLocation = true
-            
-            if #available(iOS 9.0, *) {
-                self.locationManager.requestLocation()
-            } else {
-                // Fallback on earlier versions
-            }
-        }
     }
     
     func canStartPassiveTracking() -> Bool {
@@ -123,19 +138,10 @@ class LocationManager: NSObject {
         return true
     }
     
+    
     func stopPassiveTrackingService() {
         self.stopLocationTracking()
-        self.motionManager.stopActivityUpdates()
-        
-        if self.isTracking {
-            // Tracking stopped because it was running for the first time
-            self.saveTrackingEnded()
-
-            // State cleaning up
-            self.isFirstLocation = true
-            Settings.isAtStop = false
-        }
-    }
+}
     
     func setupHeartbeatMonitoring() {
         isHeartbeatSetup = true
@@ -158,17 +164,78 @@ class LocationManager: NSObject {
         self.locationManager.requestAlwaysAuthorization()
     }
     
-    func requestMotionAuthorization() {
-        if !self.isTracking {
-            // Only trigggering this when the location manager
-            // is not tracking. If it was tracking then the
-            // permissions dialog box would have been fired anyway
-            self.motionManager.startActivityUpdates(to: OperationQueue(), withHandler: { (activity) in
-                // Do nothing actually
-            })
-            self.motionManager.stopActivityUpdates()
-        }
+    func requestAlwaysAuthorization(completionHandler: @escaping (_ isAuthorized: Bool) -> Void) {
+        locationPermissionCompletionHandler  = completionHandler
+        self.locationManager.requestAlwaysAuthorization()
     }
+    
+    func doesLocationBelongToRegion(stopLocation:HyperTrackLocation,radius:Int,identifier : String) -> LocationInRegion{
+            let clLocation = stopLocation.clLocation
+            let monitoringRegion = CLCircularRegion(center:clLocation.coordinate, radius: CLLocationDistance(radius), identifier:identifier)
+            if let location = self.getLastKnownLocation(){
+                if (location.timestamp.timeIntervalSince1970 > (Date().timeIntervalSince1970 - 120)){
+                    if location.horizontalAccuracy < 25 {
+                        if(monitoringRegion.contains(location.coordinate)){
+                            HTLogger.shared.info("user coordinate is in monitoringRegion" + location.description)
+                            return LocationInRegion.BELONGS_TO_REGION
+                        }else{
+                            return LocationInRegion.BELONGS_OUTSIDE_REGION
+                        }
+                    }else{
+                        HTLogger.shared.info("user coordinate is not accurate so not considering for geofenceing")
+                    }
+                }else{
+                    HTLogger.shared.info("user coordinate is very old so not using for geofencing requesting location")
+                }
+            }else{
+                HTLogger.shared.info("user coordinate does not belong to monitoringRegion" + stopLocation.description)
+            }
+        self.requestLocation()
+
+        return LocationInRegion.CANNOT_DETERMINE
+    }
+
+    func startMonitorForPlace(place : HyperTrackPlace){
+        if let location = Transmitter.sharedInstance.locationManager.getLastKnownLocation(){
+            let monitoringRegion = CLCircularRegion(center: (place.location?.toCoordinate2d())!, radius: 40, identifier: (place.getIdentifier()))
+            
+            if(monitoringRegion.contains(location.coordinate)){
+                HTLogger.shared.info("user coordinate is in monitoringRegion" + location.description)
+                let nc = NotificationCenter.default
+                nc.post(name: Notification.Name(rawValue:HTConstants.HTMonitoredRegionEntered),
+                        object: nil,
+                        userInfo: ["region":monitoringRegion])
+                return
+            }
+        }
+       
+        let monitoringRegion = CLCircularRegion(center: (place.location?.toCoordinate2d())!, radius: 40, identifier: place.getIdentifier())
+        HTLogger.shared.info("startMonitorForPlace having identifier: \(place.getIdentifier() ) ")
+        locationManager.startMonitoring(for: monitoringRegion)
+        monitoringRegion.notifyOnEntry = true
+        monitoringRegion.notifyOnExit = true
+    }
+    
+    func startMonitoringExitForLocation(location : CLLocation , identifier : String? = nil ){
+        
+        HTLogger.shared.info("startMonitoringExitForLocation having identifier: \(identifier ?? "") ")
+
+        var tag = identifier
+        if (identifier == nil){
+            tag = getLocationIdentifier(location: location)
+        }
+        
+        let monitoringRegion = CLCircularRegion(center:location.coordinate, radius: 40, identifier: tag!)
+        locationManager.startMonitoring(for: monitoringRegion)
+        monitoringRegion.notifyOnExit = true
+    }
+    
+    
+    func getLocationIdentifier(location :CLLocation) -> String{
+        return location.coordinate.latitude.description + location.coordinate.longitude.description
+    }
+
+   
 }
 
 //MARK: - Events Handling
@@ -226,83 +293,6 @@ extension LocationManager {
         return data
     }
     
-    func getDevicePower() -> [String:String?] {
-        let data = [
-            // TODO
-            "percentage": "0", // percentage
-            "charging": "0", // charging status
-            "source": "0",
-            "power_saver": "0"
-        ]
-        return data
-    }
-    
-    func getActivity(activity:CMMotionActivity) -> String {
-        if activity.automotive {
-            return "automotive"
-        } else if activity.stationary {
-            return "stationary"
-        } else if activity.walking {
-            return "walking"
-        } else if activity.running {
-            return "running"
-        } else if activity.cycling {
-            return "cycling"
-        } else if activity.unknown {
-            return "unknown"
-        } else {
-            return "unknown"
-        }
-    }
-    
-    func getActivityConfidence(activity:CMMotionActivity) -> Int {
-        if activity.confidence.rawValue == 2 {
-            return 100
-        } else if activity.confidence.rawValue == 1 {
-            return 50
-        } else {
-            return 0
-        }
-    }
-    
-    func saveActivityChanged(activity:CMMotionActivity) {
-        let eventType = "activity.changed"
-        var lastActivity:String
-        
-        guard let userId = Settings.getUserId(),
-            let htLocation = Settings.getLastKnownLocation() else { return }
-        
-        if Settings.getActivity() != nil {
-            lastActivity = Settings.getActivity()!
-        } else {
-            lastActivity = ""
-        }
-        
-        let currentActivity = self.getActivity(activity: activity)
-        
-        if currentActivity == lastActivity {
-            return
-        }
-        
-        if currentActivity == "unknown" { return }
-        
-        htLocation.activity = currentActivity
-        htLocation.activityConfidence = getActivityConfidence(activity: activity)
-        HTLogger.shared.verbose("Saving activity changed event")
-        
-        let event = HyperTrackEvent(
-            userId:userId,
-            recordedAt:activity.startDate,
-            eventType:eventType,
-            location:htLocation
-        )
-        event.save()
-        Settings.setActivity(activity: getActivity(activity: activity))
-        Settings.setActivityRecordedAt(activityRecordedAt: activity.startDate)
-        Settings.setActivityConfidence(confidence: getActivityConfidence(activity: activity))
-        Transmitter.sharedInstance.callDelegateWithEvent(event: event)
-    }
-    
     func saveDeviceInfoChangedEvent() {
         let eventType = "device.info.changed"
         guard let userId = Settings.getUserId() else { return }
@@ -317,20 +307,7 @@ extension LocationManager {
         Transmitter.sharedInstance.callDelegateWithEvent(event: event)
     }
     
-    func saveDevicePowerChangedEvent() {
-        let eventType = "device.power.changed"
-        guard let userId = Settings.getUserId() else { return }
-        let event = HyperTrackEvent(
-            userId:userId,
-            recordedAt:Date(),
-            eventType:eventType,
-            location:nil,
-            data:self.getDevicePower()
-        )
-        event.save()
-        Transmitter.sharedInstance.callDelegateWithEvent(event: event)
-    }
-    
+   
     func saveTrackingStarted() {
         let eventType = "tracking.started"
         guard let userId = Settings.getUserId() else { return }
@@ -365,19 +342,7 @@ extension LocationManager {
     
     // Stops handling
     
-    func getCLLocationFromVisit(visit:CLVisit) -> CLLocation {
-        let clLocation = CLLocation(
-            coordinate:visit.coordinate,
-            altitude:CLLocationDistance(0),
-            horizontalAccuracy:visit.horizontalAccuracy,
-            verticalAccuracy:CLLocationAccuracy(0),
-            course:CLLocationDirection(0),
-            speed:CLLocationSpeed(0),
-            timestamp:visit.arrivalDate
-        )
-        return clLocation
-    }
-    
+   
     func saveStop(eventType:String, location:CLLocation, recordedAt:Date, data:[String:Any], stopId:String) -> HyperTrackEvent? {
         let htLocation = HyperTrackLocation(clLocation:location, locationType:"Point")
         
@@ -420,6 +385,7 @@ extension LocationManager {
         Settings.stopStartTime = recordedAt
         requestManager.postEvents(flush:true)
         
+        startMonitoringExitForLocation(location:location)
         // Setup location updates after every 10 secs since we're at a stop
         // and check that we don't fire it more than once
         locationManager.stopUpdatingLocation()
@@ -491,10 +457,7 @@ extension LocationManager {
         HTLogger.shared.info("Adding distance filter")
         self.updateLocationManager(filterDistance: self.kFilterDistance)
     }
-    
-    @objc func endCurrentStop() {
-        saveStopEndedWithSteps(location: (Settings.stopLocation?.clLocation)!, recordedAt: Date())
-    }
+
     
     func saveFirstLocationAsStop(clLocation: CLLocation) {
         HTLogger.shared.info("Saving first location as stop.started event")
@@ -532,47 +495,75 @@ extension LocationManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager,
                          didChangeAuthorization status: CLAuthorizationStatus) {
+        if let locationEventDelegate = self.locationEventsDelegate{
+            locationEventDelegate.locationManager(self, didChangeAuthorization: status)
+        }
+        
         HTLogger.shared.info("Did change authorization: \(status)")
         let nc = NotificationCenter.default
-        nc.post(name:Notification.Name(rawValue:HTConstants.LocationPermissionChangeNotification),
+        nc.post(name:Notification.Name(rawValue:HTConstants.HTLocationPermissionChangeNotification),
                 object: nil,
                 userInfo: nil)
+        if(locationPermissionCompletionHandler != nil){
+            if(status == .authorizedAlways){
+                locationPermissionCompletionHandler!(true)
+            }else{
+                locationPermissionCompletionHandler!(false)
+            }
+        }
     }
     
     func locationManager(_ manager: CLLocationManager,
                          didVisit visit: CLVisit) {
-        let clLocation = self.getCLLocationFromVisit(visit: visit)
-        let stopId = Settings.getStopId() ?? "none"
-        HTLogger.shared.info("Did visit method called with arrival: \(String(describing: visit.arrivalDate.iso8601)) departure: \(String(describing: visit.departureDate.iso8601)) stop id: \(stopId)")
         
-        if (visit.arrivalDate != NSDate.distantPast && visit.departureDate != NSDate.distantFuture) {
-            // The visit instance has both arrival and departure timestamps
-            if Settings.isAtStop {
-                // If this is true, then this is definitely a stop.ended event
-                saveStopEndedWithSteps(location: Settings.stopLocation?.clLocation ?? clLocation, recordedAt: visit.departureDate)
-            } else {
-                // The stop has been ended with a fallback. This is ignored.
-            }
-        } else if (visit.arrivalDate != NSDate.distantPast && visit.departureDate == NSDate.distantFuture) {
-            // Visit instance does not have a departure time, but has arrival time
-            // This is most likely a stop.started event, in case we are not already at a stop
-            if Settings.isAtStop {
-                // If this is true, then we ignore this stop started event
-            } else {
-                // Since we're not at a stop, this event starts a new stop
-                saveStopStarted(location: clLocation, recordedAt: visit.arrivalDate)
-            }
-        } else if (visit.arrivalDate == NSDate.distantPast && visit.departureDate != NSDate.distantFuture) {
-            // Visit instance does not have an arrival time, but has a departure time
-            // This is only possible if the stop that was artificially started on tracking.started
-            // has now ended. Hence, send stop.ended event.
-            if Settings.isAtStop {
-                // If this is true, then this is definitely a stop.ended event
-                saveStopEndedWithSteps(location: Settings.stopLocation?.clLocation ?? clLocation, recordedAt: visit.departureDate)
-            } else {
-                // The stop has been ended with a fallback. This is ignored.
-            }
+        if !Settings.getTracking() {
+            // This method can be called after the location manager is stopped
+            // Hence, to not save those locations, the method checks for a live
+            // tracking session
+            return
         }
+        
+
+        if let locationEventDelegate = self.locationEventsDelegate{
+            locationEventDelegate.locationManager(self, didVisit: visit)
+        }
+        let nc = NotificationCenter.default
+        nc.post(name: Notification.Name(rawValue:HTConstants.HTLocationChangeNotification),
+                object: nil,
+                userInfo: nil)
+//
+//        let clLocation = HTMapUtils.getCLLocationFromVisit(visit: visit)
+//        let stopId = Settings.getStopId() ?? "none"
+//        HTLogger.shared.info("Did visit method called with arrival: \(String(describing: visit.arrivalDate.iso8601)) departure: \(String(describing: visit.departureDate.iso8601)) stop id: \(stopId)")
+//        
+//        if (visit.arrivalDate != NSDate.distantPast && visit.departureDate != NSDate.distantFuture) {
+//            // The visit instance has both arrival and departure timestamps
+//            if Settings.isAtStop {
+//                // If this is true, then this is definitely a stop.ended event
+//                saveStopEndedWithSteps(location: Settings.stopLocation?.clLocation ?? clLocation, recordedAt: visit.departureDate)
+//            } else {
+//                // The stop has been ended with a fallback. This is ignored.
+//            }
+//        } else if (visit.arrivalDate != NSDate.distantPast && visit.departureDate == NSDate.distantFuture) {
+//            // Visit instance does not have a departure time, but has arrival time
+//            // This is most likely a stop.started event, in case we are not already at a stop
+//            if Settings.isAtStop {
+//                // If this is true, then we ignore this stop started event
+//            } else {
+//                // Since we're not at a stop, this event starts a new stop
+//                saveStopStarted(location: clLocation, recordedAt: visit.arrivalDate)
+//            }
+//        } else if (visit.arrivalDate == NSDate.distantPast && visit.departureDate != NSDate.distantFuture) {
+//            // Visit instance does not have an arrival time, but has a departure time
+//            // This is only possible if the stop that was artificially started on tracking.started
+//            // has now ended. Hence, send stop.ended event.
+//            if Settings.isAtStop {
+//                // If this is true, then this is definitely a stop.ended event
+//                saveStopEndedWithSteps(location: Settings.stopLocation?.clLocation ?? clLocation, recordedAt: visit.departureDate)
+//            } else {
+//                // The stop has been ended with a fallback. This is ignored.
+//            }
+//        }
     }
     
     func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
@@ -586,50 +577,60 @@ extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager,
                          didUpdateLocations locations: [CLLocation]) {
         
-        if !isTracking {
+        if !Settings.getTracking() {
             // This method can be called after the location manager is stopped
             // Hence, to not save those locations, the method checks for a live
             // tracking session
             return
         }
-
-        if isFirstLocation && !Settings.isAtStop {
-            guard let clLocation = locations.last else { return }
-            // Check if the first location we're getting is at a good enough
-            // accuracy before saving it as a stop
-            if clLocation.horizontalAccuracy < 100 {
-                HTLogger.shared.info("First location fired and stop started")
-                saveFirstLocationAsStop(clLocation: clLocation)
-            }
-        } else if Settings.isAtStop {
-            // Handle location changes while at stop
-            guard let stopLocation = Settings.stopLocation else { return }
-            guard let currentLocation = locations.last else { return }
-            
-            let distance = currentLocation.distance(from: stopLocation.clLocation)
-            
-            if (distance > kFilterDistance && currentLocation.horizontalAccuracy < 50.0) {
-                let stopId = Settings.getStopId() ?? "none"
-                HTLogger.shared.info("Ending stop due to location fallback, distance: \(String(describing: distance)) accuracy: \(String(describing: currentLocation.horizontalAccuracy)) stop id: \(stopId)")
-                saveStopEndedWithSteps(location: currentLocation, recordedAt: Date())
-                saveLocationChanged(location: currentLocation)
-                locationManager.startUpdatingLocation()
-            } else {
-                // Setup location updates after every 10 secs since we're at a stop
-                // and check that we don't fire it more than once
-                locationManager.stopUpdatingLocation()
-                if false == isHeartbeatSetup {
-                    setupHeartbeatMonitoring()
-                }
-            }
-        } else {
-            HTLogger.shared.verbose("On a trip and tracking locations")
-            for location in locations {
-                if location.horizontalAccuracy < 100 {
-                    saveLocationChanged(location: location)
-                }
-            }
+        
+        
+        if let locationEventDelegate = self.locationEventsDelegate{
+            locationEventDelegate.locationManager(self, didUpdateLocations: locations)
         }
+        
+        let nc = NotificationCenter.default
+        nc.post(name: Notification.Name(rawValue:HTConstants.HTLocationChangeNotification),
+                object: nil,
+                userInfo: nil)
+
+//        if isFirstLocation && !Settings.isAtStop {
+//            guard let clLocation = locations.last else { return }
+//            // Check if the first location we're getting is at a good enough
+//            // accuracy before saving it as a stop
+//            if clLocation.horizontalAccuracy < 100 {
+//                HTLogger.shared.info("First location fired and stop started")
+//                saveFirstLocationAsStop(clLocation: clLocation)
+//            }
+//        } else if Settings.isAtStop {
+//            // Handle location changes while at stop
+//            guard let stopLocation = Settings.stopLocation else { return }
+//            guard let currentLocation = locations.last else { return }
+//            
+//            let distance = currentLocation.distance(from: stopLocation.clLocation)
+//            
+//            if (distance > kFilterDistance && currentLocation.horizontalAccuracy < 50.0) {
+//                let stopId = Settings.getStopId() ?? "none"
+//                HTLogger.shared.info("Ending stop due to location fallback, distance: \(String(describing: distance)) accuracy: \(String(describing: currentLocation.horizontalAccuracy)) stop id: \(stopId)")
+//                saveStopEndedWithSteps(location: currentLocation, recordedAt: Date())
+//                saveLocationChanged(location: currentLocation)
+//                locationManager.startUpdatingLocation()
+//            } else {
+//                // Setup location updates after every 10 secs since we're at a stop
+//                // and check that we don't fire it more than once
+//                locationManager.stopUpdatingLocation()
+//                if false == isHeartbeatSetup {
+//                    setupHeartbeatMonitoring()
+//                }
+//            }
+//        } else {
+//            HTLogger.shared.verbose("On a trip and tracking locations")
+//            for location in locations {
+//                if location.horizontalAccuracy < 100 {
+//                    saveLocationChanged(location: location)
+//                }
+//            }
+//        }
         
     }
     
@@ -637,4 +638,41 @@ extension LocationManager: CLLocationManagerDelegate {
                          didFailWithError error: Error) {
         HTLogger.shared.error("Did fail with error: \(error.localizedDescription)")
     }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading){
+        
+        
+        if newHeading.headingAccuracy < 0 { return }
+        let nc = NotificationCenter.default
+        nc.post(name: Notification.Name(rawValue:HTConstants.HTLocationHeadingChangeNotification),
+                object: nil,
+                userInfo: ["heading":newHeading])
+
+    }
+
+    public func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion){
+        HTLogger.shared.info(" location manager didEnterRegion " + region.identifier)
+        if let locationEventDelegate = self.locationEventsDelegate{
+            locationEventDelegate.locationManager(self, didEnterRegion: region)
+        }
+        
+        let nc = NotificationCenter.default
+        nc.post(name: Notification.Name(rawValue:HTConstants.HTMonitoredRegionEntered),
+                object: nil,
+                userInfo: ["region":region])
+    }
+    
+    public func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion){
+        
+        if let locationEventDelegate = self.locationEventsDelegate{
+            locationEventDelegate.locationManager(self, didExitRegion: region)
+        }
+        
+        HTLogger.shared.info("First location didExitRegion")
+
+        let nc = NotificationCenter.default
+        nc.post(name: Notification.Name(rawValue:HTConstants.HTMonitoredRegionExited),
+                object: nil,
+                userInfo: ["region":region])
+       }
 }

@@ -271,4 +271,27 @@ import Foundation
             return nil
         }
     }
+    
+    public func isCompleted() -> Bool{
+        if (self.display != nil), (self.display?.showSummary == true) {
+            return true
+        }
+        return false
+    }
+    
+    
+    func isInternetAvailable() -> Bool? {
+        return self.user?.isConnected
+    }
+    
+    func isLocationAvailable() -> Bool?{
+        if(self.user?.locationStatus == "location_available"){
+            return true
+        }
+        return false
+    }
+    
+    func isActionTrackable() -> Bool?{
+        return isInternetAvailable()! && isLocationAvailable()!
+    }
 }

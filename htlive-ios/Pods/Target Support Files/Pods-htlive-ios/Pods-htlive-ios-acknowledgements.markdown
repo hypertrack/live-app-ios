@@ -115,7 +115,7 @@ SOFTWARE.
 
 
 
-## HyperTrack.local
+## HyperTrack
 
 Copyright (c) 2017 HyperTrack, Inc. (https://www.hypertrack.com)
 

@@ -23,11 +23,17 @@ class HTConsumerClient: NSObject, TrackedUserStoreDelegate {
     let trackedUserStore : HTTrackedUserStore?
     var currentActionStatusList = [String:String]()
     var delegate : HTConsumerClientDelegate?
+    var imageCache = [String:UIImage]()
+    weak var eventDelegate : HTEventsDelegate?
     
     private override init(){
         self.trackedUserStore = HTTrackedUserStore()
         super.init()
         self.trackedUserStore?.delegate = self
+    }
+    
+    func getLookUpId() -> String?{
+        return trackedUserStore?.trackedUserDataSource.lookupId
     }
     
     func getLastActionId(userId : String) -> String? {
@@ -49,7 +55,7 @@ class HTConsumerClient: NSObject, TrackedUserStoreDelegate {
     func getActionIds() -> [String]{
         return (self.trackedUserStore?.getActionIds())!
     }
-
+    
     func getActionIds(userId : String) ->  [String]?{
         return self.trackedUserStore?.getActionIds(userId: userId)
     }
@@ -118,12 +124,18 @@ class HTConsumerClient: NSObject, TrackedUserStoreDelegate {
                 return
             }
             
-             if let actions = actions {
+            if let actions = actions {
                 self.currentActionStatusList = [String:String]()
                 for action in actions {
                     self.currentActionStatusList[action.id!] = action.status
                 }
                 
+                let nc = NotificationCenter.default
+                let userInfo = ["actions" : actions]
+                nc.post(name:Notification.Name(rawValue:HTConstants.HTTrackingStartedForLookUpId),
+                        object: nil,
+                        userInfo: userInfo)
+
                 if let completionHandler = completionHandler {
                     completionHandler(actions, nil)
                 }
@@ -152,7 +164,7 @@ class HTConsumerClient: NSObject, TrackedUserStoreDelegate {
                     if(act.status?.caseInsensitiveCompare(status) != ComparisonResult.orderedSame){
                         changesStatusActionIds.append(actionId)
                         self.currentActionStatusList[(action?.id)!] = action?.status
-                        
+                        self.eventDelegate?.actionStatusChanged?(forAction: action!, toStatus: action?.status)
                     }
                 }
                 refreshedActionIds.append(actionId)
@@ -181,4 +193,53 @@ class HTConsumerClient: NSObject, TrackedUserStoreDelegate {
     func onActionsRemoved(){
         self.delegate?.onActionsRemoved()
     }
+    
+    func addImageToCache(image : UIImage , key : String){
+        imageCache[key] = image
+    }
+    func removeImageFromCache(key: String){
+        imageCache.removeValue(forKey: key)
+    }
+    
+    func getImageFromCache(key:String) -> UIImage?{
+        return imageCache[key]
+    }
+    func didUpdateActions(oldActions: [String:HyperTrackAction]?, newActions: [String:HyperTrackAction]?){
+        if(oldActions != nil && newActions != nil){
+            if let actionIds =  newActions?.keys{
+                for actionId in actionIds{
+                    if let oldAction = oldActions?[actionId]{
+                        let newAction = newActions?[actionId]
+                        
+                        self.eventDelegate?.didRefreshData?(forAction: newAction!)
+                        
+                        if(oldAction.status?.caseInsensitiveCompare((newAction?.status)!) != ComparisonResult.orderedSame){
+                            self.eventDelegate?.actionStatusChanged?(forAction: newAction!, toStatus: newAction?.status)
+                        }
+                        
+                        if(oldAction.isInternetAvailable() != newAction?.isInternetAvailable()){
+                            self.eventDelegate?.networkStatusChangedFor?(action: newAction!, isConnected: (newAction?.isInternetAvailable())!)
+                        }
+                        
+                        if(oldAction.isLocationAvailable() != newAction?.isLocationAvailable()){
+                            self.eventDelegate?.locationStatusChangedFor?(action: newAction!, isEnabled: (newAction?.isLocationAvailable())!)
+                        }
+                        
+                        
+                    }
+                }
+  
+            }
+        }
+        
+    }
+    
+    func isActionTrackable(actionId : String!) -> Bool{
+        if let action = getAction(actionId: actionId){
+            return action.isActionTrackable()!
+        }
+        return false
+    }
+ 
+    
 }
