@@ -20,7 +20,7 @@ One of the core feature of Hypertrack Live is Placeline. Placeline is useful in 
 
 ![Placeline](assets/placeline.gif)
 
-The  Placeline is powered by HyperTrack mobile SDK which collects location and activity data for your users. The Placeline object includes segments like stop, walk, and drive. 
+The  Placeline is powered by HyperTrack mobile SDK which collects location and activity data for your users. It includes segments like stop, walk, and drive. 
 
 ## Live Location Sharing
 The other important feature of Hypertrack Live powered by hypertrack SDK is Live Location Sharing. 
