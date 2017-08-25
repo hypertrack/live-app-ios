@@ -56,7 +56,7 @@ $ pod install
 
 Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup), and add the publishable key to ```setUpHypertrack``` function in [HyperTrackAppService.swift](https://github.com/hypertrack/hypertrack-live-ios/blob/master/htlive-ios/htlive-ios/HyperTrackAppService.swift) file.
 ```swift
-        HyperTrack.initialize("YOUR_PUBLISHABLE_KEY")
+HyperTrack.initialize("YOUR_PUBLISHABLE_KEY")
 ```
 
 #### To build Placeline in your app, follow this [tutorial](#build-activity-tracking-in-your-app).
@@ -81,38 +81,38 @@ Set up the HyperTrack SDK by following these [instructions](https://docs.hypertr
 The next thing that you need to do is create a HyperTrack User. This would tag the location/activity data to the user and help you get useful filtered data in the form of Placeline. More details about the function [here](https://docs.hypertrack.com/sdks/ios/basic.html#step-1-create-sdk-user). 
 
 ```swift
-     HyperTrack.createUser(userName) { (user, error) in
-                if (error != nil) {
-                    // Handle error on get or create user
-                    print("recieved error while creating user. error : " + (error?.errorMessage)!)
-                    return
-                }
+HyperTrack.createUser(userName) { (user, error) in
+    if (error != nil) {
+     // Handle error on get or create user
+     print("recieved error while creating user. error : " + (error?.errorMessage)!)
+     return
+    }
                 
-                if (user != nil) {
-                    // User successfully created
-                    print("User created:", user!.id ?? "")
-                    HyperTrack.startTracking()
-                   }
-                }
+     if (user != nil) {
+     // User successfully created
+     print("User created:", user!.id ?? "")
+     HyperTrack.startTracking()
+     }
+}
 ```
 
 #### Start tracking
 Start tracking for the created user by calling the following method
 ```swift
-    HyperTrack.startTracking()
+HyperTrack.startTracking()
 ```
 
 #### Get Placeline in your app
 Once tracking has started, implement the following function and you are all set to use the rich activity data in your app.
 
 ```swift
-    HyperTrack.getPlaceline { (placeLine, error) in
-            guard let fetchedPlaceLine = placeLine else { return }
-            if let segments = fetchedPlaceLine.segments {
+HyperTrack.getPlaceline { (placeLine, error) in
+    guard let fetchedPlaceLine = placeLine else { return }
+        if let segments = fetchedPlaceLine.segments {
                 // process the segment here 
             
-            }
-       }
+         }
+}
 ```
 
 We hope that you got a good taste of Placeline. If you have any problems or suggestions for the tutorial, do not hesitate to buzz 🐝 us [here](#support).
@@ -167,12 +167,12 @@ Open LiveLocationSharingStarter.xcworkspace.
 If you are NOT using the starter project, set up the HyperTrack SDK by following these [instructions](https://docs.hypertrack.com/sdks/ios/setup.html). Else, initialize the SDK by putting the following code in            ```AppDelegate```.
 
 ```swift
- func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        HyperTrack.initialize(YOUR_PUBLISHABLE_KEY)
-        HyperTrack.requestAlwaysAuthorization()
-        HyperTrack.requestMotionAuthorization()
-        return true
-    }
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    HyperTrack.initialize(YOUR_PUBLISHABLE_KEY)
+    HyperTrack.requestAlwaysAuthorization()
+    HyperTrack.requestMotionAuthorization()
+    return true
+}
 ```
 
 #### Step 4. Create HyperTrack user
@@ -183,22 +183,22 @@ When the user is created, we need to start tracking his location and activity. C
 For starter project, go to ```UserProfileViewController.swift```. When the user taps login, get the name of the user and use the following function to create a user.
 
 ```swift
-     HyperTrack.createUser(userName!) { (user, error) in
-                if (error != nil) {
-                    // Handle error on get or create user
-                    print("recieved error while creating user. error : " + (error?.errorMessage)!)
-                    return
-                }
+HyperTrack.createUser(userName!) { (user, error) in
+      if (error != nil) {
+       // Handle error on get or create user
+           print("recieved error while creating user. error : " + (error?.errorMessage)!)
+           return
+     }
                 
-                if (user != nil) {
-                    // User successfully created
-                    print("User created:", user!.id ?? "")
-                    HyperTrack.startTracking()
-                     self.showAlert(title:"Step 4  completed", message: "Yay Hypertrack User is Created",buttonTitle: "OK, What's Next ?" ){(action) in
-                        self.dismiss(animated:true, completion: nil)
-                    }
-                }
-            }
+      if (user != nil) {
+        // User successfully created
+         print("User created:", user!.id ?? "")
+         HyperTrack.startTracking()
+         self.showAlert(title:"Step 4  completed", message: "Yay Hypertrack User is Created",buttonTitle: "OK, What's Next ?" ){(action) in
+         self.dismiss(animated:true, completion: nil)
+          }
+      }
+ }
 ```
 
 ![Create User](assets/create_user.gif) 
@@ -212,17 +212,17 @@ Now to start a Live Location trip, the first thing that you need to do is to add
 For starter project, go to ```ShareLiveLocationVC.swift```. Embed the Live Location view in your ```ViewController``` view. This should be done in - override ```func viewDidAppear(_ animated: Bool)```.
 
 ```swift
-        // get an instance of hypertrack's map view (it's a location picker + map view)
-        hyperTrackMap = HyperTrack.map()
-        // enable Live Location Sharing 
-        hyperTrackMap?.enableLiveLocationSharingView = true
-        hyperTrackMap?.showConfirmLocationButton = true
-        // gives callbacks when a user interacts with the map, like when he selects a location or press a refocus button
-        hyperTrackMap?.setHTViewInteractionDelegate(interactionDelegate: self)
-        if (self.hypertrackView != nil) {
-            hyperTrackMap?.embedIn(self.hypertrackView)
-        }
-  ```
+// get an instance of hypertrack's map view (it's a location picker + map view)
+hyperTrackMap = HyperTrack.map()
+// enable Live Location Sharing
+hyperTrackMap?.enableLiveLocationSharingView = true
+hyperTrackMap?.showConfirmLocationButton = true
+// gives callbacks when a user interacts with the map, like when he selects a location or press a refocus button
+hyperTrackMap?.setHTViewInteractionDelegate(interactionDelegate: self)
+if (self.hypertrackView != nil) {
+    hyperTrackMap?.embedIn(self.hypertrackView)
+}
+```
 
 Also, create an extension to handle interaction delegate callback. An interaction delegate helps you get a callback when the user performs an action on HyperTrack's location view. For example, when he selects a location or taps the refocus button.
 For starter project, it is already in there so nothing to do for you.
@@ -251,28 +251,28 @@ You will need two things to create an action.
 
 For starter project, go to ```ShareLiveLocationVC.swift``` and add the following code when you get a callback of location selection ```didSelectLocation```.
 ```swift
-        let htActionParams = HyperTrackActionParams()
-        htActionParams.expectedPlace = place
-        htActionParams.type = "visit"
-        htActionParams.lookupId = UUID().uuidString
+let htActionParams = HyperTrackActionParams()
+htActionParams.expectedPlace = place
+htActionParams.type = "visit"
+htActionParams.lookupId = UUID().uuidString
+
+HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
+    if let error = error {
+        print("recieved error while creating and assigning action. error : " + (error.errorMessage))
+        return
+    }
+    if let action = action {
         
-        HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
-            if let error = error {
-                print("recieved error while creating and assigning action. error : " + (error.errorMessage))
+        HyperTrack.trackActionFor(lookUpId: action.lookupId!, completionHandler: { (actions, error) in
+            if (error != nil) {
                 return
             }
-            if let action = action {
-                
-                HyperTrack.trackActionFor(lookUpId: action.lookupId!, completionHandler: { (actions, error) in
-                    if (error != nil) {
-                        return
-                    }
-                    
-                })
-                
-                return
-            }
+            
         })
+        
+        return
+    }
+})
 ```
 
 Also, implement the following function in the extension(```ShareLiveLocationVC:HTViewInteractionDelegate```) so the action gets completed when the user taps stop.
@@ -280,9 +280,9 @@ Also, implement the following function in the extension(```ShareLiveLocationVC:H
 ```swift
 // HTViewInteractionDelegate callback when user clicks stop Live Location Sharing, You should mark your action as complete 
 // when this is called.
-    func didTapStopLiveLocationSharing(actionId : String){
-        HyperTrack.completeAction(actionId)  
-    }
+func didTapStopLiveLocationSharing(actionId : String){
+    HyperTrack.completeAction(actionId)  
+}
  ```
  
 ![Start Trip](assets/start_trip.gif) 
@@ -291,9 +291,9 @@ Also, implement the following function in the extension(```ShareLiveLocationVC:H
 As described earlier, a ```lookpupId``` is an identifier which identifies a Live Location trip. When you want to share your trip, your trip's ```lookupId``` needs to be shared.
 ```swift
 // HTViewInteractionDelegate callback when user clicks share my trip to others
-  func didTapShareLiveLocationLink(action : HyperTrackAction){
+func didTapShareLiveLocationLink(action : HyperTrackAction){
 
-  }
+}
 ```
 You can share your ```lookupId``` to the other person in different ways. 
 1. You can use the ```UIActivityViewController``` to share it through messaging apps.
@@ -301,16 +301,16 @@ You can share your ```lookupId``` to the other person in different ways.
 
 For starter project, let us keep it simple and use ```UIActivityViewController``` to do the job for us.
 ```swift
- func didTapShareLiveLocationLink(action : HyperTrackAction){
-        if let lookupId = action.lookupId {
-            let textToShare : Array = [lookupId]
-            let activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
-            activityViewController.completionWithItemsHandler = { activityType, complete, returnedItems, error in
-            }
-            self.present(activityViewController, animated: false, completion: nil)
-  
+func didTapShareLiveLocationLink(action : HyperTrackAction){
+    if let lookupId = action.lookupId {
+        let textToShare : Array = [lookupId]
+        let activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
+        activityViewController.completionWithItemsHandler = { activityType, complete, returnedItems, error in
         }
+        self.present(activityViewController, animated: false, completion: nil)
+        
     }
+}
 ```
 
 
@@ -320,42 +320,43 @@ If you have completed the steps in above section, you have a user who has starte
 #### Step 1. Track ongoing trip
 To track the user, use the following function. Although the tracking has started in the SDK, visualizing it requires you to embed HyperTrack's map fragment in your tracking view controller. 
 ```swift
-  HyperTrack.trackActionFor(lookUpId: lookUpId, completionHandler: { (actions, error) in
-            
-            if let _ = error {
-                print("recieved error while tracking via lookupId. error : " + (error.errorMessage))
-                return
-            }
-                if let actions = actions {
-                    if actions.count > 0 {
-                       // embed your map view here  
-                    }
-                }
-        })
+ HyperTrack.trackActionFor(lookUpId: lookUpId, completionHandler: { (actions, error) in
+    
+    if let _ = error {
+        print("recieved error while tracking via lookupId. error : " + (error.errorMessage))
+        return
+    }
+    if let actions = actions {
+        if actions.count > 0 {
+            // embed your map view here
+        }
+    }
+})
  ```
  
 For starter project, you have to enter the ```lookupId``` in the text field that you have received from the user who has started the session. Add the following code in the selector of track button ```onTrackClick``` in ```TrackLiveLocationVC.swift```.
  
  ```swift
-  HyperTrack.trackActionFor(lookUpId: lookUpId, completionHandler: { (actions, error) in
-            
-            if let _ = error {
-                print("recieved error while tracking via lookupId. error : " + (error.errorMessage))
-                return
+HyperTrack.trackActionFor(lookUpId: lookUpId!, completionHandler: { (actions, error) in
+    
+    if let _ = error {
+        print("recieved error while tracking via lookupId. error : " + (error.errorMessage))
+        return
+    }
+    if let actions = actions {
+        if actions.count > 0 {
+            self.expectedPlace = actions.last?.expectedPlace
+            let map = HyperTrack.map()
+            map.enableLiveLocationSharingView = true
+            map.setHTViewInteractionDelegate(interactionDelegate: self)
+            if (self.hypertrackView != nil) {
+                self.hyperTrackMap = map
+                self.hyperTrackMap?.embedIn(self.hypertrackView)
             }
-                if let actions = actions {
-                    if actions.count > 0 {
-                         self.expectedPlace = actions.last?.expectedPlace
-                         let map = HyperTrack.map()
-                         map.enableLiveLocationSharingView = true
-                         map.setHTViewInteractionDelegate(interactionDelegate: self)
-                            if (self.hypertrackView != nil) {
-                                    self.hyperTrackMap = map
-                                   self.hyperTrackMap?.embedIn(self.hypertrackView)
-                             }
-                    }
-                }
-        })
+        }
+    }
+})
+
  ```
  
 Now to see the result, go to the other device and set up the user. After that click on 'Track a Live Location trip' and paste/enter the ```lookupId``` which you recieved from the user. 
@@ -368,17 +369,17 @@ In this step, we will see how the friend can share her Live Location and join th
 
 For starter project, add this code to ```shareLocationClicked``` when the user taps the 'Share Live Location' button. It creates and assign action for your friends Live Location session.
 ```swift
-          let htActionParams = HyperTrackActionParams()
-          htActionParams.expectedPlace = expectedPlace
-          htActionParams.type = "visit"
-          htActionParams.lookupId = self.lookupIdTextField.text!
-            
-          HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
-                if let error = error {
-                    print("recieved error while create and assign action. error : " + (error.errorMessage))
-                    return
-                }
-            })
+let htActionParams = HyperTrackActionParams()
+htActionParams.expectedPlace = expectedPlace
+htActionParams.type = "visit"
+htActionParams.lookupId = self.lookupIdTextField.text!
+
+HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
+    if let error = error {
+        print("recieved error while create and assign action. error : " + (error.errorMessage))
+        return
+    }
+})
 ```
 ![Multi User Trip](assets/multi_user_trip.gif) 
 
