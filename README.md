@@ -59,9 +59,6 @@ Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup), an
 HyperTrack.initialize("YOUR_PUBLISHABLE_KEY")
 ```
 
-#### To build Placeline in your app, follow this [tutorial](#build-activity-tracking-in-your-app).
-#### To build Live Location Sharing in your app, follow this [tutorial](#build-live-location-sharing-in-your-app).
-
 ## Build Activity Tracking in your app 
  - [Placeline format](#placeline-format)
  - [Setup HyperTrack SDK](#setup-hypertrack-sdk)
