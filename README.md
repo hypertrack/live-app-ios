@@ -13,8 +13,8 @@ Hypertrack live helps you share your live location with friends through your fav
 
 | Usecase       |  Description  |  Tutorial     |
 | ------------- | ------------- | ------------- |
-| Activity Tracking  | Track your activities chronologicaly through the day. [Description](#activity-tracking) | [Build yourself](#build-placeline-in-your-app)  |
-| Live Location Sharing  | Share your live location with friends and see theirs. [Description](#live-location-sharing) | [Build yourself](#build-live-location-sharing-using-hypertrack)  |
+| Activity Tracking  | Track your activities chronologicaly through the day. [Description](#activity-tracking) | [Build yourself 👩‍💻](#build-placeline-in-your-app) |
+| Live Location Sharing  | Share your live location with friends and see theirs. [Description](#live-location-sharing) | [Build yourself 👩‍💻](#build-live-location-sharing-using-hypertrack)|
 
 
 - [Activity Tracking](#activity-tracking)
@@ -28,15 +28,15 @@ Hypertrack live helps you share your live location with friends through your fav
 
 
 ## Activity Tracking
-One of the core feature of Hypertrack Live is Placeline. Placeline is useful in tracking your daily activity with near-zero battery impact. You will feel the magic of automatic in its ability to use GPS, WiFi, network, accelerometer, pedometer, gyroscope and other sensors to deliver accuracy.
+One of the core feature of Hypertrack Live is Placeline. Placeline is useful in tracking your daily activity with near-zero battery impact. You will feel the magic of automatic in its ability to use GPS, WiFi, network, accelerometer, pedometer, gyroscope and other sensors to deliver accuracy. The  Placeline is powered by HyperTrack mobile SDK which collects location and activity data for your users. It includes segments like stop 🛑, walk 🚶‍♀️,run 🏃‍♀️,drive 🏎️ and cycling 🚴. 
 
 ![Placeline](assets/placeline.gif)
 
-The  Placeline is powered by HyperTrack mobile SDK which collects location and activity data for your users. It includes segments like stop 🛑, walk 🚶‍♀️, and drive 🏎️. 
+
 
 ## Live Location Sharing
 The other important feature of Hypertrack Live powered by hypertrack SDK is Live Location Sharing. 
-Live Location Sharing has become a primary need for many consumer apps. Especially it can improve the user experience a lot when the transaction starts online but requires people to meet offline. It helps you in solving the daily anxiety of “where are you?”.
+Live Location Sharing has become a primary need for many consumer apps. Especially it can improve the user experience a lot when the transaction starts online 💻📱 but requires people to meet offline . It helps you in solving the daily anxiety of “where are you ⁉️”.
 
 ![Live Location Sharing](assets/live_location.gif) 
 
