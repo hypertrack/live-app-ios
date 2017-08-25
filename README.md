@@ -63,21 +63,21 @@ Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup), an
 #### To build Live Location Sharing in your app, follow this [tutorial](#build-live-location-sharing-using-hypertrack).
 
 ## Build Activity Tracking in your app 
- - [Placeline Format](#placeline-format)
+ - [Placeline format](#placeline-format)
  - [Setup HyperTrack SDK](#setup-hypertrack-sdk)
- - [Create Hypertrack User](#create-hypertrack-user)
- - [Start Tracking](#start-tracking)
- - [Get Placeline in app](#get-placeline-in-app)
+ - [Create Hypertrack user](#create-hypertrack-user)
+ - [Start tracking](#start-tracking)
+ - [Get Placeline in your app](#get-placeline-in-your-app)
 
 
 
-#### Placeline Format
+#### Placeline format
 Placeline object contains detailed information about the activity like the start time, end time, location, steps and more.
 An example JSON representation is given [here](https://docs.hypertrack.com/gettingstarted/activities.html#placeline).
 #### Setup HyperTrack SDK
 Set up the HyperTrack SDK by following these [instructions](https://docs.hypertrack.com/sdks/ios/setup.html).
 
-#### Create HyperTrack User
+#### Create HyperTrack user
 The next thing that you need to do is create a HyperTrack User. This would tag the location/activity data to the user and help you get useful filtered data in the form of Placeline. More details about the function [here](https://docs.hypertrack.com/sdks/ios/basic.html#step-1-create-sdk-user). 
 
 ```swift
@@ -96,13 +96,13 @@ The next thing that you need to do is create a HyperTrack User. This would tag t
                 }
 ```
 
-#### Start Tracking
+#### Start tracking
 Start tracking for the created user by calling the following method
 ```swift
     HyperTrack.startTracking()
 ```
 
-#### Get Placeline in app
+#### Get Placeline in your app
 Once tracking has started, implement the following function and you are all set to use the rich activity data in your app.
 
 ```swift
@@ -136,7 +136,7 @@ Let's get started ðŸ˜Š . Strap yourself in and get ready for an exciting ride ðŸ
   - [Create HyperTrack user](#step-4-create-hypertrack-user)
 - [Start a Live Location trip](#start-a-live-location-trip)
   - [Show Live Location view](#step-1-show-live-location-view)
-  - [Create And track action](#step-2-create-and-track-action)
+  - [Create and track action](#step-2-create-and-track-action)
   - [Share your trip](#step-3-share-your-trip)
 - [Track or join an ongoing trip](#track-or-join-an-ongoing-trip)
   - [Track ongoing trip](#step-1-track-ongoing-trip)
@@ -201,7 +201,7 @@ For starter project go to ```UserProfileViewController.swift```. When the user p
 
 ![Create User](assets/create_user.gif) 
 
-### Start a Live Location Trip
+### Start a Live Location trip
 Hopefully you have done the basic setup, and ready to rock?
 
 #### Step 1. Show Live Location view
