@@ -11,6 +11,12 @@ Activity Tracking and Live Location Sharing
 This open source repo uses [HyperTrack](https://www.hypertrack.com) for live location sharing and activity tracking.
 Hypertrack live helps you share your live location with friends through your favorite messaging app when on the way to meet up. You can also see your activities organized as chronological cards so that tapping on each card gives you the locations of the activity. 
 
+| Usecase       |  Description  |  Tutorial     |
+| ------------- | ------------- | ------------- |
+| Activity Tracking  | Track your activities chronologicaly through the day. [Description](#activity-tracking) | [Build yourself](#build-placeline-in-your-app)  |
+| Live Location Sharing  | Share your live location with friends and see theirs. [Description](#live-location-sharing) | [Build yourself](#build-live-location-sharing-using-hypertrack)  |
+
+
 - [Activity Tracking](#activity-tracking)
 - [Live Location Sharing](#live-location-sharing)
 - [Usage](#usage)
@@ -26,7 +32,7 @@ One of the core feature of Hypertrack Live is Placeline. Placeline is useful in 
 
 ![Placeline](assets/placeline.gif)
 
-The  Placeline is powered by HyperTrack mobile SDK which collects location and activity data for your users. It includes segments like stop, walk, and drive. 
+The  Placeline is powered by HyperTrack mobile SDK which collects location and activity data for your users. It includes segments like stop 🛑, walk 🚶‍♀️, and drive 🏎️. 
 
 ## Live Location Sharing
 The other important feature of Hypertrack Live powered by hypertrack SDK is Live Location Sharing. 
@@ -113,7 +119,12 @@ Once the user is created you have to implement the below function and you are al
 
 ## Build Live Location Sharing using HyperTrack 
 
-Use the following tutorial to build  live location sharing feature in your app. This is divided into three section. In the first section we will do a basic setup of Hypertrack SDK. In the second section, we will talk about how to select a place and start a live location trip to that place. In the last section, we will discuss about how your friend can join a trip started by you. Let's get started :)  
+Use the following tutorial to build  [live location sharing](#live-location-sharing) feature in your app. This is divided into three section.
+- In the first section we will do a basic setup of Hypertrack SDK. 
+- In the second section, we will talk about how to select a destination and start a live location trip to that place. 
+- In the last section, we will discuss about how your friend can join a trip started by you. 
+
+Let's get started 😊 . Strap yourself in and get ready for an exciting ride 🚀 .
 
 - [Basic Setup](#basic-setup)
   - [Get API Keys](#step-1-get-api-keys)
@@ -188,6 +199,7 @@ For starter project go to ```UserProfileViewController.swift```. When the user p
 ![Create User](assets/create_user.gif) 
 
 ### Start a Live Location Trip
+Hopefully you have done the basic setup, and ready to rock?
 
 #### Step 1. Show Live Location View
 Now to start a live location trip, the first thing that you need to do is to choose the destination. For this we will need a location picker. The good news is that Hypertrack Location View has a location picker within it. Once the user selects a location with the help of our inbuilt location picker, than the sdk gives a callback to the app with the selected location so that the app can start a trip. 
@@ -365,6 +377,8 @@ For starter project - add this code to create and assign action when the user pr
 ```
 ![Multi User Trip](assets/multi_user_trip.gif) 
 
+
+I hope you’ve enjoyed yourself on your epic quest to build a live location feature. If you have any problems or suggestions for the tutorial, make sure to give us a buzz [here](#Support).
 
 ## Documentation
 For detailed documentation of the APIs, customizations and what all you can build using HyperTrack, please visit the official [docs](https://docs.hypertrack.com/).
