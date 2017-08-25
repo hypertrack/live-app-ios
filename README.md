@@ -55,7 +55,7 @@ $ cd hypertrack-live-ios/htlive-ios
 $ pod install
 ```
 
-Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup), and add the publishable key to setUpHypertrack function in [HyperTrackAppService.swift](https://github.com/hypertrack/hypertrack-live-ios/blob/master/htlive-ios/htlive-ios/HyperTrackAppService.swift) file.
+Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup), and add the publishable key to ```setUpHypertrack``` function in [HyperTrackAppService.swift](https://github.com/hypertrack/hypertrack-live-ios/blob/master/htlive-ios/htlive-ios/HyperTrackAppService.swift) file.
 ```swift
         HyperTrack.initialize("YOUR_PUBLISHABLE_KEY")
 ```
@@ -79,7 +79,7 @@ An example JSON representation is given [here](https://docs.hypertrack.com/getti
 Set up HyperTrack by following the instructions from [here](https://docs.hypertrack.com/sdks/ios/setup.html).
 
 #### Create a HyperTrack User
-The next thing that you need to do is to create a Hypertrack User. It helps Hypertrack to tag the location/activity data of a user and in turn help you to share status of your live location to your friends. More details about the function is present [here](https://docs.hypertrack.com/sdks/ios/basic.html#step-1-create-sdk-user). 
+The next thing that you need to do is to create a Hypertrack User. It helps Hypertrack to tag the location/activity data of a user and in turn help you get a filtered and userful data in the form of placeline. More details about the function is present [here](https://docs.hypertrack.com/sdks/ios/basic.html#step-1-create-sdk-user). 
 
 ```swift
      HyperTrack.createUser(userName) { (user, error) in
@@ -115,6 +115,10 @@ Once the user is created you have to implement the below function and you are al
             }
        }
 ```
+
+We hope that you got the flavor of placeline. If you have any problems or suggestions for the tutorial, make sure to give us a buzz 🐝 [here](#support).
+
+
 
 
 ## Build Live Location Sharing using HyperTrack 
@@ -378,7 +382,7 @@ For starter project - add this code to create and assign action when the user pr
 ![Multi User Trip](assets/multi_user_trip.gif) 
 
 
-I hope you’ve enjoyed yourself on your epic quest to build a live location feature. If you have any problems or suggestions for the tutorial, make sure to give us a buzz [here](#Support).
+We hope you’ve enjoyed yourself on your epic quest to build a live location feature. If you have any problems or suggestions for the tutorial, make sure to give us a buzz 🐝 [here](#support).
 
 ## Documentation
 For detailed documentation of the APIs, customizations and what all you can build using HyperTrack, please visit the official [docs](https://docs.hypertrack.com/).
