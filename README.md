@@ -161,6 +161,8 @@ $ cd hypertrack-live-ios/starter/
 $ pod install
 ```
 
+Open LiveLocationSharingStarter.xcworkspace.
+
 #### Step 3. Setup HyperTrack SDK
 If you are NOT using the starter project, set up the HyperTrack SDK by following these [instructions](https://docs.hypertrack.com/sdks/ios/setup.html). Else, initialize the SDK by putting the following code in            ```AppDelegate```.
 
@@ -247,7 +249,7 @@ You will need two things to create an action.
 1. ```expectedPlace``` - This is the destination for the visit. You have it after you select the destination.
 2. ```lookupId``` - A ```lookpupId``` is an identifier created by you for the Live Location trip. A ```lookupId``` is what needs to be shared with the friend, so they can join your trip and share their location. We chose it to be the UUID. You can use your own internal identifiers. 
 
-For starter project, go to ```ShareLiveLocationVC.swift``` and add the following code when you get a callback of location selection.
+For starter project, go to ```ShareLiveLocationVC.swift``` and add the following code when you get a callback of location selection ```didSelectLocation```.
 ```swift
         let htActionParams = HyperTrackActionParams()
         htActionParams.expectedPlace = place
@@ -256,7 +258,7 @@ For starter project, go to ```ShareLiveLocationVC.swift``` and add the following
         
         HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
             if let error = error {
-                print("recieved error while creating and assigning action. error : " + (error?.errorMessage)!)
+                print("recieved error while creating and assigning action. error : " + (error.errorMessage))
                 return
             }
             if let action = action {
@@ -318,10 +320,10 @@ If you have completed the steps in above section, you have a user who has starte
 #### Step 1. Track ongoing trip
 To track the user, use the following function. Although the tracking has started in the SDK, visualizing it requires you to embed HyperTrack's map fragment in your tracking view controller. 
 ```swift
-  HyperTrack.trackActionFor(lookUpId: LOOK_UP_ID, completionHandler: { (actions, error) in
+  HyperTrack.trackActionFor(lookUpId: lookUpId, completionHandler: { (actions, error) in
             
             if let _ = error {
-                print("recieved error while tracking via lookupId. error : " + (error?.errorMessage)!)
+                print("recieved error while tracking via lookupId. error : " + (error.errorMessage))
                 return
             }
                 if let actions = actions {
@@ -332,13 +334,13 @@ To track the user, use the following function. Although the tracking has started
         })
  ```
  
-For starter project, you have to enter the ```lookupId``` in the text field that you have received from the user who has started the session. Add the following code in the selector of track button in ```TrackLiveLocationVC```.
+For starter project, you have to enter the ```lookupId``` in the text field that you have received from the user who has started the session. Add the following code in the selector of track button ```onTrackClick``` in ```TrackLiveLocationVC.swift```.
  
  ```swift
-  HyperTrack.trackActionFor(lookUpId: LOOK_UP_ID, completionHandler: { (actions, error) in
+  HyperTrack.trackActionFor(lookUpId: lookUpId, completionHandler: { (actions, error) in
             
             if let _ = error {
-                print("recieved error while tracking via lookupId. error : " + (error?.errorMessage)!)
+                print("recieved error while tracking via lookupId. error : " + (error.errorMessage))
                 return
             }
                 if let actions = actions {
@@ -364,7 +366,7 @@ Now to see the result, go to the other device and set up the user. After that cl
 #### Step 2. Join ongoing trip
 In this step, we will see how the friend can share her Live Location and join the trip. To join the trip, an action with the same lookupId needs to be created. This step is similar to Step 6. But this time it is a lookupId of an existing trip and NOT a new one in Step 6.
 
-For starter project, add this code to create and assign action when the user taps the 'Share Live Location' button.
+For starter project, add this code to ```shareLocationClicked``` when the user taps the 'Share Live Location' button. It creates and assign action for your friends Live Location session.
 ```swift
           let htActionParams = HyperTrackActionParams()
           htActionParams.expectedPlace = expectedPlace
@@ -373,7 +375,7 @@ For starter project, add this code to create and assign action when the user tap
             
           HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
                 if let error = error {
-                    print("recieved error while create and assign action. error : " + (error?.errorMessage)!)
+                    print("recieved error while create and assign action. error : " + (error.errorMessage))
                     return
                 }
             })
