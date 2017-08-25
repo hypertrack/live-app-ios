@@ -34,7 +34,6 @@ class HyperTrackAppService: NSObject {
         }
     }
 
-    
     func getCurrentLookUPId () -> String? {
        return UserDefaults.standard.string(forKey: "currentLookUpID")
     }
@@ -110,7 +109,12 @@ class HyperTrackAppService: NSObject {
     
         return true
     }
+    
+    func setUpSDKs(){
+        setupHyperTrack()
+    }
 
+    
     
 }
 
