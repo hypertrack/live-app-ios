@@ -9,7 +9,7 @@ Activity Tracking and Live Location Sharing
 
 
 This open source repo uses [HyperTrack](https://www.hypertrack.com) for live location sharing and activity tracking.
-Hypertrack live helps you share your live location with friends through your favorite messaging app when on the way to meet up. You can also see your activities organized as chronological cards so that tapping on each card gives you the locations of the activity. 
+Hypertrack Live helps you share your live location with friends through your favorite messaging app when on the way to meet up. You can also see your activities organized as chronological cards so that tapping on each card gives you the locations of the activity. 
 
 | Usecase       |  Description  |  Tutorial     |
 | ------------- | ------------- | ------------- |
@@ -20,23 +20,22 @@ Hypertrack live helps you share your live location with friends through your fav
 - [Activity Tracking](#activity-tracking)
 - [Live Location Sharing](#live-location-sharing)
 - [Usage](#usage)
-- [Build Placeline in your app](#build-placeline-in-your-app)
-- [Build Live Location Sharing in your app](#build-live-location-sharing-using-hypertrack)
+- [Build Activity Tracking in your app](#build-activity-tracking-in-your-app)
+- [Build Live Location Sharing in your app](#build-live-location-sharing-in-your-app)
 - [Documentation](#documentation)
 - [Contribute](#contribute)
 - [Support](#support)
 
 
 ## Activity Tracking
-One of the core feature of Hypertrack Live is Placeline. Placeline is useful in tracking your daily activity with near-zero battery impact. You will feel the magic of automatic in its ability to use GPS, WiFi, network, accelerometer, pedometer, gyroscope and other sensors to deliver accuracy. The  Placeline is powered by HyperTrack mobile SDK which collects location and activity data for your users. It includes segments like stop 🛑, walk 🚶‍♀️,run 🏃‍♀️,drive 🏎️ and cycling 🚴. 
+One of the two core features of Hypertrack Live is Placeline. Placeline is useful in tracking your daily activity with near-zero battery impact. We automagically use the combination of device sensors - GPS, WiFi, network, accelerometer, pedometer, gyroscope, compass - to deliver accuracy. Placeline is powered by the HyperTrack SDK which collects location and activity data for your users. It includes segments like stop 🛑, walk 🚶‍♀️,run 🏃‍♀️,drive 🏎️ and cycling 🚴. 
 
 ![Placeline](assets/placeline.gif)
 
 
 
 ## Live Location Sharing
-The other important feature of Hypertrack Live powered by hypertrack SDK is Live Location Sharing. 
-Live Location Sharing has become a primary need for many consumer apps. Especially it can improve the user experience a lot when the transaction starts online 💻📱 but requires people to meet offline . It helps you in solving the daily anxiety of “where are you ⁉️”.
+The other core feature of Hypertrack Live is Live Location Sharing. Live Location Sharing is useful for consumer apps like messengers and social apps where two or more people want to share their live location with each other when on the way to meet up. It is also useful for marketplace aggregators where the transaction starts online 💻📱 but requires people to meet offline for fulfillment. It helps you solve the consumer's anxiety of “where are you⁉️”.
 
 ![Live Location Sharing](assets/live_location.gif) 
 
@@ -60,26 +59,26 @@ Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup), an
         HyperTrack.initialize("YOUR_PUBLISHABLE_KEY")
 ```
 
-#### To build placeline in your app follow this [tutorial](#build-placeline-in-your-app).
-#### To build live location sharing follow this [tutorial](#build-live-location-sharing-using-hypertrack).
+#### To build Placeline in your app, follow this [tutorial](#build-placeline-in-your-app).
+#### To build Live Location Sharing in your app, follow this [tutorial](#build-live-location-sharing-using-hypertrack).
 
-## Build Placeline in your app 
+## Build Activity Tracking in your app 
  - [Placeline Format](#placeline-format)
- - [Setup](#setup)
- - [Create a Hypertrack User](#create-a-hypertrack-user)
+ - [Setup HyperTrack SDK](#setup-hypertrack-sdk)
+ - [Create Hypertrack User](#create-hypertrack-user)
  - [Start Tracking](#start-tracking)
- - [Get Placeline in your app](#get-placeline-in-your-app)
+ - [Get Placeline in app](#get-placeline-in-app)
 
 
 
 #### Placeline Format
-Placeline object contains a lot of detailed information about the activity like the start time, end time, location.
+Placeline object contains detailed information about the activity like the start time, end time, location, steps and more.
 An example JSON representation is given [here](https://docs.hypertrack.com/gettingstarted/activities.html#placeline).
-#### Setup
-Set up HyperTrack by following the instructions from [here](https://docs.hypertrack.com/sdks/ios/setup.html).
+#### Setup HyperTrack SDK
+Set up the HyperTrack SDK by following these [instructions](https://docs.hypertrack.com/sdks/ios/setup.html).
 
-#### Create a HyperTrack User
-The next thing that you need to do is to create a Hypertrack User. It helps Hypertrack to tag the location/activity data of a user and in turn help you get a filtered and userful data in the form of placeline. More details about the function is present [here](https://docs.hypertrack.com/sdks/ios/basic.html#step-1-create-sdk-user). 
+#### Create HyperTrack User
+The next thing that you need to do is create a HyperTrack User. This would tag the location/activity data to the user and help you get useful filtered data in the form of Placeline. More details about the function [here](https://docs.hypertrack.com/sdks/ios/basic.html#step-1-create-sdk-user). 
 
 ```swift
      HyperTrack.createUser(userName) { (user, error) in
@@ -98,13 +97,13 @@ The next thing that you need to do is to create a Hypertrack User. It helps Hype
 ```
 
 #### Start Tracking
-Once the user is created, to enable tracking for the user you need to call ```startTracking()``` method
+Start tracking for the created user by calling the following method
 ```swift
     HyperTrack.startTracking()
 ```
 
-#### Get Placeline in your app
-Once the user is created you have to implement the below function and you are all set to use the rich activity data in your app.
+#### Get Placeline in app
+Once tracking has started, implement the following function and you are all set to use the rich activity data in your app.
 
 ```swift
     HyperTrack.getPlaceline { (placeLine, error) in
@@ -116,39 +115,39 @@ Once the user is created you have to implement the below function and you are al
        }
 ```
 
-We hope that you got the flavor of placeline. If you have any problems or suggestions for the tutorial, make sure to give us a buzz 🐝 [here](#support).
+We hope that you got a good taste of Placeline. If you have any problems or suggestions for the tutorial, do not hesitate to buzz 🐝 us [here](#support).
 
 
 
 
-## Build Live Location Sharing using HyperTrack 
+## Build Live Location Sharing in your app 
 
-Use the following tutorial to build  [live location sharing](#live-location-sharing) feature in your app. This is divided into three section.
-- In the first section we will do a basic setup of Hypertrack SDK. 
-- In the second section, we will talk about how to select a destination and start a live location trip to that place. 
-- In the last section, we will discuss about how your friend can join a trip started by you. 
+Use the following tutorial to build  [Live Location Sharing](#live-location-sharing) in your app. This is divided into three section.
+1. In the first section, we will do a basic setup of Hypertrack SDK. 
+2. In the second section, we will select a destination and start a live location trip to that place. 
+3. In the last section, we will get your friend to join the trip started by you. 
 
 Let's get started 😊 . Strap yourself in and get ready for an exciting ride 🚀 .
 
-- [Basic Setup](#basic-setup)
-  - [Get API Keys](#step-1-get-api-keys)
-  - [Use Starter Project](#step-2-use-starter-project)
+- [Basic setup](#basic-setup)
+  - [Get API keys](#step-1-get-api-keys)
+  - [Use starter project](#step-2-use-starter-project)
   - [Setup HyperTrack SDK](#step-3-setup-hypertrack-sdk)
-  - [Create a HyperTrack User](#step-4-create-a-hypertrack-user)
-- [Start a Live Location Trip](#start-a-live-location-trip)
-  - [Show Live Location View](#step-1-show-live-location-view)
-  - [Create And Track Action](#step-2-create-and-track-action)
-  - [Share Your Trip](#step-3-share-your-trip)
-- [Track or Join an Ongoing Trip](#track-or-join-an-ongoing-trip)
-  - [Tracking an Ongoing Live Location Trip](#step-1-tracking-an-ongoing-live-location-trip)
-  - [Join the Trip](#step-2-join-the-trip)
+  - [Create HyperTrack user](#step-4-create-hypertrack-user)
+- [Start a Live Location trip](#start-a-live-location-trip)
+  - [Show Live Location view](#step-1-show-live-location-view)
+  - [Create And track action](#step-2-create-and-track-action)
+  - [Share your trip](#step-3-share-your-trip)
+- [Track or join an ongoing trip](#track-or-join-an-ongoing-trip)
+  - [Track ongoing trip](#step-1-track-ongoing-trip)
+  - [Join ongoing Trip](#step-2-join-ongoing-trip)
 
   
 ### Basic Setup
-#### Step 1. Get API Keys
+#### Step 1. Get API keys
 Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup).
 
-#### Step 2. Use Starter Project
+#### Step 2. Use starter project
 We have created a starter project so that building Live Location Sharing becomes very easy and quick. It will prevent you from the hassle of creating a new project and the workflow to enable live location sharing. If you want to directly build the flow in your own app or wanted to create a new project, you can ignore this step.
 
 ```bash
@@ -174,7 +173,7 @@ If you are not using the starter project set up HyperTrack by following the inst
     }
 ```
 
-#### Step 4. Create a HyperTrack User
+#### Step 4. Create HyperTrack user
 The next  thing that you need to do is to create a Hypertrack User. It helps Hypertrack to tag the location/activity data of a user and in turn help us to share status of your live location to your friends. More details about the function is present here(https://docs.hypertrack.com/sdks/ios/basic.html#step-1-create-sdk-user). 
 
 When the user is created we need to start tracking his location and activity, To do that you have to call ```HyperTrack.startTracking()```
@@ -205,7 +204,7 @@ For starter project go to ```UserProfileViewController.swift```. When the user p
 ### Start a Live Location Trip
 Hopefully you have done the basic setup, and ready to rock?
 
-#### Step 1. Show Live Location View
+#### Step 1. Show Live Location view
 Now to start a live location trip, the first thing that you need to do is to choose the destination. For this we will need a location picker. The good news is that Hypertrack Location View has a location picker within it. Once the user selects a location with the help of our inbuilt location picker, than the sdk gives a callback to the app with the selected location so that the app can start a trip. 
 
 For starter project go to ```ShareLiveLocationVC.swift```. Embed the live location view in your ```ViewController``` view. This should be done in - override ```func viewDidAppear(_ animated: Bool)```.
@@ -241,7 +240,7 @@ func didSelectLocation(place : HyperTrackPlace?){
 
 ![Select Location](assets/select_location.gif) 
 
-#### Step 2. Create and Track Action
+#### Step 2. Create and track action
 
 When the user select a location you will get a callback in ```didSelectLocation``` function of ```HTViewInteractionDelegate``` extension. This is the right time to start a trip. For starting a trip , you need to create a session which can be achieved by creating a 'visit' [action](https://docs.hypertrack.com/api/entities/action.html).  
 You will need two things to create an action. 
@@ -286,7 +285,7 @@ Also implement the following function in the extension(```ShareLiveLocationVC:HT
  
 ![Start Trip](assets/start_trip.gif) 
 
-#### Step 3. Share Your Trip
+#### Step 3. Share your trip
 As described earlier , A ```lookpupId``` is an identifier which identifies a live location trip. When you want to share your trip, your trip's ```lookupId``` needs to be shared.
 ```swift
 // HTViewInteractionDelegate callback when user clicks share my trip to others
@@ -313,10 +312,10 @@ For starter project - lets keep it simple and use ```UIActivityViewController```
 ```
 
 
-### Track or Join an Ongoing Trip
+### Track or join an ongoing trip
 If you have completed the steps in above section, you have a user who has started his live location session. Once your friend with other device receives a ```lookupId``` (either through your own backend or through a messenger app), you can use it to track him or join the trip by few lines of code described in the following steps.
 
-#### Step 1. Tracking an Ongoing Live Location Trip
+#### Step 1. Track ongoing trip
 To track him you can use the following function. Although the tracking has started in the sdk, but to visualize it , you need to embed the hypertrack's map in your tracking view controller. 
 ```swift
   HyperTrack.trackActionFor(lookUpId: LOOK_UP_ID, completionHandler: { (actions, error) in
@@ -362,7 +361,7 @@ Now to see the result, go to the other device and set up the user. After that cl
 ![Track Friend](assets/track_friend.gif) 
 
  
-#### Step 2. Join the trip
+#### Step 2. Join ongoing trip
 In this step we will see how your friend can share his live location and join the trip. To join the trip , an action with the same lookupId needs to be created. This step is similar to Step 6. But this time it is a lookupId of an existing trip unlike a new one in Step 6.
 
 For starter project - add this code to create and assign action when the user press 'Share Live Location' button.
