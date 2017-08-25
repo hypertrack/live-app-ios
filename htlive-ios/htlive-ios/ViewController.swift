@@ -212,6 +212,7 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        
         guard let cell = placeLineTable.cellForRow(at: indexPath) as? placeCell else { return }
         placeLineTable.scrollToRow(at: indexPath, at: .middle, animated: true)
         self.mapView.removeAnnotations(annotations)
@@ -221,6 +222,11 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
             self.mapView.remove(polyLine!)
 
         }
+        
+        if (self.segments.count == 0){
+            return
+        }
+
         if(!self.noResults){
             
             showDataOnMapForActivity(activithy: segments[indexPath.row])
