@@ -15,6 +15,26 @@ class HyperTrackAppService: NSObject {
     let flowInteractor = HyperTrackFlowInteractor()
     static let sharedInstance = HyperTrackAppService()
     var currentAction : HyperTrackAction? = nil
+    
+    func setupHyperTrack() {
+        HyperTrack.initialize(YOUR_PUBLISHABLE_KEY)
+        HyperTrack.setEventsDelegate(eventDelegate: self)
+        
+        
+        if(HyperTrack.getUserId() != nil){
+            HyperTrack.startTracking()
+            if(self.getCurrentLookUPId() != nil){
+                HyperTrack.trackActionFor(lookUpId: self.getCurrentLookUPId()!, completionHandler: { (actions, error) in
+                    if let _ = error {
+                        return
+                    }
+                    self.currentAction = actions?.last
+                })
+            }
+        }
+    }
+
+    
     func getCurrentLookUPId () -> String? {
        return UserDefaults.standard.string(forKey: "currentLookUpID")
     }
@@ -90,33 +110,7 @@ class HyperTrackAppService: NSObject {
     
         return true
     }
-    
-    func setUpSDKs(){
-        setupHyperTrack()
-        setupBuddyBuild()
-    }
 
-    func setupHyperTrack() {
-        HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
-        HyperTrack.setEventsDelegate(eventDelegate: self)
-        
-    
-        if(HyperTrack.getUserId() != nil){
-            HyperTrack.startTracking()
-            if(self.getCurrentLookUPId() != nil){
-                HyperTrack.trackActionFor(lookUpId: self.getCurrentLookUPId()!, completionHandler: { (actions, error) in
-                    if let _ = error {
-                        return
-                    }
-                    self.currentAction = actions?.last
-                })
-            }
-        }
-    }
-    
-    func setupBuddyBuild() {
-        BuddyBuildSDK.setup()
-    }
     
 }
 
