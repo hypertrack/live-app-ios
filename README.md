@@ -140,7 +140,7 @@ Let's get started 😊 . Strap yourself in and get ready for an exciting ride �
   - [Share your trip](#step-3-share-your-trip)
 - [Track or join an ongoing trip](#track-or-join-an-ongoing-trip)
   - [Track ongoing trip](#step-1-track-ongoing-trip)
-  - [Join ongoing Trip](#step-2-join-ongoing-trip)
+  - [Join ongoing trip](#step-2-join-ongoing-trip)
 
   
 ### Basic Setup
@@ -148,7 +148,7 @@ Let's get started 😊 . Strap yourself in and get ready for an exciting ride �
 Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup).
 
 #### Step 2. Use starter project
-We have created a starter project so that building Live Location Sharing becomes very easy and quick. It will prevent you from the hassle of creating a new project and the workflow to enable live location sharing. If you want to directly build the flow in your own app or wanted to create a new project, you can ignore this step.
+We have created a starter project so that building Live Location Sharing becomes very easy and quick. It will prevent you from the hassle of creating a new project and the workflow to enable Live Location Sharing. If you want to directly build the flow in your own app or wanted to create a new project, you can ignore this step.
 
 ```bash
 # Clone this repository
@@ -162,7 +162,7 @@ $ pod install
 ```
 
 #### Step 3. Setup HyperTrack SDK
-If you are not using the starter project set up HyperTrack by following the instructions from [here](https://docs.hypertrack.com/sdks/ios/setup.html). Otherwise initialize the SDK by putting the following code in            ```AppDelegate```.
+If you are NOT using the starter project, set up the HyperTrack SDK by following these [instructions](https://docs.hypertrack.com/sdks/ios/setup.html). Else, initialize the SDK by putting the following code in            ```AppDelegate```.
 
 ```swift
  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -174,11 +174,11 @@ If you are not using the starter project set up HyperTrack by following the inst
 ```
 
 #### Step 4. Create HyperTrack user
-The next  thing that you need to do is to create a Hypertrack User. It helps Hypertrack to tag the location/activity data of a user and in turn help us to share status of your live location to your friends. More details about the function is present here(https://docs.hypertrack.com/sdks/ios/basic.html#step-1-create-sdk-user). 
+The next thing that you need to do is to create a HyperTrack user. It helps us tag the location/activity data with the user and share their live location status with friends. More details about the function here(https://docs.hypertrack.com/sdks/ios/basic.html#step-1-create-sdk-user). 
 
-When the user is created we need to start tracking his location and activity, To do that you have to call ```HyperTrack.startTracking()```
+When the user is created, we need to start tracking his location and activity. Call the following method to do so ```HyperTrack.startTracking()```
 
-For starter project go to ```UserProfileViewController.swift```. When the user press login, take the name of the user and use the below function to create a user.
+For starter project, go to ```UserProfileViewController.swift```. When the user taps login, get the name of the user and use the following function to create a user.
 
 ```swift
      HyperTrack.createUser(userName!) { (user, error) in
@@ -202,12 +202,12 @@ For starter project go to ```UserProfileViewController.swift```. When the user p
 ![Create User](assets/create_user.gif) 
 
 ### Start a Live Location trip
-Hopefully you have done the basic setup, and ready to rock?
+Are you ready to rock and roll?
 
 #### Step 1. Show Live Location view
-Now to start a live location trip, the first thing that you need to do is to choose the destination. For this we will need a location picker. The good news is that Hypertrack Location View has a location picker within it. Once the user selects a location with the help of our inbuilt location picker, than the sdk gives a callback to the app with the selected location so that the app can start a trip. 
+Now to start a Live Location trip, the first thing that you need to do is to add a destination. For this, we will need a location picker. The good news is that HyperTrack Location View has a location picker within it. Once the user selects a location with the help of our inbuilt location picker, than the sdk gives a callback to the app with the selected location so that the app can start a trip. 
 
-For starter project go to ```ShareLiveLocationVC.swift```. Embed the live location view in your ```ViewController``` view. This should be done in - override ```func viewDidAppear(_ animated: Bool)```.
+For starter project, go to ```ShareLiveLocationVC.swift```. Embed the Live Location view in your ```ViewController``` view. This should be done in - override ```func viewDidAppear(_ animated: Bool)```.
 
 ```swift
         // get an instance of hypertrack's map view (it's a location picker + map view)
@@ -222,8 +222,8 @@ For starter project go to ```ShareLiveLocationVC.swift```. Embed the live locati
         }
   ```
 
-Also create an extension to handle interaction delegate callback. An interaction delegate helps you get callback when user performs action on HyperTrack's location view like when he selects a location or press a refocus button.
-For starter project , it is already there so nothing to do here.
+Also, create an extension to handle interaction delegate callback. An interaction delegate helps you get a callback when the user performs an action on HyperTrack's location view. For example, when he selects a location or taps the refocus button.
+For starter project, it is already in there so nothing to do for you.
 ``` swift
 extension ShareLiveLocationVC:HTViewInteractionDelegate {
 
@@ -242,12 +242,12 @@ func didSelectLocation(place : HyperTrackPlace?){
 
 #### Step 2. Create and track action
 
-When the user select a location you will get a callback in ```didSelectLocation``` function of ```HTViewInteractionDelegate``` extension. This is the right time to start a trip. For starting a trip , you need to create a session which can be achieved by creating a 'visit' [action](https://docs.hypertrack.com/api/entities/action.html).  
+When the user selects a location, you will get a callback in the ```didSelectLocation``` function of your ```HTViewInteractionDelegate``` extension. This is the right time to start a trip. For starting a trip, you need to create a session. This can be achieved by creating a 'visit' [action](https://docs.hypertrack.com/api/entities/action.html).  
 You will need two things to create an action. 
-1. ```expectedPlace``` - This is the destination for the visit that you want to do. You have it after you select the destination
-2. ```lookupId``` - A ```lookpupId``` is an identifier created by you for the live location trip. A ```lookupId``` is what needs to be shared to the other person , so they can join your trip and share there location. We chose it to be the UUID. You can use your own internal identifiers. 
+1. ```expectedPlace``` - This is the destination for the visit. You have it after you select the destination.
+2. ```lookupId``` - A ```lookpupId``` is an identifier created by you for the Live Location trip. A ```lookupId``` is what needs to be shared with the friend, so they can join your trip and share their location. We chose it to be the UUID. You can use your own internal identifiers. 
 
-For starter project goto ```ShareLiveLocationVC.swift``` and add the below code when you get a callback of location selection.
+For starter project, go to ```ShareLiveLocationVC.swift``` and add the following code when you get a callback of location selection.
 ```swift
         let htActionParams = HyperTrackActionParams()
         htActionParams.expectedPlace = place
@@ -273,7 +273,7 @@ For starter project goto ```ShareLiveLocationVC.swift``` and add the below code 
         })
 ```
 
-Also implement the following function in the extension(```ShareLiveLocationVC:HTViewInteractionDelegate```) so that when the user clicks stop , the action gets completed.
+Also, implement the following function in the extension(```ShareLiveLocationVC:HTViewInteractionDelegate```) so the action gets completed when the user taps stop.
 
 ```swift
 // HTViewInteractionDelegate callback when user clicks stop live location sharing, You should mark your action as complete 
@@ -286,18 +286,18 @@ Also implement the following function in the extension(```ShareLiveLocationVC:HT
 ![Start Trip](assets/start_trip.gif) 
 
 #### Step 3. Share your trip
-As described earlier , A ```lookpupId``` is an identifier which identifies a live location trip. When you want to share your trip, your trip's ```lookupId``` needs to be shared.
+As described earlier, a ```lookpupId``` is an identifier which identifies a Live Location trip. When you want to share your trip, your trip's ```lookupId``` needs to be shared.
 ```swift
 // HTViewInteractionDelegate callback when user clicks share my trip to others
   func didTapShareLiveLocationLink(action : HyperTrackAction){
 
   }
 ```
-You can share your ```lookupId``` to the other person by different ways. 
-1. You can use the ```UIActivityViewController``` to share it through any of the messenger app.
+You can share your ```lookupId``` to the other person in different ways. 
+1. You can use the ```UIActivityViewController``` to share it through messaging apps.
 2. You can use your backend to send the ```lookupId```. 
 
-For starter project - lets keep it simple and use ```UIActivityViewController``` to do the job for us.
+For starter project, let us keep it simple and use ```UIActivityViewController``` to do the job for us.
 ```swift
  func didTapShareLiveLocationLink(action : HyperTrackAction){
         if let lookupId = action.lookupId {
@@ -313,10 +313,10 @@ For starter project - lets keep it simple and use ```UIActivityViewController```
 
 
 ### Track or join an ongoing trip
-If you have completed the steps in above section, you have a user who has started his live location session. Once your friend with other device receives a ```lookupId``` (either through your own backend or through a messenger app), you can use it to track him or join the trip by few lines of code described in the following steps.
+If you have completed the steps in above section, you have a user who has started a Live Location session. Once their friend receives a ```lookupId``` (either through your own backend or through a messaging app), she can use it to track the user and optionally join the trip if you add a few lines of code as described in the following steps.
 
 #### Step 1. Track ongoing trip
-To track him you can use the following function. Although the tracking has started in the sdk, but to visualize it , you need to embed the hypertrack's map in your tracking view controller. 
+To track the user, use the following function. Although the tracking has started in the SDK, visualizing it requires you to embed HyperTrack's map fragment in your tracking view controller. 
 ```swift
   HyperTrack.trackActionFor(lookUpId: LOOK_UP_ID, completionHandler: { (actions, error) in
             
@@ -332,7 +332,7 @@ To track him you can use the following function. Although the tracking has start
         })
  ```
  
-For starter project - You have to enter the ```lookupId``` in the textfield that you have received from your friend who has started the session. Add the following code in the selector of track button in ```TrackLiveLocationVC```.
+For starter project, you have to enter the ```lookupId``` in the text field that you have received from the user who has started the session. Add the following code in the selector of track button in ```TrackLiveLocationVC```.
  
  ```swift
   HyperTrack.trackActionFor(lookUpId: LOOK_UP_ID, completionHandler: { (actions, error) in
@@ -356,15 +356,15 @@ For starter project - You have to enter the ```lookupId``` in the textfield that
         })
  ```
  
-Now to see the result, go to the other device and set up the user. After that click on 'Track a Live Location Trip' and paste/enter the ```lookupId``` which you recieved from the first user. 
+Now to see the result, go to the other device and set up the user. After that click on 'Track a Live Location trip' and paste/enter the ```lookupId``` which you recieved from the user. 
 
 ![Track Friend](assets/track_friend.gif) 
 
  
 #### Step 2. Join ongoing trip
-In this step we will see how your friend can share his live location and join the trip. To join the trip , an action with the same lookupId needs to be created. This step is similar to Step 6. But this time it is a lookupId of an existing trip unlike a new one in Step 6.
+In this step, we will see how the friend can share her live location and join the trip. To join the trip, an action with the same lookupId needs to be created. This step is similar to Step 6. But this time it is a lookupId of an existing trip and NOT a new one in Step 6.
 
-For starter project - add this code to create and assign action when the user press 'Share Live Location' button.
+For starter project, add this code to create and assign action when the user taps the 'Share Live Location' button.
 ```swift
           let htActionParams = HyperTrackActionParams()
           htActionParams.expectedPlace = expectedPlace
@@ -381,7 +381,7 @@ For starter project - add this code to create and assign action when the user pr
 ![Multi User Trip](assets/multi_user_trip.gif) 
 
 
-We hope you’ve enjoyed yourself on your epic quest to build a live location feature. If you have any problems or suggestions for the tutorial, make sure to give us a buzz 🐝 [here](#support).
+We hope you’ve enjoyed yourself on your epic quest to build a Live Location feature. If you have any problems or suggestions for the tutorial, please do not hestitate to buzz 🐝 us [here](#support).
 
 ## Documentation
 For detailed documentation of the APIs, customizations and what all you can build using HyperTrack, please visit the official [docs](https://docs.hypertrack.com/).
@@ -389,7 +389,7 @@ For detailed documentation of the APIs, customizations and what all you can buil
 ## Contribute
 Feel free to clone, use, and contribute back via [pull requests](https://help.github.com/articles/about-pull-requests/). We'd love to see your pull requests - send them in! Please use the [issues tracker](https://github.com/hypertrack/hypertrack-live-ios/issues) to raise bug reports and feature requests.
 
-We are excited to see what live location feature you build in your app using this project. Do ping us at help@hypertrack.io once you build one, and we would love to feature your app on our blog!
+We are excited to see what live location feature you build in your app using this project. Do ping us at help@hypertrack.com once you build one, and we would love to feature your app on our blog!
 
 ## Support
 Join our [Slack community](http://slack.hypertrack.com) for instant responses. You can also email us at help@hypertrack.com.
