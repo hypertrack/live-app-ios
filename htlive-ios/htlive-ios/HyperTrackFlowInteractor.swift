@@ -96,7 +96,14 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
         let liveLocationController = storyboard.instantiateViewController(withIdentifier: "ShareVC") as! ShareVC
         liveLocationController.shortCode = shortCode
         HyperTrackFlowInteractor.topViewController()?.present(liveLocationController, animated:true, completion: nil)
-//        liveLocationViewControllers.append(liveLocationController)
+    }
+    
+    func presentLiveLocationFlow(lookUpId : String,shortCode: String){
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        let liveLocationController = storyboard.instantiateViewController(withIdentifier: "ShareVC") as! ShareVC
+        liveLocationController.lookupId = lookUpId
+        liveLocationController.shortCode = shortCode
+        HyperTrackFlowInteractor.topViewController()?.present(liveLocationController, animated:true, completion: nil)
     }
     
     func haveStartedFlow(sender: BaseFlowController) {

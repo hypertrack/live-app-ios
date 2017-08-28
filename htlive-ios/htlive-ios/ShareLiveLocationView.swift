@@ -6,6 +6,7 @@
 //  Copyright © 2017 PZRT. All rights reserved.
 //
 
+import HyperTrack
 import UIKit
  protocol ShareLiveLocationDelegate : class {
     func didClickOnShareLiveLocation(view : ShareLiveLocationView)
@@ -24,7 +25,7 @@ class ShareLiveLocationView: UIView {
     @IBOutlet weak var cloaseButton: UIButton!
    
     weak var shareDelegate : ShareLiveLocationDelegate? = nil
- 
+    var action : HyperTrackAction? = nil
     @IBOutlet weak var etaLabel: UILabel!
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!

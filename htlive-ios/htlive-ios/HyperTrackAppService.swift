@@ -9,33 +9,26 @@
 import UIKit
 import HyperTrack
 import Branch
+import CoreLocation
 
 class HyperTrackAppService: NSObject {
     
     let flowInteractor = HyperTrackFlowInteractor()
     static let sharedInstance = HyperTrackAppService()
     var currentAction : HyperTrackAction? = nil
+    var currentTrackedAction : HyperTrackAction? = nil
     
     func setupHyperTrack() {
-        HyperTrack.initialize(YOUR_PUBLISHABLE_KEY)
+        HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
         HyperTrack.setEventsDelegate(eventDelegate: self)
-        
-        
         if(HyperTrack.getUserId() != nil){
             HyperTrack.startTracking()
-            if(self.getCurrentLookUPId() != nil){
-                HyperTrack.trackActionFor(lookUpId: self.getCurrentLookUPId()!, completionHandler: { (actions, error) in
-                    if let _ = error {
-                        return
-                    }
-                    self.currentAction = actions?.last
-                })
-            }
         }
     }
-
+    
+    
     func getCurrentLookUPId () -> String? {
-       return UserDefaults.standard.string(forKey: "currentLookUpID")
+        return UserDefaults.standard.string(forKey: "currentLookUpID")
     }
     
     func setCurrentLookUpId(lookUpID : String){
@@ -46,17 +39,42 @@ class HyperTrackAppService: NSObject {
         UserDefaults.standard.removeObject(forKey: "currentLookUpID")
     }
     
+    func getCurrentTrackedAction () -> HyperTrackAction? {
+        if let jsonStr =  UserDefaults.standard.string(forKey: "currentTrackedAction"){
+            if let data = jsonStr.data(using: String.Encoding.utf8){
+                if let action  = HyperTrackAction.fromJson(data: data){
+                    return action
+                }
+            }
+        }
+        return nil
+    }
+    
+    func setCurrentTrackedAction(action : HyperTrackAction){
+        let jsonStr = action.toJson()
+        UserDefaults.standard.set(jsonStr, forKey: "currentTrackedAction")
+    }
+    
+    func deleteCurrentTrackedAction(){
+        UserDefaults.standard.removeObject(forKey: "currentTrackedAction")
+    }
+    
     func completeAction(){
-        if let currentAction  = self.currentAction{
+        if let currentAction  = self.getCurrentTrackedAction(){
             // check for current user
             HyperTrack.completeAction(currentAction.id!)
+            if let lookupId = self.getCurrentLookUPId(){
+                HyperTrack.removeActionFor(lookUpId: lookupId)
+                
+            }
             HyperTrackAppService.sharedInstance.deleteCurrentLookUpId()
+            HyperTrackAppService.sharedInstance.deleteCurrentTrackedAction()
         }
     }
-
+    
     func applicationDidFinishLaunchingWithOptions(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         setUpSDKs()
-
+        
         DispatchQueue.main.async( execute:{
             self.flowInteractor.presentFlowsIfNeeded()
             self.setupBranchDeeplink()
@@ -83,45 +101,96 @@ class HyperTrackAppService: NSObject {
     }
     
     func applicationDidBecomeActive() {
-
+        
     }
     
     func applicationWillTerminate() {
-   
+        
         
     }
+    
     
     func applicationContinue (userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
         
         if (Branch.getInstance().continue(userActivity)) {
             // do nothing
-                        
+            
             return true
         }
-
-        // handle deeplink here and ask flow interactor to start flows which are needed
-        if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
-            let url =  userActivity.webpageURL as NSURL?
-            if let lastPathComponent = url?.lastPathComponent{
-                flowInteractor.presentLiveLocationFlow(shortCode: lastPathComponent)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            // handle deeplink here and ask flow interactor to start flows which are needed
+            if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
+                let url =  userActivity.webpageURL as NSURL?
+                if let shortCode = url?.lastPathComponent{
+                    if (HyperTrackFlowInteractor.topViewController()?.isKind(of: ShareVC.self))!{
+                        if let controller =  HyperTrackFlowInteractor.topViewController() as? ShareVC{
+                            if (controller.shortCode ==  shortCode){
+                                return
+                            }
+                        }
+                    }
+                    
+                    HyperTrackFlowInteractor.topViewController()?.view.showActivityIndicator()
+                    HyperTrack.getActionsFromShortCode(shortCode, completionHandler: { (actions, error) in
+                        HyperTrackFlowInteractor.topViewController()?.view.hideActivityIndicator()
+                        if let _ = error {
+                            self.showAlert(title: "Error", message: error?.errorMessage)
+                            return
+                        }
+                        
+                        if let htActions = actions {
+                            if let lookupId =  htActions.last?.lookupId{
+                                self.flowInteractor.presentLiveLocationFlow(lookUpId: lookupId,shortCode:shortCode)
+                            }else{
+                                self.showAlert(title: "Error", message: "Something went wrong, no look up id in the action")
+                            }
+                            
+                        }else {
+                            self.showAlert(title: "Error", message: "Something went wrong, no actions for this lookup id")
+                            
+                        }
+                    })
+                }
             }
         }
+       return true
+    }
     
-        return true
+    fileprivate func showAlert(title: String?, message: String?) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let ok : UIAlertAction = UIAlertAction.init(title: "OK", style: .cancel) { (action) in
+        }
+        alert.addAction(ok)
+        HyperTrackFlowInteractor.topViewController()?.present(alert, animated: true, completion: nil)
     }
     
     func setUpSDKs(){
         setupHyperTrack()
     }
-
     
+    @objc func sendLocalNotification(title: String, body: String) {
+        let notification = UILocalNotification()
+        notification.alertTitle = title
+        notification.alertBody = body
+        notification.alertAction = "Open"
+        
+        notification.fireDate = Date.init(timeInterval: 3, since: Date())
+        UIApplication.shared.scheduleLocalNotification(notification)
+    }
+
     
 }
 
 extension HyperTrackAppService : HTEventsDelegate {
- 
-    func didEnterMonitoredDestinationRegionForAction(forAction : HyperTrackAction){
-        HyperTrack.completeAction(forAction.id!)
+    
+    func didEnterMonitoredRegion(region:CLRegion){
+        if(region.identifier == self.getCurrentLookUPId()){
+            self.completeAction()
+            self.sendLocalNotification(title: "Trip Finished.", body: "You have reached your destination.")
+            
+        } 
     }
     
     func didShowSummary(forAction : HyperTrackAction){
@@ -129,6 +198,8 @@ extension HyperTrackAppService : HTEventsDelegate {
             self.deleteCurrentLookUpId()
         }
     }
+    
+    
 }
 
 extension HyperTrackAppService {
@@ -143,7 +214,7 @@ extension HyperTrackAppService {
                     self.flowInteractor.acceptInvitation(params!["user_id"] as! String, params!["account_id"] as! String, params!["account_name"] as! String)
                 }else{
                     self.flowInteractor.addAcceptInviteFlow(params!["user_id"] as! String, params!["account_id"] as! String, params!["account_name"] as! String)
-
+                    
                 }
             }
         }

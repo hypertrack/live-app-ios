@@ -15,7 +15,7 @@ PODS:
   - Fabric (1.6.12)
   - FSCalendar (2.7.9)
   - GzipSwift (3.1.4)
-  - HyperTrack.local (0.4.33):
+  - HyperTrack.local (0.4.41):
     - Alamofire (= 4.4.0)
     - GzipSwift
     - JustLog
@@ -55,7 +55,7 @@ SPEC CHECKSUMS:
   Fabric: f050464eac45a2ce5a8e6e6a07e977c0df32fe28
   FSCalendar: a04b09f16f811bc92e82f3cf852a15225233b9d5
   GzipSwift: 11ddb2bf253b1cd7b60bb169da20f62ac4348769
-  HyperTrack.local: ce61e19b897c3a19c21eb81642f75b75f2128492
+  HyperTrack.local: 2f1519970f5043464253bb2824f28de2ab6e73b4
   JustLog: 035ff2d06efd8cae26aeaf05cb2471f03ee866bb
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   PhoneNumberKit: 1e5cca669113fc361a8c82ec1ee559c62b8cd0f7
@@ -64,4 +64,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 2ec7335737f58ecf58f8d5fb3980118509b51b8a
 
-COCOAPODS: 1.3.0
+COCOAPODS: 1.3.0.beta.2

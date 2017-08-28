@@ -17,120 +17,62 @@ class ShareVC: UIViewController  {
     
     @IBOutlet fileprivate weak var hyperTrackView: UIView!
     @IBOutlet fileprivate weak var shareLocationButton: UIButton!
-   
+    
     var shortCode : String?
+    var lookupId: String?
+    
     var hyperTrackMap : HTMap? = nil
-    var currentLookUpId : String? = nil
     var isDeeplinked = false
-    var liveLocationAlert : LiveLocationAlertView? = nil
     var selectedLocation : HyperTrackPlace?
     var alertController : UIAlertController?
     var shareView: CustomShareView?
     var activityViewController : UIActivityViewController? = nil
+    private lazy var liveLocationAlert:LiveLocationAlertView? = {
+        return Bundle.main.loadNibNamed("LiveLocationAlert", owner: self, options: nil)?.first as? LiveLocationAlertView
+    }()
+    
+    
+    @IBOutlet var placeHolderMapView : MKMapView!
+    
     @IBOutlet weak var shareLocationActivityIndicator: UIActivityIndicatorView!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         shareLocationButton.shadow()
-        liveLocationAlert = Bundle.main.loadNibNamed("LiveLocationAlert", owner: self, options: nil)?.first as? LiveLocationAlertView
-    }
-    
-    func doesLookUpIdHasMyUserId(actions : [HyperTrackAction]) -> Bool{
-        for action in actions {
-            if let userId = action.user?.id {
-                if (HyperTrack.getUserId() == userId){
-                    return true
-                }
+        HyperTrack.getCurrentLocation { (clLocation, error) in
+            if let location  = clLocation{
+                let region = MKCoordinateRegionMake((location.coordinate),MKCoordinateSpanMake(0.005, 0.005))
+                self.placeHolderMapView.setRegion(region, animated: true)
             }
         }
-        return false
     }
     
-    func isMyUserId(action : HyperTrackAction)-> Bool{
-        if let userId = action.user?.id {
-            if (HyperTrack.getUserId() == userId){
-                return true
-            }
-        }
-        return false
-    }
-   
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.view.showActivityIndicator()
-        if let shortCode = self.shortCode {
-            self.isDeeplinked = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                HyperTrack.getActionsFromShortCode(shortCode, completionHandler: { (actions, error) in
-                    
-                    if let _ = error {
-                        self.showAlertAndDismissController(title: "Error", message: error?.errorMessage)
-                        return
-                    }
-                    
-                    if let htActions = actions {
-                        self.currentLookUpId =  htActions.last?.lookupId
-                        HyperTrack.trackActionFor(lookUpId: self.currentLookUpId!, completionHandler: { (actions, error) in
-                            
-                            if let _ = error {
-                                self.showAlertAndDismissController(title: "Error", message: error?.errorMessage)
-                                return
-                            }
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                if let actions = actions {
-                                    if actions.count > 0 {
-                                
-                                        if (!self.doesLookUpIdHasMyUserId(actions: actions)){
-                                            if(!(actions.last?.isCompleted())!){
-                                                self.showShareLiveLocationView(action: (actions.last)!)
-                                            }
-                                            HyperTrackAppService.sharedInstance.currentAction = actions.last
-                                        }
-                                        self.showHypertrackView()
-                                    }
-                                }
-                            }
-                        })
-                    }
-                })
-            }
-        }
-        else if(HyperTrackAppService.sharedInstance.getCurrentLookUPId() != nil) {
-            self.isDeeplinked = true
-            self.currentLookUpId =  HyperTrackAppService.sharedInstance.getCurrentLookUPId()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                HyperTrack.trackActionFor(lookUpId: HyperTrackAppService.sharedInstance.getCurrentLookUPId()!, completionHandler: { (actions, error) in
-                    if let _ = error {
-                        self.liveLocationAlert?.activityIndicator.stopAnimating()
-                        self.changeToStartTrackingButton()
-                        self.showAlertAndDismissController(title: "Error", message: error?.errorMessage)
-                        return
-                    }
-                    if let actions = actions {
-                        if actions.count > 0 {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                if (!self.doesLookUpIdHasMyUserId(actions: actions)){
-                                    self.showShareLiveLocationView(action: (actions.last)!)
-                                    HyperTrackAppService.sharedInstance.currentAction = actions.last
-                                }
-                                self.showHypertrackView()
-                            }
-                        }
-                        else{
-                            self.showAlertAndDismissController(title: "Something went wrong.", message: "Try again later")
-                        }
-                    }else{
-                        self.showAlertAndDismissController(title: "Something went wrong.", message: "Try again later")
-                    }
-                })
-            }
-            }
-
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        if (hyperTrackMap != nil){
+            hyperTrackMap = nil
+        }
+        
         super.viewDidAppear(animated)
         self.view.hideActivityIndicator()
+        
+        if let lookUpId = self.lookupId{
+            self.isDeeplinked = true
+            self.trackTripFromLookUpId(lookUpId: lookUpId)
+        }
+        else if let shortCode = self.shortCode {
+            self.isDeeplinked = true
+            self.trackTripFromShortCode(shortCode: shortCode)
+        }
+        else if(HyperTrackAppService.sharedInstance.getCurrentLookUPId() != nil) {
+            self.isDeeplinked = true
+            self.trackTripFromLookUpId(lookUpId: HyperTrackAppService.sharedInstance.getCurrentLookUPId()!)
+        }
         
         if(!isDeeplinked){
             showHypertrackView()
@@ -138,9 +80,81 @@ class ShareVC: UIViewController  {
     }
     
     
+    override func viewDidDisappear(_ animated: Bool) {
+        self.hyperTrackMap?.resetViews()
+    }
+    
+    func trackTripFromShortCode(shortCode : String){
+        self.view.showActivityIndicator()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            HyperTrack.getActionsFromShortCode(shortCode, completionHandler: { (actions, error) in
+                
+                self.view.hideActivityIndicator()
+                
+                if let _ = error {
+                    self.showAlertAndDismissController(title: "Error", message: error?.errorMessage)
+                    return
+                }
+                
+                if let htActions = actions {
+                    if let lookupId =  htActions.last?.lookupId{
+                        self.trackTripFromLookUpId(lookUpId: lookupId)
+                    }else{
+                        self.showAlertAndDismissController(title: "Error", message: "Something went wrong, no look up id in the action")
+                    }
+                    
+                }else {
+                    self.showAlertAndDismissController(title: "Error", message: "Something went wrong, no actions for this lookup id")
+                    
+                }
+            })
+        }
+    }
+    
+    func trackTripFromLookUpId(lookUpId : String){
+        self.view.showActivityIndicator()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            HyperTrack.trackActionFor(lookUpId: lookUpId, completionHandler: { (actions, error) in
+                
+                self.view.hideActivityIndicator()
+                
+                if let _ = error {
+                    self.liveLocationAlert?.activityIndicator.stopAnimating()
+                    self.changeToStartTrackingButton()
+                    self.showAlertAndDismissController(title: "Error", message: error?.errorMessage)
+                    return
+                }
+                
+                if let actions = actions {
+                    if actions.count > 0 {
+                        HyperTrackAppService.sharedInstance.currentAction = actions.last
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            if (!self.doesLookUpIdHasMyUserId(actions: actions)){
+                                self.showShareLiveLocationView(action: (actions.last)!)
+                            }else{
+                                if let action = self.getActionFrom(actions: actions, lookUpId: lookUpId, userId:HyperTrack.getUserId()!){
+                                    HyperTrackAppService.sharedInstance.currentAction = action
+                                }
+                                
+                            }
+                            self.showHypertrackView()
+                        }
+                    }
+                    else{
+                        self.showAlertAndDismissController(title: "Something went wrong.", message: "Try again later")
+                    }
+                }else{
+                    self.showAlertAndDismissController(title: "Something went wrong.", message: "Try again later")
+                }
+            })
+        }
+    }
+    
+    
+    
     func showHypertrackView(){
         if(hyperTrackMap == nil){
-            
             hyperTrackMap = HyperTrack.map()
             hyperTrackMap?.showBackButton = false
             hyperTrackMap?.showReFocusButton = false
@@ -149,18 +163,16 @@ class ShareVC: UIViewController  {
             
             hyperTrackMap?.setHTViewCustomizationDelegate(customizationDelegate: self)
             hyperTrackMap?.setHTViewInteractionDelegate(interactionDelegate: self)
-            
             if (self.hyperTrackView != nil) {
                 hyperTrackMap?.embedIn(self.hyperTrackView)
             }
         }
-        
     }
     
     func showShareSheetWithText(text:String){
         let textToShare : Array = [text]
-         self.activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
-         self.activityViewController?.completionWithItemsHandler = { activityType, complete, returnedItems, error in
+        self.activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
+        self.activityViewController?.completionWithItemsHandler = { activityType, complete, returnedItems, error in
         }
         DispatchQueue.main.async {
             self.present(self.activityViewController!, animated: false, completion: nil)
@@ -203,7 +215,7 @@ class ShareVC: UIViewController  {
         }
         else{
             self.present(alert, animated: true, completion: nil)
-
+            
         }
     }
     
@@ -231,7 +243,7 @@ class ShareVC: UIViewController  {
         self.liveLocationAlert?.actionButton.setTitle("Stop Sharing", for: UIControlState.normal)
         self.liveLocationAlert?.actionButton.addTarget(self, action: #selector(stopTracking(_:)), for: UIControlEvents.touchUpInside)
     }
-        func stopTracking(_ sender: Any) {
+    func stopTracking(_ sender: Any) {
         HyperTrackAppService.sharedInstance.completeAction()
         removeCustomAlert()
     }
@@ -255,23 +267,54 @@ class ShareVC: UIViewController  {
     func startTracking(_ sender: Any) {
         self.liveLocationAlert?.actionButton.setTitle("", for: UIControlState.normal)
         self.liveLocationAlert?.activityIndicator.startAnimating()
-        startLiveLocationSharingAction(lookUpId: nil, place: self.selectedLocation) { (action, error) in
-            if let _ = error {
-                self.liveLocationAlert?.activityIndicator.stopAnimating()
-                self.changeToStartTrackingButton()
-                self.showAlert(title: "Error", message: error?.localizedDescription)
+        
+        guard let place =  self.selectedLocation else {
+            self.showAlert(title: "Error", message: "No Selected Location")
+            return
+        }
+        let htActionParams = HyperTrackActionParams()
+        htActionParams.expectedPlace = place
+        htActionParams.type = "visit"
+        htActionParams.lookupId = UUID().uuidString
+        
+        HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
+            if let error = error {
+                self.showAlert(title: "Error", message: error.errorMessage)
                 return
             }
-            else{
-                
-                self.removeCustomAlert()
-                self.shareLink(action: action!)
-                self.saveLookUpId(lookUpId: action?.lookupId!)
+            if let action = action {
+                HyperTrack.trackActionFor(lookUpId: action.lookupId!, completionHandler: { (actions, error) in
+                    if let _ = error {
+                        self.liveLocationAlert?.activityIndicator.stopAnimating()
+                        self.changeToStartTrackingButton()
+                        return
+                    }
+                    
+                    if let actions = actions {
+                        if actions.count > 0 {
+                            HyperTrackAppService.sharedInstance.setCurrentLookUpId(lookUpID: (action.lookupId)!)
+                            HyperTrackAppService.sharedInstance.setCurrentTrackedAction(action: action)
+                            
+                            // add geofence code here
+                            HyperTrack.startMonitoringForEntryAtPlace(place: place,radius:50,identifier:(action.lookupId)!)
+                            
+                            
+                            self.removeCustomAlert()
+                            self.shareLink(action: action)
+                        }
+                        else{
+                            self.showAlertAndDismissController(title: "Something went wrong.", message: "No actions found")
+                        }
+                    }else{
+                        self.showAlertAndDismissController(title: "Something went wrong.", message: "No actions found")
+                    }
+                })
+            }else{
+                self.showAlert(title: "Error", message: "No action found")
             }
-            
-        }
-        
+        })
     }
+    
     func showStopTrackingAlert(){
         changeToStopTrackingButton()
         liveLocationAlert?.removeFromSuperview()
@@ -279,13 +322,36 @@ class ShareVC: UIViewController  {
         presentViewAnimatedFromBottom(view:liveLocationAlert!)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        if(self.currentLookUpId == HyperTrackAppService.sharedInstance.getCurrentLookUPId()){
-            
-        }else{
-            HyperTrack.removeActions()
+    
+    func doesLookUpIdHasMyUserId(actions : [HyperTrackAction]) -> Bool{
+        for action in actions {
+            if let userId = action.user?.id {
+                if (HyperTrack.getUserId() == userId){
+                    return true
+                }
+            }
         }
+        return false
     }
+    
+    func isMyUserId(action : HyperTrackAction)-> Bool{
+        if let userId = action.user?.id {
+            if (HyperTrack.getUserId() == userId){
+                return true
+            }
+        }
+        return false
+    }
+    
+    func getActionFrom(actions : [HyperTrackAction],lookUpId:String,userId:String) -> HyperTrackAction?{
+        for action in actions {
+            if(action.user?.id == userId && action.lookupId == lookUpId){
+                return action
+            }
+        }
+        return nil
+    }
+    
     
 }
 
@@ -312,36 +378,7 @@ extension ShareVC:HTViewInteractionDelegate {
     }
     
     func didTapBackButton(_ sender: Any) {
-         HyperTrackFlowInteractor.topViewController()?.dismiss(animated: true, completion: nil)
-    }
-    
-    
-    func didTapJoinLiveLocationSharing(action : HyperTrackAction? ){
-        startLiveLocationSharingAction(lookUpId: action?.lookupId, place: action?.expectedPlace) { (action, error) in
-            self.view.hideActivityIndicator()
-            if let _ = error {
-                self.showAlert(title: "Error", message: error?.localizedDescription)
-                return
-            }else{
-                self.saveLookUpId(lookUpId: action?.lookupId!)
-            }
-        }
-    }
-    
-    
-    func didTapStartLiveLocationSharing(place : HyperTrackPlace) {
-        
-        startLiveLocationSharingAction(lookUpId: nil, place: place) { (action, error) in
-            if let _ = error {
-                self.showAlert(title: "Error", message: error?.localizedDescription)
-                return
-            }
-            else{
-                
-                self.saveLookUpId(lookUpId: action?.lookupId!)
-            }
-            
-        }
+        HyperTrackFlowInteractor.topViewController()?.dismiss(animated: true, completion: nil)
     }
     
     func didTapStopLiveLocationSharing(actionId : String){
@@ -368,39 +405,37 @@ extension ShareVC:HTViewInteractionDelegate {
         }
         
         
-        HyperTrack.cancelPendingActions { (user, error) in
-            HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
-                if let error = error {
-                    completion(nil,NSError(domain: error.type.rawValue, code: 0, userInfo: nil) as Error)
-                    return
-                }
-                if let action = action {
+        HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
+            if let error = error {
+                completion(nil,NSError(domain: error.type.rawValue, code: 0, userInfo: nil) as Error)
+                return
+            }
+            if let action = action {
+                HyperTrack.trackActionFor(lookUpId: action.lookupId!, completionHandler: { (actions, error) in
+                    if (error != nil) {
+                        completion(nil,NSError(domain: (error?.type.rawValue)!, code: 0, userInfo: nil) as Error)
+                        return
+                    }
                     
-                    HyperTrack.trackActionFor(lookUpId: action.lookupId!, completionHandler: { (actions, error) in
-                        if (error != nil) {
-                            completion(nil,NSError(domain: (error?.type.rawValue)!, code: 0, userInfo: nil) as Error)
-                            return
-                        }
-                        
-                        self.currentLookUpId =  actions?.last?.lookupId
-                        HyperTrackAppService.sharedInstance.currentAction = actions?.last
-                        HyperTrackAppService.sharedInstance.setCurrentLookUpId(lookUpID: action.lookupId!)
-                    })
+                    HyperTrackAppService.sharedInstance.setCurrentLookUpId(lookUpID: action.lookupId!)
+                    HyperTrackAppService.sharedInstance.setCurrentTrackedAction(action: action)
+
+                    // geofence
+                    HyperTrack.startMonitoringForEntryAtPlace(place: place,radius:50,identifier: action.lookupId!)
                     
-                    completion(action,nil)
-                    return
-                }
-            })
-        }
-        
-        
-        
+                })
+                
+                completion(action,nil)
+                return
+            }
+        })
     }
     
     func showShareLiveLocationView(action : HyperTrackAction){
         
         let shareView: ShareLiveLocationView = Bundle.main.loadNibNamed("ShareLiveLocationView", owner: self, options: nil)?.first as! ShareLiveLocationView
         shareView.shareDelegate = self
+        shareView.action = action
         
         if(action.eta != nil){
             var etaMinutes = 0.0
@@ -409,7 +444,7 @@ extension ShareVC:HTViewInteractionDelegate {
                 if let duration = actionDisplay!.durationRemaining {
                     let timeRemaining = duration
                     etaMinutes = Double(timeRemaining / 60)
-                    shareView.etaLabel.text = "You're \(Int(etaMinutes)) min away!"
+                    shareView.etaLabel.text = "Your friend is \(Int(etaMinutes)) min away!"
                     
                     if let name = action.user?.name {
                         shareView.etaLabel.text = name + " is \(Int(etaMinutes)) min away!"
@@ -429,32 +464,45 @@ extension ShareVC:HTViewInteractionDelegate {
         
         shareView.cloaseButton.isHidden = false
         shareView.cloaseButton.addTarget(self, action: #selector(showShareLocationButton(_:)), for: UIControlEvents.touchUpInside)
-
+        
     }
     
     @IBAction func shareLocation(_ sender: Any) {
+        self.shareLocationButton.setTitle("", for: UIControlState.normal)
+        shareLocationActivityIndicator.startAnimating()
         if let expectedPlace = HyperTrackAppService.sharedInstance.currentAction?.expectedPlace{
-            self.shareLocationButton.setTitle("", for: UIControlState.normal)
-            shareLocationActivityIndicator.startAnimating()
-
-            startLiveLocationSharingAction(lookUpId: self.currentLookUpId, place: expectedPlace ) { (action, error) in
-                self.shareLocationButton.setTitle("Share Live Location", for: UIControlState.normal)
-                self.shareLocationActivityIndicator.stopAnimating()
-                if let _ = error {
-                    self.showAlert(title: "Error", message: error?.localizedDescription)
+            self.shareLocationActivityIndicator.stopAnimating()
+            self.shareLocationButton.setTitle("Share Live Location", for: UIControlState.normal)
+            let htActionParams = HyperTrackActionParams()
+            htActionParams.expectedPlace = expectedPlace
+            htActionParams.type = "visit"
+            htActionParams.lookupId = (HyperTrackAppService.sharedInstance.currentAction?.lookupId)!
+            
+            HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
+                if let error = error {
+                    self.showAlert(title: "Error", message: error.errorMessage)
                     return
                 }
-                else{
+                if let action = action {
+                    if let lookUpId = action.lookupId {
+                        HyperTrackAppService.sharedInstance.setCurrentLookUpId(lookUpID: lookUpId)
+                        HyperTrackAppService.sharedInstance.setCurrentTrackedAction(action: action)
+
+                        // geofence
+                        HyperTrack.startMonitoringForEntryAtPlace(place: expectedPlace,radius:50,identifier: lookUpId)
+                        
+                    }else{
+                        self.showAlert(title: "Error", message: "No lookupId present in action")
+                    }
                     self.shareLocationButton.isHidden = true
-                    self.saveLookUpId(lookUpId: action?.lookupId!)
+                    return
                 }
-                
-            }
+            })
         }
     }
     
     
-
+    
     
     func showShareLocationButton(_ sender: Any){
         self.shareLocationButton.isHidden = false
@@ -465,8 +513,8 @@ extension ShareVC:HTViewInteractionDelegate {
         
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
-        formatter.locale = Locale.init(identifier: "en_US") 
-     
+        formatter.locale = Locale.init(identifier: "en_US")
+        
         if(shareView == nil){
             shareView = Bundle.main.loadNibNamed("CustomShareView", owner: self, options: nil)?.first as? CustomShareView
         }
@@ -514,19 +562,6 @@ extension ShareVC:HTViewInteractionDelegate {
         })
     }
     
-    func saveLookUpId(lookUpId : String?){
-        UserDefaults.standard.set(lookUpId, forKey: HTLiveConstants.currentTrackedLookUpId)
-        UserDefaults.standard.synchronize()
-    }
-    
-    func getCurrentlyTrackedLookUpId() -> String?{
-        return UserDefaults.standard.string(forKey: HTLiveConstants.currentTrackedLookUpId)
-    }
-    
-    func deleteTrackedLookUpId(){
-        return UserDefaults.standard.removeObject(forKey: HTLiveConstants.currentTrackedLookUpId)
-    }
-    
 }
 
 extension ShareVC : CustomShareViewDelegate,MFMessageComposeViewControllerDelegate{
@@ -549,7 +584,7 @@ extension ShareVC : CustomShareViewDelegate,MFMessageComposeViewControllerDelega
         }
         
         self.shareView?.removeFromSuperview()
-
+        
     }
     func didClickOnWhatsapp(view : CustomShareView){
         let urlStr = "whatsapp://send?text=" +  (view.linkText?.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!)!
@@ -561,7 +596,7 @@ extension ShareVC : CustomShareViewDelegate,MFMessageComposeViewControllerDelega
         }
         
         self.shareView?.removeFromSuperview()
-
+        
     }
     
     func didClickOnMessages(view : CustomShareView){
@@ -576,7 +611,7 @@ extension ShareVC : CustomShareViewDelegate,MFMessageComposeViewControllerDelega
         }
         
         self.shareView?.removeFromSuperview()
-
+        
     }
     
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult){
@@ -590,24 +625,38 @@ extension ShareVC:ShareLiveLocationDelegate{
     func didClickOnShareLiveLocation(view : ShareLiveLocationView){
         view.shareLocationButton.setTitle("", for: UIControlState.normal)
         view.activityIndicator.startAnimating()
-        
-        if let expectedPlace = HyperTrackAppService.sharedInstance.currentAction?.expectedPlace{
-            startLiveLocationSharingAction(lookUpId: self.currentLookUpId, place: expectedPlace ) { (action, error) in
-                view.activityIndicator.stopAnimating()
-                
-                if let _ = error {
-                    self.showAlert(title: "Error", message: error?.localizedDescription)
+        if let expectedPlace = view.action?.expectedPlace{
+            
+            let htActionParams = HyperTrackActionParams()
+            htActionParams.expectedPlace = expectedPlace
+            htActionParams.type = "visit"
+            htActionParams.lookupId = (view.action?.lookupId)!
+            
+            HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
+                if let error = error {
+                    self.showAlert(title: "Error", message: error.errorMessage)
                     return
                 }
-                else{
-                    
+                if let action = action {
                     view.removeFromSuperview()
-                    self.saveLookUpId(lookUpId: action?.lookupId!)
+                    if let lookUpId = action.lookupId {
+                        HyperTrackAppService.sharedInstance.setCurrentLookUpId(lookUpID: lookUpId)
+                        HyperTrackAppService.sharedInstance.setCurrentTrackedAction(action: action)
+
+                        // geofence
+                        HyperTrack.startMonitoringForEntryAtPlace(place: expectedPlace,radius:50,identifier: lookUpId)
+                        
+                        
+                    }else{
+                        self.showAlert(title: "Error", message: "No lookupId present in action")
+                    }
+                    
+                    self.shareLocationButton.isHidden = true
+                    return
                 }
-                
-            }
+            })
         }
-       
+        
     }
 }
 

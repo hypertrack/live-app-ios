@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -383,7 +383,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S1c-M9-75H" customClass="MKMapView" customModule="htlive_ios" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
-                                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.5" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="dYt-Mw-kal">
+                                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.80000000000000004" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dYt-Mw-kal">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                     </mapView>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tov-PE-wRp">
@@ -425,6 +425,7 @@
                     </view>
                     <connections>
                         <outlet property="hyperTrackView" destination="S1c-M9-75H" id="Wg2-B3-esy"/>
+                        <outlet property="placeHolderMapView" destination="dYt-Mw-kal" id="GWY-JZ-Dpc"/>
                         <outlet property="shareLocationActivityIndicator" destination="sOp-lF-2jo" id="bJQ-17-iPD"/>
                         <outlet property="shareLocationButton" destination="tov-PE-wRp" id="VYf-N9-BTA"/>
                     </connections>
