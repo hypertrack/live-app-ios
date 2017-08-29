@@ -47,6 +47,14 @@ class HyperTrackAppService: NSObject {
                 }
             }
         }
+        
+        if let action = self.currentAction {
+            if self.currentAction?.user?.id == HyperTrack.getUserId(){
+                return action
+            }
+        }
+        
+
         return nil
     }
     

@@ -14,6 +14,7 @@ import Contacts
 import MessageUI
 
 class ShareVC: UIViewController  {
+    let monitorRegionRadius = 100
     
     @IBOutlet fileprivate weak var hyperTrackView: UIView!
     @IBOutlet fileprivate weak var shareLocationButton: UIButton!
@@ -296,7 +297,7 @@ class ShareVC: UIViewController  {
                             HyperTrackAppService.sharedInstance.setCurrentTrackedAction(action: action)
                             
                             // add geofence code here
-                            HyperTrack.startMonitoringForEntryAtPlace(place: place,radius:50,identifier:(action.lookupId)!)
+                            HyperTrack.startMonitoringForEntryAtPlace(place: place,radius:CLLocationDistance(self.monitorRegionRadius),identifier:(action.lookupId)!)
                             
                             
                             self.removeCustomAlert()
@@ -421,7 +422,7 @@ extension ShareVC:HTViewInteractionDelegate {
                     HyperTrackAppService.sharedInstance.setCurrentTrackedAction(action: action)
 
                     // geofence
-                    HyperTrack.startMonitoringForEntryAtPlace(place: place,radius:50,identifier: action.lookupId!)
+                    HyperTrack.startMonitoringForEntryAtPlace(place: place,radius:CLLocationDistance(self.monitorRegionRadius),identifier: action.lookupId!)
                     
                 })
                 
@@ -489,7 +490,7 @@ extension ShareVC:HTViewInteractionDelegate {
                         HyperTrackAppService.sharedInstance.setCurrentTrackedAction(action: action)
 
                         // geofence
-                        HyperTrack.startMonitoringForEntryAtPlace(place: expectedPlace,radius:50,identifier: lookUpId)
+                        HyperTrack.startMonitoringForEntryAtPlace(place: expectedPlace,radius:CLLocationDistance(self.monitorRegionRadius),identifier: lookUpId)
                         
                     }else{
                         self.showAlert(title: "Error", message: "No lookupId present in action")
@@ -644,7 +645,7 @@ extension ShareVC:ShareLiveLocationDelegate{
                         HyperTrackAppService.sharedInstance.setCurrentTrackedAction(action: action)
 
                         // geofence
-                        HyperTrack.startMonitoringForEntryAtPlace(place: expectedPlace,radius:50,identifier: lookUpId)
+                        HyperTrack.startMonitoringForEntryAtPlace(place: expectedPlace,radius:CLLocationDistance(self.monitorRegionRadius),identifier: lookUpId)
                         
                         
                     }else{
