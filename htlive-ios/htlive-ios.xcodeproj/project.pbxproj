@@ -42,6 +42,7 @@
 		BB7D29A91F1EA4E600E72DCF /* RequestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D29A81F1EA4E600E72DCF /* RequestService.swift */; };
 		BB7D29AF1F1EB1B400E72DCF /* RequestPermissionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D29AE1F1EB1B400E72DCF /* RequestPermissionsVC.swift */; };
 		BB7D29B11F1EB1BD00E72DCF /* AcceptInviteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D29B01F1EB1BD00E72DCF /* AcceptInviteVC.swift */; };
+		BB8449C51F5576F000413BA0 /* Welcome in Resources */ = {isa = PBXBuildFile; fileRef = BB8449C41F5576F000413BA0 /* Welcome */; };
 		BB87233E1F31EB3C009355F9 /* ShareLiveLocationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB87233D1F31EB3C009355F9 /* ShareLiveLocationView.xib */; };
 		BB8723401F31F0FC009355F9 /* ShareLiveLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB87233F1F31F0FC009355F9 /* ShareLiveLocationView.swift */; };
 		BB8723421F328BF0009355F9 /* LiveLocationAlert.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB8723411F328BF0009355F9 /* LiveLocationAlert.xib */; };
@@ -97,6 +98,7 @@
 		BB7D29A81F1EA4E600E72DCF /* RequestService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestService.swift; sourceTree = "<group>"; };
 		BB7D29AE1F1EB1B400E72DCF /* RequestPermissionsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RequestPermissionsVC.swift; path = Permissions/RequestPermissionsVC.swift; sourceTree = "<group>"; };
 		BB7D29B01F1EB1BD00E72DCF /* AcceptInviteVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AcceptInviteVC.swift; path = AcceptInvite/AcceptInviteVC.swift; sourceTree = "<group>"; };
+		BB8449C41F5576F000413BA0 /* Welcome */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Welcome; sourceTree = "<group>"; };
 		BB87233D1F31EB3C009355F9 /* ShareLiveLocationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareLiveLocationView.xib; sourceTree = "<group>"; };
 		BB87233F1F31F0FC009355F9 /* ShareLiveLocationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareLiveLocationView.swift; sourceTree = "<group>"; };
 		BB8723411F328BF0009355F9 /* LiveLocationAlert.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LiveLocationAlert.xib; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 		33334B881F0B740A001A970E /* htlive-ios */ = {
 			isa = PBXGroup;
 			children = (
+				BB8449C41F5576F000413BA0 /* Welcome */,
 				BB7D29AD1F1EB1A400E72DCF /* Permissions */,
 				BB7D29AC1F1EB19900E72DCF /* AcceptInvite */,
 				BB7D298C1F1D68FF00E72DCF /* Utility */,
@@ -376,6 +379,7 @@
 				33334B971F0B740A001A970E /* LaunchScreen.storyboard in Resources */,
 				33334B941F0B740A001A970E /* Assets.xcassets in Resources */,
 				3354C1CC1F14DAE50011506D /* placeCell.xib in Resources */,
+				BB8449C51F5576F000413BA0 /* Welcome in Resources */,
 				BB8723421F328BF0009355F9 /* LiveLocationAlert.xib in Resources */,
 				BB87233E1F31EB3C009355F9 /* ShareLiveLocationView.xib in Resources */,
 				BB7247341F2823A100619F23 /* CustomShareView.xib in Resources */,

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 protocol HyperTrackFlowInteractorDelegate {
     func haveStartedFlow(sender: BaseFlowController)
@@ -50,6 +51,18 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
                     break
                 }
             }
+        }
+        
+        if (!isPresentingAFlow){
+            let center = UNUserNotificationCenter.current()
+            let options: UNAuthorizationOptions = [.alert, .sound];
+            center.requestAuthorization(options: options) {
+                (granted, error) in
+                if !granted {
+                    print("Something went wrong")
+                }
+            }
+
         }
     }
     
