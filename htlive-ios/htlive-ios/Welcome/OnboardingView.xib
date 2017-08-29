@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="OnboardingView" customModule="htlive_ios" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Tah-bP-nHH" userLabel="onboardImage">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="440"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="whiteGradient" translatesAutoresizingMaskIntoConstraints="NO" id="WW3-DB-4lx">
+                    <rect key="frame" x="0.0" y="320" width="375" height="120"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="120" id="NXG-rz-oO1"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gfd-ng-byO" userLabel="onboardText">
+                    <rect key="frame" x="46.5" y="465" width="281.5" height="29"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Gfd-ng-byO" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.75" id="4CZ-UQ-cP2"/>
+                <constraint firstItem="WW3-DB-4lx" firstAttribute="bottom" secondItem="Tah-bP-nHH" secondAttribute="bottom" id="6Hx-zA-tsj"/>
+                <constraint firstItem="Tah-bP-nHH" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Cp8-vr-bpt"/>
+                <constraint firstItem="Gfd-ng-byO" firstAttribute="top" secondItem="Tah-bP-nHH" secondAttribute="bottom" constant="25" id="SMe-bZ-K6z"/>
+                <constraint firstAttribute="trailing" secondItem="WW3-DB-4lx" secondAttribute="trailing" id="ghD-Xk-Vgf"/>
+                <constraint firstItem="WW3-DB-4lx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="oWc-3z-aHU"/>
+                <constraint firstAttribute="trailing" secondItem="Tah-bP-nHH" secondAttribute="trailing" id="qcD-xj-Q8m"/>
+                <constraint firstItem="Tah-bP-nHH" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.66" id="rsi-ks-Qsh"/>
+                <constraint firstItem="Tah-bP-nHH" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="t7p-IP-1jr"/>
+                <constraint firstItem="Gfd-ng-byO" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="zHn-hr-KV2"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <connections>
+                <outlet property="image" destination="Tah-bP-nHH" id="Wuu-BP-Bo8"/>
+                <outlet property="text" destination="Gfd-ng-byO" id="caZ-4r-ffF"/>
+            </connections>
+            <point key="canvasLocation" x="33.5" y="53.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="whiteGradient" width="750" height="520"/>
+    </resources>
+</document>
