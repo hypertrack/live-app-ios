@@ -5,67 +5,67 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="00: Verifying required fastlane version" time="0.003043">
+      <testcase classname="fastlane.lanes" name="00: Verifying required fastlane version" time="0.003512">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="01: default_platform" time="0.002517">
+      <testcase classname="fastlane.lanes" name="01: default_platform" time="0.003502">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="02: notification" time="0.217405">
+      <testcase classname="fastlane.lanes" name="02: notification" time="0.211362">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="03: increment_build_number_in_plist" time="3.189288">
+      <testcase classname="fastlane.lanes" name="03: increment_build_number_in_plist" time="2.852019">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="04: prompt" time="116.587318">
+      <testcase classname="fastlane.lanes" name="04: prompt" time="45.632526">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="05: gym" time="173.119776">
+      <testcase classname="fastlane.lanes" name="05: gym" time="178.34561">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="06: pilot" time="1567.118781">
+      <testcase classname="fastlane.lanes" name="06: pilot" time="889.479022">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="07: notification" time="0.178373">
+      <testcase classname="fastlane.lanes" name="07: notification" time="0.2089">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="08: slack" time="1.720976">
+      <testcase classname="fastlane.lanes" name="08: slack" time="1.319435">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="09: slack" time="1.321734">
+      <testcase classname="fastlane.lanes" name="09: slack" time="1.083728">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="10: get_build_number_from_plist" time="2.150776">
+      <testcase classname="fastlane.lanes" name="10: get_build_number_from_plist" time="2.884307">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="11: slack" time="1.241251">
+      <testcase classname="fastlane.lanes" name="11: slack" time="2.107743">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="12: notification" time="0.181602">
+      <testcase classname="fastlane.lanes" name="12: notification" time="0.219758">
         
       </testcase>
     

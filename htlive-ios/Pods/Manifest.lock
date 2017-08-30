@@ -38,6 +38,7 @@ PODS:
 DEPENDENCIES:
   - Branch
   - Crashlytics
+  - Fabric
   - FSCalendar
   - HyperTrack.local (from `~/hypertrack-ios-v3/HyperTrack.local.podspec`)
   - MBProgressHUD
@@ -62,6 +63,6 @@ SPEC CHECKSUMS:
   SQLite.swift: 670c3e9e0a806bbfd56a3de5d530768dc0e6fe7c
   SwiftyBeaver: 9216b6e163c145628ccc7c0126df4287880d6e1e
 
-PODFILE CHECKSUM: 2ec7335737f58ecf58f8d5fb3980118509b51b8a
+PODFILE CHECKSUM: b8e0fc517ea5a5039f2810569d0064473271bc99
 
 COCOAPODS: 1.3.0.beta.2

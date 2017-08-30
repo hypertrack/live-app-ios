@@ -12,6 +12,7 @@ import MapKit
 import CoreGraphics
 import Contacts
 import MessageUI
+import Crashlytics
 
 class ShareVC: UIViewController  {
     let monitorRegionRadius = 100

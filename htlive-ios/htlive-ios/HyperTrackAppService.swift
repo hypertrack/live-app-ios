@@ -10,6 +10,8 @@ import UIKit
 import HyperTrack
 import Branch
 import CoreLocation
+import Fabric
+import Crashlytics
 
 class HyperTrackAppService: NSObject {
     
@@ -27,16 +29,23 @@ class HyperTrackAppService: NSObject {
     }
     
     
+    func setupFabric(){
+         Fabric.with([Crashlytics.self])
+    }
+    
+    
     func getCurrentLookUPId () -> String? {
         return UserDefaults.standard.string(forKey: "currentLookUpID")
     }
     
     func setCurrentLookUpId(lookUpID : String){
         UserDefaults.standard.set(lookUpID, forKey: "currentLookUpID")
+        UserDefaults.standard.synchronize()
     }
     
     func deleteCurrentLookUpId(){
         UserDefaults.standard.removeObject(forKey: "currentLookUpID")
+        UserDefaults.standard.synchronize()
     }
     
     func getCurrentTrackedAction () -> HyperTrackAction? {
@@ -61,10 +70,12 @@ class HyperTrackAppService: NSObject {
     func setCurrentTrackedAction(action : HyperTrackAction){
         let jsonStr = action.toJson()
         UserDefaults.standard.set(jsonStr, forKey: "currentTrackedAction")
+        UserDefaults.standard.synchronize()
     }
     
     func deleteCurrentTrackedAction(){
         UserDefaults.standard.removeObject(forKey: "currentTrackedAction")
+        UserDefaults.standard.synchronize()
     }
     
     func completeAction(){
@@ -75,8 +86,6 @@ class HyperTrackAppService: NSObject {
                 HyperTrack.removeActionFor(lookUpId: lookupId)
                 
             }
-            HyperTrackAppService.sharedInstance.deleteCurrentLookUpId()
-            HyperTrackAppService.sharedInstance.deleteCurrentTrackedAction()
         }
     }
     
@@ -176,6 +185,7 @@ class HyperTrackAppService: NSObject {
     
     func setUpSDKs(){
         setupHyperTrack()
+        setupFabric()
     }
     
     @objc func sendLocalNotification(title: String, body: String) {
@@ -203,9 +213,17 @@ extension HyperTrackAppService : HTEventsDelegate {
     
     func didShowSummary(forAction : HyperTrackAction){
         if (forAction.lookupId == self.getCurrentLookUPId()){
-            self.deleteCurrentLookUpId()
+            HyperTrackAppService.sharedInstance.deleteCurrentLookUpId()
+            HyperTrackAppService.sharedInstance.deleteCurrentTrackedAction()
         }
     }
+    
+    func didRefreshData(forAction: HyperTrackAction){
+        
+        
+        
+    }
+
     
     
 }
