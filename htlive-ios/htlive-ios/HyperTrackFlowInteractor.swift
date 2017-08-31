@@ -55,7 +55,7 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
         
         if (!isPresentingAFlow){
             let center = UNUserNotificationCenter.current()
-            let options: UNAuthorizationOptions = [.alert, .sound];
+            let options: UNAuthorizationOptions = [.alert, .sound, .badge];
             center.requestAuthorization(options: options) {
                 (granted, error) in
                 if !granted {
@@ -87,10 +87,8 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
         
     }
     
-    func acceptInvitation(_ userId: String, _ accountId: String, _ accountName: String){
+    func acceptInvitation(_ accountId: String){
         inviteFlowController.acccountId = accountId
-        inviteFlowController.userId = userId
-        inviteFlowController.accountName = accountName
         inviteFlowController.autoAccept = true
         appendController(inviteFlowController)
         presentFlowsIfNeeded()
@@ -98,8 +96,6 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
     
     func addAcceptInviteFlow(_ userId: String, _ accountId: String, _ accountName: String){
         inviteFlowController.acccountId = accountId
-        inviteFlowController.userId = userId
-        inviteFlowController.accountName = accountName
         appendController(inviteFlowController)
         presentFlowsIfNeeded()
     }

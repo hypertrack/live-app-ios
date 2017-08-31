@@ -19,7 +19,7 @@ class HyperTrackAppService: NSObject {
     static let sharedInstance = HyperTrackAppService()
     var currentAction : HyperTrackAction? = nil
     var currentTrackedAction : HyperTrackAction? = nil
-    
+
     func setupHyperTrack() {
         HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
         HyperTrack.setEventsDelegate(eventDelegate: self)
@@ -49,6 +49,11 @@ class HyperTrackAppService: NSObject {
     }
     
     func getCurrentTrackedAction () -> HyperTrackAction? {
+        
+        if self.currentTrackedAction != nil{
+            return self.currentTrackedAction
+        }
+        
         if let jsonStr =  UserDefaults.standard.string(forKey: "currentTrackedAction"){
             if let data = jsonStr.data(using: String.Encoding.utf8){
                 if let action  = HyperTrackAction.fromJson(data: data){
@@ -63,17 +68,18 @@ class HyperTrackAppService: NSObject {
             }
         }
         
-
         return nil
     }
     
     func setCurrentTrackedAction(action : HyperTrackAction){
+        self.currentTrackedAction = action
         let jsonStr = action.toJson()
         UserDefaults.standard.set(jsonStr, forKey: "currentTrackedAction")
         UserDefaults.standard.synchronize()
     }
     
     func deleteCurrentTrackedAction(){
+        self.currentTrackedAction = nil
         UserDefaults.standard.removeObject(forKey: "currentTrackedAction")
         UserDefaults.standard.synchronize()
     }
@@ -206,9 +212,9 @@ extension HyperTrackAppService : HTEventsDelegate {
     func didEnterMonitoredRegion(region:CLRegion){
         if(region.identifier == self.getCurrentLookUPId()){
             self.completeAction()
-            self.sendLocalNotification(title: "Trip Finished.", body: "You have reached your destination.")
             
-        } 
+            self.sendLocalNotification(title: "Trip Finished.", body: "You have reached your destination.")
+        }
     }
     
     func didShowSummary(forAction : HyperTrackAction){
@@ -237,9 +243,9 @@ extension HyperTrackAppService {
                 print("Branch deeplink params: %@", params?.description as Any)
                 
                 if (params!["auto_accept"] as? Bool == true){
-                    self.flowInteractor.acceptInvitation(params!["user_id"] as! String, params!["account_id"] as! String, params!["account_name"] as! String)
+                    self.flowInteractor.acceptInvitation(params!["account_id"] as! String)
                 }else{
-                    self.flowInteractor.addAcceptInviteFlow(params!["user_id"] as! String, params!["account_id"] as! String, params!["account_name"] as! String)
+//                    self.flowInteractor.addAcceptInviteFlow(params!["user_id"] as! String, params!["account_id"] as! String, params!["account_name"] as! String)
                     
                 }
             }

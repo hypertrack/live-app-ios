@@ -51,8 +51,8 @@ class RequestService {
         makeHyperTrackRequest(urlSuffix: "validate_code", body: body, completionHandler: completionHandler)
     }
     
-    func acceptHyperTrackInvite(accountId:String,oldUserId:String?,completionHandler: @escaping (_ error: String?) -> Void) {
-        let body = ["account_id": accountId,"existing_user_id":oldUserId]
+    func acceptHyperTrackInvite(accountId:String,completionHandler: @escaping (_ error: String?) -> Void) {
+        let body = ["account_id": accountId]
         makeHyperTrackRequest(urlSuffix: "accept_invite", body: body, completionHandler: completionHandler)
     }
 }

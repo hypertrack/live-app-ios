@@ -44,7 +44,7 @@ class AcceptInviteVC : UIViewController {
             HyperTrack.startTracking()
         }
         self.view.showActivityIndicator()
-        requestService.acceptHyperTrackInvite(accountId: self.accountId!,oldUserId:oldUserId) { (error) in
+        requestService.acceptHyperTrackInvite(accountId: self.accountId!) { (error) in
             self.view.hideActivityIndicator()
             if (error != nil) {
                 self.showAlert(title: "Error", message: error)
