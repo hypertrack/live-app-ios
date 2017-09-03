@@ -15,7 +15,6 @@ protocol HyperTrackInviteDelegate {
 
 class InviteFlowController: BaseFlowController {
     
-    
     var acccountId : String?
     var autoAccept = false
 
@@ -36,20 +35,18 @@ class InviteFlowController: BaseFlowController {
         return false
     }
     
-    override func startFlow(force : Bool, presentingController:UIViewController){
+    override func startFlow(force : Bool, presentingController:UIViewController?){
         
         if (autoAccept == true){
             RequestService.shared.acceptHyperTrackInvite(accountId: self.acccountId!, completionHandler: { (error) in
-                self.interactorDelegate?.haveFinishedFlow(sender: self)
             })
+            self.hasCompletedFlow = true
+            self.interactorDelegate?.haveFinishedFlow(sender: self)
+
         }
         else{
-            let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-            let acceptInviteController = storyboard.instantiateViewController(withIdentifier: "AcceptInviteVC") as! AcceptInviteVC
-            acceptInviteController.inviteDelegate = self
-            acceptInviteController.accountId = acccountId
-            presentingController.present(acceptInviteController, animated: true, completion: nil)
-
+            hasCompletedFlow = true
+            self.interactorDelegate?.haveFinishedFlow(sender: self)
         }
     }
     

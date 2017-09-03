@@ -23,6 +23,7 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
     
     var liveLocationViewControllers  = [ShareVC]()
     
+    
     var flows = [BaseFlowController]()
     
     var isPresentingAFlow = false
@@ -46,7 +47,7 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
         if(!isPresentingAFlow){
             for flowController in self.flows{
                 if(!flowController.isFlowCompleted()){
-                    flowController.startFlow(force: false, presentingController: HyperTrackFlowInteractor.topViewController()!)
+                    flowController.startFlow(force: false, presentingController: HyperTrackFlowInteractor.topViewController())
                     isPresentingAFlow = true
                     break
                 }
@@ -62,7 +63,14 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
                     print("Something went wrong")
                 }
             }
-
+            
+            let defaultRoot = HyperTrackAppService.sharedInstance.getDefaultRootViewController()
+            
+            if !(HyperTrackAppService.sharedInstance.getCurrentRootViewController()?.isKind(of:type(of: defaultRoot)))!{
+                HyperTrackFlowInteractor.switchRootViewController(rootViewController: defaultRoot, animated: false, completion: nil)
+            }
+            
+        
         }
     }
     
@@ -82,6 +90,27 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
         }
         return top
     }
+    
+    
+    static func switchRootViewController(rootViewController: UIViewController, animated: Bool, completion: (() -> Void)?) {
+        
+        let window = UIApplication.shared.windows.first
+        if animated {
+            UIView.transition(with: window!, duration: 0.5, options: .transitionCrossDissolve, animations: {
+                let oldState: Bool = UIView.areAnimationsEnabled
+                UIView.setAnimationsEnabled(false)
+                window!.rootViewController = rootViewController
+                UIView.setAnimationsEnabled(oldState)
+            }, completion: { (finished: Bool) -> () in
+                if (completion != nil) {
+                    completion!()
+                }
+            })
+        } else {
+            window!.rootViewController = rootViewController
+        }
+    }
+
     
     func presentDeeplinkFlow(){
         

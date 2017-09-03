@@ -20,10 +20,10 @@ class OnboardingVC: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var welcomeButtonLayer: UIButton!
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-    }
+    var permissionDelegate:PermissionsDelegate? = nil
+
     
+   
     @IBAction func welcomeButton(_ sender: Any) {
         
         UIView.animate(withDuration: 0.75, animations: {
@@ -92,14 +92,13 @@ class OnboardingVC: UIViewController, UIScrollViewDelegate {
         }
     }
 
-    /*
-    // MARK: - Navigation
+    
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let controller = segue.destination as? RequestPermissionsVC{
+            controller.permissionDelegate = self.permissionDelegate
+        }
     }
-    */
+    
 
 }

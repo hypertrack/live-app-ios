@@ -19,7 +19,16 @@ class HyperTrackAppService: NSObject {
     static let sharedInstance = HyperTrackAppService()
     var currentAction : HyperTrackAction? = nil
     var currentTrackedAction : HyperTrackAction? = nil
+    var defaultRootViewController : UIViewController? = nil
 
+    func applicationDidFinishLaunchingWithOptions(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        setUpSDKs()
+        self.defaultRootViewController = UIApplication.shared.windows.first?.rootViewController
+        self.flowInteractor.presentFlowsIfNeeded()
+        self.setupBranchDeeplink()
+        return true
+    }
+    
     func setupHyperTrack() {
         HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
         HyperTrack.setEventsDelegate(eventDelegate: self)
@@ -33,6 +42,20 @@ class HyperTrackAppService: NSObject {
          Fabric.with([Crashlytics.self])
     }
     
+    
+    func getDefaultRootViewController()-> UIViewController{
+        if self.defaultRootViewController != nil {
+            return self.defaultRootViewController!
+        }
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        let viewController = storyboard.instantiateViewController(withIdentifier: "PlaceLineVC") as! ViewController
+        return viewController
+    }
+    
+    func getCurrentRootViewController()->UIViewController?{
+        return UIApplication.shared.windows.first?.rootViewController
+    }
     
     func getCurrentLookUPId () -> String? {
         return UserDefaults.standard.string(forKey: "currentLookUpID")
@@ -93,19 +116,6 @@ class HyperTrackAppService: NSObject {
                 
             }
         }
-    }
-    
-    func applicationDidFinishLaunchingWithOptions(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        setUpSDKs()
-        
-        DispatchQueue.main.async( execute:{
-            self.flowInteractor.presentFlowsIfNeeded()
-            self.setupBranchDeeplink()
-            
-        })
-        
-        
-        return true
     }
     
     func startTrackingIfPartOfExistingTrip(){
