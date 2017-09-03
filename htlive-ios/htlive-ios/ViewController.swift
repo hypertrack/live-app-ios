@@ -12,6 +12,7 @@ import FSCalendar
 import MessageUI
 import MapKit
 import Alamofire
+import MediumMenu
 
 let pink = UIColor(red:1.00, green:0.51, blue:0.87, alpha:1.0)
 
@@ -33,17 +34,73 @@ class ViewController: UIViewController {
 
     var annotations = [MKPointAnnotation]()
     var polyLine : MKPolyline?
+    var menu: MediumMenu?
     @IBOutlet weak var calendarArrow: UIImageView!
-    @IBAction func calendarTap(_ sender: Any) {
+
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
         
+        calendarTop.constant = -300
+        calendar.layer.opacity = 0
+        mapView.delegate = self
+        placeLineTable.register(UINib(nibName: "placeCell", bundle: nil), forCellReuseIdentifier: "placeCell")
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.userCreated), name: NSNotification.Name(rawValue:HTLiveConstants.userCreatedNotification), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(onTap))
+        tap.numberOfTapsRequired = 2
+        placeLineTitle.isUserInteractionEnabled = true
+        placeLineTitle.addGestureRecognizer(tap)
+        
+        let item1 = MediumMenuItem(title: "Home") {
+            //            let homeViewController = storyboard.instantiateViewController(withIdentifier: "Home") as! HomeViewController
+            //            self.setViewControllers([homeViewController], animated: false)
+        }
+        
+        let item2 = MediumMenuItem(title: "Review Placeline") {
+            let activityFeedbackVC = self.storyboard?.instantiateViewController(withIdentifier: "ActivityFeedbackTableVC") as! ActivityFeedbackTableVC
+            let navVC = UINavigationController.init(rootViewController: activityFeedbackVC)
+            self.present(navVC, animated: true, completion: nil)
+        }
+        
+        let item3 = MediumMenuItem(title: "Stop Tracking") {
+            //            let bookMarksViewController = storyboard.instantiateViewController(withIdentifier: "Bookmarks") as! BookmarksViewController
+            //            self.setViewControllers([bookMarksViewController], animated: false)
+        }
+        
+        let item4 = MediumMenuItem(title: "Rate Us") {
+            //            let bookMarksViewController = storyboard.instantiateViewController(withIdentifier: "Bookmarks") as! BookmarksViewController
+            //            self.setViewControllers([bookMarksViewController], animated: false)
+        }
+
+        let item5 = MediumMenuItem(title: "Help") {
+            //            let bookMarksViewController = storyboard.instantiateViewController(withIdentifier: "Bookmarks") as! BookmarksViewController
+            //            self.setViewControllers([bookMarksViewController], animated: false)
+        }
+        
+        
+        menu = MediumMenu(items: [item1, item2, item3, item4, item5], forViewController: self)
+  
+    }
+    
+    func showMenu() {
+        menu?.show()
+    }
+    @IBAction func showMenuItems(_ sender: Any) {
+        self.showMenu()
+    }
+
+    
+    @IBAction func calendarTap(_ sender: Any) {
         guard calendarTop.constant != 0 else {
-       
             collapseCalendar()
             return
         }
-        
         expandCalendar()
-        
     }
     
     @IBOutlet weak var calendarTop: NSLayoutConstraint!
@@ -81,29 +138,6 @@ class ViewController: UIViewController {
             self.present(alert, animated: true, completion: nil)
             
         }
-    }
-
-
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        
-        calendarTop.constant = -300
-        calendar.layer.opacity = 0
-        mapView.delegate = self
-        placeLineTable.register(UINib(nibName: "placeCell", bundle: nil), forCellReuseIdentifier: "placeCell")
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(self.userCreated), name: NSNotification.Name(rawValue:HTLiveConstants.userCreatedNotification), object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(onTap))
-        tap.numberOfTapsRequired = 2
-        placeLineTitle.isUserInteractionEnabled = true
-        placeLineTitle.addGestureRecognizer(tap)
-
-
     }
     
     func onForegroundNotification(_ notification: Notification){
