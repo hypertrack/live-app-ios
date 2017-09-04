@@ -22,6 +22,7 @@
 		3354C1CC1F14DAE50011506D /* placeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3354C1CB1F14DAE50011506D /* placeCell.xib */; };
 		3354C1CE1F14EB820011506D /* placeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3354C1CD1F14EB820011506D /* placeCell.swift */; };
 		3BB04555AF6CF8533DD7E47A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F29BB026EF4C014377323EA /* QuartzCore.framework */; };
+		4128F8991F5DEB0600AE46D4 /* FeedbackDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4128F8981F5DEB0600AE46D4 /* FeedbackDetailVC.swift */; };
 		418438951F5BBF3200190FE2 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418438921F5BBF3200190FE2 /* OnboardingVC.swift */; };
 		418438961F5BBF3200190FE2 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418438931F5BBF3200190FE2 /* OnboardingView.swift */; };
 		418438971F5BBF3200190FE2 /* OnboardingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 418438941F5BBF3200190FE2 /* OnboardingView.xib */; };
@@ -77,6 +78,7 @@
 		33334BA81F0BA425001A970E /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		3354C1CB1F14DAE50011506D /* placeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = placeCell.xib; sourceTree = "<group>"; };
 		3354C1CD1F14EB820011506D /* placeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = placeCell.swift; sourceTree = "<group>"; };
+		4128F8981F5DEB0600AE46D4 /* FeedbackDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackDetailVC.swift; sourceTree = "<group>"; };
 		418438921F5BBF3200190FE2 /* OnboardingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OnboardingVC.swift; path = Welcome/OnboardingVC.swift; sourceTree = "<group>"; };
 		418438931F5BBF3200190FE2 /* OnboardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OnboardingView.swift; path = Welcome/OnboardingView.swift; sourceTree = "<group>"; };
 		418438941F5BBF3200190FE2 /* OnboardingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OnboardingView.xib; path = Welcome/OnboardingView.xib; sourceTree = "<group>"; };
@@ -244,6 +246,7 @@
 			isa = PBXGroup;
 			children = (
 				4184389B1F5BF00100190FE2 /* ActivityFeedbackTableVC.swift */,
+				4128F8981F5DEB0600AE46D4 /* FeedbackDetailVC.swift */,
 			);
 			name = Feedback;
 			sourceTree = "<group>";
@@ -469,33 +472,19 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Branch/Branch.framework",
-				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/FSCalendar/FSCalendar.framework",
-				"${BUILT_PRODUCTS_DIR}/GzipSwift/Gzip.framework",
-				"${BUILT_PRODUCTS_DIR}/HyperTrack.local/HyperTrack.framework",
-				"${BUILT_PRODUCTS_DIR}/JustLog/JustLog.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/MediumMenu/MediumMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/PhoneNumberKit/PhoneNumberKit.framework",
-				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Branch.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSCalendar.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gzip.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HyperTrack.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JustLog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MediumMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PhoneNumberKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -523,6 +512,7 @@
 				BB7D29A41F1EA4BF00E72DCF /* UserProfileVC.swift in Sources */,
 				BB7D29991F1D690D00E72DCF /* NSData+Extension.swift in Sources */,
 				418438961F5BBF3200190FE2 /* OnboardingView.swift in Sources */,
+				4128F8991F5DEB0600AE46D4 /* FeedbackDetailVC.swift in Sources */,
 				BB8723401F31F0FC009355F9 /* ShareLiveLocationView.swift in Sources */,
 				33334B921F0B740A001A970E /* htlive_ios.xcdatamodeld in Sources */,
 				3354C1CE1F14EB820011506D /* placeCell.swift in Sources */,

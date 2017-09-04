@@ -140,21 +140,34 @@ class ViewController: UIViewController {
         }
     }
     
-    func onForegroundNotification(_ notification: Notification){
+    
+    func selectCalendarToCurrentDate(){
+        if calendar.maximumDate.timeIntervalSince1970 > Date().timeIntervalSince1970 {
+            calendar.select(Date())
+            return
+        }
+        
+        calendar.reloadData()
         calendar.select(Date())
+    }
+    
+    func onForegroundNotification(_ notification: Notification){
+        
+        selectCalendarToCurrentDate()
         self.dateLabel.text = Date().toString(dateFormat: "dd MMMM")
         getPlaceLineData()
     }
     
     func userCreated(_ notification: Notification) {
-        calendar.select(Date())
+        selectCalendarToCurrentDate()
         self.dateLabel.text = Date().toString(dateFormat: "dd MMMM")
         getPlaceLineData()
     }
 
     
     override func viewWillAppear(_ animated: Bool) {
-        calendar.select(Date())
+        
+        selectCalendarToCurrentDate()
         self.dateLabel.text = Date().toString(dateFormat: "dd MMMM")
         getPlaceLineData()
     }

@@ -1,17 +1,14 @@
 //
-//  ActivityFeedbackTableVC.swift
+//  FeedbackDetailVC.swift
 //  htlive-ios
 //
-//  Created by ravi on 9/3/17.
+//  Created by ravi on 9/5/17.
 //  Copyright © 2017 PZRT. All rights reserved.
 //
 
 import UIKit
-import HyperTrack
 
-class ActivityFeedbackTableVC: UITableViewController {
-    
-    var activities : [HTActivity]?
+class FeedbackDetailVC: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,14 +17,7 @@ class ActivityFeedbackTableVC: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        self.title = "Review Placeline"
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .done, target: self, action:#selector(dismissVC))
-        
-        activities = HyperTrack.getActivitiesFromSDK(date: Date())
-    }
-    
-    func dismissVC(){
-        self.dismiss(animated: true, completion: nil)
+        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,36 +29,23 @@ class ActivityFeedbackTableVC: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        if let activities = self.activities{
-            return (activities.count)
-        }
         return 0
     }
 
-    
+    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-        var activity = activities?[indexPath.row]
-        cell.textLabel?.text = activity?.activityType
-        cell.accessoryType = .disclosureIndicator
+
+        // Configure the cell...
+
         return cell
     }
-    
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Today"
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        
-    }
-    
-    
+    */
 
     /*
     // Override to support conditional editing of the table view.
