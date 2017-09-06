@@ -12,6 +12,7 @@ import Branch
 import CoreLocation
 import Fabric
 import Crashlytics
+import UserNotifications
 
 class HyperTrackAppService: NSObject {
     
@@ -26,9 +27,12 @@ class HyperTrackAppService: NSObject {
         self.defaultRootViewController = UIApplication.shared.windows.first?.rootViewController
         self.flowInteractor.presentFlowsIfNeeded()
         self.setupBranchDeeplink()
+        UNUserNotificationCenter.current().delegate = self
+
         return true
     }
     
+       
     func setupHyperTrack() {
         HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
         HyperTrack.setEventsDelegate(eventDelegate: self)
@@ -242,6 +246,29 @@ extension HyperTrackAppService : HTEventsDelegate {
 
     
     
+}
+
+extension HyperTrackAppService: UNUserNotificationCenterDelegate{
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        // Update the app interface directly.
+        
+        // Play a sound.
+        completionHandler(UNNotificationPresentationOptions.sound)
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        if response.notification.request.identifier == "ReviewPlaceline" {
+            flowInteractor.presentReviewPlaceLineView()
+        }
+        
+        // Else handle actions for other notification types. . .
+    }
+    
+
 }
 
 extension HyperTrackAppService {

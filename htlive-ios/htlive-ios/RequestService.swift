@@ -55,4 +55,35 @@ class RequestService {
         let body = ["account_id": accountId]
         makeHyperTrackRequest(urlSuffix: "accept_invite", body: body, completionHandler: completionHandler)
     }
+    
+    func sendActivityFeedback(feedback : ActivityFeedback){
+        UserDefaults.standard.set(feedback.feedbackType, forKey: feedback.activityId)
+        UserDefaults.standard.synchronize()
+        
+        guard let userId = HyperTrack.getUserId() else {
+            // TODO: handle no user id
+            return
+        }
+        
+        guard let token = HyperTrack.getPublishableKey() else {
+            // TODO: handle no publishable key
+            return
+        }
+        
+        let url = "\(baseUrl)activity_feedbacks/"
+        let headers = ["Authorization": "token \(token)"]
+        
+        Alamofire.request(url, method: .post, parameters: feedback.toDict(), encoding: JSONEncoding.default, headers: headers).validate().responseJSON { response in
+            switch response.result {
+            case .success: break
+//                completionHandler(nil)
+            case .failure(let error):
+                let errorMsg = String(data: response.data!, encoding: .utf8)!
+                print(errorMsg)
+//                completionHandler(errorMsg)
+            }
+        }
+
+    }
+    
 }

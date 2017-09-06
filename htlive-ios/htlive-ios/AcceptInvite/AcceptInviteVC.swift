@@ -67,9 +67,11 @@ class AcceptInviteVC : UIViewController {
     fileprivate func showAlert(title: String?, message: String?) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        let ok: UIAlertAction = UIAlertAction.init(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(ok)
+        let ok: UIAlertAction = UIAlertAction.init(title: "OK", style: .cancel)  { (action) in
+            self.dismiss(animated: true, completion: nil)
+        }
         
+        alert.addAction(ok)
         self.present(alert, animated: true, completion: nil)
     }
 }

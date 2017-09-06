@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import HyperTrack
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -62,6 +63,7 @@ extension AppDelegate {
         // Do any additional handling for your application's notifications.
     }
     
+    
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         HyperTrack.didFailToRegisterForRemoteNotificationsWithError(error: error)
     }
@@ -71,6 +73,8 @@ extension AppDelegate {
             application.registerForRemoteNotifications()
         }
     }
+    
+    
 }
 
 

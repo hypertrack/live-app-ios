@@ -259,7 +259,6 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        
         guard let cell = placeLineTable.cellForRow(at: indexPath) as? placeCell else { return }
         placeLineTable.scrollToRow(at: indexPath, at: .middle, animated: true)
         self.mapView.removeAnnotations(annotations)
@@ -275,18 +274,14 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         }
 
         if(!self.noResults){
-            
             showDataOnMapForActivity(activithy: segments[indexPath.row])
             cell.select()
-            
             if(selectedIndexPath != nil && selectedIndexPath?.row != indexPath.row){
                 var  oldCell = self.placeLineTable.cellForRow(at: selectedIndexPath!) as? placeCell
                 oldCell?.normalize()
             }
             selectedIndexPath = indexPath
-
         }
-        
     }
     
     

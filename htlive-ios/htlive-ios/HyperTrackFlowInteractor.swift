@@ -70,10 +70,46 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
                 HyperTrackFlowInteractor.switchRootViewController(rootViewController: defaultRoot, animated: false, completion: nil)
             }
             
-        
+            var date = DateComponents()
+            date.hour = 21
+            date.minute = 05
+            self.scheduleLocalNotification(titleOfNotification: "Review your activities", subtitleOfNotification: "Please review today's activities and give feedback", messageOfNotification: "", soundOfNotification: "", dateComponent: date)
         }
     }
     
+    
+    
+    let requestIdentifier = "ReviewPlaceline"
+    
+    internal func scheduleLocalNotification(titleOfNotification:String, subtitleOfNotification:String, messageOfNotification:String, soundOfNotification:String, dateComponent:DateComponents) {
+        
+        if #available(iOS 10.0, *) {
+            
+            
+            let content = UNMutableNotificationContent()
+            content.title = titleOfNotification
+            content.body = NSString.localizedUserNotificationString(forKey: subtitleOfNotification, arguments: nil)
+            
+            let trigger = UNCalendarNotificationTrigger.init(dateMatching: dateComponent, repeats: false)
+            
+            let request = UNNotificationRequest(identifier:requestIdentifier, content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request){(error) in
+                
+                if (error != nil){
+                    
+                    print(error?.localizedDescription)
+                } else {
+                    print("Successfully Done")
+                }
+            }
+        } else {
+            // Fallback on earlier versions
+        }
+        
+    }
+    
+
     
     static func topViewController() -> UIViewController? {
         var top = UIApplication.shared.keyWindow?.rootViewController
@@ -142,6 +178,15 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
         liveLocationController.lookupId = lookUpId
         liveLocationController.shortCode = shortCode
         HyperTrackFlowInteractor.topViewController()?.present(liveLocationController, animated:true, completion: nil)
+    }
+    
+    
+    func presentReviewPlaceLineView(){
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+
+        let activityFeedbackVC = storyboard.instantiateViewController(withIdentifier: "ActivityFeedbackTableVC") as! ActivityFeedbackTableVC
+        let navVC = UINavigationController.init(rootViewController: activityFeedbackVC)
+        HyperTrackFlowInteractor.topViewController()?.present(navVC, animated: true, completion: nil)
     }
     
     func haveStartedFlow(sender: BaseFlowController) {
