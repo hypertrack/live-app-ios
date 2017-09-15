@@ -18,8 +18,11 @@ import Foundation
     @objc optional func didTapInfoViewFor(actionID: String)
     @objc optional func didTapMapView()
     @objc optional func didPanMapView()
-    @objc optional func didTapStartLiveLocationSharing(lookUpId : String, place: HyperTrackPlace?)
+   
     @objc optional func didTapStopLiveLocationSharing(actionId : String)
+    @objc optional func didTapShareLiveLocationLink(action : HyperTrackAction)
+    @objc optional func didSelectLocation(place : HyperTrackPlace?)
+    @objc optional func willChooseLocationOnMap()
 }
 
 /**
@@ -79,11 +82,15 @@ import Foundation
      Called when map is panned
      */
     @objc optional func didPanMapView()
-    
-    
-    @objc optional func didTapStartLiveLocationSharing(lookUpId : String, place: HyperTrackPlace?)
-    
+
     
     @objc optional func didTapStopLiveLocationSharing(actionId : String)
+    
+    
+    @objc optional func didTapShareLiveLocationLink(action : HyperTrackAction)
+    
+    @objc optional func didSelectLocation(place : HyperTrackPlace?)
+   
+    @objc optional func willChooseLocationOnMap()
 
 }

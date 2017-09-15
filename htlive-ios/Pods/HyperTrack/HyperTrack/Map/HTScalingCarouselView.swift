@@ -221,7 +221,7 @@ extension InvisibleScrollDelegate: UIScrollViewDelegate {
         
         // Also, this is where we scale our cells
         for cell in visibleCells {
-            if let infoCardCell = cell as? HTScalingCarouselCell {
+            if cell is HTScalingCarouselCell {
               //  infoCardCell.scale(withCarouselInset: inset)
             }
         }

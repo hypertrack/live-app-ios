@@ -21,7 +21,9 @@ class HTExpandedUser: HyperTrackUser  {
             photo: dict["photo"] as? String,
             lastHeartbeatAt: (dict["last_heartbeat_at"] as? String)?.dateFromISO8601,
             lastLocation: HyperTrackLocation.fromDict(dict: dict["last_location"] as!  [String:Any]),
-            lastBattery: dict["last_battery"] as? Int)
+            lastBattery: dict["last_battery"] as? Int,
+            isConnected: dict["is_connected"] as? Bool,
+            locationStatus: dict["location_status"] as? String)
         
         user.timeAwarePolyline = dict["time_aware_polyline"] as? String
         user.encodedPolyline = dict["encoded_polyline"] as? String

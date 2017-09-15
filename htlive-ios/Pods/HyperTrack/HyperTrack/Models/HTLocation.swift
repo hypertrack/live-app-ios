@@ -70,6 +70,10 @@ import CoreLocation
         let coordinates = CLLocationCoordinate2D(latitude: geoJSONCoordinates[1], longitude: geoJSONCoordinates[0])
         return HTGeoJSONLocation(type:locationType, coordinates:coordinates)
     }
+    
+    public func toCoordinate2d() -> CLLocationCoordinate2D {
+       return CLLocationCoordinate2DMake(self.coordinates.last!, self.coordinates.first!)
+    }
 }
 
 
@@ -155,10 +159,11 @@ import CoreLocation
     }
     
     init(locationCoordinate: CLLocationCoordinate2D,
-         timeStamp: Date) {
+         timeStamp: Date,
+         provider:String = "gps") {
         // Used only by mock location manager at this point
         self.location = HTGeoJSONLocation(type: "Point", coordinates: locationCoordinate)
-        self.provider = "mock" // TODO: supported?
+        self.provider = provider // TODO: supported?
         self.recordedAt = timeStamp
         
         self.horizontalAccuracy = -1

@@ -28,5 +28,14 @@ struct HTConstants {
     }
     
     
-   static let LocationPermissionChangeNotification = "LocationPermissionChangeNotification"
+   static let HTLocationPermissionChangeNotification = "LocationPermissionChangeNotification"
+   static let HTUserIdCreatedNotification = "UserIdCreatedNotification"
+   static let HTTrackingStartedForLookUpId = "HTTrackingStartedForLookUpId"
+   static let HTTrackingStopedForAction = "HTTrackingStartedForLookUpId"
+   static let HTTrackingStopedForLookUpId = "HTTrackingStartedForLookUpId"
+   static let HTLocationChangeNotification = "HTLocationChangeNotification"
+   static let HTLocationHeadingChangeNotification = "HTLocationHeadingChangeNotification"
+   static let HTMonitoredRegionEntered = "HTMonitoredRegionEntered"
+   static let HTMonitoredRegionExited = "HTMonitoredRegionExited"
+
 }

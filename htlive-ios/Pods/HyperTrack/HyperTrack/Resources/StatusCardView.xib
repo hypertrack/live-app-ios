@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -32,12 +33,12 @@
                                 <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                     <real key="value" value="0.0"/>
                                 </userDefinedRuntimeAttribute>
-                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                <userDefinedRuntimeAttribute type="color" keyPath="htBorderColor">
                                     <color key="value" red="0.0" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
-                        <imageView userInteractionEnabled="NO" alpha="0.0" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="scooter" translatesAutoresizingMaskIntoConstraints="NO" id="hZs-aS-kvu">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="purpleArrow" translatesAutoresizingMaskIntoConstraints="NO" id="hZs-aS-kvu">
                             <rect key="frame" x="14.5" y="14.5" width="25" height="25"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="hZs-aS-kvu" secondAttribute="height" multiplier="1:1" id="U4x-9z-71G"/>
@@ -61,12 +62,12 @@
                         <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                             <real key="value" value="0.0"/>
                         </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                        <userDefinedRuntimeAttribute type="color" keyPath="htBorderColor">
                             <color key="value" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="On The Way" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k4N-PZ-UNx">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="On The Way" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="k4N-PZ-UNx">
                     <rect key="frame" x="94" y="20" width="215" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
@@ -96,17 +97,6 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <gestureRecognizers/>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jeD-NS-NSi">
-                    <rect key="frame" x="23" y="20" width="48" height="48"/>
-                    <constraints>
-                        <constraint firstAttribute="width" secondItem="jeD-NS-NSi" secondAttribute="height" multiplier="1:1" id="Rgx-tI-88l"/>
-                        <constraint firstAttribute="height" constant="48" id="c9q-3b-PUF"/>
-                    </constraints>
-                    <state key="normal" backgroundImage="phone"/>
-                    <connections>
-                        <action selector="phone:" destination="KzL-8P-f16" eventType="touchUpInside" id="emz-8E-FdO"/>
-                    </connections>
-                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -115,10 +105,8 @@
                 <constraint firstItem="Fpd-0m-FmC" firstAttribute="centerY" secondItem="IWX-o2-txQ" secondAttribute="centerY" id="Ap0-jB-Yje"/>
                 <constraint firstItem="IWX-o2-txQ" firstAttribute="centerY" secondItem="nDX-2F-71r" secondAttribute="centerY" id="EQZ-c0-wVZ"/>
                 <constraint firstItem="0dJ-KW-3Re" firstAttribute="leading" secondItem="KzL-8P-f16" secondAttribute="leading" id="KPH-hC-4wK"/>
-                <constraint firstItem="jeD-NS-NSi" firstAttribute="centerY" secondItem="vTC-iL-Ow7" secondAttribute="centerY" id="O2a-Za-WiU"/>
                 <constraint firstItem="k4N-PZ-UNx" firstAttribute="top" secondItem="KzL-8P-f16" secondAttribute="top" constant="20" id="PdA-Ua-u00"/>
                 <constraint firstAttribute="bottom" secondItem="0dJ-KW-3Re" secondAttribute="bottom" id="Sir-X7-bfu"/>
-                <constraint firstItem="jeD-NS-NSi" firstAttribute="centerX" secondItem="vTC-iL-Ow7" secondAttribute="centerX" id="UkE-GI-cZE"/>
                 <constraint firstItem="nDX-2F-71r" firstAttribute="top" secondItem="k4N-PZ-UNx" secondAttribute="bottom" constant="8" id="c5I-fL-RKw"/>
                 <constraint firstItem="nDX-2F-71r" firstAttribute="leading" secondItem="k4N-PZ-UNx" secondAttribute="leading" id="f2X-VN-l7g"/>
                 <constraint firstItem="vTC-iL-Ow7" firstAttribute="leading" secondItem="KzL-8P-f16" secondAttribute="leading" constant="20" id="oUe-Zd-cu4"/>
@@ -138,7 +126,6 @@
                 <outlet property="arrow" destination="Fpd-0m-FmC" id="28c-RV-56S"/>
                 <outlet property="distanceLeft" destination="IWX-o2-txQ" id="YbM-8L-tA0"/>
                 <outlet property="eta" destination="nDX-2F-71r" id="jdz-Px-1TM"/>
-                <outlet property="phoneButton" destination="jeD-NS-NSi" id="Vf2-z6-IOc"/>
                 <outlet property="progressView" destination="vTC-iL-Ow7" id="DVq-F7-4fb"/>
                 <outlet property="status" destination="k4N-PZ-UNx" id="NBu-rd-rci"/>
                 <outlet property="touchView" destination="0dJ-KW-3Re" id="gGx-lK-A18"/>
@@ -146,8 +133,7 @@
         </view>
     </objects>
     <resources>
-        <image name="phone" width="54" height="54"/>
+        <image name="purpleArrow" width="164" height="153"/>
         <image name="rightArrow" width="34" height="60"/>
-        <image name="scooter" width="91" height="80"/>
     </resources>
 </document>

@@ -13,7 +13,7 @@ public final class HTLogger {
     
     let logger:Logger
     
-    static let shared = HTLogger()
+    public static let shared = HTLogger()
     
     let timeStampKey = "timestamp"
     
@@ -26,8 +26,8 @@ public final class HTLogger {
         // logstash destination
         self.logger.logstashHost = "logs.hypertrack.io"
         self.logger.logstashPort = 19540
-        self.logger.logLogstashSocketActivity = true
-        
+        self.logger.logLogstashSocketActivity = false
+        self.logger.enableLogstashLogging = false
         // default info
         self.logger.defaultUserInfo = ["publishable_key": Settings.getPublishableKey() ?? "",
                                        "sdk_version": Settings.sdkVersion,

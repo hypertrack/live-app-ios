@@ -257,7 +257,7 @@ import Foundation
         }
     }
     
-    internal static func fromJson(data:Data?) -> HyperTrackAction? {
+    public static func fromJson(data:Data?) -> HyperTrackAction? {
         do {
             let jsonDict = try JSONSerialization.jsonObject(with: data!, options: [])
             
@@ -270,5 +270,129 @@ import Foundation
             HTLogger.shared.error("Error in getting action from json: " + error.localizedDescription)
             return nil
         }
+    }
+    
+    public func isCompleted() -> Bool{
+        if (self.display != nil), (self.display?.showSummary == true) {
+            return true
+        }
+        return false
+    }
+    
+    
+    func isInternetAvailable() -> Bool? {
+        return self.user?.isConnected
+    }
+    
+    func isLocationAvailable() -> Bool?{
+        if(self.user?.locationStatus == "location_available"){
+            return true
+        }
+        return false
+    }
+    
+    func isActionTrackable() -> Bool?{
+        return isInternetAvailable()! && isLocationAvailable()!
+    }
+    
+    public func getStatusCardInfo() -> HTStatusInfo{
+        
+        let statusInfo = HTStatusInfo()
+        let bundle = Bundle(for: HTMap.self)
+        
+        if let startedAt = self.startedAt {
+            var timeElapsed: Double?
+            
+            if self.endedAt != nil {
+                timeElapsed = startedAt.timeIntervalSince(self.endedAt!)
+            } else {
+                timeElapsed = startedAt.timeIntervalSinceNow
+            }
+            statusInfo.timeElapsedMinutes = -1 * Double(timeElapsed! / 60.0)
+        }
+        
+        
+        if let displayDistanceUnit = self.display?.distanceUnit {
+            statusInfo.distanceUnit = displayDistanceUnit
+        }
+        
+        if let distance = self.distance {
+            // Convert distance (meters) to miles and round to one decimal
+            if (statusInfo.distanceUnit == "mi") {
+                statusInfo.distanceCovered =  ((distance * 0.000621371 * 10.0) / 10.0).roundTo(places: 1)
+            } else {
+                statusInfo.distanceCovered = (distance / 1000.0).roundTo(places: 1)
+            }
+        } else {
+            statusInfo.distanceCovered  = 0.0
+        }
+        
+        if let user = self.user as HyperTrackUser? {
+            statusInfo.userName = ""
+            if(user.name != nil){
+                statusInfo.userName = user.name!
+            }
+            
+            if let photo = user.photo {
+                statusInfo.photoUrl = URL(string: photo)
+            }
+            
+            if let batteryPercentage = user.lastBattery {
+                statusInfo.battery = batteryPercentage
+            }
+            
+            if let heartbeat = user.lastHeartbeatAt {
+                statusInfo.lastUpdated = heartbeat
+            }
+            
+            if let location = user.lastLocation, (location.speed >= 0) {
+                if (statusInfo.distanceUnit == "mi") {
+                    statusInfo.speed = Int(location.speed * 2.23693629)
+                } else {
+                    statusInfo.speed = Int(location.speed * 3.6)
+                }
+            }
+        }
+        
+        let actionDisplay = self.display
+        if (actionDisplay != nil) {
+            if let duration = actionDisplay!.durationRemaining {
+                let timeRemaining = duration
+                statusInfo.etaMinutes = Double(timeRemaining / 60)
+            }
+            
+            if let statusText = actionDisplay!.statusText {
+                
+                statusInfo.status =  statusText
+                
+            }
+            
+            
+            if let distance = actionDisplay!.distanceRemaining {
+                if (statusInfo.distanceUnit == "mi") {
+                    // Convert distance (meters) to miles and round to one decimal
+                    statusInfo.distanceLeft = ((Double(distance) * 0.000621371 * 10.0) / 10.0).roundTo(places: 1)
+                } else {
+                    statusInfo.distanceLeft = (Double(distance) / 1000.0).roundTo(places: 1)
+                }
+            }
+            
+            
+            statusInfo.showActionDetailSummary = actionDisplay!.showSummary
+            
+        }
+        
+        if let address = self.startedPlace?.address {
+            statusInfo.startAddress = address
+        }
+        
+        if let address = self.completedPlace?.address {
+            statusInfo.completeAddress = address
+        }
+        
+        statusInfo.startTime = self.assignedAt
+        statusInfo.endTime = self.endedAt
+        statusInfo.display = self.display
+        return statusInfo
     }
 }

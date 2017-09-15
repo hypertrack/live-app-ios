@@ -20,9 +20,9 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var calendarHeight: NSLayoutConstraint!
     @IBOutlet weak var calendar: FSCalendar!
-    @IBOutlet weak var placeLineTable: UITableView!
     @IBOutlet weak var dateLabel: UILabel!
     
+    @IBOutlet weak var placeLineTable: UITableView!
     @IBOutlet weak var mapView: MKMapView!
     
     @IBOutlet weak var placeLineTitle: UILabel!

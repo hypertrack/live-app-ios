@@ -48,13 +48,25 @@ import Foundation
      */
     public let lastBattery: Int?
     
+    /** 
+    Last internet connection status of user 
+    */
+    public let isConnected : Bool?
+    
+    /**
+    Last location availability status 
+    */
+    public let locationStatus : String?
+    
     init(id: String?,
          name: String?,
          phone: String?,
          photo: String?,
          lastHeartbeatAt: Date?,
          lastLocation: HyperTrackLocation?,
-         lastBattery: Int?) {
+         lastBattery: Int?,
+         isConnected: Bool?,
+         locationStatus: String?) {
         self.id = id
         self.name = name
         self.phone = phone
@@ -62,15 +74,17 @@ import Foundation
         self.lastHeartbeatAt = lastHeartbeatAt
         self.lastLocation = lastLocation
         self.lastBattery = lastBattery
+        self.isConnected = isConnected
+        self.locationStatus = locationStatus
     }
     
     internal func toDict() -> [String:Any] {
         // TODO: add heartbeat and location field
         let dict = [
-            "id": self.id,
+            "id": self.id ?? "",
             "name": self.name!,
-            "phone": self.phone!,
-            "photo": self.photo!
+            "phone": self.phone,
+            "photo": self.photo
             ] as [String:Any]
         return dict
     }
@@ -96,7 +110,9 @@ import Foundation
                 photo: dict["photo"] as? String,
                 lastHeartbeatAt: (dict["last_heartbeat_at"] as? String)?.dateFromISO8601,
                 lastLocation: HyperTrackLocation.fromDict(dict: dict["last_location"] as?  [String:Any]),
-                lastBattery: dict["last_battery"] as? Int)
+                lastBattery: dict["last_battery"] as? Int,
+                isConnected: dict["is_connected"] as? Bool,
+                locationStatus:dict["location_status"] as? String)
             
             return user
         }

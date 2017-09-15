@@ -71,8 +71,8 @@ class PushNotificationService {
                 HTLogger.shared.info("Received notification for user \(String(describing: notificationUserIdString))")
 
                 if sdkUserId == notificationUserIdString {
-                    Transmitter.sharedInstance.updateSDKControls()
-                    Transmitter.sharedInstance.flushCachedData()
+                    HypertrackService.sharedInstance.updateSDKControls()
+                    HypertrackService.sharedInstance.flushCachedData()
                 }
             }
             

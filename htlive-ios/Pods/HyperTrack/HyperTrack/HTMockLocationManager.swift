@@ -105,7 +105,8 @@ extension MockLocationManager {
             userId:userId,
             recordedAt:Date(),
             eventType:eventType,
-            location:nil
+            location:nil,
+            data : ["is_mock":true]
         )
         event.save()
         // TODO: self.saveDeviceInfoChangedEvent()
@@ -122,7 +123,8 @@ extension MockLocationManager {
             userId:userId,
             recordedAt:Date(),
             eventType:eventType,
-            location:nil
+            location:nil,
+            data : ["is_mock":true]
         )
         event.save()
         Transmitter.sharedInstance.callDelegateWithEvent(event: event)
@@ -132,7 +134,7 @@ extension MockLocationManager {
         HTLogger.shared.verbose("Saving location.changed event")
         let eventType = "location.changed"
         
-        let htLocation = HyperTrackLocation(locationCoordinate: coordinate, timeStamp: timeStamp)
+        let htLocation = HyperTrackLocation(locationCoordinate: coordinate, timeStamp: timeStamp, provider: "Simulate")
         guard let userId = Settings.getUserId() else { return }
         
         let event = HyperTrackEvent(

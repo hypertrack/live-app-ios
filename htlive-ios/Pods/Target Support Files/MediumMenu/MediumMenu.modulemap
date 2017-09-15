@@ -1,0 +1,6 @@
+framework module MediumMenu {
+  umbrella header "MediumMenu-umbrella.h"
+
+  export *
+  module * { export * }
+}

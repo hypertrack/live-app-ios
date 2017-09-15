@@ -35,7 +35,7 @@ open class HTScalingCarouselCell: UICollectionViewCell {
     override open func layoutSubviews() {
         super.layoutSubviews()
         
-        guard let carouselView = superview as? HTScalingCarouselView else { return }
+        guard (superview as? HTScalingCarouselView) != nil else { return }
         
       //  scale(withCarouselInset: carouselView.inset)
     }

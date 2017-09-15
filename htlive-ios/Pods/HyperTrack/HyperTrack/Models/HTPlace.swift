@@ -92,6 +92,18 @@ import MapKit
         self.country = country
     }
     
+    
+     internal init(
+                  name: String = "",
+                  location: HTGeoJSONLocation?,
+                  address: String = ""
+                  ) {
+        self.name = name
+        self.location = location
+        self.address = address
+    }
+
+    
     /**
      Method to set the name on a place object
      
@@ -175,31 +187,24 @@ import MapKit
         }
 
         guard let id = dict["id"] as? String,
-            let name = dict["name"] as? String?,
             let location = dict["location"] as? [String:Any]?,
-            let address = dict["address"] as? String?,
-            let landmark = dict["landmark"] as? String?,
-            let zipCode = dict["zip_code"] as? String?,
-            let city = dict["city"] as? String?,
-            let locality = dict["locality"] as? String?,
-            let state = dict["state"] as? String?,
-            let country = dict["country"] as? String? else {
+            let address = dict["address"] as? String?
+            else {
                 return nil
         }
         
         let htLocation = HTGeoJSONLocation.fromDict(dict: location!)
-        
         let place = HyperTrackPlace(
             id: id,
-            name: name!,
+            name: (dict["name"] as? String? ?? "")!,
             location: htLocation,
             address: address!,
-            locality: locality!,
-            landmark: landmark!,
-            zipCode: zipCode!,
-            city: city!,
-            state: state!,
-            country: country!)
+            locality: (dict["locality"] as? String? ?? "")!,
+            landmark: (dict["landmark"] as? String? ?? "")!,
+            zipCode: (dict["zip_code"] as? String? ?? "")!,
+            city: (dict["city"] as? String? ?? "")!,
+            state: (dict["state"] as? String? ?? "")!,
+            country: (dict["country"] as? String? ?? "")!)
         
         return place
     }
@@ -220,4 +225,70 @@ import MapKit
         }
         return nil
     }
+    
+    
+    static func multiPlacesFromJson(data:Data?) -> [HyperTrackPlace]?{
+        do {
+            let jsonDict = try JSONSerialization.jsonObject(with: data!, options: [])
+            
+            guard let dict = jsonDict as? [String : Any] else {
+                return nil
+            }
+            
+            var places = [HyperTrackPlace]()
+            let results = dict["results"] as! [Any]
+            for  place in results{
+                let dict = place as! [String : Any]
+                
+               
+                var name = ""
+                if let locationName =  dict["name"] as? String{
+                    name = locationName
+                }
+                
+                var htLocation :  HTGeoJSONLocation? = nil
+                if let location = dict["location"] as? [String:Any]?{
+                     htLocation = HTGeoJSONLocation.fromDict(dict: location!)
+                }
+             
+                var address = ""
+                if let locationAddress = dict["address"] as? String?{
+                    address = locationAddress!
+                }
+                
+                let htPlace = HyperTrackPlace(
+                    name: name,
+                    location: htLocation,
+                    address: address)
+               
+                if let  id = dict["id"] as? String{
+                    htPlace.id = id
+                }
+                htPlace.landmark = dict["landmark"] as? String? ?? ""
+                htPlace.zipCode = dict["zip_code"] as? String? ?? ""
+                htPlace.city = dict["city"] as? String? ?? ""
+                htPlace.state = dict["state"] as? String? ?? ""
+                htPlace.country = dict["country"] as? String? ?? ""
+                places.append(htPlace)
+            }
+            return places
+        } catch {
+            HTLogger.shared.error("Error in getting actions from json: " + error.localizedDescription)
+            return nil
+        }
+        
+    }
+    
+    public func getIdentifier() -> String{
+        if let id = self.id {
+            return id
+        }
+        
+        if let coordinates = self.location?.toCoordinate2d() {
+            return coordinates.latitude.description + coordinates.longitude.description
+        }
+        
+        return ""
+    }
+
 }

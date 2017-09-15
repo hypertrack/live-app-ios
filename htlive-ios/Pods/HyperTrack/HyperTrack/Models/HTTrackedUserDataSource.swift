@@ -58,8 +58,8 @@ class HTTrackedUserDataSource: NSObject {
         return actionIds
     }
     
-    func getTrackedUser(userId : String) -> HTTrackedUser {
-        return trackedUsersMap[userId]!
+    func getTrackedUser(userId : String) -> HTTrackedUser? {
+        return trackedUsersMap[userId]
     }
     
     func getActions(actionIds : [String]) -> [HyperTrackAction]?{
@@ -94,5 +94,17 @@ class HTTrackedUserDataSource: NSObject {
                 }
             }
         }
+    }
+    
+    func getUnCompleteActionIdsList()->[String]{
+        var actionIds = [String]()
+        for actionId in self.getActionIdsList(){
+            if let action = self.getAction(actionId: actionId){
+                if !((action.isCompleted())){
+                    actionIds.append(actionId)
+                }
+            }
+        }
+        return actionIds
     }
 }

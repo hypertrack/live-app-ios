@@ -9,11 +9,9 @@
 import UIKit
 import MapKit
 
-class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,HTStausCardActionDelegate{
-    @IBOutlet weak var mapView: UIView!
-    @IBOutlet weak var reFocusButton: UIButton!
-    @IBOutlet weak var backButton: UIButton!
-    @IBOutlet weak var destinationView: UIView!
+class HTView: HTCommonView {
+    
+    
     @IBOutlet weak var statusCard: UIView!
     @IBOutlet weak var status: UILabel!
     @IBOutlet weak var eta: UILabel!
@@ -24,23 +22,22 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
     @IBOutlet weak var arrow: UIImageView!
     @IBOutlet weak var cardConstraint: NSLayoutConstraint!
     @IBOutlet weak var tripIcon: UIImageView!
+    @IBOutlet weak var destinationTitle: UILabel!
+    
+    var searchView : HTLocationPickerView?
     
     @IBOutlet weak var touchView: UIView!
+    
     var progressCircle = CAShapeLayer()
     var currentProgress : Double = 0
-    var isCardExpanded = false
     var expandedCard : ExpandedCard? = nil
     var downloadedPhotoUrl : URL? = nil
     var statusCardEnabled = true
-    var interactionViewDelegate: HTViewInteractionInternalDelegate?
-    
     
     public var scalingCarousel: HTScalingCarouselView!
-    var isLiveLocationSharingEnabled = false
     var previousCount = 0
     var carouselHeightConstraint : NSLayoutConstraint?
     var isCarouselExpanded = false
-    var enableCarouselView = true
     let carouselShrinkedHeight = CGFloat(87)
     let carouselExpandedHeight = CGFloat(245)
     let carouselWidthOffset = CGFloat(40)
@@ -49,14 +46,17 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
     var currentSelectedIndexPath : IndexPath?
     var currentVisibleIndex = 0
     var numberOfItemsInCarousel = 0
-    var useCase = HTConstants.UseCases.TYPE_SINGLE_USER_SINGLE_ACTION
-    var mapProvider: MapProviderProtocol?
-    
-    
+    var selectedHypertrackPlace : HyperTrackPlace?
+    var isDestinationViewEmpty = true
+
+    var isPhoneButtonShown = true
+
     func initMapView(mapSubView: MKMapView, interactionViewDelegate: HTViewInteractionInternalDelegate) {
+        
         self.mapView.addSubview(mapSubView)
         self.interactionViewDelegate = interactionViewDelegate
         self.clearView()
+        self.mapProvider?.mapCustomizationDelegate = self
     }
     
     override func awakeFromNib() {
@@ -65,10 +65,43 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
         addProgressCircle()
         addExpandedCard()
         self.statusCard.isHidden = isLiveLocationSharingEnabled
+        self.destination.text = ""
     }
     
+    
+    override func zoomMapTo(visibleRegion: MKCoordinateRegion, animated: Bool){
+        self.mapProvider?.zoomTo(visibleRegion: visibleRegion, animated: true)
+    }
+    
+    func handleDestinationTap(_ sender: UITapGestureRecognizer) {
+        if(HTConsumerClient.sharedInstance.getUserIds().count == 0){
+            showSearchView()
+        }
+    }
+    
+    func showSearchView(){
+        if(self.searchView == nil){
+            let bundle = Settings.getBundle()!
+            self.searchView  = bundle.loadNibNamed("SearchView", owner: self, options: nil)?.first as? HTLocationPickerView
+            self.searchView?.pickerViewDelegate = self
+            self.searchView?.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
+        }
+        
+        self.addSubview((self.searchView)!)
+        self.bringSubview(toFront: (self.searchView)!)
+        self.searchView?.setUp()
+        self.clipsToBounds = true
+    }
+    
+    func hideSearchView(){
+        self.searchView?.removeFromSuperview()
+    }
+    
+    
     @IBAction func phone(_ sender: Any) {
-        self.interactionViewDelegate?.didTapPhoneButton?(sender)
+        if(isPhoneButtonShown){
+            self.interactionViewDelegate?.didTapPhoneButton?(sender)
+        }
     }
     
     @IBAction func back(_ sender: Any) {
@@ -102,60 +135,62 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
         }
     }
     
-    func updateAddressView(isAddressViewShown: Bool, destinationAddress: String?) {
+    override func updateAddressView(isAddressViewShown: Bool, destinationAddress: String? ,action:HyperTrackAction) {
         if isAddressViewShown {
             self.destination.text = destinationAddress
             self.destinationView.isHidden = false
+            self.destinationTitle.text = "Destination"
+            isDestinationViewEmpty = false
+            
         } else {
             self.destinationView.isHidden = true
+            self.destination.text = "Add a Destination"
+            self.destinationTitle.text = "Going somewhere ?"
+            isDestinationViewEmpty = true
         }
     }
     
-    func updateInfoView(isInfoViewShown: Bool, showActionDetailSummary: Bool, eta: Double?,
-                        distanceLeft: Double?, status: String, userName: String,
-                        lastUpdated: Date, timeElapsed: Double, distanceCovered: Double,
-                        distanceUnit: String, speed: Int?, battery: Int?, photoUrl: URL?,
-                        startTime: Date?, endTime: Date?, origin: String?, destination: String?,
-                        showExpandedCardOnCompletion: Bool) {
-        //  Check if InfoView is disabled
-        if !isInfoViewShown {
+    override func updateInfoView(statusInfo : HTStatusCardInfo){
+        if !statusInfo.isInfoViewShown {
             self.statusCard.isHidden = true
             return
         }
         
-        // Make InfoView visible
         self.statusCard.isHidden = isLiveLocationSharingEnabled
-        
         var progress: Double = 1.0
         
-        if (showActionDetailSummary) {
+        if (statusInfo.showActionDetailSummary) {
             // Update eta & distance data
-            self.eta.text = "\(Int(timeElapsed)) min"
-            self.distanceLeft.text = "\(distanceCovered) \(distanceUnit)"
+            self.eta.text = "\(Int(statusInfo.timeElapsedMinutes)) min"
+            self.distanceLeft.text = "\(statusInfo.distanceCovered) \(statusInfo.distanceUnit)"
             
-            if (distanceLeft != nil) {
-                progress = distanceCovered / (distanceCovered + distanceLeft!)
+            if (statusInfo.distanceLeft != nil) {
+                progress = statusInfo.distanceCovered / (statusInfo.distanceCovered + statusInfo.distanceLeft!)
             }
             
         } else {
-            if (eta != nil) {
-                self.eta.text = "ETA \(Int(eta!)) min"
+            if (statusInfo.eta != nil) {
+                self.eta.text = "\(Int(statusInfo.eta!)) min"
             } else {
                 self.eta.text = " "
             }
             
-            if (distanceLeft != nil) {
+            if (statusInfo.distanceLeft != nil) {
                 if (eta != nil) {
-                    self.distanceLeft.text = "(\(distanceLeft!) \(distanceUnit))"
+                    self.distanceLeft.text = "(\(statusInfo.distanceLeft!) \(statusInfo.distanceUnit))"
                 } else {
-                    self.distanceLeft.text = "\(distanceLeft!) \(distanceUnit)"
+                    self.distanceLeft.text = "\(statusInfo.distanceLeft!) \(statusInfo.distanceUnit)"
                 }
             } else {
                 self.distanceLeft.text = ""
             }
         }
         
-        self.status.text = status
+        if (statusInfo.distanceLeft != nil) {
+            progress = statusInfo.distanceCovered / (statusInfo.distanceCovered + statusInfo.distanceLeft!)
+        }
+
+        self.status.text = statusInfo.status
         animateProgress(to: progress)
         
         UIView.animate(withDuration: 0.15) {
@@ -164,46 +199,46 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
         
         if let expandedCard = self.expandedCard {
             
-            expandedCard.name.text = userName
+            expandedCard.name.text = statusInfo.userName
             
-            if let photo = photoUrl {
+            if let photo = statusInfo.photoUrl {
                 if (self.downloadedPhotoUrl == nil) || (self.downloadedPhotoUrl != photo) {
                     expandedCard.photo.image = getImage(photoUrl: photo)
                 }
             }
             
-            if (showActionDetailSummary) {
-                self.completeActionView(startTime: startTime, endTime: endTime,
-                                        origin: origin, destination: destination,
-                                        timeElapsed: timeElapsed,
-                                        distanceCovered: distanceCovered,
-                                        showExpandedCardOnCompletion: showExpandedCardOnCompletion)
+            if (statusInfo.showActionDetailSummary) {
+                self.completeActionView(startTime: statusInfo.startTime, endTime: statusInfo.endTime,
+                                        origin: statusInfo.startAddress, destination: statusInfo.completeAddress,
+                                        timeElapsed: statusInfo.timeElapsedMinutes,
+                                        distanceCovered: statusInfo.distanceCovered,
+                                        showExpandedCardOnCompletion: statusInfo.showExpandedCardOnCompletion)
             } else {
-                let timeInSeconds = Int(timeElapsed * 60.0)
+                let timeInSeconds = Int(statusInfo.timeElapsedMinutes * 60.0)
                 let hours = timeInSeconds / 3600
                 let minutes = (timeInSeconds / 60) % 60
                 let seconds = timeInSeconds % 60
                 
                 expandedCard.timeElapsed.text = String(format: "%0.2d:%0.2d:%0.2d", hours, minutes, seconds)
-                expandedCard.distanceTravelled.text = "\(distanceCovered) \(distanceUnit)"
+                expandedCard.distanceTravelled.text = "\(statusInfo.distanceCovered) \(statusInfo.distanceUnit)"
                 
-                if (speed != nil) {
-                    if (distanceUnit == "mi") {
-                        expandedCard.speed.text = "\(speed!) mph"
+                if (statusInfo.speed != nil) {
+                    if (statusInfo.distanceUnit == "mi") {
+                        expandedCard.speed.text = "\(statusInfo.speed!) mph"
                     } else {
-                        expandedCard.speed.text = "\(speed!) kmph"
+                        expandedCard.speed.text = "\(statusInfo.speed!) kmph"
                     }
                 } else {
                     expandedCard.speed.text = "--"
                 }
                 
-                if (battery != nil) {
-                    expandedCard.battery.text = "\(Int(battery!))%"
+                if (statusInfo.battery != nil) {
+                    expandedCard.battery.text = "\(Int(statusInfo.battery!))%"
                 } else {
                     expandedCard.battery.text = "--"
                 }
                 
-                let lastUpdatedMins = Int(-1 * Double(lastUpdated.timeIntervalSinceNow) / 60.0)
+                let lastUpdatedMins = Int(-1 * Double(statusInfo.lastUpdated.timeIntervalSinceNow) / 60.0)
                 
                 if (lastUpdatedMins < 1) {
                     expandedCard.lastUpdated.text = "Last updated: few seconds ago"
@@ -211,6 +246,18 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
                     expandedCard.lastUpdated.text = "Last updated: \(lastUpdatedMins) min ago"
                 }
             }
+        }
+        
+    }
+    
+    func getImage(photoUrl: URL) -> UIImage? {
+        do {
+            let imageData = try Data.init(contentsOf: photoUrl, options: Data.ReadingOptions.dataReadingMapped)
+            self.downloadedPhotoUrl = photoUrl
+            return UIImage(data:imageData)
+        } catch let error {
+            HTLogger.shared.error("Error in fetching photo: " + error.localizedDescription)
+            return nil
         }
     }
     
@@ -234,7 +281,6 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
         
         completedView.completeUpdate(startTime: startTime, endTime: endTime, origin: origin, destination: destination)
         
-        //        if (showExpandedCardOnCompletion) {
         self.touchView.isHidden = true
         self.isCardExpanded = true
         
@@ -245,31 +291,70 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
             self.layoutIfNeeded()
         })
         
-        //        } else {
-        //            self.touchView.isHidden = false
-        //            self.isCardExpanded = false
-        //
-        //            UIView.animate(withDuration: 0.2, animations: {
-        //                self.cardConstraint.constant = 20
-        //                self.arrow.transform = CGAffineTransform(rotationAngle: 0)
-        //                self.layoutIfNeeded()
-        //            })
-        //        }
     }
     
-    func updateReFocusButton(isRefocusButtonShown: Bool) {
+    override func updateReFocusButton(isRefocusButtonShown: Bool) {
         self.reFocusButton.isHidden = !isRefocusButtonShown
     }
     
-    func updateBackButton(isBackButtonShown: Bool) {
+    override func updateBackButton(isBackButtonShown: Bool) {
         self.backButton.isHidden = !isBackButtonShown
     }
     
-    func clearView() {
-        self.destinationView.isHidden = true
+    override func updatePhoneButton(isPhoneShown: Bool) {
+        self.isPhoneButtonShown = isPhoneShown
+        if(isPhoneShown){
+            let bundle = Settings.getBundle()!
+            if let image = UIImage.init(named: "phone", in: bundle, compatibleWith: nil){
+                self.phoneButton.setBackgroundImage(image, for: UIControlState.normal)
+            }
+        }else{
+            let bundle = Settings.getBundle()!
+            if let image = UIImage.init(named: "jetpack", in: bundle, compatibleWith: nil){
+                self.phoneButton.setBackgroundImage(image, for: UIControlState.normal)
+            }
+
+        }
+        
+    }
+    
+    override func clearView() {
+        //self.destinationView.isHidden = true
         self.statusCard.isHidden = true
         self.reFocusButton.isHidden = true
     }
+    
+    override func clearMap(){
+        self.mapProvider?.clearMap()
+    }
+    
+    
+    override func updatePolyline(polyline: String){
+        self.mapProvider?.updatePolyline(polyline: polyline)
+    }
+    
+    override  func updatePolyline(polyline: String,startMarkerImage:UIImage?){
+        self.mapProvider?.updatePolyline(polyline: polyline, startMarkerImage: startMarkerImage)
+    }
+
+    
+    override func updateDestinationMarker(showDestination: Bool, destinationAnnotation: HTMapAnnotation?){
+        self.mapProvider?.updateDestinationMarker(showDestination: showDestination, destinationAnnotation: destinationAnnotation)
+    }
+    
+    override func updateHeroMarker(userId: String, actionID: String, heroAnnotation: HTMapAnnotation, disableHeroMarkerRotation: Bool){
+        self.mapProvider?.updateHeroMarker(userId: userId, actionID: actionID, heroAnnotation: heroAnnotation
+            , disableHeroMarkerRotation: disableHeroMarkerRotation)
+    }
+    
+    override func animateMarker(userId: String, locations: [CLLocationCoordinate2D], currentIndex: Int, duration: TimeInterval, disableHeroMarkerRotation: Bool){
+        self.mapProvider?.animateMarker(userId: userId, locations: locations, currentIndex: currentIndex, duration: duration, disableHeroMarkerRotation: disableHeroMarkerRotation)
+    }
+    
+    override func reFocusMap(isInfoViewCardExpanded: Bool, isDestinationViewVisible: Bool){
+        self.mapProvider?.reFocusMap(isInfoViewCardExpanded: isInfoViewCardExpanded, isDestinationViewVisible: isDestinationViewVisible)
+    }
+    
     
     func addProgressCircle() {
         
@@ -296,16 +381,6 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
         self.statusCard.clipsToBounds = true
     }
     
-    func getImage(photoUrl: URL) -> UIImage? {
-        do {
-            let imageData = try Data.init(contentsOf: photoUrl, options: Data.ReadingOptions.dataReadingMapped)
-            self.downloadedPhotoUrl = photoUrl
-            return UIImage(data:imageData)
-        } catch let error {
-            HTLogger.shared.error("Error in fetching photo: " + error.localizedDescription)
-            return nil
-        }
-    }
     
     func animateProgress(to : Double) {
         let animation = CABasicAnimation(keyPath: "strokeEnd")
@@ -323,9 +398,39 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
         self.phoneButton.isHidden = true
         self.tripIcon.alpha = 1
     }
+
     
+    public override func enableLiveLocationSharing(){
+        
+        self.destinationView.isHidden = false
+        self.destination.text = "Add a Destination"
+        self.destinationTitle.text = "Going somewhere ?"
+        isDestinationViewEmpty = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleDestinationTap(_:)))
+        self.destinationView.addGestureRecognizer(tap)
+        self.destinationView.isUserInteractionEnabled = true
+        
+        self.isLiveLocationSharingEnabled = true
+        
+        var region : MKCoordinateRegion?
+       
+        if let location = Transmitter.sharedInstance.locationManager.getLastKnownLocation(){
+            region =    MKCoordinateRegionMake(
+                (location.coordinate),
+                MKCoordinateSpanMake(0.005, 0.005))
+        }
+        else{
+            region =    MKCoordinateRegionMake(
+                CLLocationCoordinate2DMake(28.5621352, 77.1604902),
+                MKCoordinateSpanMake(0.05, 0.05))
+        }
+        
+        self.mapProvider?.zoomTo(visibleRegion: region!, animated: true)
+        
+        addCarousel()
+    }
     
-    public func addCarousel() {
+    private func addCarousel() {
         if(isLiveLocationSharingEnabled){
             let frame = CGRect(x: 0, y: 0, width: 0, height: 0)
             scalingCarousel = HTScalingCarouselView(withFrame: frame, andInset: carouselInset)
@@ -346,14 +451,14 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
             } else {
                 // Fallback on earlier versions
             }
-           
+            
             
         }
     }
     
     func isCurrentUserSharingLocation() -> Bool {
         let userIds = HTConsumerClient.sharedInstance.getUserIds()
-        let currentUserId = Transmitter.sharedInstance.getUserId()
+        let currentUserId = Settings.getUserId()
         if(userIds.count > 0){
             if let userId = currentUserId{
                 if(userIds.contains(userId)){
@@ -380,43 +485,6 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
     }
     
     
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        var count = 0
-        let userIds = HTConsumerClient.sharedInstance.getUserIds()
-        count = userIds.count
-        if(!isCurrentUserSharingLocation()){
-            count = userIds.count + 1
-        }
-        numberOfItemsInCarousel = count
-        return count
-    }
-    
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        let userIds = HTConsumerClient.sharedInstance.getUserIds()
-        let statusCell = cell as! HTStatusCarouselCell
-        statusCell.actionDelegate = self
-        statusCell.indexPath = indexPath
-        
-        var userId = self.getUserIdForIndexPath(indexPath)
-        if(userId == nil){
-            if let scalingCell = cell as? HTScalingCarouselCell {
-                statusCell.changeToShareLiveLocationButton()
-            }
-            return cell
-        }else{
-            let user = HTConsumerClient.sharedInstance.getUser(userId: userId!)
-            let action = user?.actions?.last
-            let statusInfo = getUserInfo(action as! HyperTrackAction, userId)
-            statusCell.user = user
-            
-            if let scalingCell = cell as? HTScalingCarouselCell {
-                statusCell.changeToNormalView()
-                statusCell.reloadWithUpdatedInfo(statusInfo);
-            }
-            return cell
-        }
-    }
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scalingCarousel.didScroll()
@@ -438,6 +506,103 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
         
         self.currentVisibleIndex = currentIndex
     }
+    
+    
+    func shakeDestinationView(){
+        self.destinationView.transform = CGAffineTransform(translationX: 20, y: 0)
+        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+            self.destinationView.transform = CGAffineTransform.identity
+        }, completion: nil)
+        
+    }
+    
+    
+    func expandCarousel(){
+        self.carouselHeightConstraint?.isActive = false
+        if #available(iOS 9.0, *) {
+            self.carouselHeightConstraint = scalingCarousel.heightAnchor.constraint(equalToConstant: carouselExpandedHeight)
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        UIView.animate(withDuration: 0.2) {
+            self.carouselHeightConstraint?.isActive = true
+            self.layoutIfNeeded()
+        }
+        isCarouselExpanded = true
+    }
+    
+    func shrinkCarousel(){
+        carouselHeightConstraint?.isActive = false
+        if #available(iOS 9.0, *) {
+            carouselHeightConstraint = scalingCarousel.heightAnchor.constraint(equalToConstant: carouselShrinkedHeight)
+        } else {
+            // Fallback on earlier versions
+        }
+        UIView.animate(withDuration: 0.2) {
+            self.carouselHeightConstraint?.isActive = true
+            self.layoutIfNeeded()
+        }
+        isCarouselExpanded = false
+    }
+    
+    
+    override func reloadCarousel(){
+        if let scalingCarousel = scalingCarousel{
+            scalingCarousel.reloadData()
+        }
+    }
+    
+    
+    override func updateViewFocus(isInfoViewCardExpanded: Bool, isDestinationViewVisible: Bool){
+        self.mapProvider?.updateViewFocus(isInfoViewCardExpanded: isInfoViewCardExpanded, isDestinationViewVisible: isDestinationViewVisible)
+    }
+    
+    
+}
+
+
+extension HTView:UICollectionViewDataSource, UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
+    
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        var count = 0
+        let userIds = HTConsumerClient.sharedInstance.getUserIds()
+        count = userIds.count
+        if(!isCurrentUserSharingLocation()){
+            count = userIds.count + 1
+        }
+        numberOfItemsInCarousel = count
+        return count
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+        let statusCell = cell as! HTStatusCarouselCell
+        statusCell.actionDelegate = self
+        statusCell.indexPath = indexPath
+        
+        if let userId = self.getUserIdForIndexPath(indexPath){
+            let user = HTConsumerClient.sharedInstance.getUser(userId: userId)
+            if let action = user?.actions?.last {
+                let statusInfo = HTStatusCardInfo.getUserInfo(action!, userId,useCase: self.useCase, isCurrentUser: HTGenericUtils.isCurrentUser(userId: userId))
+                statusCell.userId = user?.expandedUser?.id
+                
+                if cell is HTScalingCarouselCell {
+                    statusCell.changeToNormalView()
+                    statusCell.reloadWithUpdatedInfo(statusInfo);
+                }
+
+            }
+            return cell
+        }else{
+            if cell is HTScalingCarouselCell {
+                statusCell.changeToShareLiveLocationButton()
+                statusCell.userId = Settings.getUserId()
+            }
+           return cell
+        }
+    }
+    
     
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath){
         
@@ -470,212 +635,103 @@ class HTView: UIView,UICollectionViewDataSource, UICollectionViewDelegate,UIColl
         
         collectionView.reloadData()
     }
-    
-    func startSharingLiveLocation(user : HTTrackedUser? ,indexPath: IndexPath?){
-        
-        let userId = HTConsumerClient.sharedInstance.getUserIds().first
-        let user = HTConsumerClient.sharedInstance.getUser(userId: userId!)
-        let lookUpId = user?.actions?.last??.lookupId
-        let placeId = user?.actions?.last??.expectedPlace?.id
-        self.interactionViewDelegate?.didTapStartLiveLocationSharing!(lookUpId: lookUpId!, place: (user?.actions?.last??.expectedPlace))
-        //        let htActionParams = HyperTrackActionParams()
-        //        htActionParams.expectedPlaceId = placeId
-        //        htActionParams.type = "visit"
-        //        htActionParams.lookupId = lookUpId!
-        //
-        //        HyperTrack.createAndAssignAction(htActionParams, { (action, error) in
-        //            if let error = error {
-        //                return
-        //            }
-        //            if let action = action {
-        //
-        //                return
-        //            }
-        //        })
-        
-    }
-    
-    func stopSharingLiveLocation(user: HTTrackedUser?,indexPath: IndexPath){
-        self.interactionViewDelegate?.didTapStopLiveLocationSharing!(actionId:  (user?.actions?.last??.id)!)
-        //  Transmitter.sharedInstance.completeAction(actionId: user?.actions?.last??.id)
-    }
-    
-    func userClickedOnPhone(user : HTTrackedUser?,indexPath:IndexPath){
-        
-    }
-    
-    func expandCarousel(){
-        self.carouselHeightConstraint?.isActive = false
-        if #available(iOS 9.0, *) {
-            self.carouselHeightConstraint = scalingCarousel.heightAnchor.constraint(equalToConstant: carouselExpandedHeight)
-        } else {
-            // Fallback on earlier versions
-        }
-        
-        UIView.animate(withDuration: 0.2) {
-            self.carouselHeightConstraint?.isActive = true
-            self.layoutIfNeeded()
-        }
-        isCarouselExpanded = true
-    }
-    
-    func shrinkCarousel(){
-        carouselHeightConstraint?.isActive = false
-        if #available(iOS 9.0, *) {
-            carouselHeightConstraint = scalingCarousel.heightAnchor.constraint(equalToConstant: carouselShrinkedHeight)
-        } else {
-            // Fallback on earlier versions
-        }
-        UIView.animate(withDuration: 0.2) {
-            self.carouselHeightConstraint?.isActive = true
-            self.layoutIfNeeded()
-        }
-        isCarouselExpanded = false
-    }
-    
-    
-    func reloadCarousel(){
-        if let scalingCarousel = scalingCarousel{
-            scalingCarousel.reloadData()
-        }
-    }
-    
-    func isCurrentUser(userId : String?) -> Bool{
-        if var userId = userId {
-            var currentUserId = Transmitter.sharedInstance.getUserId()
-            if(currentUserId == userId){
-                return true
-            }
-        }
-        return false
-    }
-    
-    func getUserInfo(_ action: HyperTrackAction, _ userId : String?) -> HTStatusCardInfo {
-        
-        let statusInfo = HTStatusCardInfo()
-        
-        if let startedAt = action.startedAt {
-            var timeElapsed: Double?
-            
-            if action.endedAt != nil {
-                timeElapsed = startedAt.timeIntervalSince(action.endedAt!)
-            } else {
-                timeElapsed = startedAt.timeIntervalSinceNow
-            }
-            statusInfo.timeElapsedMinutes = -1 * Double(timeElapsed! / 60)
-        }
-
-        if let distanceUnit = action.display?.distanceUnit {
-            statusInfo.distanceUnit = distanceUnit
-        }
-        
-        if let distance = action.distance {
-            // Convert distance (meters) to miles and round to one decimal
-            if (statusInfo.distanceUnit == "mi") {
-                statusInfo.distanceCovered = round(distance * 0.000621371 * 10) / 10
-            } else {
-                statusInfo.distanceCovered = round(distance / 1000)
-            }
-        } else {
-            statusInfo.distanceCovered  = 0.0
-        }
-        
-        if let user = action.user as HyperTrackUser? {
-            statusInfo.userName = user.name!
-            
-            if (isCurrentUser(userId: userId)) {
-                statusInfo.markerUserName = "You"
-                let bundle = Bundle(for: HTMap.self)
-                if (action.display?.showSummary )!{
-                    statusInfo.infoCardImage =  UIImage.init(named: "play", in: bundle, compatibleWith: nil)
-                    
-                } else {
-                    statusInfo.infoCardImage =  UIImage.init(named: "square", in: bundle, compatibleWith: nil)
-                }
-                
-                statusInfo.isCurrentUser = true
-            } else {
-                let fullNameArr =  statusInfo.userName .components(separatedBy: " ")
-                statusInfo.markerUserName = fullNameArr[0]
-            }
-            
-            if let photo = user.photo {
-                statusInfo.photoUrl = URL(string: photo)
-            }
-            
-            if let batteryPercentage = user.lastBattery {
-                statusInfo.battery = batteryPercentage
-            }
-            
-            if let heartbeat = user.lastHeartbeatAt {
-                statusInfo.lastUpdated = heartbeat
-            }
-            
-            if let location = user.lastLocation, (location.speed >= 0) {
-                if (statusInfo.distanceUnit == "mi") {
-                    statusInfo.speed = Int(location.speed * 2.23693629)
-                } else {
-                    statusInfo.speed = Int(location.speed * 3.6)
-                }
-            }
-        }
-        
-        let actionDisplay = action.display
-        if (actionDisplay != nil) {
-            if let duration = actionDisplay!.durationRemaining {
-                let timeRemaining = duration
-                statusInfo.etaMinutes = Double(timeRemaining / 60)
-            }
-            
-            if let statusText = actionDisplay!.statusText {
-                
-                statusInfo.status =  statusText
-                
-                if (statusText.lowercased() == "on the way"  || statusText.lowercased() == "arriving" || statusText.lowercased() == "leaving now"){
-                    statusInfo.status = statusInfo.markerUserName! + " is " + statusText.lowercased()
-                    if(isCurrentUser(userId : userId)){
-                        statusInfo.status = statusInfo.markerUserName! + " are " + statusText.lowercased()
-                    }
-                    
-                } else if (action.display?.showSummary )!{
-                    statusInfo.status = statusInfo.markerUserName! + " has " + statusText.lowercased() + " trip"
-                    
-                    if(isCurrentUser(userId : userId)){
-                        statusInfo.status = statusInfo.markerUserName! + " have " + statusText.lowercased() + " trip"
-                    }
-                    
-                    statusInfo.isCompletedOrCanceled = true
-                }
-            }
-            
-            if let distance = actionDisplay!.distanceRemaining {
-                // Convert distance (meters) to miles and round to one decimal
-                if (statusInfo.distanceUnit == "mi") {
-                    statusInfo.distanceCovered = round(Double(distance) * 0.000621371 * 10) / 10
-                } else {
-                    statusInfo.distanceCovered = round(Double(distance) / 1000)
-                }
-            }
-            
-            statusInfo.showActionDetailSummary = actionDisplay!.showSummary
-            
-            // Check if Action summary needs to be displayed on map or not
-            if self.useCase == HTConstants.UseCases.TYPE_SINGLE_USER_SINGLE_ACTION {
-                statusInfo.showActionPolylineSummary = actionDisplay!.showSummary
-                statusInfo.showExpandedCardOnCompletion = actionDisplay!.showSummary
-            }
-        }
-        
-        if let address = action.startedPlace?.address {
-            statusInfo.startAddress = address
-        }
-        
-        if let address = action.completedPlace?.address {
-            statusInfo.completeAddress = address
-        }
-        
-        statusInfo.startTime = action.assignedAt
-        statusInfo.endTime = action.endedAt
-        return statusInfo
-    }
 }
+
+
+extension HTView:HTStausCardActionDelegate {
+    
+    func startSharingLiveLocation(userId : String? ,indexPath: IndexPath?){
+
+        
+    }
+    
+    func stopSharingLiveLocation(userId : String?,indexPath: IndexPath){
+
+        
+   }
+    
+    func userClickedOnPhone(userId : String?,indexPath:IndexPath){
+        
+    }
+    
+}
+
+
+
+extension HTView : HTLocationPickerViewDelegate {
+    
+    func getSavedPlaces() -> [HyperTrackPlace]?{
+        return Settings.getAllSavedPlaces()
+    }
+    
+    func getSearchResultsForText(searchText : String,completionHandler: ((_ places: [HyperTrackPlace]?, _ error: HyperTrackError?) -> Void)?) {
+        
+        var coordinate : CLLocationCoordinate2D? = nil
+        if let location = Transmitter.sharedInstance.locationManager.getLastKnownLocation(){
+            coordinate = location.coordinate
+        }
+        HypertrackService.sharedInstance.findPlaces(searchText: searchText, cordinate: coordinate, completionHandler: completionHandler)
+        return
+    }
+    
+    
+    func getSearchResultsForCoordinated(cordinate: CLLocationCoordinate2D?, completionHandler: ((HyperTrackPlace?, HyperTrackError?) -> Void)?) {
+        let geoJsonLocation = HTGeoJSONLocation.init(type: "Point", coordinates: cordinate!)
+        HypertrackService.sharedInstance.createPlace(geoJson:geoJsonLocation, completionHandler: completionHandler)
+        return
+    }
+    
+    func didSelectedLocation(place : HyperTrackPlace, fromHistory:Bool){
+        self.selectedHypertrackPlace  = place
+        if(!fromHistory){
+            Settings.addPlaceToSavedPlaces(place: place)
+        }
+        self.isDestinationViewEmpty = false
+        var destinationText = ""
+        if(place.name != nil){
+            destinationText = place.name!
+        }
+        if(place.address != nil){
+            destinationText = destinationText + ", " + place.address!
+        }
+        self.destination.text = destinationText
+        self.destinationTitle.text = "Destination"
+        
+        self.mapProvider?.showUserLocation()
+    }
+    
+    
+}
+
+
+
+extension HTView : MapCustomizationDelegate{
+    
+    func annotationView(_ mapView: MKMapView, annotation: HTMapAnnotation) -> MKAnnotationView?
+    {
+        
+        if(annotation.type == HTConstants.MarkerType.HERO_MARKER){
+            return self.customizationDelegate?.heroMarkerViewForActionID?(actionID: (annotation.action?.id)!)
+        }
+        else if (annotation.type == HTConstants.MarkerType.DESTINATION_MARKER){
+            return self.customizationDelegate?.expectedPlaceMarkerViewForActionID?( actionID: (annotation.action?.id)!)
+        }
+        
+        return nil
+    }
+    
+    
+    func imageView(_ mapView: MKMapView, annotation: HTMapAnnotation) -> UIImage?{
+        
+        if(annotation.type == HTConstants.MarkerType.HERO_MARKER){
+            return self.customizationDelegate?.heroMarkerImageForActionID?(actionID: (annotation.action?.id)!)
+        }
+        else if (annotation.type == HTConstants.MarkerType.DESTINATION_MARKER){
+            return self.customizationDelegate?.expectedPlaceMarkerImageForActionID?(actionID: (annotation.action?.id)!)
+        }
+        return nil
+    }
+    
+}
+
+

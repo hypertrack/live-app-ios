@@ -7,10 +7,10 @@
 //
 
 import UIKit
-import MGSwipeTableCell
+//import MGSwipeTableCell
 import HyperTrack
 
-class ActivityTableViewCell: MGSwipeTableCell {
+class ActivityTableViewCell: UITableViewCell {
 
      @IBOutlet weak var subtitleText : UILabel!
      @IBOutlet weak var  activityType : UILabel!
@@ -28,23 +28,23 @@ class ActivityTableViewCell: MGSwipeTableCell {
 
         // Configure the view for the selected state
     }
-    
-    func setUpActivity(activity:HTActivity){
-        self.activityType.text = activity.activityType
-        self.subtitleText?.text = ""
-        if activity.activityType == "walking" || activity.activityType == "running"{
-            if activity.numOfSteps != nil {
-                self.subtitleText?.text = (activity.numOfSteps?.description)! + " steps | " + (activity.distance?.description)!
-            }
-        }
-        
-        self.startTime.text = activity.startTime?.toString(dateFormat: "HH:mm")
-        if activity.endTime != nil {
-            self.endTime.text = activity.endTime?.toString(dateFormat: "HH:mm")
-        }
-        else{
-            self.endTime.text = ""
-        }
-    }
+//    
+//    func setUpActivity(activity:HTActivity){
+//        self.activityType.text = activity.activityType
+//        self.subtitleText?.text = ""
+//        if activity.activityType == "walking" || activity.activityType == "running"{
+//            if activity.numOfSteps != nil {
+//                self.subtitleText?.text = (activity.numOfSteps?.description)! + " steps | " + (activity.distance?.description)!
+//            }
+//        }
+//        
+//        self.startTime.text = activity.startTime?.toString(dateFormat: "HH:mm")
+//        if activity.endTime != nil {
+//            self.endTime.text = activity.endTime?.toString(dateFormat: "HH:mm")
+//        }
+//        else{
+//            self.endTime.text = ""
+//        }
+//    }
 
 }

@@ -16,7 +16,11 @@ class HTMapAnnotation: MKPointAnnotation {
     var image: UIImage?
     var colour: UIColor?
     var type = HTConstants.MarkerType.HERO_MARKER
-    
+    var action : HyperTrackAction? = nil
+    var location : CLLocation? = nil
+    var place : HyperTrackPlace? = nil
+    var currentHeading : CLLocationDirection? = nil
+
     override init() {
         super.init()
         self.image = nil
