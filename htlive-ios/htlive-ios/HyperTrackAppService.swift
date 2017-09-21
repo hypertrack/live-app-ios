@@ -28,7 +28,6 @@ class HyperTrackAppService: NSObject {
         self.flowInteractor.presentFlowsIfNeeded()
         self.setupBranchDeeplink()
         UNUserNotificationCenter.current().delegate = self
-
         return true
     }
     
@@ -225,8 +224,11 @@ extension HyperTrackAppService : HTEventsDelegate {
     
     func didEnterMonitoredRegion(region:CLRegion){
         if(region.identifier == self.getCurrentLookUPId()){
-            self.completeAction()
             
+            if let currentAction  = self.getCurrentTrackedAction(){
+                // check for current user
+                HyperTrack.completeAction(currentAction.id!)
+            }
             self.sendLocalNotification(title: "Trip Finished.", body: "You have reached your destination.")
         }
     }
