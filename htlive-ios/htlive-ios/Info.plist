@@ -74,6 +74,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>HyperTrack Live needs to access the camera to take your display picture</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>To let your friends and family track you live, you need to allow HyperTrack Live to access this device’s location</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>To let your friends and family track you live, you need to allow HyperTrack Live to access this device’s location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

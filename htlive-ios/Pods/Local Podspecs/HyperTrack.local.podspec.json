@@ -1,6 +1,6 @@
 {
   "name": "HyperTrack.local",
-  "version": "0.4.44",
+  "version": "0.4.52",
   "summary": "HyperTrack - The location SDK",
   "license": {
     "type": "Copyright",
@@ -40,7 +40,8 @@
     "HyperTrack/Models/*.swift",
     "HyperTrack/Utils/*.swift",
     "HyperTrack/Map/*.swift",
-    "HyperTrack/*.h"
+    "HyperTrack/*.h",
+    "HyperTrack/DB/*.swift"
   ],
   "resource_bundles": {
     "HyperTrack": [

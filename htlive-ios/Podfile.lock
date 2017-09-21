@@ -11,7 +11,7 @@ PODS:
   - Fabric (1.6.13)
   - FSCalendar (2.7.9)
   - GzipSwift (3.1.4)
-  - HyperTrack (0.4.45):
+  - HyperTrack.local (0.4.52):
     - Alamofire (= 4.4.0)
     - GzipSwift
     - JustLog
@@ -30,17 +30,21 @@ PODS:
   - SQLite.swift (0.11.2):
     - SQLite.swift/standard (= 0.11.2)
   - SQLite.swift/standard (0.11.2)
-  - SwiftyBeaver (1.4.0)
+  - SwiftyBeaver (1.4.1)
 
 DEPENDENCIES:
   - Branch
   - Crashlytics
   - Fabric
   - FSCalendar
-  - HyperTrack
+  - HyperTrack.local (from `~/hypertrack-ios-v3/HyperTrack.local.podspec`)
   - MBProgressHUD
   - MediumMenu
   - PhoneNumberKit (~> 1.2)
+
+EXTERNAL SOURCES:
+  HyperTrack.local:
+    :path: ~/hypertrack-ios-v3/HyperTrack.local.podspec
 
 SPEC CHECKSUMS:
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
@@ -50,14 +54,14 @@ SPEC CHECKSUMS:
   Fabric: 2fb5676bc811af011a04513451f463dac6803206
   FSCalendar: a04b09f16f811bc92e82f3cf852a15225233b9d5
   GzipSwift: 11ddb2bf253b1cd7b60bb169da20f62ac4348769
-  HyperTrack: e0dd3cbfa1fc23c5398ec1e72422fb5c770998aa
+  HyperTrack.local: d05782ea4d8cfd0cad454876ebbf7223f7db199c
   JustLog: 88ddc70d5c1e8dcc4de3b94899905975c180e9b2
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MediumMenu: ccae15abe7fc85d4cc0c5bbff48735607d6087f1
   PhoneNumberKit: 08aaf1968ea41a114327e9223cbb0391d76ae145
   SQLite.swift: 670c3e9e0a806bbfd56a3de5d530768dc0e6fe7c
-  SwiftyBeaver: 78d9186ce7595b4400ce01e5fd750d263e72dd7b
+  SwiftyBeaver: f04f739cca6826c5fb0f575fed8fa3293f76b83e
 
-PODFILE CHECKSUM: ce863953dc35f5d8706caf9243c13e5c029ccc76
+PODFILE CHECKSUM: 8b0e74b4140b5ebca162343a10f2acdc038da57c
 
 COCOAPODS: 1.3.1

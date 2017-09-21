@@ -56,35 +56,35 @@ class ViewController: UIViewController {
         placeLineTitle.isUserInteractionEnabled = true
         placeLineTitle.addGestureRecognizer(tap)
         
-        let item1 = MediumMenuItem(title: "Home") {
-            //            let homeViewController = storyboard.instantiateViewController(withIdentifier: "Home") as! HomeViewController
-            //            self.setViewControllers([homeViewController], animated: false)
-        }
-        
-        let item2 = MediumMenuItem(title: "Review Placeline") {
-            let activityFeedbackVC = self.storyboard?.instantiateViewController(withIdentifier: "ActivityFeedbackTableVC") as! ActivityFeedbackTableVC
-            let navVC = UINavigationController.init(rootViewController: activityFeedbackVC)
-            self.present(navVC, animated: true, completion: nil)
-        }
-        
-        let item3 = MediumMenuItem(title: "Stop Tracking") {
-            //            let bookMarksViewController = storyboard.instantiateViewController(withIdentifier: "Bookmarks") as! BookmarksViewController
-            //            self.setViewControllers([bookMarksViewController], animated: false)
-        }
-        
-        let item4 = MediumMenuItem(title: "Rate Us") {
-            //            let bookMarksViewController = storyboard.instantiateViewController(withIdentifier: "Bookmarks") as! BookmarksViewController
-            //            self.setViewControllers([bookMarksViewController], animated: false)
-        }
-
-        let item5 = MediumMenuItem(title: "Help") {
-            //            let bookMarksViewController = storyboard.instantiateViewController(withIdentifier: "Bookmarks") as! BookmarksViewController
-            //            self.setViewControllers([bookMarksViewController], animated: false)
-        }
-        
-        
-        menu = MediumMenu(items: [item1, item2, item3, item4, item5], forViewController: self)
-  
+//        let item1 = MediumMenuItem(title: "Home") {
+//            //            let homeViewController = storyboard.instantiateViewController(withIdentifier: "Home") as! HomeViewController
+//            //            self.setViewControllers([homeViewController], animated: false)
+//        }
+//        
+//        let item2 = MediumMenuItem(title: "Review Placeline") {
+//            let activityFeedbackVC = self.storyboard?.instantiateViewController(withIdentifier: "ActivityFeedbackTableVC") as! ActivityFeedbackTableVC
+//            let navVC = UINavigationController.init(rootViewController: activityFeedbackVC)
+//            self.present(navVC, animated: true, completion: nil)
+//        }
+//        
+//        let item3 = MediumMenuItem(title: "Stop Tracking") {
+//            //            let bookMarksViewController = storyboard.instantiateViewController(withIdentifier: "Bookmarks") as! BookmarksViewController
+//            //            self.setViewControllers([bookMarksViewController], animated: false)
+//        }
+//        
+//        let item4 = MediumMenuItem(title: "Rate Us") {
+//            //            let bookMarksViewController = storyboard.instantiateViewController(withIdentifier: "Bookmarks") as! BookmarksViewController
+//            //            self.setViewControllers([bookMarksViewController], animated: false)
+//        }
+//
+//        let item5 = MediumMenuItem(title: "Help") {
+//            //            let bookMarksViewController = storyboard.instantiateViewController(withIdentifier: "Bookmarks") as! BookmarksViewController
+//            //            self.setViewControllers([bookMarksViewController], animated: false)
+//        }
+//        
+//        
+//        menu = MediumMenu(items: [item1, item2, item3, item4, item5], forViewController: self)
+//  
     }
     
     func showMenu() {

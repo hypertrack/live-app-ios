@@ -1,0 +1,6 @@
+framework module HyperTrack {
+  umbrella header "HyperTrack.local-umbrella.h"
+
+  export *
+  module * { export * }
+}

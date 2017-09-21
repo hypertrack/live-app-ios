@@ -133,7 +133,9 @@ class ShareVC: UIViewController  {
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                             if (!self.doesLookUpIdHasMyUserId(actions: actions)){
-                                self.showShareLiveLocationView(action: (actions.last)!)
+                                if (!(actions.last?.isCompleted())!){
+                                    self.showShareLiveLocationView(action: (actions.last)!)
+                                }
                             }else{
                                 if let action = self.getActionFrom(actions: actions, lookUpId: lookUpId, userId:HyperTrack.getUserId()!){
                                     HyperTrackAppService.sharedInstance.currentAction = action

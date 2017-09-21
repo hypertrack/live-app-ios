@@ -102,9 +102,9 @@ class placeCell : UITableViewCell {
             
         } else {
             
-            self.status.text = activity.activity
-            if activity.activity == "Walk" { self.icon.image = #imageLiteral(resourceName: "walk") }
-            if activity.activity == "Drive" { self.icon.image = #imageLiteral(resourceName: "driving")}
+            self.status.text = activity.activity?.firstCharacterUpperCase()
+            if activity.activity == "walk" { self.icon.image = #imageLiteral(resourceName: "walk") }
+            if activity.activity == "drive" { self.icon.image = #imageLiteral(resourceName: "driving")}
 
             
             guard let distance = activity.distance else { return }
@@ -160,5 +160,28 @@ extension UIView{
     func asCircle(){
         self.layer.cornerRadius = self.frame.width / 2;
         self.layer.masksToBounds = true
+    }
+}
+
+extension String {
+    func firstCharacterUpperCase() -> String {
+        let lowercaseString = self.lowercased()
+        if lowercaseString.lengthOfBytes(using: .utf8) > 0{
+            let index = self.index(self.startIndex, offsetBy: 1)
+            var subString = self.substring(to: index)
+            if subString != nil {
+                subString = subString.uppercased()
+            }
+            
+            let endStringIndex = self.index(self.startIndex, offsetBy: 1)
+            var endString =  self.substring(from: endStringIndex)  // playground
+            if endString != nil {
+                endString = endString.lowercased()
+            }
+            
+            return subString + endString
+        }
+        
+        return self
     }
 }
