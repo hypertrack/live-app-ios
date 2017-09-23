@@ -64,7 +64,8 @@ HyperTrack.initialize("YOUR_PUBLISHABLE_KEY")
  - [Setup HyperTrack SDK](#setup-hypertrack-sdk)
  - [Create Hypertrack user](#create-hypertrack-user)
  - [Start tracking](#start-tracking)
- - [Get Placeline in your app](#get-placeline-in-your-app)
+ - [Get Placeline View in your app](#get-placeline-view-in-your-app)
+ - [Use Placeline Data in your app](#use-placeline-data-in-your-app)
 
 
 
@@ -98,8 +99,20 @@ Start tracking for the created user by calling the following method
 ```swift
 HyperTrack.startTracking()
 ```
+#### Get Placeline View in your app
+To get the placeline view in your ViewController, just call the getPlacelineView function. It takes the desired frame of the view and date as parameter. If you don't specify the date, the default date chosen is today's date.
 
-#### Get Placeline in your app
+```swift
+override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        // get placeline view with a frame size and date.
+        let placelineView =  HyperTrack.getPlacelineView(frame: self.view.frame,forDate: Date())
+        // add placeline view as subview
+        self.view.addSubview(placelineView)
+}
+```
+
+#### Use Placeline Data in your app
 Once tracking has started, implement the following function and you are all set to use the rich activity data in your app.
 
 ```swift
