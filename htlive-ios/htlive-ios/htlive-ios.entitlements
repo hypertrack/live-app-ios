@@ -4,20 +4,5 @@
 <dict>
 	<key>aps-environment</key>
 	<string>development</string>
-	<key>com.apple.developer.associated-domains</key>
-	<array>
-        <string>applinks:hypertrack.io</string>
-        <string>applinks:www.hypertrack.io</string>
-        <string>applinks:www.sendeta.com</string>
-        <string>applinks:sendeta.com</string>
-        <string>applinks:eta.fyi</string>
-        <string>applinks:www.eta.fyi</string>
-        <string>applinks:trck.at</string>
-        <string>applinks:www.trck.at</string>
-        <string>applinks:trck.app.link</string>
-        <string>applinks:trck-alternate.app.link</string>
-        <string>applinks:trck-alternate.test-app.link</string>
-        <string>applinks:trck.test-app.link</string>
-	</array>
 </dict>
 </plist>

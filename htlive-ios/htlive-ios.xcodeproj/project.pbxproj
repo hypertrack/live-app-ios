@@ -344,7 +344,7 @@
 								enabled = 1;
 							};
 							com.apple.SafariKeychain = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
