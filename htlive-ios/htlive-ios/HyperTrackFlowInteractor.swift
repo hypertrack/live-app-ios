@@ -73,7 +73,7 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
             var date = DateComponents()
             date.hour = 21
             date.minute = 05
-            self.scheduleLocalNotification(titleOfNotification: "Review your activities", subtitleOfNotification: "Please review today's activities and give feedback", messageOfNotification: "", soundOfNotification: "", dateComponent: date)
+//            self.scheduleLocalNotification(titleOfNotification: "Review your activities", subtitleOfNotification: "Please review today's activities and give feedback", messageOfNotification: "", soundOfNotification: "", dateComponent: date)
         }
     }
     

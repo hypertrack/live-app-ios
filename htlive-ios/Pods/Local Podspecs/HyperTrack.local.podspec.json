@@ -1,6 +1,6 @@
 {
   "name": "HyperTrack.local",
-  "version": "0.4.52",
+  "version": "0.4.60",
   "summary": "HyperTrack - The location SDK",
   "license": {
     "type": "Copyright",
@@ -20,9 +20,6 @@
       "0.11.2"
     ],
     "GzipSwift": [
-
-    ],
-    "JustLog": [
 
     ]
   },
