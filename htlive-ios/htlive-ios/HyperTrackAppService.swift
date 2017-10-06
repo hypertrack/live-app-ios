@@ -60,16 +60,16 @@ class HyperTrackAppService: NSObject {
         return UIApplication.shared.windows.first?.rootViewController
     }
     
-    func getCurrentLookUPId () -> String? {
+    func getCurrentCollectionId() -> String? {
         return UserDefaults.standard.string(forKey: "currentLookUpID")
     }
     
-    func setCurrentLookUpId(lookUpID : String){
-        UserDefaults.standard.set(lookUpID, forKey: "currentLookUpID")
+    func setCurrentCollectionId(collectionId : String){
+        UserDefaults.standard.set(collectionId, forKey: "currentLookUpID")
         UserDefaults.standard.synchronize()
     }
     
-    func deleteCurrentLookUpId(){
+    func deleteCurrentCollectionId(){
         UserDefaults.standard.removeObject(forKey: "currentLookUpID")
         UserDefaults.standard.synchronize()
     }
@@ -114,25 +114,10 @@ class HyperTrackAppService: NSObject {
         if let currentAction  = self.getCurrentTrackedAction(){
             // check for current user
             HyperTrack.completeAction(currentAction.id!)
-            if let lookupId = self.getCurrentLookUPId(){
-                HyperTrack.removeActionFor(lookUpId: lookupId)
+            if let collectionId = self.getCurrentCollectionId(){
+                HyperTrack.removeActionForCollectionId(collectionId: collectionId)
                 
             }
-        }
-    }
-    
-    func startTrackingIfPartOfExistingTrip(){
-        if(getCurrentLookUPId() != nil){
-            HyperTrack.trackActionFor(lookUpId: HyperTrackAppService.sharedInstance.getCurrentLookUPId()!, completionHandler: { (actions, error) in
-                if(actions != nil){
-                    if let action = actions?.last {
-                        if(action.isCompleted()){
-                            self.deleteCurrentLookUpId()
-                        }
-                    }
-                    
-                }
-            })
         }
     }
     
@@ -176,8 +161,8 @@ class HyperTrackAppService: NSObject {
                         }
                         
                         if let htActions = actions {
-                            if let lookupId =  htActions.last?.lookupId{
-                                self.flowInteractor.presentLiveLocationFlow(lookUpId: lookupId,shortCode:shortCode)
+                            if let collectionId =  htActions.last?.collectionId{
+                                self.flowInteractor.presentLiveLocationFlow(collectionId: collectionId,shortCode:shortCode)
                             }else{
                                 self.showAlert(title: "Error", message: "Something went wrong, no look up id in the action")
                             }
@@ -223,7 +208,7 @@ class HyperTrackAppService: NSObject {
 extension HyperTrackAppService : HTEventsDelegate {
     
     func didEnterMonitoredRegion(region:CLRegion){
-        if(region.identifier == self.getCurrentLookUPId()){
+        if(region.identifier == self.getCurrentCollectionId()){
             
             if let currentAction  = self.getCurrentTrackedAction(){
                 // check for current user
@@ -234,8 +219,8 @@ extension HyperTrackAppService : HTEventsDelegate {
     }
     
     func didShowSummary(forAction : HyperTrackAction){
-        if (forAction.lookupId == self.getCurrentLookUPId()){
-            HyperTrackAppService.sharedInstance.deleteCurrentLookUpId()
+        if (forAction.collectionId == self.getCurrentCollectionId()){
+            HyperTrackAppService.sharedInstance.deleteCurrentCollectionId()
             HyperTrackAppService.sharedInstance.deleteCurrentTrackedAction()
         }
     }
@@ -263,9 +248,9 @@ extension HyperTrackAppService: UNUserNotificationCenterDelegate{
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
-        if response.notification.request.identifier == "ReviewPlaceline" {
-            flowInteractor.presentReviewPlaceLineView()
-        }
+//        if response.notification.request.identifier == "ReviewPlaceline" {
+//            flowInteractor.presentReviewPlaceLineView()
+//        }
         
         // Else handle actions for other notification types. . .
     }

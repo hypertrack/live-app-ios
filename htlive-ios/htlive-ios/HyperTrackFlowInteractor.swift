@@ -73,10 +73,16 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
             var date = DateComponents()
             date.hour = 21
             date.minute = 05
-//            self.scheduleLocalNotification(titleOfNotification: "Review your activities", subtitleOfNotification: "Please review today's activities and give feedback", messageOfNotification: "", soundOfNotification: "", dateComponent: date)
+//            / self.scheduleLocalNotification(titleOfNotification: "Review your activities", subtitleOfNotification: "Please review today's activities and give feedback", messageOfNotification: "", soundOfNotification: "", dateComponent: date)
+            
         }
     }
     
+    func removeNotifications(){
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        }
+    }
     
     
     let requestIdentifier = "ReviewPlaceline"
@@ -172,21 +178,21 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
         HyperTrackFlowInteractor.topViewController()?.present(liveLocationController, animated:true, completion: nil)
     }
     
-    func presentLiveLocationFlow(lookUpId : String,shortCode: String){
+    func presentLiveLocationFlow(collectionId : String,shortCode: String){
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         let liveLocationController = storyboard.instantiateViewController(withIdentifier: "ShareVC") as! ShareVC
-        liveLocationController.lookupId = lookUpId
+        liveLocationController.collectionId = collectionId
         liveLocationController.shortCode = shortCode
         HyperTrackFlowInteractor.topViewController()?.present(liveLocationController, animated:true, completion: nil)
     }
     
     
     func presentReviewPlaceLineView(){
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-
-        let activityFeedbackVC = storyboard.instantiateViewController(withIdentifier: "ActivityFeedbackTableVC") as! ActivityFeedbackTableVC
-        let navVC = UINavigationController.init(rootViewController: activityFeedbackVC)
-        HyperTrackFlowInteractor.topViewController()?.present(navVC, animated: true, completion: nil)
+//        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+//
+//        let activityFeedbackVC = storyboard.instantiateViewController(withIdentifier: "ActivityFeedbackTableVC") as! ActivityFeedbackTableVC
+//        let navVC = UINavigationController.init(rootViewController: activityFeedbackVC)
+//        HyperTrackFlowInteractor.topViewController()?.present(navVC, animated: true, completion: nil)
     }
     
     func haveStartedFlow(sender: BaseFlowController) {
