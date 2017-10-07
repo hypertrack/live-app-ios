@@ -142,13 +142,13 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
             
             if (error != nil) {
                 // Handle error on get or create user
-                self.alertError(msg: (error?.type.rawValue)!)
+                self.alertError(msg: (error?.errorMessage)!)
                 return
             }
             
             if (user != nil) {
                 // User successfully created
-                print("User created:", user!.id)
+                print("User created:", user!.id ?? "")
                 HyperTrack.startTracking()
                 self.onboardingViewDelegate?.didCreatedUser(user: user!,currentController:self)
                 if (phone != "") {

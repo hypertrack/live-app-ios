@@ -222,6 +222,7 @@ extension HyperTrackAppService : HTEventsDelegate {
         if (forAction.collectionId == self.getCurrentCollectionId()){
             HyperTrackAppService.sharedInstance.deleteCurrentCollectionId()
             HyperTrackAppService.sharedInstance.deleteCurrentTrackedAction()
+            HyperTrack.removeActionForCollectionId(collectionId: forAction.collectionId! ,clearMap: false)
         }
     }
     
@@ -239,20 +240,13 @@ extension HyperTrackAppService: UNUserNotificationCenterDelegate{
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        // Update the app interface directly.
-        
-        // Play a sound.
         completionHandler(UNNotificationPresentationOptions.sound)
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
-//        if response.notification.request.identifier == "ReviewPlaceline" {
-//            flowInteractor.presentReviewPlaceLineView()
-//        }
-        
-        // Else handle actions for other notification types. . .
+
     }
     
 

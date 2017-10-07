@@ -71,7 +71,8 @@ class ShareVC: UIViewController  {
             self.isDeeplinked = true
             self.trackTripFromShortCode(shortCode: shortCode)
         }
-        else if(HyperTrackAppService.sharedInstance.getCurrentCollectionId() != nil) {
+        else if(HyperTrackAppService.sharedInstance.getCurrentCollectionId() != nil
+            && HyperTrackAppService.sharedInstance.getCurrentCollectionId() != "") {
             self.isDeeplinked = true
             self.trackTripFromCollectionId(collectionId: HyperTrackAppService.sharedInstance.getCurrentCollectionId()!)
         }
