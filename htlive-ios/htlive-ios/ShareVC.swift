@@ -1,4 +1,4 @@
-//
+ //
 //  ShareVC.swift
 //  htlive-ios
 //
@@ -33,6 +33,7 @@ class ShareVC: UIViewController  {
         return Bundle.main.loadNibNamed("LiveLocationAlert", owner: self, options: nil)?.first as? LiveLocationAlertView
     }()
     
+    var locationSelectionType : LocationSelectionType = LocationSelectionType.UNKNOWN
     
     @IBOutlet var placeHolderMapView : MKMapView!
     
@@ -131,7 +132,6 @@ class ShareVC: UIViewController  {
                 if let actions = actions {
                     if actions.count > 0 {
                         HyperTrackAppService.sharedInstance.currentAction = actions.last
-                        
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                             if (!self.doesCollectionIdHasMyUserId(actions: actions)){
                                 if (!(actions.last?.isCompleted())!){
@@ -155,8 +155,6 @@ class ShareVC: UIViewController  {
             })
         }
     }
-    
-    
     
     func showHypertrackView(){
         if(hyperTrackMap == nil){
@@ -248,6 +246,7 @@ class ShareVC: UIViewController  {
         self.liveLocationAlert?.actionButton.setTitle("Stop Sharing", for: UIControlState.normal)
         self.liveLocationAlert?.actionButton.addTarget(self, action: #selector(stopTracking(_:)), for: UIControlEvents.touchUpInside)
     }
+    
     func stopTracking(_ sender: Any) {
         HyperTrackAppService.sharedInstance.completeAction()
         removeCustomAlert()
@@ -262,7 +261,6 @@ class ShareVC: UIViewController  {
         self.liveLocationAlert?.activityIndicator.stopAnimating()
         self.liveLocationAlert?.removeFromSuperview()
     }
-    
     
     func confirmLocation(_ sender: Any){
         self.selectedLocation  = hyperTrackMap?.confirmLocation()
@@ -297,11 +295,13 @@ class ShareVC: UIViewController  {
                     
                     if let actions = actions {
                         if actions.count > 0 {
-                            HyperTrackAppService.sharedInstance.setCurrentCollectionId(collectionId: (action.collectionId)!)
+                          HyperTrackAppService.sharedInstance.setCurrentCollectionId(collectionId: (action.collectionId)!)
                             HyperTrackAppService.sharedInstance.setCurrentTrackedAction(action: action)
-                            
+                            HyperTrackAppService.sharedInstance.setLocationSelectionType(locationSelectionType: self.locationSelectionType)
                             // add geofence code here
-                            HyperTrack.startMonitoringForEntryAtPlace(place: place,radius:CLLocationDistance(self.monitorRegionRadius),identifier:(action.collectionId)!)
+                            if self.locationSelectionType != LocationSelectionType.MY_LOCATION{
+                                HyperTrack.startMonitoringForEntryAtPlace(place: place,radius:CLLocationDistance(self.monitorRegionRadius),identifier:(action.collectionId)!)
+                            }
                             
                             
                             self.removeCustomAlert()
@@ -356,8 +356,6 @@ class ShareVC: UIViewController  {
         }
         return nil
     }
-    
-    
 }
 
 extension ShareVC:HTViewCustomizationDelegate{
@@ -370,10 +368,10 @@ extension ShareVC:HTViewCustomizationDelegate{
 
 extension ShareVC:HTViewInteractionDelegate {
     
-    
-    func didSelectLocation(place : HyperTrackPlace?){
+    func didSelectLocation(place : HyperTrackPlace?, selectionType:LocationSelectionType){
         self.changeToStartTrackingButton()
         self.selectedLocation = place
+        self.locationSelectionType = selectionType
         showCustomAlert()
     }
     
@@ -450,10 +448,12 @@ extension ShareVC:HTViewInteractionDelegate {
                     if let collectionId = action.collectionId {
                         HyperTrackAppService.sharedInstance.setCurrentCollectionId(collectionId: collectionId)
                         HyperTrackAppService.sharedInstance.setCurrentTrackedAction(action: action)
+                        HyperTrackAppService.sharedInstance.setLocationSelectionType(locationSelectionType: self.locationSelectionType)
 
                         // geofence
-                        HyperTrack.startMonitoringForEntryAtPlace(place: expectedPlace,radius:CLLocationDistance(self.monitorRegionRadius),identifier: collectionId)
-                        
+                        if self.locationSelectionType != LocationSelectionType.MY_LOCATION{
+                            HyperTrack.startMonitoringForEntryAtPlace(place: expectedPlace,radius:CLLocationDistance(self.monitorRegionRadius),identifier: collectionId)
+                        }
                     }else{
                         self.showAlert(title: "Error", message: "No collectionId present in action")
                     }
@@ -463,9 +463,6 @@ extension ShareVC:HTViewInteractionDelegate {
             })
         }
     }
-    
-    
-    
     
     func showShareLocationButton(_ sender: Any){
         self.shareLocationButton.isHidden = false
@@ -605,9 +602,12 @@ extension ShareVC:ShareLiveLocationDelegate{
                     if let collectionId = action.collectionId {
                         HyperTrackAppService.sharedInstance.setCurrentCollectionId(collectionId: collectionId)
                         HyperTrackAppService.sharedInstance.setCurrentTrackedAction(action: action)
+                    HyperTrackAppService.sharedInstance.setLocationSelectionType(locationSelectionType: self.locationSelectionType)
 
                         // geofence
-                        HyperTrack.startMonitoringForEntryAtPlace(place: expectedPlace,radius:CLLocationDistance(self.monitorRegionRadius),identifier: collectionId)
+                        if self.locationSelectionType != LocationSelectionType.MY_LOCATION{
+                            HyperTrack.startMonitoringForEntryAtPlace(place: expectedPlace,radius:CLLocationDistance(self.monitorRegionRadius),identifier: collectionId)
+                        }
                         
                         
                     }else{

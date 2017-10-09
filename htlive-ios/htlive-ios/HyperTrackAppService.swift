@@ -21,7 +21,8 @@ class HyperTrackAppService: NSObject {
     var currentAction : HyperTrackAction? = nil
     var currentTrackedAction : HyperTrackAction? = nil
     var defaultRootViewController : UIViewController? = nil
-
+    var completedActions = [String]()
+    
     func applicationDidFinishLaunchingWithOptions(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         setUpSDKs()
         self.defaultRootViewController = UIApplication.shared.windows.first?.rootViewController
@@ -31,7 +32,7 @@ class HyperTrackAppService: NSObject {
         return true
     }
     
-       
+    
     func setupHyperTrack() {
         HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
         HyperTrack.setEventsDelegate(eventDelegate: self)
@@ -42,7 +43,7 @@ class HyperTrackAppService: NSObject {
     
     
     func setupFabric(){
-         Fabric.with([Crashlytics.self])
+        Fabric.with([Crashlytics.self])
     }
     
     
@@ -110,13 +111,37 @@ class HyperTrackAppService: NSObject {
         UserDefaults.standard.synchronize()
     }
     
+    func setLocationSelectionType(locationSelectionType:LocationSelectionType){
+        UserDefaults.standard.set(locationSelectionType.rawValue, forKey: "locationSelectionType")
+        UserDefaults.standard.synchronize()
+    }
+    
+    func deleteLocationSelectionType(){
+        UserDefaults.standard.removeObject(forKey: "locationSelectionType")
+        UserDefaults.standard.synchronize()
+    }
+    
+    func getLocationSelectionType()-> LocationSelectionType? {
+        if let locationSelectionType = UserDefaults.standard.object(forKey: "locationSelectionType") {
+            return LocationSelectionType.init(rawValue: locationSelectionType as! Int)
+        }
+        return LocationSelectionType.UNKNOWN
+    }
+    
     func completeAction(){
         if let currentAction  = self.getCurrentTrackedAction(){
             // check for current user
-            HyperTrack.completeAction(currentAction.id!)
-            if let collectionId = self.getCurrentCollectionId(){
-                HyperTrack.removeActionForCollectionId(collectionId: collectionId)
-                
+            if currentAction.isCompleted(){
+                if (currentAction.collectionId == self.getCurrentCollectionId()){
+                    HyperTrackAppService.sharedInstance.deleteCurrentCollectionId()
+                    HyperTrackAppService.sharedInstance.deleteCurrentTrackedAction()
+                    HyperTrack.removeActionForCollectionId(collectionId: currentAction.collectionId! ,clearMap: false)
+                }
+            }else{
+                HyperTrack.completeAction(currentAction.id!)
+                if let collectionId = self.getCurrentCollectionId(){
+                    HyperTrack.removeActionForCollectionId(collectionId: collectionId)
+                }
             }
         }
     }
@@ -175,7 +200,7 @@ class HyperTrackAppService: NSObject {
                 }
             }
         }
-       return true
+        return true
     }
     
     fileprivate func showAlert(title: String?, message: String?) {
@@ -201,7 +226,7 @@ class HyperTrackAppService: NSObject {
         notification.fireDate = Date.init(timeInterval: 3, since: Date())
         UIApplication.shared.scheduleLocalNotification(notification)
     }
-
+    
     
 }
 
@@ -227,13 +252,43 @@ extension HyperTrackAppService : HTEventsDelegate {
     }
     
     func didRefreshData(forAction: HyperTrackAction){
-        
-        
-        
+        if let action = getCurrentTrackedAction() {
+            if action.id == forAction.id{
+                self.setCurrentTrackedAction(action: forAction)
+            }
+        }
     }
-
     
-    
+    func didRefreshData(forCollectionId: String, actions:[HyperTrackAction]?){
+        if getLocationSelectionType() == LocationSelectionType.MY_LOCATION{
+            if let actions = actions {
+                if actions.count > 1 {
+                    var allActionsCompleted = true
+                    for action in actions{
+                        if let trackedAction = getCurrentTrackedAction() {
+                            if action.id != trackedAction.id{
+                                if !action.isCompleted(){
+                                    allActionsCompleted = false
+                                    break
+                                }
+                            }
+                        }
+                    }
+                    
+                    if allActionsCompleted{
+                        if let currentAction  = self.getCurrentTrackedAction(){
+                            // check for current user
+                            if !completedActions.contains(currentAction.id!){
+                                HyperTrack.completeAction(currentAction.id!)
+                                completedActions.append(currentAction.id!)
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension HyperTrackAppService: UNUserNotificationCenterDelegate{
@@ -246,10 +301,10 @@ extension HyperTrackAppService: UNUserNotificationCenterDelegate{
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
-
+        
     }
     
-
+    
 }
 
 extension HyperTrackAppService {
@@ -263,7 +318,7 @@ extension HyperTrackAppService {
                 if (params!["auto_accept"] as? Bool == true){
                     self.flowInteractor.acceptInvitation(params!["account_id"] as! String)
                 }else{
-//                    self.flowInteractor.addAcceptInviteFlow(params!["user_id"] as! String, params!["account_id"] as! String, params!["account_name"] as! String)
+                    //                    self.flowInteractor.addAcceptInviteFlow(params!["user_id"] as! String, params!["account_id"] as! String, params!["account_name"] as! String)
                     
                 }
             }
