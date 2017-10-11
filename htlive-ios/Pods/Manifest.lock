@@ -3,6 +3,9 @@ PODS:
   - Branch (0.19.5):
     - Branch/Core (= 0.19.5)
   - Branch/Core (0.19.5)
+  - CocoaLumberjack/Default (3.3.0)
+  - CocoaLumberjack/Swift (3.3.0):
+    - CocoaLumberjack/Default
   - Crashlytics (3.8.6):
     - Fabric (~> 1.6.3)
   - Fabric (1.6.13)
@@ -10,6 +13,7 @@ PODS:
   - GzipSwift (4.0.0)
   - HyperTrack.local (0.4.61):
     - Alamofire (= 4.4.0)
+    - CocoaLumberjack/Swift
     - GzipSwift
     - SQLite.swift (= 0.11.2)
   - MBProgressHUD (1.0.0)
@@ -41,11 +45,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
   Branch: 25312ed2f58a569df58e6560238433c2a9d58e99
+  CocoaLumberjack: 3c8c74683302f9012bb168e1c4b7ae3c0b558431
   Crashlytics: 95d05f4e4c19a771250c4bd9ce344d996de32bbf
   Fabric: 2fb5676bc811af011a04513451f463dac6803206
   FSCalendar: a04b09f16f811bc92e82f3cf852a15225233b9d5
   GzipSwift: 1aab4a3d3b2f2509f78c7405bbaf535184ac6c7f
-  HyperTrack.local: 45464709a059024bc24948749a09452ab0a2fee8
+  HyperTrack.local: 66887ba58a587bc80bbe8b07628cce40016a690d
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MediumMenu: ccae15abe7fc85d4cc0c5bbff48735607d6087f1
   PhoneNumberKit: a739c359d05701e2e9745654f53e7c64379c2516

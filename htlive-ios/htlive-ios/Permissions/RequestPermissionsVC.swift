@@ -90,12 +90,7 @@ class RequestPermissionsVC : UIViewController {
                 self.dismissViewController()
             }
         }
-        
-        
     }
-    
-    
-    
     
     func onForegroundNotification(_ notification: Notification){
         if (HyperTrack.locationAuthorizationStatus() == .authorizedAlways) {
@@ -109,7 +104,6 @@ class RequestPermissionsVC : UIViewController {
             }
         }
     }
-    
     
     @IBAction func didTapGoToSettings(_ sender: Any) {
         UIApplication.shared.open(URL(string:UIApplicationOpenSettingsURLString)!)

@@ -21,6 +21,9 @@
     ],
     "GzipSwift": [
 
+    ],
+    "CocoaLumberjack/Swift": [
+
     ]
   },
   "platforms": {
@@ -38,7 +41,8 @@
     "HyperTrack/Utils/*.swift",
     "HyperTrack/Map/*.swift",
     "HyperTrack/*.h",
-    "HyperTrack/DB/*.swift"
+    "HyperTrack/DB/*.swift",
+    "HyperTrack/Logging/*.swift"
   ],
   "resource_bundles": {
     "HyperTrack": [
