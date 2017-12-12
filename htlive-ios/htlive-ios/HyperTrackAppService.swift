@@ -125,7 +125,7 @@ class HyperTrackAppService: NSObject {
         if let locationSelectionType = UserDefaults.standard.object(forKey: "locationSelectionType") {
             return LocationSelectionType.init(rawValue: locationSelectionType as! Int)
         }
-        return LocationSelectionType.UNKNOWN
+        return LocationSelectionType.unknown
     }
     
     func completeAction(){
@@ -138,7 +138,14 @@ class HyperTrackAppService: NSObject {
                     HyperTrack.removeActionForCollectionId(collectionId: currentAction.collectionId! ,clearMap: false)
                 }
             }else{
-                HyperTrack.completeAction(currentAction.id!)
+                HyperTrack.completeActionInSynch(currentAction.id!, completionHandler: { (action, error) in
+                    if error != nil {
+                        NSLog("error")
+
+                    }else{
+                        NSLog("success")
+                    }
+                })
                 if let collectionId = self.getCurrentCollectionId(){
                     HyperTrack.removeActionForCollectionId(collectionId: collectionId)
                 }
@@ -231,6 +238,14 @@ class HyperTrackAppService: NSObject {
 }
 
 extension HyperTrackAppService : HTEventsDelegate {
+    func didReceiveEvent(_ event: HyperTrackEvent) {
+        
+    }
+    
+    func didFailWithError(_ error: HyperTrackError) {
+        
+    }
+    
     
     func didEnterMonitoredRegion(region:CLRegion){
         if(region.identifier == self.getCurrentCollectionId()){
@@ -260,7 +275,7 @@ extension HyperTrackAppService : HTEventsDelegate {
     }
     
     func didRefreshData(forCollectionId: String, actions:[HyperTrackAction]?){
-        if getLocationSelectionType() == LocationSelectionType.MY_LOCATION{
+        if getLocationSelectionType() == LocationSelectionType.myLocation{
             if let actions = actions {
                 if actions.count > 1 {
                     var allActionsCompleted = true

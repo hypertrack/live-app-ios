@@ -91,44 +91,58 @@ class placeCell : UITableViewCell {
         self.placeCard.backgroundColor = UIColor.white
     }
     
-    func setStats(activity : HyperTrackActivity) {
+    func setStats(activity : HyperTrackActivity?) {
         
-        self.startLabel.text = activity.startedAt?.toString(dateFormat: "HH:mm")
-
-        if activity.activity == nil {
-            self.status.text = "Stop"
-            self.icon.image = #imageLiteral(resourceName: "stop")
-            self.stats.text = activity.place?.address
+        if activity == nil {
+            self.stats.text = ""
+            self.startLabel.text = ""
+            self.icon.image = nil
+            return
+        }
+        
+        if let activity = activity {
+            self.stats.text = ""
+            self.startLabel.text = activity.startedAt?.toString(dateFormat: "HH:mm")
+            self.icon.image = nil
             
-        } else {
-            
-            self.status.text = activity.activity?.firstCharacterUpperCase()
-            if activity.activity == "walk" { self.icon.image = #imageLiteral(resourceName: "walk") }
-            if activity.activity == "drive" { self.icon.image = #imageLiteral(resourceName: "driving")}
-
-            
-            guard let distance = activity.distance else { return }
-            let distanceKM : Double = (Double(distance)/1000.0).roundTo(places: 2)
-            var subtitleText = ""
-            
-            if let startedAt = activity.startedAt {
-                var timeElapsed: Double?
+            if activity.activity == nil {
+                self.status.text = "Stop"
+                self.icon.image = #imageLiteral(resourceName: "stop")
+                self.stats.text = activity.place?.address
                 
-                if activity.endedAt != nil {
-                    timeElapsed = startedAt.timeIntervalSince(activity.endedAt!)
-                } else {
-                    timeElapsed = startedAt.timeIntervalSinceNow
+            } else {
+                
+                self.status.text = activity.activity?.firstCharacterUpperCase()
+                if activity.activity == "walk" { self.icon.image = #imageLiteral(resourceName: "walk") }
+                if activity.activity == "drive" { self.icon.image = #imageLiteral(resourceName: "driving")}
+                
+                if activity.activity == "" {
+                    self.status.text = "Unknown"
                 }
-                let timeElapsedMinutes = Int(floor((-1 * Double(timeElapsed! / 60))))
-                var timeText = "\(timeElapsedMinutes.description) min  | "
-                if (timeElapsedMinutes < 1){
-                   timeText =   "\(Int(-1 * timeElapsed!).description ) sec  | "
+                
+                guard let distance = activity.distance else { return }
+                let distanceKM : Double = (Double(distance)/1000.0).roundTo(places: 2)
+                var subtitleText = ""
+                
+                if let startedAt = activity.startedAt {
+                    var timeElapsed: Double?
+                    
+                    if activity.endedAt != nil {
+                        timeElapsed = startedAt.timeIntervalSince(activity.endedAt!)
+                    } else {
+                        timeElapsed = startedAt.timeIntervalSinceNow
+                    }
+                    let timeElapsedMinutes = Int(floor((-1 * Double(timeElapsed! / 60))))
+                    var timeText = "\(timeElapsedMinutes.description) min  | "
+                    if (timeElapsedMinutes < 1){
+                        timeText =   "\(Int(-1 * timeElapsed!).description ) sec  | "
+                    }
+                    subtitleText = subtitleText + timeText
                 }
-                subtitleText = subtitleText + timeText
+                
+                subtitleText = subtitleText + "\(distanceKM.description) km"
+                self.stats.text = subtitleText
             }
-            
-            subtitleText = subtitleText + "\(distanceKM.description) km"
-            self.stats.text = subtitleText
         }
     }
     

@@ -146,7 +146,6 @@ class ViewController: UIViewController {
             calendar.select(Date())
             return
         }
-        
         calendar.reloadData()
         calendar.select(Date())
     }
@@ -166,13 +165,10 @@ class ViewController: UIViewController {
 
     
     override func viewWillAppear(_ animated: Bool) {
-        
         selectCalendarToCurrentDate()
         self.dateLabel.text = Date().toString(dateFormat: "dd MMMM")
         getPlaceLineData()
     }
-    
-    
     
     func getPlaceLineData(){
         if(HyperTrack.getUserId() != nil) {
@@ -211,30 +207,37 @@ class ViewController: UIViewController {
 extension ViewController : UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        if section == 0 {
+//            return 1
+//        }
         guard segments.count != 0 else { return 1 }
         return segments.count
     }
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
        return 72
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        
         return 1
     }
     
-    func getTopVisibleRow() {        
-        let array = placeLineTable.indexPathsForVisibleRows
-    }
-    
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! placeCell
+        
+//        if indexPath.section == 0 {
+//            cell.placeCard.backgroundColor = UIColor.red
+//            if let activity = HyperTrack.getCurrentActivity(){
+//                cell.setStats(activity: activity)
+//            }else{
+//                cell.noResults()
+//            }
+//            return cell
+//        }
+        
         cell.layer.backgroundColor = UIColor.clear.cgColor
+
         if segments.count != 0 {
             cell.setStats(activity: segments[indexPath.row])
         } else {
@@ -266,9 +269,9 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         annotations = [MKPointAnnotation]()
         if(polyLine != nil){
             self.mapView.remove(polyLine!)
-
         }
         
+       
         if (self.segments.count == 0){
             return
         }
@@ -296,7 +299,9 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
     
     
     func drawPolyLineForActivity(activity : HyperTrackActivity){
-        mapPolylineFor(encodedPolyline: activity.encodedPolyline!)
+        if let polyline = activity.encodedPolyline {
+            mapPolylineFor(encodedPolyline: polyline)
+        }
     }
     
     func drawPointForActivity(activity : HyperTrackActivity){
@@ -310,13 +315,10 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as? placeCell
         cell?.deselect()
     }
-    
-    
 }
 
 

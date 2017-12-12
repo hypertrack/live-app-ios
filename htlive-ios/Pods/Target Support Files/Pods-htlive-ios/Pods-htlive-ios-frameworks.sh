@@ -108,10 +108,12 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/FSCalendar/FSCalendar.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/GzipSwift/Gzip.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/HyperTrack.local/HyperTrack.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/KSCrash/KSCrash.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MediumMenu/MediumMenu.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PhoneNumberKit/PhoneNumberKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
@@ -120,10 +122,12 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/FSCalendar/FSCalendar.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/GzipSwift/Gzip.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/HyperTrack.local/HyperTrack.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/KSCrash/KSCrash.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MediumMenu/MediumMenu.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PhoneNumberKit/PhoneNumberKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

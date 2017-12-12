@@ -5,67 +5,56 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="00: Verifying required fastlane version" time="0.00235">
+      <testcase classname="fastlane.lanes" name="0: Verifying required fastlane version" time="0.002109">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="01: default_platform" time="0.001723">
+      <testcase classname="fastlane.lanes" name="1: default_platform" time="0.001612">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="02: notification" time="0.196257">
+      <testcase classname="fastlane.lanes" name="2: notification" time="0.206071">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="03: increment_build_number_in_plist" time="6.437928">
+      <testcase classname="fastlane.lanes" name="3: increment_build_number_in_plist" time="4.000787">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="04: prompt" time="12.285612">
+      <testcase classname="fastlane.lanes" name="4: prompt" time="2.124725">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="05: gym" time="134.55457">
+      <testcase classname="fastlane.lanes" name="5: gym" time="150.60514">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="06: pilot" time="1656.78486">
+      <testcase classname="fastlane.lanes" name="6: pilot" time="1871.446287">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="07: notification" time="0.182438">
+      <testcase classname="fastlane.lanes" name="7: notification" time="0.204785">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="08: slack" time="0.984543">
+      <testcase classname="fastlane.lanes" name="8: slack" time="0.829018">
+        
+          <failure message="/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/actions/actions_helper.rb:48:in `execute_action'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/runner.rb:230:in `block in execute_action'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/runner.rb:226:in `chdir'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/runner.rb:226:in `execute_action'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/runner.rb:148:in `trigger_action_by_name'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/fast_file.rb:146:in `method_missing'&#10;Fastfile:57:in `block (2 levels) in parsing_binding'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/runner.rb:274:in `call'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/runner.rb:274:in `execute_flow_block'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/runner.rb:54:in `block in execute'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/runner.rb:45:in `chdir'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/runner.rb:45:in `execute'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/lane_manager.rb:52:in `cruise_lane'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/command_line_handler.rb:30:in `handle'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/commands_generator.rb:104:in `block (2 levels) in run'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/commander-fastlane-4.4.5/lib/commander/command.rb:178:in `call'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/commander-fastlane-4.4.5/lib/commander/command.rb:178:in `call'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/commander-fastlane-4.4.5/lib/commander/command.rb:153:in `run'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/commander-fastlane-4.4.5/lib/commander/runner.rb:476:in `run_active_command'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:64:in `run!'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/commander-fastlane-4.4.5/lib/commander/delegates.rb:15:in `run!'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/commands_generator.rb:303:in `run'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/commands_generator.rb:42:in `start'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/cli_tools_distributor.rb:66:in `take_off'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/bin/fastlane:20:in `&lt;top (required)&gt;'&#10;/Users/ravi/.fastlane/bin/bundle/bin/fastlane:22:in `load'&#10;/Users/ravi/.fastlane/bin/bundle/bin/fastlane:22:in `&lt;main&gt;'&#10;&#10;Error pushing Slack message, maybe the integration has no permission to post on this channel? Try removing the channel parameter in your Fastfile, this is usually caused by a misspelled or changed group/channel name or an expired SLACK_URL" />
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="09: slack" time="0.806811">
+      <testcase classname="fastlane.lanes" name="9: slack" time="0.40513">
         
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="10: get_build_number_from_plist" time="3.93823">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="11: slack" time="0.801143">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="12: notification" time="0.184896">
+          <failure message="/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/actions/actions_helper.rb:48:in `execute_action'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/runner.rb:230:in `block in execute_action'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/runner.rb:226:in `chdir'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/runner.rb:226:in `execute_action'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/runner.rb:148:in `trigger_action_by_name'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/fast_file.rb:146:in `method_missing'&#10;Fastfile:79:in `block (2 levels) in parsing_binding'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/runner.rb:62:in `call'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/runner.rb:62:in `block in execute'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/runner.rb:59:in `chdir'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/runner.rb:59:in `rescue in execute'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/runner.rb:44:in `execute'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/lane_manager.rb:52:in `cruise_lane'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/command_line_handler.rb:30:in `handle'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/commands_generator.rb:104:in `block (2 levels) in run'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/commander-fastlane-4.4.5/lib/commander/command.rb:178:in `call'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/commander-fastlane-4.4.5/lib/commander/command.rb:178:in `call'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/commander-fastlane-4.4.5/lib/commander/command.rb:153:in `run'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/commander-fastlane-4.4.5/lib/commander/runner.rb:476:in `run_active_command'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:64:in `run!'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/commander-fastlane-4.4.5/lib/commander/delegates.rb:15:in `run!'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/commands_generator.rb:303:in `run'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/commands_generator.rb:42:in `start'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/fastlane/lib/fastlane/cli_tools_distributor.rb:66:in `take_off'&#10;/Users/ravi/.fastlane/bin/bundle/lib/ruby/gems/2.2.0/gems/fastlane-2.55.0/bin/fastlane:20:in `&lt;top (required)&gt;'&#10;/Users/ravi/.fastlane/bin/bundle/bin/fastlane:22:in `load'&#10;/Users/ravi/.fastlane/bin/bundle/bin/fastlane:22:in `&lt;main&gt;'&#10;&#10;Error pushing Slack message, maybe the integration has no permission to post on this channel? Try removing the channel parameter in your Fastfile, this is usually caused by a misspelled or changed group/channel name or an expired SLACK_URL" />
         
       </testcase>
     

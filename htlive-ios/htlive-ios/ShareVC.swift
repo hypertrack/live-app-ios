@@ -33,7 +33,7 @@ class ShareVC: UIViewController  {
         return Bundle.main.loadNibNamed("LiveLocationAlert", owner: self, options: nil)?.first as? LiveLocationAlertView
     }()
     
-    var locationSelectionType : LocationSelectionType = LocationSelectionType.UNKNOWN
+    var locationSelectionType : LocationSelectionType = LocationSelectionType.unknown
     
     @IBOutlet var placeHolderMapView : MKMapView!
     
@@ -299,7 +299,7 @@ class ShareVC: UIViewController  {
                             HyperTrackAppService.sharedInstance.setCurrentTrackedAction(action: action)
                             HyperTrackAppService.sharedInstance.setLocationSelectionType(locationSelectionType: self.locationSelectionType)
                             // add geofence code here
-                            if self.locationSelectionType != LocationSelectionType.MY_LOCATION{
+                            if self.locationSelectionType != LocationSelectionType.myLocation{
                                 HyperTrack.startMonitoringForEntryAtPlace(place: place,radius:CLLocationDistance(self.monitorRegionRadius),identifier:(action.collectionId)!)
                             }
                             
@@ -451,7 +451,7 @@ extension ShareVC:HTViewInteractionDelegate {
                         HyperTrackAppService.sharedInstance.setLocationSelectionType(locationSelectionType: self.locationSelectionType)
 
                         // geofence
-                        if self.locationSelectionType != LocationSelectionType.MY_LOCATION{
+                        if self.locationSelectionType != LocationSelectionType.myLocation{
                             HyperTrack.startMonitoringForEntryAtPlace(place: expectedPlace,radius:CLLocationDistance(self.monitorRegionRadius),identifier: collectionId)
                         }
                     }else{
@@ -605,7 +605,7 @@ extension ShareVC:ShareLiveLocationDelegate{
                     HyperTrackAppService.sharedInstance.setLocationSelectionType(locationSelectionType: self.locationSelectionType)
 
                         // geofence
-                        if self.locationSelectionType != LocationSelectionType.MY_LOCATION{
+                        if self.locationSelectionType != LocationSelectionType.myLocation{
                             HyperTrack.startMonitoringForEntryAtPlace(place: expectedPlace,radius:CLLocationDistance(self.monitorRegionRadius),identifier: collectionId)
                         }
                         
