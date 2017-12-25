@@ -133,14 +133,22 @@ class placeCell : UITableViewCell {
                         timeElapsed = startedAt.timeIntervalSinceNow
                     }
                     let timeElapsedMinutes = Int(floor((-1 * Double(timeElapsed! / 60))))
-                    var timeText = "\(timeElapsedMinutes.description) min  | "
+                    var timeText = "\(timeElapsedMinutes.description) min  "
                     if (timeElapsedMinutes < 1){
-                        timeText =   "\(Int(-1 * timeElapsed!).description ) sec  | "
+                        timeText =   "\(Int(-1 * timeElapsed!).description ) sec  "
                     }
                     subtitleText = subtitleText + timeText
                 }
+                if activity.type != "stop" {
+                    subtitleText = subtitleText + " | " + "\(distanceKM.description) km"
+                }else{
+                    if let address = activity.place?.address{
+                        if address != ""{
+                            subtitleText = subtitleText + " | " + address
+                        }
+                    }
+                }
                 
-                subtitleText = subtitleText + "\(distanceKM.description) km"
                 self.stats.text = subtitleText
             }
         }
