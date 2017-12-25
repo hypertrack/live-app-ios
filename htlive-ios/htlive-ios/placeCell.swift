@@ -102,7 +102,7 @@ class placeCell : UITableViewCell {
         
         if let activity = activity {
             self.stats.text = ""
-            self.startLabel.text = activity.startedAt?.toString(dateFormat: "HH:mm")
+            self.startLabel.text = activity.startedAt?.toString(dateFormat: "HH:mm a")
             self.icon.image = nil
             
             if activity.activity == nil {
