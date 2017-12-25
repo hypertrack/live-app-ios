@@ -5,7 +5,6 @@ default_platform :ios
 $changeLog = “”
 platform :ios do
   before_all do
-    ENV["SLACK_URL"] = "https://hooks.slack.com/services/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" # Webhook URL created in Slack
     notification(message:"Build Started! , Enter ChangeLog -> ”)
 
   end
@@ -54,24 +53,8 @@ platform :ios do
 
   after_all do |lane|
     # This block is called, only if the executed lane was successful
-     slack(
-        message: “Changelog : \n” + $changelog,
-	default_payloads: [],
-      )
-       
-	file = File.open(“../known_issues.txt”, "rb")
-	contents = file.read
-     slack(
-        message: "Known Issues: \n” + contents,
-	default_payloads: [],
-      ) 
-
-     buildNumber = get_build_number_from_plist
-     slack(
-        message: “Build uploaded to TestFlight. Build Number : “ + buildNumber,
-        success: true
-      )
-    notification(message:"Build Deployed! -> ” + buildNumber)
+  	buildNumber = get_build_number_from_plist
+  	notification(message:"Build Deployed! -> ” + buildNumber)
 
   end
 

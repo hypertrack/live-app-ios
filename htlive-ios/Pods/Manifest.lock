@@ -11,7 +11,7 @@ PODS:
   - Fabric (1.7.2)
   - FSCalendar (2.7.9)
   - GzipSwift (4.0.2)
-  - HyperTrack.local (0.4.67):
+  - HyperTrack.local (0.5.2):
     - Alamofire (>= 4.4.0)
     - CocoaLumberjack/Swift
     - GzipSwift
@@ -66,7 +66,7 @@ SPEC CHECKSUMS:
   Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
   FSCalendar: a04b09f16f811bc92e82f3cf852a15225233b9d5
   GzipSwift: 3faa3c3aece7cb0b0112c5e0c2f433164f683ae9
-  HyperTrack.local: bfe1757bac54b8d66352df0cbd3f57d463b26e60
+  HyperTrack.local: 114aa63deb9a09da8bd2e69f3ed6967f2ad181d1
   KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MediumMenu: ccae15abe7fc85d4cc0c5bbff48735607d6087f1
