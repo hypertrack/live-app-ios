@@ -5,52 +5,52 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: Verifying required fastlane version" time="0.005504">
+      <testcase classname="fastlane.lanes" name="0: Verifying required fastlane version" time="0.004874">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: default_platform" time="0.005548">
+      <testcase classname="fastlane.lanes" name="1: default_platform" time="0.004406">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: notification" time="0.225826">
+      <testcase classname="fastlane.lanes" name="2: notification" time="0.187023">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: increment_build_number_in_plist" time="5.674906">
+      <testcase classname="fastlane.lanes" name="3: increment_build_number_in_plist" time="4.817627">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: prompt" time="0.307402">
+      <testcase classname="fastlane.lanes" name="4: prompt" time="0.786818">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="5: gym" time="170.528708">
+      <testcase classname="fastlane.lanes" name="5: gym" time="169.533375">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="6: pilot" time="1709.435495">
+      <testcase classname="fastlane.lanes" name="6: pilot" time="1468.419123">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="7: notification" time="0.198988">
+      <testcase classname="fastlane.lanes" name="7: notification" time="0.179365">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="8: get_build_number_from_plist" time="3.100569">
+      <testcase classname="fastlane.lanes" name="8: get_build_number_from_plist" time="3.731824">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="9: notification" time="0.180977">
+      <testcase classname="fastlane.lanes" name="9: notification" time="1.225298">
         
       </testcase>
     

@@ -102,7 +102,7 @@ class placeCell : UITableViewCell {
         
         if let activity = activity {
             self.stats.text = ""
-            self.startLabel.text = activity.startedAt?.toString(dateFormat: "HH:mm a")
+            self.startLabel.text = activity.startedAt?.toString(dateFormat: "h:mm a")
             self.icon.image = nil
             
             if activity.activity == nil {
@@ -115,13 +115,17 @@ class placeCell : UITableViewCell {
                 self.status.text = activity.activity?.firstCharacterUpperCase()
                 if activity.activity == "walk" { self.icon.image = #imageLiteral(resourceName: "walk") }
                 if activity.activity == "drive" { self.icon.image = #imageLiteral(resourceName: "driving")}
-                
+                if activity.activity == "stop" { self.icon.image = #imageLiteral(resourceName: "stop")}
+
                 if activity.activity == "" {
+                    self.status.text = "Unknown"
+                }
+                else if activity.activity == "unknown"{
                     self.status.text = "Unknown"
                 }
                 
                 guard let distance = activity.distance else { return }
-                let distanceKM : Double = (Double(distance)/1000.0).roundTo(places: 2)
+                let distanceKM : Double = (Double(distance)/1000.0).roundTo(places: 1)
                 var subtitleText = ""
                 
                 if let startedAt = activity.startedAt {
@@ -132,14 +136,21 @@ class placeCell : UITableViewCell {
                     } else {
                         timeElapsed = startedAt.timeIntervalSinceNow
                     }
-                    let timeElapsedMinutes = Int(floor((-1 * Double(timeElapsed! / 60))))
-                    var timeText = "\(timeElapsedMinutes.description) min  "
-                    if (timeElapsedMinutes < 1){
-                        timeText =   "\(Int(-1 * timeElapsed!).description ) sec  "
-                    }
+                    
+                    let timeElapsedMinutes = Int(floor((-1 * Double(timeElapsed!))))
+                    let timeText = self.stringFromTimeInterval(interval: timeElapsedMinutes)
+                    
+//                    var timeText = "\(timeElapsedMinutes.description) min  "
+//                    if (timeElapsedMinutes < 1){
+//                        timeText =   "\(Int(-1 * timeElapsed!).description ) sec  "
+//                    }
                     subtitleText = subtitleText + timeText
                 }
-                if activity.type != "stop" {
+               
+                if (activity.activity == "unknown"){
+                    self.stats.text = subtitleText + " | " + (activity.reason ?? "")
+                }
+                else if (activity.type != "stop")  {
                     subtitleText = subtitleText + " | " + "\(distanceKM.description) km"
                 }else{
                     if let address = activity.place?.address{
@@ -165,6 +176,28 @@ class placeCell : UITableViewCell {
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state
+    }
+    
+    func stringFromTimeInterval(interval: Int) -> String {
+        
+        let ti = NSInteger(interval)
+        let ms = ti * 1000
+        let seconds = ti % 60
+        let minutes = (ti / 60) % 60
+        let hours = (ti / 3600)
+        
+        if hours != 0{
+            return String(format: "%d hours %d mins",hours, minutes)
+        }
+        else if minutes != 0{
+            return String(format: "%d mins", minutes)
+        }
+        else if seconds != 0 {
+            return String(format: "%d secs", seconds)
+        }
+        
+        return String(format: "%d hours %d mins % secs",hours, minutes, seconds)
+
     }
 }
 
