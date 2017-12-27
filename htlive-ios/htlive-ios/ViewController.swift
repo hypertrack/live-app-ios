@@ -289,7 +289,6 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
     
     
     func showDataOnMapForActivity(activithy : HyperTrackActivity){
-        print(activithy)
         if(activithy.type == "trip"){
             drawPolyLineForActivity(activity: activithy)
         }else if(activithy.type == "stop"){

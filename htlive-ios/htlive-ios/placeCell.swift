@@ -147,8 +147,25 @@ class placeCell : UITableViewCell {
                     subtitleText = subtitleText + timeText
                 }
                
-                if (activity.activity == "unknown"){
-                    self.stats.text = subtitleText + " | " + (activity.reason ?? "")
+                if (activity.activity == "unknown" || activity.activity == ""){
+                    if let reason = activity.reason{
+                        var reasonStr = activity.reason
+                        if reason == "sdk_inactive"{
+                            reasonStr = "sdk inactive"
+                        }else if reason == "no_activity_permission"{
+                            reasonStr = "no activity permission"
+                        }
+                        else if reason == "diabled"{
+                            reasonStr = "location disabled"
+                        }else if reason == "no_permission"{
+                            reasonStr = "no location permission"
+                        }
+                        self.stats.text = subtitleText + " | " + (reasonStr ?? "")
+                        return
+                    }
+                    
+                    self.stats.text = subtitleText
+                    return
                 }
                 else if (activity.type != "stop")  {
                     subtitleText = subtitleText + " | " + "\(distanceKM.description) km"
