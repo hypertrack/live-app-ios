@@ -15,18 +15,7 @@ PODS:
     - Alamofire (>= 4.4.0)
     - CocoaLumberjack/Swift
     - GzipSwift
-    - Sentry
     - SQLite.swift (= 0.11.2)
-  - KSCrash/Core (1.15.16):
-    - KSCrash/Reporting/Filters/Basic
-  - KSCrash/Recording (1.15.16):
-    - KSCrash/Recording/Tools (= 1.15.16)
-  - KSCrash/Recording/Tools (1.15.16)
-  - KSCrash/Reporting/Filters/Base (1.15.16):
-    - KSCrash/Recording
-  - KSCrash/Reporting/Filters/Basic (1.15.16):
-    - KSCrash/Recording
-    - KSCrash/Reporting/Filters/Base
   - MBProgressHUD (1.0.0)
   - MediumMenu (1.2.0)
   - PhoneNumberKit (1.4.0):
@@ -35,12 +24,6 @@ PODS:
   - PhoneNumberKit/PhoneNumberKitCore (1.4.0)
   - PhoneNumberKit/UIKit (1.4.0):
     - PhoneNumberKit/PhoneNumberKitCore
-  - Sentry (3.9.1):
-    - Sentry/Core (= 3.9.1)
-    - Sentry/KSCrash (= 3.9.1)
-  - Sentry/Core (3.9.1)
-  - Sentry/KSCrash (3.9.1):
-    - KSCrash/Core (~> 1.15.12)
   - SQLite.swift (0.11.2):
     - SQLite.swift/standard (= 0.11.2)
   - SQLite.swift/standard (0.11.2)
@@ -66,12 +49,10 @@ SPEC CHECKSUMS:
   Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
   FSCalendar: a04b09f16f811bc92e82f3cf852a15225233b9d5
   GzipSwift: 3faa3c3aece7cb0b0112c5e0c2f433164f683ae9
-  HyperTrack.local: 114aa63deb9a09da8bd2e69f3ed6967f2ad181d1
-  KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
+  HyperTrack.local: 80e29a3860fff70313eef3fc040ccd61b2296860
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MediumMenu: ccae15abe7fc85d4cc0c5bbff48735607d6087f1
   PhoneNumberKit: a739c359d05701e2e9745654f53e7c64379c2516
-  Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
   SQLite.swift: 670c3e9e0a806bbfd56a3de5d530768dc0e6fe7c
 
 PODFILE CHECKSUM: 42dac7c9bf464752ccb8b05bb814ef0dd5052442

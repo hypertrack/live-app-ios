@@ -151,7 +151,7 @@ class placeCell : UITableViewCell {
                     if let reason = activity.reason{
                         var reasonStr = activity.reason
                         if reason == "sdk_inactive"{
-                            reasonStr = "sdk inactive"
+                            reasonStr = "tracking inactive"
                         }else if reason == "no_activity_permission"{
                             reasonStr = "no activity permission"
                         }
