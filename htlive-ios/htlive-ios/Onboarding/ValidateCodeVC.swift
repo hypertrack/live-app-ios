@@ -37,6 +37,7 @@ class ValidateCodeVC: UIViewController {
                 } else {
                     // Verification code was validated.
                     // Move to the home/placeline screen
+                    self.verificationCode.resignFirstResponder()
                     self.onboardingViewDelegate?.didValidateCode(currentController: self)
                 }
             })

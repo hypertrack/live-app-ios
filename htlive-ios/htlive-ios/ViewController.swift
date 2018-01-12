@@ -165,6 +165,7 @@ class ViewController: UIViewController {
 
     
     override func viewWillAppear(_ animated: Bool) {
+        self.view.resignFirstResponder()
         selectCalendarToCurrentDate()
         self.dateLabel.text = Date().toString(dateFormat: "dd MMMM")
         getPlaceLineData()

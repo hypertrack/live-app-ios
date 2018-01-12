@@ -27,7 +27,12 @@
  */
 
 import Foundation
-import zlib
+
+#if os(Linux)
+    import zlibLinux
+#else
+    import zlib
+#endif
 
 /**
  Compression level whose rawValue is based on the zlib's constants.
@@ -163,26 +168,27 @@ extension Data {
     
     
     /**
-    Create a new `Data` object by compressing the receiver using zlib.
-    Throws an error if compression failed.
+     Create a new `Data` object by compressing the receiver using zlib.
+     Throws an error if compression failed.
      
-    - parameters:
-        - level: Compression level.
-    
-    - throws: `GzipError`
-    - returns: Gzip-compressed `Data` object.
-    */
+     - parameters:
+     - level: Compression level.
+     
+     - throws: `GzipError`
+     - returns: Gzip-compressed `Data` object.
+     */
     public func gzipped(level: CompressionLevel = .defaultCompression) throws -> Data {
         
         guard !self.isEmpty else {
             return Data()
         }
-        
-        var stream = self.createZStream()
+
+        let contiguousData = self.withUnsafeBytes { Data(bytes: $0, count: self.count) }
+        var stream = contiguousData.createZStream()
         var status: Int32
         
         status = deflateInit2_(&stream, level.rawValue, Z_DEFLATED, MAX_WBITS + 16, MAX_MEM_LEVEL, Z_DEFAULT_STRATEGY, ZLIB_VERSION, Int32(DataSize.stream))
-
+        
         guard status == Z_OK else {
             // deflateInit2 returns:
             // Z_VERSION_ERROR  The zlib library version is incompatible with the version assumed by the caller.
@@ -214,19 +220,20 @@ extension Data {
     
     
     /**
-    Create a new `Data` object by decompressing the receiver using zlib.
-    Throws an error if decompression failed.
-    
-    - throws: `GzipError`
-    - returns: Gzip-decompressed `Data` object.
-    */
+     Create a new `Data` object by decompressing the receiver using zlib.
+     Throws an error if decompression failed.
+     
+     - throws: `GzipError`
+     - returns: Gzip-decompressed `Data` object.
+     */
     public func gunzipped() throws -> Data {
         
         guard !self.isEmpty else {
             return Data()
         }
-        
-        var stream = self.createZStream()
+
+        let contiguousData = self.withUnsafeBytes { Data(bytes: $0, count: self.count) }
+        var stream = contiguousData.createZStream()
         var status: Int32
         
         status = inflateInit2_(&stream, MAX_WBITS + 32, ZLIB_VERSION, Int32(DataSize.stream))
@@ -240,11 +247,11 @@ extension Data {
             throw GzipError(code: status, msg: stream.msg)
         }
         
-        var data = Data(capacity: self.count * 2)
+        var data = Data(capacity: contiguousData.count * 2)
         
         repeat {
             if Int(stream.total_out) >= data.count {
-                data.count += self.count / 2
+                data.count += contiguousData.count / 2
             }
             
             data.withUnsafeMutableBytes { (bytes: UnsafeMutablePointer<Bytef>) in

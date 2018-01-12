@@ -1,22 +1,22 @@
 PODS:
-  - Alamofire (4.4.0)
-  - Branch (0.20.3):
-    - Branch/Core (= 0.20.3)
-  - Branch/Core (0.20.3)
-  - CocoaLumberjack/Default (3.3.0)
-  - CocoaLumberjack/Swift (3.3.0):
+  - Alamofire (4.6.0)
+  - Branch (0.22.4):
+    - Branch/Core (= 0.22.4)
+  - Branch/Core (0.22.4)
+  - CocoaLumberjack/Default (3.4.0)
+  - CocoaLumberjack/Swift (3.4.0):
     - CocoaLumberjack/Default
   - Crashlytics (3.9.3):
     - Fabric (~> 1.7.2)
   - Fabric (1.7.2)
   - FSCalendar (2.7.9)
-  - GzipSwift (4.0.2)
-  - HyperTrack.local (0.5.2):
+  - GzipSwift (4.0.4)
+  - HyperTrack.local (0.6.0):
     - Alamofire (>= 4.4.0)
     - CocoaLumberjack/Swift
     - GzipSwift
     - SQLite.swift (= 0.11.2)
-  - MBProgressHUD (1.0.0)
+  - MBProgressHUD (1.1.0)
   - MediumMenu (1.2.0)
   - PhoneNumberKit (1.4.0):
     - PhoneNumberKit/PhoneNumberKitCore (= 1.4.0)
@@ -42,15 +42,15 @@ EXTERNAL SOURCES:
     :path: ~/hypertrack-ios-v3/HyperTrack.local.podspec
 
 SPEC CHECKSUMS:
-  Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
-  Branch: eec127cb61e0f7f1aa9c351adcad22fa980e001d
-  CocoaLumberjack: 3c8c74683302f9012bb168e1c4b7ae3c0b558431
+  Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
+  Branch: 2a3cfea77ec8d2f648fcce814f157266e0dd7654
+  CocoaLumberjack: e033a5d8513357af2dd456eb66e202c325c30627
   Crashlytics: dbb07d01876c171c5ccbdf7826410380189e452c
   Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
   FSCalendar: a04b09f16f811bc92e82f3cf852a15225233b9d5
-  GzipSwift: 3faa3c3aece7cb0b0112c5e0c2f433164f683ae9
-  HyperTrack.local: 80e29a3860fff70313eef3fc040ccd61b2296860
-  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  GzipSwift: 1a5bc5f7827e09846b0635b5079f1224bc3b1c3a
+  HyperTrack.local: 071e6184cb3eda07d2f2d78d5f7932e051f42eee
+  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MediumMenu: ccae15abe7fc85d4cc0c5bbff48735607d6087f1
   PhoneNumberKit: a739c359d05701e2e9745654f53e7c64379c2516
   SQLite.swift: 670c3e9e0a806bbfd56a3de5d530768dc0e6fe7c
