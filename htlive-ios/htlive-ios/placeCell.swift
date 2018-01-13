@@ -137,13 +137,8 @@ class placeCell : UITableViewCell {
                         timeElapsed = startedAt.timeIntervalSinceNow
                     }
                     
-                    let timeElapsedMinutes = Int(floor((-1 * Double(timeElapsed!))))
-                    let timeText = self.stringFromTimeInterval(interval: timeElapsedMinutes)
-                    
-//                    var timeText = "\(timeElapsedMinutes.description) min  "
-//                    if (timeElapsedMinutes < 1){
-//                        timeText =   "\(Int(-1 * timeElapsed!).description ) sec  "
-//                    }
+                    let timeElapsedSeconds = Int(floor((-1 * Double(timeElapsed!))))
+                    let timeText = self.stringFromTimeInterval(interval: timeElapsedSeconds)
                     subtitleText = subtitleText + timeText
                 }
                
@@ -168,12 +163,22 @@ class placeCell : UITableViewCell {
                     return
                 }
                 else if (activity.type != "stop")  {
+                    let stepCount = activity.stepCount ?? 0
+                    if stepCount > 0 {
+                        subtitleText = subtitleText + " | " + "\(stepCount.description) steps"
+                    }
+                    
                     subtitleText = subtitleText + " | " + "\(distanceKM.description) km"
                 }else{
                     if let address = activity.place?.address{
                         if address != ""{
-                            subtitleText = subtitleText + " | " + address
+                            self.status.text = address
                         }
+                    }
+                   
+                    let stepCount = activity.stepCount ?? 0
+                    if stepCount > 0 {
+                        subtitleText = subtitleText + " | " + "\(stepCount.description) steps"
                     }
                 }
                 
@@ -198,7 +203,6 @@ class placeCell : UITableViewCell {
     func stringFromTimeInterval(interval: Int) -> String {
         
         let ti = NSInteger(interval)
-        let ms = ti * 1000
         let seconds = ti % 60
         let minutes = (ti / 60) % 60
         let hours = (ti / 3600)
@@ -213,8 +217,7 @@ class placeCell : UITableViewCell {
             return String(format: "%d secs", seconds)
         }
         
-        return String(format: "%d hours %d mins % secs",hours, minutes, seconds)
-
+        return "0 secs"
     }
 }
 
