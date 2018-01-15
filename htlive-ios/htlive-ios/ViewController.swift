@@ -28,6 +28,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var placeLineTitle: UILabel!
     
     var segments: [HyperTrackActivity] = []
+    var placeLine: HyperTrackPlaceline? = nil
+
     var selectedIndexPath : IndexPath? = nil
     var noResults = false
     let regionRadius: CLLocationDistance = 200
@@ -175,6 +177,7 @@ class ViewController: UIViewController {
         if(HyperTrack.getUserId() != nil) {
             HyperTrack.getPlaceline { (placeLine, error) in
             guard let fetchedPlaceLine = placeLine else { return }
+            self.placeLine = fetchedPlaceLine
             if let segments = fetchedPlaceLine.segments {
                 self.segments = segments.reversed()
                 if segments.count == 0 {
@@ -240,7 +243,8 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
         cell.layer.backgroundColor = UIColor.clear.cgColor
 
         if segments.count != 0 {
-            cell.setStats(activity: segments[indexPath.row])
+            cell.setStats(activity: segments[indexPath.row],
+                          lastHeartBeatAt: self.placeLine?.lastHeartBeatAt ?? Date())
         } else {
             
             if self.noResults {
@@ -371,6 +375,7 @@ extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
         
         HyperTrack.getPlaceline(date: date) { (placeLine, error) in
             guard let fetchedPlaceLine = placeLine else { return }
+            self.placeLine = fetchedPlaceLine
             if let segments = fetchedPlaceLine.segments {
                 self.segments = segments.reversed()
                 

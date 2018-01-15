@@ -688,7 +688,7 @@
 				INFOPLIST_FILE = "htlive-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "io.hypertrack.SendETA-iPhone-staging";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.hypertrack.SendETA-iPhone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_INSTALLED_PRODUCT = NO;
@@ -713,7 +713,7 @@
 				INFOPLIST_FILE = "htlive-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "io.hypertrack.SendETA-iPhone-staging";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.hypertrack.SendETA-iPhone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";

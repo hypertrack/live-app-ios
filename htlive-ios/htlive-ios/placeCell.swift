@@ -91,7 +91,7 @@ class placeCell : UITableViewCell {
         self.placeCard.backgroundColor = UIColor.white
     }
     
-    func setStats(activity : HyperTrackActivity?) {
+    func setStats(activity : HyperTrackActivity?, lastHeartBeatAt: Date) {
         
         if activity == nil {
             self.stats.text = ""
@@ -134,7 +134,7 @@ class placeCell : UITableViewCell {
                     if activity.endedAt != nil {
                         timeElapsed = startedAt.timeIntervalSince(activity.endedAt!)
                     } else {
-                        timeElapsed = startedAt.timeIntervalSinceNow
+                        timeElapsed = startedAt.timeIntervalSince(lastHeartBeatAt)
                     }
                     
                     let timeElapsedSeconds = Int(floor((-1 * Double(timeElapsed!))))
@@ -164,7 +164,7 @@ class placeCell : UITableViewCell {
                 }
                 else if (activity.type != "stop")  {
                     let stepCount = activity.stepCount ?? 0
-                    if stepCount > 0 {
+                    if stepCount > 0 && activity.activity == "walk" {
                         subtitleText = subtitleText + " | " + "\(stepCount.description) steps"
                     }
                     
