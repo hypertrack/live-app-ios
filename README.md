@@ -54,7 +54,7 @@ $ cd hypertrack-live-ios/htlive-ios
 $ pod install
 ```
 
-Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup), and add the publishable key to ```setUpHypertrack``` function in [HyperTrackAppService.swift](https://github.com/hypertrack/hypertrack-live-ios/blob/master/htlive-ios/htlive-ios/HyperTrackAppService.swift) file.
+Get your HyperTrack API keys [here](https://www.hypertrack.com/signup?utm_source=github&utm_campaign=ht_live_ios), and add the publishable key to ```setUpHypertrack``` function in [HyperTrackAppService.swift](https://github.com/hypertrack/hypertrack-live-ios/blob/master/htlive-ios/htlive-ios/HyperTrackAppService.swift) file.
 ```swift
 HyperTrack.initialize("YOUR_PUBLISHABLE_KEY")
 ```
