@@ -1,5 +1,5 @@
 <a href="https://hypertrack.com/">
-    <img src="https://www.hypertrack.com/images/logo.svg" alt="Hypertrack logo" title="Hypertrack" align="right" height="70" />
+    <img src="https://dalc1wjncfbgm.cloudfront.net/new-logo-green.ee965141b3b2085f5abf.svg" alt="Hypertrack logo" title="Hypertrack" align="right" height="70" />
 </a>
 
 Activity Tracking and Live Location Sharing  
@@ -155,7 +155,7 @@ Let's get started ðŸ˜Š . Strap yourself in and get ready for an exciting ride ðŸ
   
 ### Basic Setup
 #### Step 1. Get API keys
-Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup).
+Get your HyperTrack API keys [here](https://www.hypertrack.com/signup?utm_source=github&utm_campaign=ht_live_ios).
 
 #### Step 2. Use starter project
 We have created a starter project so that building Live Location Sharing becomes very easy and quick. It will prevent you from the hassle of creating a new project and the workflow to enable Live Location Sharing. If you want to directly build the flow in your own app or wanted to create a new project, you can ignore this step.
