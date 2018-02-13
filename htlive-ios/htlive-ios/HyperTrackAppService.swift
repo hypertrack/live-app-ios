@@ -37,9 +37,9 @@ class HyperTrackAppService: NSObject {
         // staging pk : pk_03e3176a9831360e162093292049757b130c75cf
         // production pk : pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451
         HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
-        
+
         // staging
-        //HyperTrack.initialize("pk_03e3176a9831360e162093292049757b130c75cf")
+//        HyperTrack.initialize("pk_03e3176a9831360e162093292049757b130c75cf")
 
         HyperTrack.setEventsDelegate(eventDelegate: self)
         if(HyperTrack.getUserId() != nil){

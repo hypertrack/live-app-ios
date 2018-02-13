@@ -38,7 +38,7 @@ class ViewController: UIViewController {
     var polyLine : MKPolyline?
     var menu: MediumMenu?
     @IBOutlet weak var calendarArrow: UIImageView!
-
+    var isACellSelected = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,40 +53,23 @@ class ViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onBackgroundNotification), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(onTap))
         tap.numberOfTapsRequired = 2
         placeLineTitle.isUserInteractionEnabled = true
         placeLineTitle.addGestureRecognizer(tap)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(onLocationUpdate(notification:)),
+                                               name: NSNotification.Name(rawValue: HTConstants.HTLocationChangeNotification), object: nil)
+
         
-//        let item1 = MediumMenuItem(title: "Home") {
-//            //            let homeViewController = storyboard.instantiateViewController(withIdentifier: "Home") as! HomeViewController
-//            //            self.setViewControllers([homeViewController], animated: false)
-//        }
-//        
-//        let item2 = MediumMenuItem(title: "Review Placeline") {
-//            let activityFeedbackVC = self.storyboard?.instantiateViewController(withIdentifier: "ActivityFeedbackTableVC") as! ActivityFeedbackTableVC
-//            let navVC = UINavigationController.init(rootViewController: activityFeedbackVC)
-//            self.present(navVC, animated: true, completion: nil)
-//        }
-//        
-//        let item3 = MediumMenuItem(title: "Stop Tracking") {
-//            //            let bookMarksViewController = storyboard.instantiateViewController(withIdentifier: "Bookmarks") as! BookmarksViewController
-//            //            self.setViewControllers([bookMarksViewController], animated: false)
-//        }
-//        
-//        let item4 = MediumMenuItem(title: "Rate Us") {
-//            //            let bookMarksViewController = storyboard.instantiateViewController(withIdentifier: "Bookmarks") as! BookmarksViewController
-//            //            self.setViewControllers([bookMarksViewController], animated: false)
-//        }
-//
-//        let item5 = MediumMenuItem(title: "Help") {
-//            //            let bookMarksViewController = storyboard.instantiateViewController(withIdentifier: "Bookmarks") as! BookmarksViewController
-//            //            self.setViewControllers([bookMarksViewController], animated: false)
-//        }
-//        
-//        
-//        menu = MediumMenu(items: [item1, item2, item3, item4, item5], forViewController: self)
-//  
+    }
+    
+    
+    func onLocationUpdate(notification: Notification) {
+        setCurrentLocation()
     }
     
     func showMenu() {
@@ -153,12 +136,16 @@ class ViewController: UIViewController {
     }
     
     func onForegroundNotification(_ notification: Notification){
-        
         selectCalendarToCurrentDate()
         self.dateLabel.text = Date().toString(dateFormat: "dd MMMM")
         getPlaceLineData()
+        isACellSelected = false
+        self.mapView.showsUserLocation = true
     }
     
+    func onBackgroundNotification(_ notification: Notification){
+       self.mapView.showsUserLocation = false
+    }
     func userCreated(_ notification: Notification) {
         selectCalendarToCurrentDate()
         self.dateLabel.text = Date().toString(dateFormat: "dd MMMM")
@@ -170,7 +157,29 @@ class ViewController: UIViewController {
         self.view.resignFirstResponder()
         selectCalendarToCurrentDate()
         self.dateLabel.text = Date().toString(dateFormat: "dd MMMM")
+        mapView.showsUserLocation = true
         getPlaceLineData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.setCurrentLocation()
+    }
+    
+    func setCurrentLocation(){
+        if !isACellSelected {
+            HyperTrack.getCurrentLocation { (clLocation, error) in
+                if let location  = clLocation{
+                    let region = MKCoordinateRegionMake((location.coordinate),MKCoordinateSpanMake(0.005, 0.005))
+                    self.mapView.setRegion(region, animated: true)
+                }else{
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                        if self.segments.count > 0 {
+                            self.tableView(self.placeLineTable, didSelectRowAt: IndexPath.init(row: 0, section: 0))
+                        }
+                    }
+                }
+            }
+        }
     }
     
     func getPlaceLineData(){
@@ -188,10 +197,6 @@ class ViewController: UIViewController {
                     self.placeLineTable.reloadData()
                     if(segments.count > 0){
                         self.selectedIndexPath = nil
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
-                            self.tableView(self.placeLineTable, didSelectRowAt: IndexPath.init(row: 0, section: 0))
- 
-                        }
                     }
                 }
                 
@@ -211,13 +216,9 @@ class ViewController: UIViewController {
 extension ViewController : UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        if section == 0 {
-//            return 1
-//        }
         guard segments.count != 0 else { return 1 }
         return segments.count
     }
-    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
        return 72
@@ -229,17 +230,7 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! placeCell
-        
-//        if indexPath.section == 0 {
-//            cell.placeCard.backgroundColor = UIColor.red
-//            if let activity = HyperTrack.getCurrentActivity(){
-//                cell.setStats(activity: activity)
-//            }else{
-//                cell.noResults()
-//            }
-//            return cell
-//        }
-        
+     
         cell.layer.backgroundColor = UIColor.clear.cgColor
 
         if segments.count != 0 {
@@ -276,7 +267,6 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
             self.mapView.remove(polyLine!)
         }
         
-       
         if (self.segments.count == 0){
             return
         }
@@ -290,6 +280,7 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate {
             }
             selectedIndexPath = indexPath
         }
+        isACellSelected = true
     }
     
     
@@ -333,9 +324,6 @@ extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
     }
 
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        
-//        let currentDate = Date()
-//        guard date > currentDate else { return }
         self.dateLabel.text = date.toString(dateFormat: "dd MMMM")
         self.noResults = false
         self.segments = []
@@ -387,7 +375,6 @@ extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
                 self.selectedIndexPath = nil
                 self.placeLineTable.reloadData()
                 if(segments.count > 0){
-                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
                         self.tableView(self.placeLineTable, didSelectRowAt: IndexPath.init(row: 0, section: 0))
                         
@@ -408,31 +395,30 @@ extension ViewController {
     
     func shareLogs() {
         
-        if let baseURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first {
-
-            let enumerator = FileManager.default.enumerator(at: baseURL,
-                                                            includingPropertiesForKeys: [],
-                                                            options: [.skipsHiddenFiles], errorHandler: { (url, error) -> Bool in
-                                                                print("directoryEnumerator error at \(url): ", error)
-                                                                return true
-            })!
-            
-            var urlPaths = [URL]()
-            for case let fileURL as URL in enumerator {
-                if(fileURL.absoluteString.hasSuffix("txt")){
+        let path = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)
+        if let baseDir = path.first {
+            if let baseURL = NSURL(fileURLWithPath: baseDir).appendingPathComponent("Logs") {
+                let enumerator = FileManager.default.enumerator(at: baseURL,
+                                                                includingPropertiesForKeys: [],
+                                                                options: [.skipsHiddenFiles], errorHandler: { (url, error) -> Bool in
+                                                                    print("directoryEnumerator error at \(url): ", error)
+                                                                    return true
+                })!
+                
+                var urlPaths = [URL]()
+                for case let fileURL as URL in enumerator {
                     
-                    if NSData(contentsOfFile: fileURL.path) != nil {
-                        urlPaths.append(fileURL)
-                        let activityController = UIActivityViewController(activityItems: urlPaths, applicationActivities: nil)
-                        self.present(activityController, animated: true, completion: nil)
-                        break
-
-                    }
+                        if NSData(contentsOfFile: fileURL.path) != nil {
+                            urlPaths.append(fileURL)
+                            let activityController = UIActivityViewController(activityItems: urlPaths, applicationActivities: nil)
+                            self.present(activityController, animated: true, completion: nil)
+                            break
+                            
+                        }
                 }
-            }
             
+            }
         }
-        
     }
 }
 
@@ -593,16 +579,24 @@ extension ViewController : MKMapViewDelegate {
             if(title == "start"){
                 let image = UIImage.init(named: "stopOrEnd", in: bundle, compatibleWith: nil)
                 marker.image =  image?.resizeImage(newWidth: 15.0)
+                marker.annotation = annotation
+                return marker
+
             }else if (title == "stop"){
                 marker.image =  UIImage.init(named: "destinationMarker", in: bundle, compatibleWith: nil)?.resizeImage(newWidth: 30.0)
+                marker.annotation = annotation
+                return marker
+
             }
             else if (title == "point"){
                 marker.image =  UIImage.init(named: "origin", in: bundle, compatibleWith: nil)?.resizeImage(newWidth: 15.0)
+                marker.annotation = annotation
+                return marker
+
             }
         }
-    
-        marker.annotation = annotation
-        return marker
+        
+        return nil
     }
     
     

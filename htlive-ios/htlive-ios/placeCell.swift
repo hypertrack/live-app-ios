@@ -148,12 +148,12 @@ class placeCell : UITableViewCell {
                         if reason == "sdk_inactive"{
                             reasonStr = "tracking inactive"
                         }else if reason == "no_activity_permission"{
-                            reasonStr = "no activity permission"
+                            reasonStr = "activity disabled"
                         }
-                        else if reason == "diabled"{
+                        else if reason == "disabled"{
                             reasonStr = "location disabled"
                         }else if reason == "no_permission"{
-                            reasonStr = "no location permission"
+                            reasonStr = "location disabled"
                         }
                         self.stats.text = subtitleText + " | " + (reasonStr ?? "")
                         return
