@@ -35,6 +35,12 @@
 		709F5A4A4D1A2C4D62D67D7A /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B04F8C25B273501623851B5 /* CoreMedia.framework */; };
 		7214AC794737FD3C0D2555C4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6879260750573A1BEF59E3DE /* SystemConfiguration.framework */; };
 		B00C94962B65677DF4F6C7DB /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C72BCF7451040D64AFF2A1 /* CoreTelephony.framework */; };
+		B7643EDC203E8D4E009A1976 /* PlaceLineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643EDB203E8D4E009A1976 /* PlaceLineViewModel.swift */; };
+		B7B2B972203D85C70098D437 /* WorkSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B2B96E203D85C50098D437 /* WorkSans-Regular.ttf */; };
+		B7B2B973203D85C70098D437 /* WorkSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B2B96F203D85C50098D437 /* WorkSans-Medium.ttf */; };
+		B7B2B974203D85C70098D437 /* WorkSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B2B970203D85C50098D437 /* WorkSans-SemiBold.ttf */; };
+		B7B2B975203D85C70098D437 /* WorkSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B2B971203D85C50098D437 /* WorkSans-Bold.ttf */; };
+		B7B2B977203D9AB30098D437 /* AppStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B2B976203D9AB30098D437 /* AppStyle.swift */; };
 		BB7247341F2823A100619F23 /* CustomShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7247331F2823A100619F23 /* CustomShareView.xib */; };
 		BB7247381F28377000619F23 /* CustomShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7247371F28377000619F23 /* CustomShareView.swift */; };
 		BB7D29981F1D690D00E72DCF /* MKMapView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D298F1F1D690D00E72DCF /* MKMapView+Extension.swift */; };
@@ -96,6 +102,12 @@
 		6879260750573A1BEF59E3DE /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		790284E1E83C2D3E59B456A0 /* Pods-htlive-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios.release.xcconfig"; sourceTree = "<group>"; };
 		8F29BB026EF4C014377323EA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		B7643EDB203E8D4E009A1976 /* PlaceLineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceLineViewModel.swift; sourceTree = "<group>"; };
+		B7B2B96E203D85C50098D437 /* WorkSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-Regular.ttf"; sourceTree = "<group>"; };
+		B7B2B96F203D85C50098D437 /* WorkSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-Medium.ttf"; sourceTree = "<group>"; };
+		B7B2B970203D85C50098D437 /* WorkSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		B7B2B971203D85C50098D437 /* WorkSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-Bold.ttf"; sourceTree = "<group>"; };
+		B7B2B976203D9AB30098D437 /* AppStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyle.swift; sourceTree = "<group>"; };
 		B923850CA9BCCA7AFAFE6B5C /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		BB7247331F2823A100619F23 /* CustomShareView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomShareView.xib; sourceTree = "<group>"; };
 		BB7247371F28377000619F23 /* CustomShareView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomShareView.swift; sourceTree = "<group>"; };
@@ -172,6 +184,7 @@
 		33334B881F0B740A001A970E /* htlive-ios */ = {
 			isa = PBXGroup;
 			children = (
+				B7B2B96C203D85C50098D437 /* Resources */,
 				4184389A1F5BEFCC00190FE2 /* Feedback */,
 				418438911F5BBF2200190FE2 /* Welcome */,
 				BB7D29AD1F1EB1A400E72DCF /* Permissions */,
@@ -202,6 +215,7 @@
 				33334B8B1F0B740A001A970E /* ViewController.swift */,
 				3354C1CB1F14DAE50011506D /* placeCell.xib */,
 				3354C1CD1F14EB820011506D /* placeCell.swift */,
+				B7643EDB203E8D4E009A1976 /* PlaceLineViewModel.swift */,
 			);
 			name = Placeline;
 			sourceTree = "<group>";
@@ -269,6 +283,25 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		B7B2B96C203D85C50098D437 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B7B2B96D203D85C50098D437 /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		B7B2B96D203D85C50098D437 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				B7B2B96E203D85C50098D437 /* WorkSans-Regular.ttf */,
+				B7B2B96F203D85C50098D437 /* WorkSans-Medium.ttf */,
+				B7B2B970203D85C50098D437 /* WorkSans-SemiBold.ttf */,
+				B7B2B971203D85C50098D437 /* WorkSans-Bold.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		BB7D298C1F1D68FF00E72DCF /* Utility */ = {
 			isa = PBXGroup;
 			children = (
@@ -279,6 +312,7 @@
 				BB7D29931F1D690D00E72DCF /* UIAlertView+Extension.swift */,
 				BB7D29941F1D690D00E72DCF /* UIColor+Extension.swift */,
 				BB7D29951F1D690D00E72DCF /* UIView+Extension.swift */,
+				B7B2B976203D9AB30098D437 /* AppStyle.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -414,14 +448,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7B2B972203D85C70098D437 /* WorkSans-Regular.ttf in Resources */,
 				33334B971F0B740A001A970E /* LaunchScreen.storyboard in Resources */,
 				418438971F5BBF3200190FE2 /* OnboardingView.xib in Resources */,
+				B7B2B973203D85C70098D437 /* WorkSans-Medium.ttf in Resources */,
 				33334B941F0B740A001A970E /* Assets.xcassets in Resources */,
 				3354C1CC1F14DAE50011506D /* placeCell.xib in Resources */,
 				BB8723421F328BF0009355F9 /* LiveLocationAlert.xib in Resources */,
 				BB87233E1F31EB3C009355F9 /* ShareLiveLocationView.xib in Resources */,
 				BB7247341F2823A100619F23 /* CustomShareView.xib in Resources */,
 				33334B8F1F0B740A001A970E /* Main.storyboard in Resources */,
+				B7B2B974203D85C70098D437 /* WorkSans-SemiBold.ttf in Resources */,
+				B7B2B975203D85C70098D437 /* WorkSans-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,6 +564,7 @@
 				BB7D29981F1D690D00E72DCF /* MKMapView+Extension.swift in Sources */,
 				BB7D29A01F1D7D7400E72DCF /* HTLiveConstants.swift in Sources */,
 				BB7D299A1F1D690D00E72DCF /* String+Extension.swift in Sources */,
+				B7643EDC203E8D4E009A1976 /* PlaceLineViewModel.swift in Sources */,
 				33334BA91F0BA425001A970E /* TextField.swift in Sources */,
 				BB7D29AF1F1EB1B400E72DCF /* RequestPermissionsVC.swift in Sources */,
 				BB7D29A41F1EA4BF00E72DCF /* UserProfileVC.swift in Sources */,
@@ -538,6 +577,7 @@
 				3354C1CE1F14EB820011506D /* placeCell.swift in Sources */,
 				BB7D29A91F1EA4E600E72DCF /* RequestService.swift in Sources */,
 				4184389C1F5BF00100190FE2 /* ActivityFeedbackTableVC.swift in Sources */,
+				B7B2B977203D9AB30098D437 /* AppStyle.swift in Sources */,
 				3313D3A41F18D41F00BDF8E0 /* Date.swift in Sources */,
 				BB7D299C1F1D690D00E72DCF /* UIAlertView+Extension.swift in Sources */,
 				BBF7B3EE1F19972C00DA355C /* BaseFlowController.swift in Sources */,

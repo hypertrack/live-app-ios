@@ -14,16 +14,18 @@ import Contacts
 import MessageUI
 import Crashlytics
 
-class ShareVC: UIViewController  {
+final class ShareVC: UIViewController  {
     let monitorRegionRadius = 100
-    
-    @IBOutlet fileprivate weak var hyperTrackView: UIView!
-    @IBOutlet fileprivate weak var shareLocationButton: UIButton!
     
     var shortCode : String?
     var collectionId: String?
     
-    var hyperTrackMap : HTMap? = nil
+    fileprivate var container: HTMapContainer!
+//    let locationService = LocationService()
+    
+    //TODO: V2
+//    var hyperTrackMap : HTMap? = nil
+    
     var isDeeplinked = false
     var selectedLocation : HyperTrackPlace?
     var alertController : UIAlertController?
@@ -35,18 +37,21 @@ class ShareVC: UIViewController  {
     
     var locationSelectionType : LocationSelectionType = LocationSelectionType.unknown
     
-    @IBOutlet var placeHolderMapView : MKMapView!
-    
-    @IBOutlet weak var shareLocationActivityIndicator: UIActivityIndicatorView!
+    lazy var shareLocationActivityIndicator: UIActivityIndicatorView! = {
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        self.view.addSubview(activityIndicator)
+        activityIndicator.center = self.view.center
+        return activityIndicator
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        shareLocationButton.shadow()
+        container = HTMapContainer(frame: .zero)
+        view.addSubview(container)
+        container.translatesAutoresizingMaskIntoConstraints = false
+        container.edges()
+//        locationService.start()
         HyperTrack.getCurrentLocation { (clLocation, error) in
-            if let location  = clLocation{
-                let region = MKCoordinateRegionMake((location.coordinate),MKCoordinateSpanMake(0.005, 0.005))
-                self.placeHolderMapView.setRegion(region, animated: true)
-            }
         }
     }
     
@@ -56,10 +61,10 @@ class ShareVC: UIViewController  {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
-        if (hyperTrackMap != nil){
-            hyperTrackMap = nil
-        }
+        //TODO: V2
+//        if (hyperTrackMap != nil){
+//            hyperTrackMap = nil
+//        }
         
         super.viewDidAppear(animated)
         self.view.hideActivityIndicator()
@@ -77,15 +82,17 @@ class ShareVC: UIViewController  {
             self.isDeeplinked = true
             self.trackTripFromCollectionId(collectionId: HyperTrackAppService.sharedInstance.getCurrentCollectionId()!)
         }
-        
-        if(!isDeeplinked){
-            showHypertrackView()
-        }
+        //TODO: V2
+//        if(!isDeeplinked){
+//            showHypertrackView()
+//        }
     }
     
     
     override func viewDidDisappear(_ animated: Bool) {
-        self.hyperTrackMap?.resetViews()
+        super.viewDidDisappear(animated)
+        //TODO: V2
+//        self.hyperTrackMap?.resetViews()
     }
     
     func trackTripFromShortCode(shortCode : String){
@@ -143,7 +150,8 @@ class ShareVC: UIViewController  {
                                 }
                                 
                             }
-                            self.showHypertrackView()
+                            //TODO: V2
+//                            self.showHypertrackView()
                         }
                     }
                     else{
@@ -156,21 +164,22 @@ class ShareVC: UIViewController  {
         }
     }
     
-    func showHypertrackView(){
-        if(hyperTrackMap == nil){
-            hyperTrackMap = HyperTrack.map()
-            hyperTrackMap?.showBackButton = false
-            hyperTrackMap?.showReFocusButton = false
-            hyperTrackMap?.showTrafficForMapView = false
-            hyperTrackMap?.enableLiveLocationSharingView = true
-            
-            hyperTrackMap?.setHTViewCustomizationDelegate(customizationDelegate: self)
-            hyperTrackMap?.setHTViewInteractionDelegate(interactionDelegate: self)
-            if (self.hyperTrackView != nil) {
-                hyperTrackMap?.embedIn(self.hyperTrackView)
-            }
-        }
-    }
+    //TODO: V2
+//    func showHypertrackView(){
+//        if(hyperTrackMap == nil){
+//            hyperTrackMap = HyperTrack.map()
+//            hyperTrackMap?.showBackButton = false
+//            hyperTrackMap?.showReFocusButton = false
+//            hyperTrackMap?.showTrafficForMapView = false
+//            hyperTrackMap?.enableLiveLocationSharingView = true
+//
+//            hyperTrackMap?.setHTViewCustomizationDelegate(customizationDelegate: self)
+//            hyperTrackMap?.setHTViewInteractionDelegate(interactionDelegate: self)
+//            if (self.hyperTrackView != nil) {
+//                hyperTrackMap?.embedIn(self.hyperTrackView)
+//            }
+//        }
+//    }
     
     func showShareSheetWithText(text:String){
         let textToShare : Array = [text]
@@ -263,7 +272,8 @@ class ShareVC: UIViewController  {
     }
     
     func confirmLocation(_ sender: Any){
-        self.selectedLocation  = hyperTrackMap?.confirmLocation()
+        //TODO: V2
+//        self.selectedLocation  = hyperTrackMap?.confirmLocation()
         changeToStartTrackingButton()
     }
     
@@ -429,11 +439,13 @@ extension ShareVC:HTViewInteractionDelegate {
     }
     
     @IBAction func shareLocation(_ sender: Any) {
-        self.shareLocationButton.setTitle("", for: UIControlState.normal)
+        //TODO: V2
+//        self.shareLocationButton.setTitle("", for: UIControlState.normal)
         shareLocationActivityIndicator.startAnimating()
         if let expectedPlace = HyperTrackAppService.sharedInstance.currentAction?.expectedPlace{
             self.shareLocationActivityIndicator.stopAnimating()
-            self.shareLocationButton.setTitle("Share Live Location", for: UIControlState.normal)
+            //TODO: V2
+//            self.shareLocationButton.setTitle("Share Live Location", for: UIControlState.normal)
             let htActionParams = HyperTrackActionParams()
             htActionParams.expectedPlace = expectedPlace
             htActionParams.type = "visit"
@@ -457,7 +469,8 @@ extension ShareVC:HTViewInteractionDelegate {
                     }else{
                         self.showAlert(title: "Error", message: "No collectionId present in action")
                     }
-                    self.shareLocationButton.isHidden = true
+                    //TODO: V2
+//                    self.shareLocationButton.isHidden = true
                     return
                 }
             })
@@ -465,8 +478,9 @@ extension ShareVC:HTViewInteractionDelegate {
     }
     
     func showShareLocationButton(_ sender: Any){
-        self.shareLocationButton.isHidden = false
-        self.hyperTrackView.bringSubview(toFront: self.shareLocationButton)
+        //TODO: V2
+//        self.shareLocationButton.isHidden = false
+//        self.hyperTrackView.bringSubview(toFront: self.shareLocationButton)
     }
     
     func shareLink(action : HyperTrackAction) {
@@ -613,8 +627,8 @@ extension ShareVC:ShareLiveLocationDelegate{
                     }else{
                         self.showAlert(title: "Error", message: "No collectionId present in action")
                     }
-                    
-                    self.shareLocationButton.isHidden = true
+                    //TODO: V2
+//                    self.shareLocationButton.isHidden = true
                     return
                 }
             })
