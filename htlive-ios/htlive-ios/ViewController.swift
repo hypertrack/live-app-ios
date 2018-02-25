@@ -18,9 +18,8 @@ let pink = UIColor(red:1.00, green:0.51, blue:0.87, alpha:1.0)
 class ViewController: UIViewController {
     fileprivate var contentView: HTMapContainer!
     
-    fileprivate lazy var placelineUseCase: HTPlaceLineUseCase? = {
+    fileprivate var placelineUseCase: HTPlaceLineUseCase = {
         let uc = HTPlaceLineUseCase()
-        self.contentView.setBottomViewWithUseCase(uc)
         return uc
     }()
     
@@ -34,13 +33,13 @@ class ViewController: UIViewController {
     var annotations = [MKPointAnnotation]()
     var polyLine : MKPolyline?
     var isACellSelected = false
-    fileprivate var viewModel = PlaceLineViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         contentView = HTMapContainer(frame: .zero)
         view.addSubview(contentView)
         contentView.edges()
+        contentView.setBottomViewWithUseCase(placelineUseCase)
         NotificationCenter.default.addObserver(self, selector: #selector(self.userCreated), name: NSNotification.Name(rawValue:HTLiveConstants.userCreatedNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.onBackgroundNotification), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
@@ -85,7 +84,7 @@ class ViewController: UIViewController {
     }
     
     func onForegroundNotification(_ notification: Notification){
-        getPlaceLineData()
+        placelineUseCase.update()
         isACellSelected = false
         //TODO: v2
 //        contentView.showsUserLocation = true
@@ -96,14 +95,14 @@ class ViewController: UIViewController {
 //       contentView.showsUserLocation = false
     }
     func userCreated(_ notification: Notification) {
-        getPlaceLineData()
+        placelineUseCase.update()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         self.view.resignFirstResponder()
         //TODO: v2
 //        contentView.showsUserLocation = true
-        getPlaceLineData()
+        placelineUseCase.update()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -126,21 +125,6 @@ class ViewController: UIViewController {
 //            }
         }
     }
-    
-    func getPlaceLineData() {
-        viewModel.getPlaceLineData { [unowned self] (response) in
-            switch response {
-            case .success(let data):
-                self.placelineUseCase?.updateData(data)
-                break
-            case .failure(_):
-                break
-            }
-            //TODO: v2
-//            self.selectedIndexPath = nil
-        }
-    }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

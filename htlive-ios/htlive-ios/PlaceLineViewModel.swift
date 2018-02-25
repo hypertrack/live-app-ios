@@ -8,23 +8,8 @@
 
 import UIKit
 import HyperTrack
+import Alamofire
 
-final class PlaceLineViewModel {
-    init() {
-    }
-    func getPlaceLineData(_ completionHandler: @escaping ((APIResponse<HyperTrackPlaceline>) -> Void)) {
-        guard HyperTrack.getUserId() != nil else { return }
-        HyperTrack.getPlaceline { (placeline, error) in
-            guard let fetchedPlaceline = placeline else {
-                completionHandler(.failure(error))
-                return
-            }
-            completionHandler(.success(fetchedPlaceline))
-        }
-    }
-}
-
-enum APIResponse<T> {
-    case success(T)
-    case failure(HyperTrackError?)
-}
+//final class PlaceLineViewModel {
+//}
+//
