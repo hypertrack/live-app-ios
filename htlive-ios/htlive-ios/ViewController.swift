@@ -18,10 +18,12 @@ let pink = UIColor(red:1.00, green:0.51, blue:0.87, alpha:1.0)
 class ViewController: UIViewController {
     fileprivate var contentView: HTMapContainer!
     
-    fileprivate var placelineUseCase: HTPlaceLineUseCase = {
-        let uc = HTPlaceLineUseCase()
-        return uc
-    }()
+//    fileprivate var placelineUseCase: HTPlaceLineUseCase = {
+//        let uc = HTPlaceLineUseCase()
+//        return uc
+//    }()
+    
+    fileprivate var uc = HTLiveTrackingUseCase()
     
     var segments: [HyperTrackActivity] = []
     var placeLine: HyperTrackPlaceline? = nil
@@ -39,11 +41,26 @@ class ViewController: UIViewController {
         contentView = HTMapContainer(frame: .zero)
         view.addSubview(contentView)
         contentView.edges()
-        contentView.setBottomViewWithUseCase(placelineUseCase)
+        contentView.setBottomViewWithUseCase(uc)
+        contentView.cleanUp()
+//        uc.startTracking(pollDuration: 30)
+        uc.shareDetails = { (text) in
+            let activityViewController = UIActivityViewController(activityItems: text, applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = self.view
+            activityViewController.excludedActivityTypes = [.print, .assignToContact, .saveToCameraRoll]
+            self.present(activityViewController, animated: true, completion: nil)
+        }
+//        contentView.setBottomViewWithUseCase(placelineUseCase)
         NotificationCenter.default.addObserver(self, selector: #selector(self.userCreated), name: NSNotification.Name(rawValue:HTLiveConstants.userCreatedNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.onBackgroundNotification), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onLocationUpdate(notification:)), name: NSNotification.Name(rawValue: HTConstants.HTLocationChangeNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(trackUsingUrl), name: NSNotification.Name(rawValue:HTLiveConstants.trackUsingUrl), object: nil)
+    }
+    
+    func trackUsingUrl(notification: Notification) {
+        guard let url = notification.object as? String else { return }
+        uc.startTracking(HTTrackWithType.shortCode([url]), pollDuration: 30)
     }
     
     func onLocationUpdate(notification: Notification) {
@@ -84,7 +101,7 @@ class ViewController: UIViewController {
     }
     
     func onForegroundNotification(_ notification: Notification){
-        placelineUseCase.update()
+//        placelineUseCase.update()
         isACellSelected = false
         //TODO: v2
 //        contentView.showsUserLocation = true
@@ -95,14 +112,14 @@ class ViewController: UIViewController {
 //       contentView.showsUserLocation = false
     }
     func userCreated(_ notification: Notification) {
-        placelineUseCase.update()
+//        placelineUseCase.update()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         self.view.resignFirstResponder()
         //TODO: v2
 //        contentView.showsUserLocation = true
-        placelineUseCase.update()
+//        placelineUseCase.update()
     }
     
     override func viewDidAppear(_ animated: Bool) {
