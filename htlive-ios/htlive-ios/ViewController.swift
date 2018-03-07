@@ -60,7 +60,7 @@ class ViewController: UIViewController {
     
     func trackUsingUrl(notification: Notification) {
         guard let url = notification.object as? String else { return }
-        uc.startTracking(HTTrackWithType.shortCode([url]), pollDuration: 30)
+        uc.startTracking(HTTrackWithType.shortCode([url]), pollDuration: uc.pollDuration)
     }
     
     func onLocationUpdate(notification: Notification) {
