@@ -120,6 +120,14 @@ class HyperTrackAppService: NSObject {
 }
 
 extension HyperTrackAppService : HTEventsDelegate {
+    func didReceiveEvent(_ event: HyperTrackEvent) {
+        
+    }
+    
+    func didFailWithError(_ error: HyperTrackError) {
+        
+    }
+    
  
     func didEnterMonitoredDestinationRegionForAction(forAction : HyperTrackAction){
         HyperTrack.completeAction(forAction.id!)
