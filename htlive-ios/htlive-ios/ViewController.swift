@@ -35,6 +35,18 @@ class ViewController: UIViewController {
     var annotations = [MKPointAnnotation]()
     var polyLine : MKPolyline?
     var isACellSelected = false
+    fileprivate lazy var loaderContainer: UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = UIColor.black
+        view.alpha = 0.3
+        return view
+    }()
+    
+    fileprivate lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
+        activityIndicator.startAnimating()
+        return activityIndicator
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,12 +62,29 @@ class ViewController: UIViewController {
             activityViewController.excludedActivityTypes = [.print, .assignToContact, .saveToCameraRoll]
             self.present(activityViewController, animated: true, completion: nil)
         }
+        uc.showLoader = { [unowned self] (show) in
+            self.showLoader = show
+        }
 //        contentView.setBottomViewWithUseCase(placelineUseCase)
         NotificationCenter.default.addObserver(self, selector: #selector(self.userCreated), name: NSNotification.Name(rawValue:HTLiveConstants.userCreatedNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.onBackgroundNotification), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onLocationUpdate(notification:)), name: NSNotification.Name(rawValue: HTConstants.HTLocationChangeNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(trackUsingUrl), name: NSNotification.Name(rawValue:HTLiveConstants.trackUsingUrl), object: nil)
+    }
+    
+    fileprivate var showLoader: Bool = false {
+        didSet {
+            guard let window = view.window else { return }
+            loaderContainer.removeFromSuperview()
+            activityIndicator.removeFromSuperview()
+            if showLoader {
+                loaderContainer.frame = window.bounds
+                activityIndicator.center = window.center
+                window.addSubview(loaderContainer)
+                window.addSubview(activityIndicator)
+            }
+        }
     }
     
     func trackUsingUrl(notification: Notification) {
