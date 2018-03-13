@@ -24,7 +24,10 @@ class ViewController: UIViewController {
 //    }()
     
     fileprivate var uc = HTLiveTrackingUseCase()
-    
+    fileprivate var actionId: String = ""
+    fileprivate let collectionIdKey = "htUserCreatedActionIds"
+    fileprivate var collectionId = ""
+    fileprivate var sharedCollectionId = ""
     var segments: [HyperTrackActivity] = []
     var placeLine: HyperTrackPlaceline? = nil
 
@@ -55,15 +58,10 @@ class ViewController: UIViewController {
         contentView.edges()
         contentView.setBottomViewWithUseCase(uc)
         contentView.cleanUp()
-//        uc.startTracking(pollDuration: 30)
-        uc.shareDetails = { (text) in
-            let activityViewController = UIActivityViewController(activityItems: text, applicationActivities: nil)
-            activityViewController.popoverPresentationController?.sourceView = self.view
-            activityViewController.excludedActivityTypes = [.print, .assignToContact, .saveToCameraRoll]
-            self.present(activityViewController, animated: true, completion: nil)
-        }
-        uc.showLoader = { [unowned self] (show) in
-            self.showLoader = show
+        uc.trackingDelegate = self
+        if let collectionId = UserDefaults.standard.string(forKey: collectionIdKey), !collectionId.isEmpty {
+            self.collectionId = collectionId
+            startTracking(collectionId: collectionId)
         }
 //        contentView.setBottomViewWithUseCase(placelineUseCase)
         NotificationCenter.default.addObserver(self, selector: #selector(self.userCreated), name: NSNotification.Name(rawValue:HTLiveConstants.userCreatedNotification), object: nil)
@@ -73,12 +71,34 @@ class ViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(trackUsingUrl), name: NSNotification.Name(rawValue:HTLiveConstants.trackUsingUrl), object: nil)
     }
     
-    fileprivate var showLoader: Bool = false {
+    fileprivate func startTracking(collectionId: String) {
+        guard HyperTrack.getUserId() != nil else {
+            return
+        }
+        if !collectionId.isEmpty {
+            uc.trackActionWithCollectionId(collectionId, pollDuration: uc.pollDuration, completionHandler: nil)
+        } else {
+            let actionParams = HyperTrackActionParams.default
+            if !sharedCollectionId.isEmpty {
+                actionParams.collectionId = sharedCollectionId
+            }
+            HyperTrack.createAndAssignAction(actionParams, { [unowned self] (response, error) in
+                if let collectionId = response?.collectionId {
+                    self.collectionId = collectionId
+                    self.uc.trackActionWithCollectionId(collectionId, pollDuration: self.uc.pollDuration, completionHandler: nil)
+                    UserDefaults.standard.set(collectionId, forKey: self.collectionIdKey)
+                    UserDefaults.standard.synchronize()
+                }
+            })
+        }
+    }
+    
+    fileprivate var isLoading: Bool = false {
         didSet {
             guard let window = view.window else { return }
             loaderContainer.removeFromSuperview()
             activityIndicator.removeFromSuperview()
-            if showLoader {
+            if isLoading {
                 loaderContainer.frame = window.bounds
                 activityIndicator.center = window.center
                 window.addSubview(loaderContainer)
@@ -89,7 +109,22 @@ class ViewController: UIViewController {
     
     func trackUsingUrl(notification: Notification) {
         guard let url = notification.object as? String else { return }
-        uc.startTracking(HTTrackWithType.shortCode([url]), pollDuration: uc.pollDuration)
+        uc.trackActionWithShortCodes([url]) { [unowned self] (response, error) in
+            if let data = response {
+                guard let first = data.first else { return }
+                self.sharedCollectionId = first.collectionId
+                self.uc.trackActionWithCollectionId(first.collectionId, pollDuration: self.uc.pollDuration, completionHandler: nil)
+            } else {
+                let ac = UIAlertController(title: "Error", message: error?.displayErrorMessage, preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(ac, animated: true, completion: nil)
+            }
+        }
+//        HyperTrack.trackActionFor(shortCode: url) { [unowned self] (action, error) in
+//            if let collectionId = action?.collectionId {
+//                self.startTracking(collectionId: collectionId)
+//            }
+//        }
     }
     
     func onLocationUpdate(notification: Notification) {
@@ -213,3 +248,23 @@ extension ViewController {
     }
 }
 
+extension ViewController: HTLiveTrackingUseCaseDelegate {
+    func showLoader(_ show: Bool) {
+        isLoading = show
+    }
+    
+    func shareLiveTrackingDetails(_ text: String) {
+        let activityViewController = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        activityViewController.excludedActivityTypes = [.print, .assignToContact, .saveToCameraRoll]
+        self.present(activityViewController, animated: true, completion: nil)
+    }
+    
+    func shareLiveLocationClicked() {
+        startTracking(collectionId: "")
+    }
+    
+    func liveTrackingEnded(_ collectionId: String) {
+        UserDefaults.standard.set("", forKey: self.collectionIdKey)
+    }
+}

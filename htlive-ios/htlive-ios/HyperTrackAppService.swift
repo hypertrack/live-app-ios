@@ -36,8 +36,8 @@ class HyperTrackAppService: NSObject {
     func setupHyperTrack() {
         // staging pk : pk_03e3176a9831360e162093292049757b130c75cf
         // production pk : pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451
-//        HyperTrack.initialize("sk_35b9d87cba7ca206bcb7a06d5c94b24a58cdaac3")
-        HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
+        HyperTrack.initialize("sk_35b9d87cba7ca206bcb7a06d5c94b24a58cdaac3")
+//        HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
 
         // staging
 //        HyperTrack.initialize("pk_03e3176a9831360e162093292049757b130c75cf")
