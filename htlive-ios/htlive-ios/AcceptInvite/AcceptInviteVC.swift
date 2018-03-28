@@ -40,8 +40,8 @@ class AcceptInviteVC : UIViewController {
         HyperTrack.setUserId(userId!)
       
         if(oldUserId != userId){
-            HyperTrack.stopTracking()
-            HyperTrack.startTracking()
+//            HyperTrack.stopTracking()
+//            HyperTrack.startTracking()
         }
         self.view.showActivityIndicator()
         requestService.acceptHyperTrackInvite(accountId: self.accountId!) { (error) in

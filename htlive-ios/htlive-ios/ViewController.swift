@@ -18,14 +18,14 @@ let pink = UIColor(red:1.00, green:0.51, blue:0.87, alpha:1.0)
 class ViewController: UIViewController {
     fileprivate var contentView: HTMapContainer!
     
-//    fileprivate var placelineUseCase: HTPlaceLineUseCase = {
-//        let uc = HTPlaceLineUseCase()
-//        return uc
-//    }()
+    fileprivate lazy var placelineUseCase: HTPlaceLineUseCase = HTPlaceLineUseCase()
     
-    fileprivate var uc = HTLiveTrackingUseCase()
+//    fileprivate lazy var liveUseCase = HTLiveTrackingUseCase()
+    fileprivate lazy var orderUseCase = HTOrderTrackingUseCase()
+    fileprivate lazy var summaryUseCase = HTActivitySummaryUseCase()
     fileprivate var actionId: String = ""
-    fileprivate let collectionIdKey = "htUserCreatedActionIds"
+    fileprivate let collectionIdKey = "htLiveTrackingCollectionId"
+    fileprivate let orderCollectionIdKey = "htOrderTrackingCollectionId"
     fileprivate var collectionId = ""
     fileprivate var sharedCollectionId = ""
     var segments: [HyperTrackActivity] = []
@@ -56,13 +56,11 @@ class ViewController: UIViewController {
         contentView = HTMapContainer(frame: .zero)
         view.addSubview(contentView)
         contentView.edges()
-        contentView.setBottomViewWithUseCase(uc)
         contentView.cleanUp()
-        uc.trackingDelegate = self
-        if let collectionId = UserDefaults.standard.string(forKey: collectionIdKey), !collectionId.isEmpty {
-            self.collectionId = collectionId
-            startTracking(collectionId: collectionId)
-        }
+        enableSummaryUseCase()
+//        enableOrderTrackingUseCase()
+//        enableLiveTrackingUseCase()
+//        enablePlacelineUseCase()
 //        contentView.setBottomViewWithUseCase(placelineUseCase)
         NotificationCenter.default.addObserver(self, selector: #selector(self.userCreated), name: NSNotification.Name(rawValue:HTLiveConstants.userCreatedNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
@@ -71,12 +69,41 @@ class ViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(trackUsingUrl), name: NSNotification.Name(rawValue:HTLiveConstants.trackUsingUrl), object: nil)
     }
     
-    fileprivate func startTracking(collectionId: String) {
+    fileprivate func enablePlacelineUseCase() {
+        contentView.setBottomViewWithUseCase(placelineUseCase)
+        placelineUseCase.update()
+    }
+    
+    fileprivate func enableOrderTrackingUseCase() {
+        orderUseCase.trackingDelegate = self
+        contentView.setBottomViewWithUseCase(orderUseCase)
+        if let collectionId = UserDefaults.standard.string(forKey: orderCollectionIdKey), !collectionId.isEmpty {
+            self.collectionId = collectionId
+            startOrderTracking(collectionId: collectionId)
+        }
+    }
+    
+//    fileprivate func enableLiveTrackingUseCase() {
+//        liveUseCase.trackingDelegate = self
+//        contentView.setBottomViewWithUseCase(liveUseCase)
+//        if let collectionId = UserDefaults.standard.string(forKey: collectionIdKey), !collectionId.isEmpty {
+//            self.collectionId = collectionId
+//            startTracking(collectionId: collectionId, useCase: liveUseCase)
+//        }
+//    }
+    
+    fileprivate func enableSummaryUseCase() {
+        summaryUseCase.trackingDelegate = self
+        contentView.setBottomViewWithUseCase(summaryUseCase)
+        summaryUseCase.update()
+    }
+
+    fileprivate func startTracking(collectionId: String, useCase: HTLiveTrackingUseCase) {
         guard HyperTrack.getUserId() != nil else {
             return
         }
         if !collectionId.isEmpty {
-            uc.trackActionWithCollectionId(collectionId, pollDuration: uc.pollDuration, completionHandler: nil)
+            useCase.trackActionWithCollectionId(collectionId, pollDuration: useCase.pollDuration, completionHandler: nil)
         } else {
             let actionParams = HyperTrackActionParams.default
             if !sharedCollectionId.isEmpty {
@@ -85,7 +112,37 @@ class ViewController: UIViewController {
             HyperTrack.createAndAssignAction(actionParams, { [unowned self] (response, error) in
                 if let collectionId = response?.collectionId {
                     self.collectionId = collectionId
-                    self.uc.trackActionWithCollectionId(collectionId, pollDuration: self.uc.pollDuration, completionHandler: nil)
+                    useCase.trackActionWithCollectionId(collectionId, pollDuration: useCase.pollDuration, completionHandler: nil)
+                    UserDefaults.standard.set(collectionId, forKey: self.collectionIdKey)
+                    UserDefaults.standard.synchronize()
+                }
+            })
+        }
+    }
+    
+    fileprivate func startOrderTracking(collectionId: String) {
+        guard HyperTrack.getUserId() != nil else {
+            return
+        }
+//        HyperTrack.startTracking()
+        if !collectionId.isEmpty {
+            orderUseCase.trackActionWithCollectionId(collectionId, pollDuration: orderUseCase.pollDuration, completionHandler: nil)
+        } else {
+            let actionParams = HyperTrackActionParams.default
+            let expectedPlace = HyperTrackPlace()
+            _ = expectedPlace.setLocation(coordinates: CLLocationCoordinate2D(latitude: 12.9296494, longitude: 77.6357699))
+            expectedPlace.address = "HAL Airport"
+            expectedPlace.city = "Bengaluru"
+            expectedPlace.country = "India"
+            expectedPlace.landmark = "HAL"
+            expectedPlace.name = "HAL Airport"
+            actionParams.expectedPlace = expectedPlace
+            actionParams.lookupId = String(randomStringWithLength(len: 6))
+            _ = actionParams.setType(type: "delivery")
+            HyperTrack.createAndAssignAction(actionParams, { [unowned self] (response, error) in
+                if let collectionId = response?.collectionId {
+                    self.collectionId = collectionId
+                    self.orderUseCase.trackActionWithCollectionId(collectionId, pollDuration: self.orderUseCase.pollDuration, completionHandler: nil)
                     UserDefaults.standard.set(collectionId, forKey: self.collectionIdKey)
                     UserDefaults.standard.synchronize()
                 }
@@ -109,11 +166,12 @@ class ViewController: UIViewController {
     
     func trackUsingUrl(notification: Notification) {
         guard let url = notification.object as? String else { return }
-        uc.trackActionWithShortCodes([url]) { [unowned self] (response, error) in
+        summaryUseCase.enabeLiveTracking()
+        summaryUseCase.liveUC.trackActionWithShortCodes([url]) { [unowned self] (response, error) in
             if let data = response {
                 guard let first = data.first else { return }
                 self.sharedCollectionId = first.collectionId
-                self.uc.trackActionWithCollectionId(first.collectionId, pollDuration: self.uc.pollDuration, completionHandler: nil)
+                self.summaryUseCase.liveUC.trackActionWithCollectionId(first.collectionId, pollDuration: self.summaryUseCase.liveUC.pollDuration, completionHandler: nil)
             } else {
                 let ac = UIAlertController(title: "Error", message: error?.displayErrorMessage, preferredStyle: .alert)
                 ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -165,8 +223,9 @@ class ViewController: UIViewController {
     }
     
     func onForegroundNotification(_ notification: Notification){
+        summaryUseCase.placelineUC.update()
 //        placelineUseCase.update()
-        isACellSelected = false
+//        isACellSelected = false
         //TODO: v2
 //        contentView.showsUserLocation = true
     }
@@ -183,7 +242,6 @@ class ViewController: UIViewController {
         self.view.resignFirstResponder()
         //TODO: v2
 //        contentView.showsUserLocation = true
-//        placelineUseCase.update()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -261,10 +319,28 @@ extension ViewController: HTLiveTrackingUseCaseDelegate {
     }
     
     func shareLiveLocationClicked() {
-        startTracking(collectionId: "")
+        if let collectionId = UserDefaults.standard.string(forKey: collectionIdKey), !collectionId.isEmpty {
+            self.collectionId = collectionId
+            startTracking(collectionId: collectionId, useCase: summaryUseCase.liveUC)
+        } else {
+            startTracking(collectionId: "", useCase: summaryUseCase.liveUC)
+        }
     }
     
     func liveTrackingEnded(_ collectionId: String) {
+//        enableSummaryUseCase()
         UserDefaults.standard.set("", forKey: self.collectionIdKey)
+//        HyperTrack.stopTracking()
+    }
+}
+
+extension ViewController: HTOrderTrackingUseCaseDelegate {
+    func placeOrderClicked() {
+        startOrderTracking(collectionId: "")
+    }
+    
+    func orderTrackingEnded(_ collectionId: String) {
+        UserDefaults.standard.set("", forKey: self.orderCollectionIdKey)
+//        HyperTrack.stopTracking()
     }
 }

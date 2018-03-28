@@ -44,7 +44,7 @@ class HyperTrackAppService: NSObject {
 
         HyperTrack.setEventsDelegate(eventDelegate: self)
         if(HyperTrack.getUserId() != nil){
-            HyperTrack.startTracking()
+//            HyperTrack.startTracking()
         }
     }
     

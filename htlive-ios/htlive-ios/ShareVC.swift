@@ -310,7 +310,7 @@ final class ShareVC: UIViewController  {
                             HyperTrackAppService.sharedInstance.setLocationSelectionType(locationSelectionType: self.locationSelectionType)
                             // add geofence code here
                             if self.locationSelectionType != LocationSelectionType.myLocation{
-                                HyperTrack.startMonitoringForEntryAtPlace(place: place,radius:CLLocationDistance(self.monitorRegionRadius),identifier:(action.collectionId)!)
+//                                HyperTrack.startMonitoringForEntryAtPlace(place: place,radius:CLLocationDistance(self.monitorRegionRadius),identifier:(action.collectionId)!)
                             }
                             
                             
@@ -464,7 +464,7 @@ extension ShareVC:HTViewInteractionDelegate {
 
                         // geofence
                         if self.locationSelectionType != LocationSelectionType.myLocation{
-                            HyperTrack.startMonitoringForEntryAtPlace(place: expectedPlace,radius:CLLocationDistance(self.monitorRegionRadius),identifier: collectionId)
+//                            HyperTrack.startMonitoringForEntryAtPlace(place: expectedPlace,radius:CLLocationDistance(self.monitorRegionRadius),identifier: collectionId)
                         }
                     }else{
                         self.showAlert(title: "Error", message: "No collectionId present in action")
@@ -620,7 +620,7 @@ extension ShareVC:ShareLiveLocationDelegate{
 
                         // geofence
                         if self.locationSelectionType != LocationSelectionType.myLocation{
-                            HyperTrack.startMonitoringForEntryAtPlace(place: expectedPlace,radius:CLLocationDistance(self.monitorRegionRadius),identifier: collectionId)
+//                            HyperTrack.startMonitoringForEntryAtPlace(place: expectedPlace,radius:CLLocationDistance(self.monitorRegionRadius),identifier: collectionId)
                         }
                         
                         
