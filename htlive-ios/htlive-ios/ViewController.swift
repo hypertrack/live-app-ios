@@ -18,10 +18,16 @@ let pink = UIColor(red:1.00, green:0.51, blue:0.87, alpha:1.0)
 class ViewController: UIViewController {
     fileprivate var contentView: HTMapContainer!
     
-    fileprivate lazy var placelineUseCase: HTPlaceLineUseCase = HTPlaceLineUseCase()
-    
+//    fileprivate lazy var placelineUseCase: HTPlaceLineUseCase = HTPlaceLineUseCase()
+    fileprivate lazy var calendar: FSCalendar = {
+        let calendar = FSCalendar(frame: .zero)
+        calendar.dataSource = self
+        calendar.delegate = self
+        calendar.backgroundColor = .white
+        return calendar
+    }()
 //    fileprivate lazy var liveUseCase = HTLiveTrackingUseCase()
-    fileprivate lazy var orderUseCase = HTOrderTrackingUseCase()
+//    fileprivate lazy var orderUseCase = HTOrderTrackingUseCase()
     fileprivate lazy var summaryUseCase = HTActivitySummaryUseCase()
     fileprivate var actionId: String = ""
     fileprivate let collectionIdKey = "htLiveTrackingCollectionId"
@@ -70,17 +76,17 @@ class ViewController: UIViewController {
     }
     
     fileprivate func enablePlacelineUseCase() {
-        contentView.setBottomViewWithUseCase(placelineUseCase)
-        placelineUseCase.update()
+//        contentView.setBottomViewWithUseCase(placelineUseCase)
+//        placelineUseCase.update()
     }
     
     fileprivate func enableOrderTrackingUseCase() {
-        orderUseCase.trackingDelegate = self
-        contentView.setBottomViewWithUseCase(orderUseCase)
-        if let collectionId = UserDefaults.standard.string(forKey: orderCollectionIdKey), !collectionId.isEmpty {
-            self.collectionId = collectionId
-            startOrderTracking(collectionId: collectionId)
-        }
+//        orderUseCase.trackingDelegate = self
+//        contentView.setBottomViewWithUseCase(orderUseCase)
+//        if let collectionId = UserDefaults.standard.string(forKey: orderCollectionIdKey), !collectionId.isEmpty {
+//            self.collectionId = collectionId
+//            startOrderTracking(collectionId: collectionId)
+//        }
     }
     
 //    fileprivate func enableLiveTrackingUseCase() {
@@ -93,7 +99,7 @@ class ViewController: UIViewController {
 //    }
     
     fileprivate func enableSummaryUseCase() {
-        summaryUseCase.trackingDelegate = self
+        summaryUseCase.activityDelegate = self
         contentView.setBottomViewWithUseCase(summaryUseCase)
         summaryUseCase.update()
     }
@@ -121,33 +127,32 @@ class ViewController: UIViewController {
     }
     
     fileprivate func startOrderTracking(collectionId: String) {
-        guard HyperTrack.getUserId() != nil else {
-            return
-        }
-//        HyperTrack.startTracking()
-        if !collectionId.isEmpty {
-            orderUseCase.trackActionWithCollectionId(collectionId, pollDuration: orderUseCase.pollDuration, completionHandler: nil)
-        } else {
-            let actionParams = HyperTrackActionParams.default
-            let expectedPlace = HyperTrackPlace()
-            _ = expectedPlace.setLocation(coordinates: CLLocationCoordinate2D(latitude: 12.9296494, longitude: 77.6357699))
-            expectedPlace.address = "HAL Airport"
-            expectedPlace.city = "Bengaluru"
-            expectedPlace.country = "India"
-            expectedPlace.landmark = "HAL"
-            expectedPlace.name = "HAL Airport"
-            actionParams.expectedPlace = expectedPlace
-            actionParams.lookupId = String(randomStringWithLength(len: 6))
-            _ = actionParams.setType(type: "delivery")
-            HyperTrack.createAndAssignAction(actionParams, { [unowned self] (response, error) in
-                if let collectionId = response?.collectionId {
-                    self.collectionId = collectionId
-                    self.orderUseCase.trackActionWithCollectionId(collectionId, pollDuration: self.orderUseCase.pollDuration, completionHandler: nil)
-                    UserDefaults.standard.set(collectionId, forKey: self.collectionIdKey)
-                    UserDefaults.standard.synchronize()
-                }
-            })
-        }
+//        guard HyperTrack.getUserId() != nil else {
+//            return
+//        }
+//        if !collectionId.isEmpty {
+//            orderUseCase.trackActionWithCollectionId(collectionId, pollDuration: orderUseCase.pollDuration, completionHandler: nil)
+//        } else {
+//            let actionParams = HyperTrackActionParams.default
+//            let expectedPlace = HyperTrackPlace()
+//            _ = expectedPlace.setLocation(coordinates: CLLocationCoordinate2D(latitude: 12.9296494, longitude: 77.6357699))
+//            expectedPlace.address = "HAL Airport"
+//            expectedPlace.city = "Bengaluru"
+//            expectedPlace.country = "India"
+//            expectedPlace.landmark = "HAL"
+//            expectedPlace.name = "HAL Airport"
+//            actionParams.expectedPlace = expectedPlace
+//            actionParams.lookupId = String(randomStringWithLength(len: 6))
+//            _ = actionParams.setType(type: "delivery")
+//            HyperTrack.createAndAssignAction(actionParams, { [unowned self] (response, error) in
+//                if let collectionId = response?.collectionId {
+//                    self.collectionId = collectionId
+//                    self.orderUseCase.trackActionWithCollectionId(collectionId, pollDuration: self.orderUseCase.pollDuration, completionHandler: nil)
+//                    UserDefaults.standard.set(collectionId, forKey: self.collectionIdKey)
+//                    UserDefaults.standard.synchronize()
+//                }
+//            })
+//        }
     }
     
     fileprivate var isLoading: Bool = false {
@@ -164,25 +169,39 @@ class ViewController: UIViewController {
         }
     }
     
+    fileprivate func showError(title: String, message: String?) {
+        let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(ac, animated: true, completion: nil)
+    }
+    
     func trackUsingUrl(notification: Notification) {
         guard let url = notification.object as? String else { return }
-        summaryUseCase.enabeLiveTracking()
-        summaryUseCase.liveUC.trackActionWithShortCodes([url]) { [unowned self] (response, error) in
-            if let data = response {
-                guard let first = data.first else { return }
-                self.sharedCollectionId = first.collectionId
-                self.summaryUseCase.liveUC.trackActionWithCollectionId(first.collectionId, pollDuration: self.summaryUseCase.liveUC.pollDuration, completionHandler: nil)
-            } else {
-                let ac = UIAlertController(title: "Error", message: error?.displayErrorMessage, preferredStyle: .alert)
-                ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(ac, animated: true, completion: nil)
+        if let collectionId = UserDefaults.standard.string(forKey: collectionIdKey), !collectionId.isEmpty {
+            summaryUseCase.liveUC.trackActionWithShortCodes([url]) { [unowned self] (response, error) in
+                if let data = response {
+                    guard let first = data.first else { return }
+                    let vc = SecondTrackingViewController(nibName: nil, bundle: nil)
+                    vc.collectionId = first.collectionId
+                    vc.modalPresentationStyle = .overCurrentContext
+                    vc.modalTransitionStyle = .coverVertical
+                    self.present(vc, animated: true, completion: nil)
+                } else {
+                    self.showError(title: "Error", message: error?.displayErrorMessage)
+                }
+            }
+        } else {
+            summaryUseCase.enabeLiveTracking()
+            summaryUseCase.liveUC.trackActionWithShortCodes([url]) { [unowned self] (response, error) in
+                if let data = response {
+                    guard let first = data.first else { return }
+                    self.sharedCollectionId = first.collectionId
+                    self.startTracking(collectionId: first.collectionId, useCase: self.summaryUseCase.liveUC)
+                } else {
+                    self.showError(title: "Error", message: error?.displayErrorMessage)
+                }
             }
         }
-//        HyperTrack.trackActionFor(shortCode: url) { [unowned self] (action, error) in
-//            if let collectionId = action?.collectionId {
-//                self.startTracking(collectionId: collectionId)
-//            }
-//        }
     }
     
     func onLocationUpdate(notification: Notification) {
@@ -201,7 +220,6 @@ class ViewController: UIViewController {
             showAlert(title: "Internet not available", message: "To share live location, Please check your internet connectivity and try again")
         }
     }
-    
     
     fileprivate func showAlert(title: String?, message: String?) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -240,6 +258,8 @@ class ViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         self.view.resignFirstResponder()
+        contentView.showCurrentLocation = true
+        contentView.cleanUp()
         //TODO: v2
 //        contentView.showsUserLocation = true
     }
@@ -250,18 +270,6 @@ class ViewController: UIViewController {
     
     func setCurrentLocation(){
         if !isACellSelected {
-//            HyperTrack.getCurrentLocation { (clLocation, error) in
-//                if let location  = clLocation{
-//                    let region = MKCoordinateRegionMake((location.coordinate),MKCoordinateSpanMake(0.005, 0.005))
-//                    self.contentView.setRegion(region, animated: true)
-//                }else{
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
-//                        if self.segments.count > 0 {
-//                            self.tableView(self.placeLineTable, didSelectRowAt: IndexPath.init(row: 0, section: 0))
-//                        }
-//                    }
-//                }
-//            }
         }
     }
     
@@ -306,13 +314,50 @@ extension ViewController {
     }
 }
 
-extension ViewController: HTLiveTrackingUseCaseDelegate {
+extension ViewController: FSCalendarDelegate {
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        summaryUseCase.placelineUC.setDate(date)
+        calendar.removeFromSuperview()
+    }
+}
+
+extension ViewController: FSCalendarDataSource {
+    func minimumDate(for calendar: FSCalendar) -> Date {
+        return (Date() - 86400 * 30)
+    }
+    
+    func maximumDate(for calendar: FSCalendar) -> Date {
+        return Date()
+    }
+}
+
+extension ViewController: HTActivitySummaryUseCaseDelegate {
+    func openCalendar(_ open: Bool, selectedDate: Date) {
+        if open {
+            view.addSubview(calendar)
+            calendar.translatesAutoresizingMaskIntoConstraints = false
+            view.addConstraints([
+                NSLayoutConstraint(item: calendar, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: calendar, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: calendar, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 30),
+                ])
+            calendar.removeConstraints(calendar.constraints)
+            calendar.addConstraints([
+                NSLayoutConstraint(item: calendar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 300),
+                ])
+
+        } else {
+            calendar.removeFromSuperview()
+        }
+    }
+    
     func showLoader(_ show: Bool) {
         isLoading = show
     }
     
-    func shareLiveTrackingDetails(_ text: String) {
-        let activityViewController = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+    func shareLiveTrackingDetails(_ url: String, eta: String) {
+        let shareText = eta.isEmpty ? ("See my live location and share yours. " + url) : ("Will be there by " + eta + ". See my live location and share yours. "  + url)
+        let activityViewController = UIActivityViewController(activityItems: [shareText], applicationActivities: nil)
         activityViewController.popoverPresentationController?.sourceView = self.view
         activityViewController.excludedActivityTypes = [.print, .assignToContact, .saveToCameraRoll]
         self.present(activityViewController, animated: true, completion: nil)
@@ -328,9 +373,9 @@ extension ViewController: HTLiveTrackingUseCaseDelegate {
     }
     
     func liveTrackingEnded(_ collectionId: String) {
-//        enableSummaryUseCase()
+        sharedCollectionId = ""
+        self.collectionId = ""
         UserDefaults.standard.set("", forKey: self.collectionIdKey)
-//        HyperTrack.stopTracking()
     }
 }
 
@@ -341,6 +386,5 @@ extension ViewController: HTOrderTrackingUseCaseDelegate {
     
     func orderTrackingEnded(_ collectionId: String) {
         UserDefaults.standard.set("", forKey: self.orderCollectionIdKey)
-//        HyperTrack.stopTracking()
     }
 }

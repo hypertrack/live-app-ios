@@ -36,6 +36,7 @@
 		7214AC794737FD3C0D2555C4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6879260750573A1BEF59E3DE /* SystemConfiguration.framework */; };
 		B00C94962B65677DF4F6C7DB /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C72BCF7451040D64AFF2A1 /* CoreTelephony.framework */; };
 		B7643EDC203E8D4E009A1976 /* PlaceLineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7643EDB203E8D4E009A1976 /* PlaceLineViewModel.swift */; };
+		B7AB54A4206BD31B002EF9BC /* SecondTrackingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AB54A3206BD31B002EF9BC /* SecondTrackingViewController.swift */; };
 		B7B2B972203D85C70098D437 /* WorkSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B2B96E203D85C50098D437 /* WorkSans-Regular.ttf */; };
 		B7B2B973203D85C70098D437 /* WorkSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B2B96F203D85C50098D437 /* WorkSans-Medium.ttf */; };
 		B7B2B974203D85C70098D437 /* WorkSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B2B970203D85C50098D437 /* WorkSans-SemiBold.ttf */; };
@@ -103,6 +104,7 @@
 		790284E1E83C2D3E59B456A0 /* Pods-htlive-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios.release.xcconfig"; sourceTree = "<group>"; };
 		8F29BB026EF4C014377323EA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		B7643EDB203E8D4E009A1976 /* PlaceLineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceLineViewModel.swift; sourceTree = "<group>"; };
+		B7AB54A3206BD31B002EF9BC /* SecondTrackingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondTrackingViewController.swift; sourceTree = "<group>"; };
 		B7B2B96E203D85C50098D437 /* WorkSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-Regular.ttf"; sourceTree = "<group>"; };
 		B7B2B96F203D85C50098D437 /* WorkSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-Medium.ttf"; sourceTree = "<group>"; };
 		B7B2B970203D85C50098D437 /* WorkSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				3354C1CB1F14DAE50011506D /* placeCell.xib */,
 				3354C1CD1F14EB820011506D /* placeCell.swift */,
 				B7643EDB203E8D4E009A1976 /* PlaceLineViewModel.swift */,
+				B7AB54A3206BD31B002EF9BC /* SecondTrackingViewController.swift */,
 			);
 			name = Placeline;
 			sourceTree = "<group>";
@@ -578,6 +581,7 @@
 				BB7D29A91F1EA4E600E72DCF /* RequestService.swift in Sources */,
 				4184389C1F5BF00100190FE2 /* ActivityFeedbackTableVC.swift in Sources */,
 				B7B2B977203D9AB30098D437 /* AppStyle.swift in Sources */,
+				B7AB54A4206BD31B002EF9BC /* SecondTrackingViewController.swift in Sources */,
 				3313D3A41F18D41F00BDF8E0 /* Date.swift in Sources */,
 				BB7D299C1F1D690D00E72DCF /* UIAlertView+Extension.swift in Sources */,
 				BBF7B3EE1F19972C00DA355C /* BaseFlowController.swift in Sources */,
