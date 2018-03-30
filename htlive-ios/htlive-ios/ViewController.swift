@@ -18,7 +18,6 @@ let pink = UIColor(red:1.00, green:0.51, blue:0.87, alpha:1.0)
 class ViewController: UIViewController {
     fileprivate var contentView: HTMapContainer!
     
-//    fileprivate lazy var placelineUseCase: HTPlaceLineUseCase = HTPlaceLineUseCase()
     fileprivate lazy var calendar: FSCalendar = {
         let calendar = FSCalendar(frame: .zero)
         calendar.dataSource = self
@@ -26,8 +25,6 @@ class ViewController: UIViewController {
         calendar.backgroundColor = .white
         return calendar
     }()
-//    fileprivate lazy var liveUseCase = HTLiveTrackingUseCase()
-//    fileprivate lazy var orderUseCase = HTOrderTrackingUseCase()
     fileprivate lazy var summaryUseCase = HTActivitySummaryUseCase()
     fileprivate var actionId: String = ""
     fileprivate let collectionIdKey = "htLiveTrackingCollectionId"
@@ -64,39 +61,10 @@ class ViewController: UIViewController {
         contentView.edges()
         contentView.cleanUp()
         enableSummaryUseCase()
-//        enableOrderTrackingUseCase()
-//        enableLiveTrackingUseCase()
-//        enablePlacelineUseCase()
-//        contentView.setBottomViewWithUseCase(placelineUseCase)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.userCreated), name: NSNotification.Name(rawValue:HTLiveConstants.userCreatedNotification), object: nil)
+
         NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.onBackgroundNotification), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onLocationUpdate(notification:)), name: NSNotification.Name(rawValue: HTConstants.HTLocationChangeNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(trackUsingUrl), name: NSNotification.Name(rawValue:HTLiveConstants.trackUsingUrl), object: nil)
     }
-    
-    fileprivate func enablePlacelineUseCase() {
-//        contentView.setBottomViewWithUseCase(placelineUseCase)
-//        placelineUseCase.update()
-    }
-    
-    fileprivate func enableOrderTrackingUseCase() {
-//        orderUseCase.trackingDelegate = self
-//        contentView.setBottomViewWithUseCase(orderUseCase)
-//        if let collectionId = UserDefaults.standard.string(forKey: orderCollectionIdKey), !collectionId.isEmpty {
-//            self.collectionId = collectionId
-//            startOrderTracking(collectionId: collectionId)
-//        }
-    }
-    
-//    fileprivate func enableLiveTrackingUseCase() {
-//        liveUseCase.trackingDelegate = self
-//        contentView.setBottomViewWithUseCase(liveUseCase)
-//        if let collectionId = UserDefaults.standard.string(forKey: collectionIdKey), !collectionId.isEmpty {
-//            self.collectionId = collectionId
-//            startTracking(collectionId: collectionId, useCase: liveUseCase)
-//        }
-//    }
     
     fileprivate func enableSummaryUseCase() {
         summaryUseCase.activityDelegate = self
@@ -124,35 +92,6 @@ class ViewController: UIViewController {
                 }
             })
         }
-    }
-    
-    fileprivate func startOrderTracking(collectionId: String) {
-//        guard HyperTrack.getUserId() != nil else {
-//            return
-//        }
-//        if !collectionId.isEmpty {
-//            orderUseCase.trackActionWithCollectionId(collectionId, pollDuration: orderUseCase.pollDuration, completionHandler: nil)
-//        } else {
-//            let actionParams = HyperTrackActionParams.default
-//            let expectedPlace = HyperTrackPlace()
-//            _ = expectedPlace.setLocation(coordinates: CLLocationCoordinate2D(latitude: 12.9296494, longitude: 77.6357699))
-//            expectedPlace.address = "HAL Airport"
-//            expectedPlace.city = "Bengaluru"
-//            expectedPlace.country = "India"
-//            expectedPlace.landmark = "HAL"
-//            expectedPlace.name = "HAL Airport"
-//            actionParams.expectedPlace = expectedPlace
-//            actionParams.lookupId = String(randomStringWithLength(len: 6))
-//            _ = actionParams.setType(type: "delivery")
-//            HyperTrack.createAndAssignAction(actionParams, { [unowned self] (response, error) in
-//                if let collectionId = response?.collectionId {
-//                    self.collectionId = collectionId
-//                    self.orderUseCase.trackActionWithCollectionId(collectionId, pollDuration: self.orderUseCase.pollDuration, completionHandler: nil)
-//                    UserDefaults.standard.set(collectionId, forKey: self.collectionIdKey)
-//                    UserDefaults.standard.synchronize()
-//                }
-//            })
-//        }
     }
     
     fileprivate var isLoading: Bool = false {
@@ -242,26 +181,12 @@ class ViewController: UIViewController {
     
     func onForegroundNotification(_ notification: Notification){
         summaryUseCase.placelineUC.update()
-//        placelineUseCase.update()
-//        isACellSelected = false
-        //TODO: v2
-//        contentView.showsUserLocation = true
     }
     
-    func onBackgroundNotification(_ notification: Notification){
-        //TODO: v2
-//       contentView.showsUserLocation = false
-    }
-    func userCreated(_ notification: Notification) {
-//        placelineUseCase.update()
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         self.view.resignFirstResponder()
         contentView.showCurrentLocation = true
         contentView.cleanUp()
-        //TODO: v2
-//        contentView.showsUserLocation = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -379,12 +304,69 @@ extension ViewController: HTActivitySummaryUseCaseDelegate {
     }
 }
 
-extension ViewController: HTOrderTrackingUseCaseDelegate {
-    func placeOrderClicked() {
-        startOrderTracking(collectionId: "")
-    }
-    
-    func orderTrackingEnded(_ collectionId: String) {
-        UserDefaults.standard.set("", forKey: self.orderCollectionIdKey)
-    }
-}
+/// Ignore
+//    fileprivate lazy var placelineUseCase: HTPlaceLineUseCase = HTPlaceLineUseCase()
+//    fileprivate lazy var liveUseCase = HTLiveTrackingUseCase()
+//    fileprivate lazy var orderUseCase = HTOrderTrackingUseCase()
+//    fileprivate func enablePlacelineUseCase() {
+//        contentView.setBottomViewWithUseCase(placelineUseCase)
+//        placelineUseCase.update()
+//    }
+
+//    fileprivate func enableOrderTrackingUseCase() {
+//        orderUseCase.trackingDelegate = self
+//        contentView.setBottomViewWithUseCase(orderUseCase)
+//        if let collectionId = UserDefaults.standard.string(forKey: orderCollectionIdKey), !collectionId.isEmpty {
+//            self.collectionId = collectionId
+//            startOrderTracking(collectionId: collectionId)
+//        }
+//    }
+
+//    fileprivate func enableLiveTrackingUseCase() {
+//        liveUseCase.trackingDelegate = self
+//        contentView.setBottomViewWithUseCase(liveUseCase)
+//        if let collectionId = UserDefaults.standard.string(forKey: collectionIdKey), !collectionId.isEmpty {
+//            self.collectionId = collectionId
+//            startTracking(collectionId: collectionId, useCase: liveUseCase)
+//        }
+//    }
+
+//    fileprivate func startOrderTracking(collectionId: String) {
+//        guard HyperTrack.getUserId() != nil else {
+//            return
+//        }
+//        if !collectionId.isEmpty {
+//            orderUseCase.trackActionWithCollectionId(collectionId, pollDuration: orderUseCase.pollDuration, completionHandler: nil)
+//        } else {
+//            let actionParams = HyperTrackActionParams.default
+//            let expectedPlace = HyperTrackPlace()
+//            _ = expectedPlace.setLocation(coordinates: CLLocationCoordinate2D(latitude: 12.9296494, longitude: 77.6357699))
+//            expectedPlace.address = "HAL Airport"
+//            expectedPlace.city = "Bengaluru"
+//            expectedPlace.country = "India"
+//            expectedPlace.landmark = "HAL"
+//            expectedPlace.name = "HAL Airport"
+//            actionParams.expectedPlace = expectedPlace
+//            actionParams.lookupId = String(randomStringWithLength(len: 6))
+//            _ = actionParams.setType(type: "delivery")
+//            HyperTrack.createAndAssignAction(actionParams, { [unowned self] (response, error) in
+//                if let collectionId = response?.collectionId {
+//                    self.collectionId = collectionId
+//                    self.orderUseCase.trackActionWithCollectionId(collectionId, pollDuration: self.orderUseCase.pollDuration, completionHandler: nil)
+//                    UserDefaults.standard.set(collectionId, forKey: self.collectionIdKey)
+//                    UserDefaults.standard.synchronize()
+//                }
+//            })
+//        }
+//    }
+
+//extension ViewController: HTOrderTrackingUseCaseDelegate {
+//    func placeOrderClicked() {
+//        startOrderTracking(collectionId: "")
+//    }
+//
+//    func orderTrackingEnded(_ collectionId: String) {
+//        UserDefaults.standard.set("", forKey: self.orderCollectionIdKey)
+//    }
+//}
+
