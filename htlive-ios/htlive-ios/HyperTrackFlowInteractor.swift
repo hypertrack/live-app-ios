@@ -16,13 +16,13 @@ protocol HyperTrackFlowInteractorDelegate {
 }
 
 class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
+    func haveStartedFlow(sender: BaseFlowController) {
+        
+    }
     
     let onboardingFlowController = OnboardingFlowController()
     let permissionFlowController = PermissionsFlowController()
     let inviteFlowController = InviteFlowController()
-    
-    var liveLocationViewControllers  = [ShareVC]()
-    
     
     var flows = [BaseFlowController]()
     
@@ -107,8 +107,7 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
             UNUserNotificationCenter.current().add(request){(error) in
                 
                 if (error != nil){
-                    
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription ?? "")
                 } else {
                     print("Successfully Done")
                 }
@@ -174,35 +173,7 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
         appendController(inviteFlowController)
         presentFlowsIfNeeded()
     }
-    
-    func presentLiveLocationFlow(shortCode : String){
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        let liveLocationController = storyboard.instantiateViewController(withIdentifier: "ShareVC") as! ShareVC
-        liveLocationController.shortCode = shortCode
-        HyperTrackFlowInteractor.topViewController()?.present(liveLocationController, animated:true, completion: nil)
-    }
-    
-    func presentLiveLocationFlow(collectionId : String,shortCode: String){
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        let liveLocationController = storyboard.instantiateViewController(withIdentifier: "ShareVC") as! ShareVC
-        liveLocationController.collectionId = collectionId
-        liveLocationController.shortCode = shortCode
-        HyperTrackFlowInteractor.topViewController()?.present(liveLocationController, animated:true, completion: nil)
-    }
-    
-    
-    func presentReviewPlaceLineView(){
-//        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-//
-//        let activityFeedbackVC = storyboard.instantiateViewController(withIdentifier: "ActivityFeedbackTableVC") as! ActivityFeedbackTableVC
-//        let navVC = UINavigationController.init(rootViewController: activityFeedbackVC)
-//        HyperTrackFlowInteractor.topViewController()?.present(navVC, animated: true, completion: nil)
-    }
-    
-    func haveStartedFlow(sender: BaseFlowController) {
-        //
-    }
-    
+
     func haveFinishedFlow(sender: BaseFlowController) {
         isPresentingAFlow = false
         let index =  flows.index(of: sender)

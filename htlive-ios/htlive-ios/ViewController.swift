@@ -25,22 +25,14 @@ class ViewController: UIViewController {
         calendar.backgroundColor = .white
         return calendar
     }()
+    
     fileprivate lazy var summaryUseCase = HTActivitySummaryUseCase()
     fileprivate var actionId: String = ""
     fileprivate let collectionIdKey = "htLiveTrackingCollectionId"
     fileprivate let orderCollectionIdKey = "htOrderTrackingCollectionId"
     fileprivate var collectionId = ""
     fileprivate var sharedCollectionId = ""
-    var segments: [HyperTrackActivity] = []
-    var placeLine: HyperTrackPlaceline? = nil
 
-    var selectedIndexPath : IndexPath? = nil
-    var noResults = false
-    let regionRadius: CLLocationDistance = 200
-
-    var annotations = [MKPointAnnotation]()
-    var polyLine : MKPolyline?
-    var isACellSelected = false
     fileprivate lazy var loaderContainer: UIView = {
         let view = UIView(frame: .zero)
         view.backgroundColor = UIColor.black
@@ -79,7 +71,7 @@ class ViewController: UIViewController {
         if !collectionId.isEmpty {
             useCase.trackActionWithCollectionId(collectionId, pollDuration: useCase.pollDuration, completionHandler: nil)
         } else {
-            let actionParams = HyperTrackActionParams.default
+            let actionParams = HTActionParams.default
             if !sharedCollectionId.isEmpty {
                 actionParams.collectionId = sharedCollectionId
             }
@@ -143,31 +135,11 @@ class ViewController: UIViewController {
         }
     }
     
-    func onLocationUpdate(notification: Notification) {
-        setCurrentLocation()
-    }
-
-    func onLiveLocationButtonClick(sender: UIButton) {
-        let reachabilityManager = Alamofire.NetworkReachabilityManager(host: "www.google.com")
-        if (reachabilityManager?.isReachable)! {
-            let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-            let liveLocationController = storyboard.instantiateViewController(withIdentifier: "ShareVC") as! ShareVC
-            self.present(liveLocationController, animated: true) {
-                NSLog("presented")
-            }
-        } else{
-            showAlert(title: "Internet not available", message: "To share live location, Please check your internet connectivity and try again")
-        }
-    }
-    
     fileprivate func showAlert(title: String?, message: String?) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
         let ok : UIAlertAction = UIAlertAction.init(title: "OK", style: .cancel) { (action) in
         }
-
         alert.addAction(ok)
-        
         if (self.isBeingPresented){
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.present(alert, animated: true, completion: nil)
@@ -189,21 +161,10 @@ class ViewController: UIViewController {
         contentView.cleanUp()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        self.setCurrentLocation()
-    }
-    
-    func setCurrentLocation(){
-        if !isACellSelected {
-        }
-    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    
 }
 
 extension ViewController {
