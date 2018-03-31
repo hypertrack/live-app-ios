@@ -62,6 +62,9 @@ class ViewController: UIViewController {
         summaryUseCase.activityDelegate = self
         contentView.setBottomViewWithUseCase(summaryUseCase)
         summaryUseCase.update()
+        HyperTrack.updateUser("Atul HyperTrack", "776033", nil, nil) { (user, error) in
+            print("updated")
+        }
     }
 
     fileprivate func startTracking(collectionId: String, useCase: HTLiveTrackingUseCase) {
@@ -209,7 +212,7 @@ extension ViewController: FSCalendarDelegate {
 
 extension ViewController: FSCalendarDataSource {
     func minimumDate(for calendar: FSCalendar) -> Date {
-        return (Date() - 86400 * 30)
+        return (Date() - 86400 * 60)
     }
     
     func maximumDate(for calendar: FSCalendar) -> Date {
@@ -225,7 +228,7 @@ extension ViewController: HTActivitySummaryUseCaseDelegate {
             view.addConstraints([
                 NSLayoutConstraint(item: calendar, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0),
                 NSLayoutConstraint(item: calendar, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: calendar, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 30),
+                NSLayoutConstraint(item: calendar, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0),
                 ])
             calendar.removeConstraints(calendar.constraints)
             calendar.addConstraints([
