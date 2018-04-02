@@ -8,7 +8,6 @@
 
 import UIKit
 import HyperTrack
-import FSCalendar
 import MessageUI
 import MapKit
 import Alamofire
@@ -17,14 +16,6 @@ let pink = UIColor(red:1.00, green:0.51, blue:0.87, alpha:1.0)
 
 class ViewController: UIViewController {
     fileprivate var contentView: HTMapContainer!
-    
-    fileprivate lazy var calendar: FSCalendar = {
-        let calendar = FSCalendar(frame: .zero)
-        calendar.dataSource = self
-        calendar.delegate = self
-        calendar.backgroundColor = .white
-        return calendar
-    }()
     
     fileprivate lazy var summaryUseCase = HTActivitySummaryUseCase()
     fileprivate var actionId: String = ""
@@ -62,9 +53,6 @@ class ViewController: UIViewController {
         summaryUseCase.activityDelegate = self
         contentView.setBottomViewWithUseCase(summaryUseCase)
         summaryUseCase.update()
-        HyperTrack.updateUser("Atul HyperTrack", "776033", nil, nil) { (user, error) in
-            print("updated")
-        }
     }
 
     fileprivate func startTracking(collectionId: String, useCase: HTLiveTrackingUseCase) {
@@ -155,7 +143,7 @@ class ViewController: UIViewController {
     }
     
     func onForegroundNotification(_ notification: Notification){
-        summaryUseCase.placelineUC.update()
+        summaryUseCase.update()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -203,43 +191,7 @@ extension ViewController {
     }
 }
 
-extension ViewController: FSCalendarDelegate {
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        summaryUseCase.placelineUC.setDate(date)
-        calendar.removeFromSuperview()
-    }
-}
-
-extension ViewController: FSCalendarDataSource {
-    func minimumDate(for calendar: FSCalendar) -> Date {
-        return (Date() - 86400 * 60)
-    }
-    
-    func maximumDate(for calendar: FSCalendar) -> Date {
-        return Date()
-    }
-}
-
-extension ViewController: HTActivitySummaryUseCaseDelegate {
-    func openCalendar(_ open: Bool, selectedDate: Date) {
-        if open {
-            view.addSubview(calendar)
-            calendar.translatesAutoresizingMaskIntoConstraints = false
-            view.addConstraints([
-                NSLayoutConstraint(item: calendar, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: calendar, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: calendar, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0),
-                ])
-            calendar.removeConstraints(calendar.constraints)
-            calendar.addConstraints([
-                NSLayoutConstraint(item: calendar, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 300),
-                ])
-
-        } else {
-            calendar.removeFromSuperview()
-        }
-    }
-    
+extension ViewController: HTActivitySummaryUseCaseDelegate {    
     func showLoader(_ show: Bool) {
         isLoading = show
     }

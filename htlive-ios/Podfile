@@ -11,7 +11,6 @@ target 'htlive-ios' do
   use_frameworks!
 
   hypertrack_pods
-  pod 'FSCalendar'
   pod 'PhoneNumberKit', '~> 1.2'
   pod 'MBProgressHUD'
   pod 'Branch'
