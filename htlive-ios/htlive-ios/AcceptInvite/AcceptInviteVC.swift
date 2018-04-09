@@ -36,13 +36,13 @@ class AcceptInviteVC : UIViewController {
     @IBAction func didTapAcceptInviteButton(_ sender: Any) {
         // Mark the invite accepted on HyperTrack API Server
         let requestService = RequestService.shared
-        var oldUserId = HyperTrack.getUserId()
-        HyperTrack.setUserId(userId!)
+//        var oldUserId = HyperTrack.getUserId()
+//        HyperTrack.setUserId(userId!)
       
-        if(oldUserId != userId){
+//        if(oldUserId != userId){
 //            HyperTrack.stopTracking()
 //            HyperTrack.startTracking()
-        }
+//        }
         self.view.showActivityIndicator()
         requestService.acceptHyperTrackInvite(accountId: self.accountId!) { (error) in
             self.view.hideActivityIndicator()

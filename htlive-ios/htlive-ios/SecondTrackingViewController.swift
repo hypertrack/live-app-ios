@@ -157,7 +157,7 @@ extension SecondTrackingViewController: HTLiveTrackingUseCaseDelegate {
     func shareLiveLocationClicked() {
     }
     
-    func liveTrackingEnded(_ collectionId: String) {
+    func liveTrackingEnded(_ type: HTTrackWithTypeData) {
         crossClicked()
     }
 }

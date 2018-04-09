@@ -41,6 +41,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         contentView = HTMapContainer(frame: .zero)
         view.addSubview(contentView)
+        HyperTrack.requestAlwaysLocationAuthorization { (_) in
+            
+        }
         contentView.edges()
         contentView.cleanUp()
         enableSummaryUseCase()
@@ -75,6 +78,24 @@ class ViewController: UIViewController {
                 }
             })
         }
+    }
+    
+    fileprivate func startMockTracking() {
+        let expectedPlace = HTPlaceBuilder()
+            .setCity("Bengaluru")
+            .setCountry("India")
+            .setAddress("HAL Airport")
+            .setLandmark("HAL")
+            .setName("HAL Airport")
+            .setLocation(CLLocationCoordinate2D(latitude: 12.9296494, longitude: 77.6357699))
+            .setId(UUID().uuidString)
+            .build()
+        let actionParams = HTActionParams.default.setUserId(userId: HyperTrack.getUserId() ?? "").setType(type: "visit").setExpectedPlace(expectedPlace: expectedPlace)
+        HyperTrack.createMockAction(nil, nil, actionParams, completionHandler: { [unowned self] (response, error) in
+            if let id = response?.id {
+                self.summaryUseCase.liveUC.trackActionWithIds([id], pollDuration: self.summaryUseCase.liveUC.pollDuration, completionHandler: nil)
+            }
+        })
     }
     
     fileprivate var isLoading: Bool = false {
@@ -205,6 +226,7 @@ extension ViewController: HTActivitySummaryUseCaseDelegate {
     }
     
     func shareLiveLocationClicked() {
+//        startMockTracking()
         if let collectionId = UserDefaults.standard.string(forKey: collectionIdKey), !collectionId.isEmpty {
             self.collectionId = collectionId
             startTracking(collectionId: collectionId, useCase: summaryUseCase.liveUC)
@@ -213,7 +235,7 @@ extension ViewController: HTActivitySummaryUseCaseDelegate {
         }
     }
     
-    func liveTrackingEnded(_ collectionId: String) {
+    func liveTrackingEnded(_ type: HTTrackWithTypeData) {
         sharedCollectionId = ""
         self.collectionId = ""
         UserDefaults.standard.set("", forKey: self.collectionIdKey)
@@ -281,7 +303,7 @@ extension ViewController: HTActivitySummaryUseCaseDelegate {
 //        startOrderTracking(collectionId: "")
 //    }
 //
-//    func orderTrackingEnded(_ collectionId: String) {
+//    func orderTrackingEnded(_ type: HTTrackWithTypeData) {
 //        UserDefaults.standard.set("", forKey: self.orderCollectionIdKey)
 //    }
 //}

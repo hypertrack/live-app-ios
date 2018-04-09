@@ -58,11 +58,11 @@ class RequestPermissionsVC : UIViewController {
         
         // Check for Location Authorization Status (Always by default)
         if (HyperTrack.locationAuthorizationStatus() != .authorizedAlways) {
-            HyperTrack.requestAlwaysAuthorization(completionHandler: { (isAuthorized) in
+            HyperTrack.requestAlwaysLocationAuthorization(completionHandler: { (isAuthorized) in
                 if(isAuthorized){
                     self.permissionDelegate?.didAcceptedLocationPermissions(currentController: self)
                     
-                    if(HyperTrack.canAskMotionPermissions()){
+                    if(HyperTrack.isActivityAvailable()){
                         HyperTrack.requestMotionAuthorization()
                         self.initializeTimer()
                         
@@ -82,7 +82,7 @@ class RequestPermissionsVC : UIViewController {
             })
         }else if (HyperTrack.locationAuthorizationStatus() == .authorizedAlways){
            
-            if(HyperTrack.canAskMotionPermissions()){
+            if(HyperTrack.isActivityAvailable()){
                 HyperTrack.requestMotionAuthorization()
                 self.initializeTimer()
                 
@@ -95,7 +95,7 @@ class RequestPermissionsVC : UIViewController {
     func onForegroundNotification(_ notification: Notification){
         if (HyperTrack.locationAuthorizationStatus() == .authorizedAlways) {
             changeToEnablePermissions()
-            if(HyperTrack.canAskMotionPermissions()){
+            if(HyperTrack.isActivityAvailable()){
                 HyperTrack.requestMotionAuthorization()
                 self.initializeTimer()
                 

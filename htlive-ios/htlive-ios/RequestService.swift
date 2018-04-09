@@ -13,7 +13,7 @@ import Alamofire
 class RequestService {
     static let shared = RequestService()
     
-    let baseUrl = "https://staging-api.hypertrack.com/api/v1/"
+    let baseUrl = "https://api.hypertrack.com/api/v1/"
     
     func makeHyperTrackRequest(urlSuffix:String, body:[String:Any], completionHandler: @escaping (_ error: String?) -> Void) {
         guard let userId = HyperTrack.getUserId() else {
