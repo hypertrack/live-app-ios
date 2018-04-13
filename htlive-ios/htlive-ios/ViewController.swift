@@ -69,7 +69,8 @@ class ViewController: UIViewController {
             if !sharedCollectionId.isEmpty {
                 actionParams.collectionId = sharedCollectionId
             }
-            HyperTrack.createAndAssignAction(actionParams, { [unowned self] (response, error) in
+            HyperTrack.createAndAssignAction(actionParams, { [weak self] (response, error) in
+                guard let `self` = self else { return }
                 if let collectionId = response?.collectionId {
                     self.collectionId = collectionId
                     useCase.trackActionWithCollectionId(collectionId, pollDuration: useCase.pollDuration, completionHandler: nil)
@@ -91,8 +92,8 @@ class ViewController: UIViewController {
             .setId(UUID().uuidString)
             .build()
         let actionParams = HTActionParams.default.setUserId(userId: HyperTrack.getUserId() ?? "").setType(type: "visit").setExpectedPlace(expectedPlace: expectedPlace)
-        HyperTrack.createMockAction(nil, nil, actionParams, completionHandler: { [unowned self] (response, error) in
-            if let id = response?.id {
+        HyperTrack.createMockAction(nil, nil, actionParams, completionHandler: { [weak self] (response, error) in
+            if let `self` = self, let id = response?.id {
                 self.summaryUseCase.liveUC.trackActionWithIds([id], pollDuration: self.summaryUseCase.liveUC.pollDuration, completionHandler: nil)
             }
         })
@@ -121,7 +122,8 @@ class ViewController: UIViewController {
     func trackUsingUrl(notification: Notification) {
         guard let url = notification.object as? String else { return }
         if let collectionId = UserDefaults.standard.string(forKey: collectionIdKey), !collectionId.isEmpty {
-            summaryUseCase.liveUC.trackActionWithShortCodes([url]) { [unowned self] (response, error) in
+            summaryUseCase.liveUC.trackActionWithShortCodes([url]) { [weak self] (response, error) in
+                guard let `self` = self else { return }
                 if let data = response {
                     guard let first = data.first else { return }
                     let vc = SecondTrackingViewController(nibName: nil, bundle: nil)
@@ -135,13 +137,13 @@ class ViewController: UIViewController {
             }
         } else {
             summaryUseCase.enabeLiveTracking()
-            summaryUseCase.liveUC.trackActionWithShortCodes([url]) { [unowned self] (response, error) in
-                if let data = response {
+            summaryUseCase.liveUC.trackActionWithShortCodes([url]) { [weak self] (response, error) in
+                if let data = response, let `self` = self {
                     guard let first = data.first else { return }
                     self.sharedCollectionId = first.collectionId
                     self.startTracking(collectionId: first.collectionId, useCase: self.summaryUseCase.liveUC)
                 } else {
-                    self.showError(title: "Error", message: error?.displayErrorMessage)
+                    self?.showError(title: "Error", message: error?.displayErrorMessage)
                 }
             }
         }
@@ -287,7 +289,7 @@ extension ViewController: HTActivitySummaryUseCaseDelegate {
 //            actionParams.expectedPlace = expectedPlace
 //            actionParams.lookupId = String(randomStringWithLength(len: 6))
 //            _ = actionParams.setType(type: "delivery")
-//            HyperTrack.createAndAssignAction(actionParams, { [unowned self] (response, error) in
+//            HyperTrack.createAndAssignAction(actionParams, { [weak self] (response, error) in
 //                if let collectionId = response?.collectionId {
 //                    self.collectionId = collectionId
 //                    self.orderUseCase.trackActionWithCollectionId(collectionId, pollDuration: self.orderUseCase.pollDuration, completionHandler: nil)
