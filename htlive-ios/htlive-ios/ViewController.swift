@@ -47,7 +47,6 @@ class ViewController: UIViewController {
         contentView.edges()
         contentView.cleanUp()
         enableSummaryUseCase()
-
         NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(trackUsingUrl), name: NSNotification.Name(rawValue:HTLiveConstants.trackUsingUrl), object: nil)
     }

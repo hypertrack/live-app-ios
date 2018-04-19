@@ -136,8 +136,7 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
 
         // Phone number is used as the user lookup id
         self.showActivityIndicator()
-
-        HyperTrack.getOrCreateUser(name, phone, phone, photo) { (user, error) in
+        HyperTrack.getOrCreateUser(name: name, phone: phone, phone) { (user, error) in
             self.hideActivityIndicator()
             
             if (error != nil) {
