@@ -68,7 +68,7 @@ class ViewController: UIViewController {
             if !sharedCollectionId.isEmpty {
                 actionParams.collectionId = sharedCollectionId
             }
-            HyperTrack.createAndAssignAction(actionParams, { [weak self] (response, error) in
+            HyperTrack.createAction(actionParams, { [weak self] (response, error) in
                 guard let `self` = self else { return }
                 if let collectionId = response?.collectionId {
                     self.collectionId = collectionId

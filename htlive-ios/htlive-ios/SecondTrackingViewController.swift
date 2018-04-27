@@ -8,7 +8,6 @@
 
 import UIKit
 import HyperTrack
-import FSCalendar
 import MessageUI
 import MapKit
 import Alamofire
