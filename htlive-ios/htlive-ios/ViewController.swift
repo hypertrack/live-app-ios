@@ -8,112 +8,151 @@
 
 import UIKit
 import HyperTrack
-import FSCalendar
 import MessageUI
 import MapKit
 import Alamofire
-import MediumMenu
 
 let pink = UIColor(red:1.00, green:0.51, blue:0.87, alpha:1.0)
 
 class ViewController: UIViewController {
-
-    @IBOutlet weak var calendarHeight: NSLayoutConstraint!
-    @IBOutlet weak var calendar: FSCalendar!
-    @IBOutlet weak var dateLabel: UILabel!
+    fileprivate var contentView: HTMapContainer!
     
-    @IBOutlet weak var placeLineTable: UITableView!
-    @IBOutlet weak var mapView: MKMapView!
-    
-    @IBOutlet weak var placeLineTitle: UILabel!
-    
-    var segments: [HyperTrackActivity] = []
-    var placeLine: HyperTrackPlaceline? = nil
+    fileprivate lazy var summaryUseCase = HTActivitySummaryUseCase()
+    fileprivate var actionId: String = ""
+    fileprivate let collectionIdKey = "htLiveTrackingCollectionId"
+    fileprivate let orderCollectionIdKey = "htOrderTrackingCollectionId"
+    fileprivate var collectionId = ""
+    fileprivate var sharedCollectionId = ""
 
-    var selectedIndexPath : IndexPath? = nil
-    var noResults = false
-    let regionRadius: CLLocationDistance = 200
-
-    var annotations = [MKPointAnnotation]()
-    var polyLine : MKPolyline?
-    var menu: MediumMenu?
-    @IBOutlet weak var calendarArrow: UIImageView!
-    var isACellSelected = false
+    fileprivate lazy var loaderContainer: UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = UIColor.black
+        view.alpha = 0.3
+        return view
+    }()
+    
+    fileprivate lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
+        activityIndicator.startAnimating()
+        return activityIndicator
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        
-        calendarTop.constant = -300
-        calendar.layer.opacity = 0
-        mapView.delegate = self
-        placeLineTable.register(UINib(nibName: "placeCell", bundle: nil), forCellReuseIdentifier: "placeCell")
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(self.userCreated), name: NSNotification.Name(rawValue:HTLiveConstants.userCreatedNotification), object: nil)
-        
+        contentView = HTMapContainer(frame: .zero)
+        view.addSubview(contentView)
+        HyperTrack.requestAlwaysLocationAuthorization { (_) in
+            
+        }
+        contentView.edges()
+        contentView.cleanUp()
+        enableSummaryUseCase()
         NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(self.onBackgroundNotification), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(onTap))
-        tap.numberOfTapsRequired = 2
-        placeLineTitle.isUserInteractionEnabled = true
-        placeLineTitle.addGestureRecognizer(tap)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(onLocationUpdate(notification:)),
-                                               name: NSNotification.Name(rawValue: HTConstants.HTLocationChangeNotification), object: nil)
-
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(trackUsingUrl), name: NSNotification.Name(rawValue:HTLiveConstants.trackUsingUrl), object: nil)
     }
     
-    
-    func onLocationUpdate(notification: Notification) {
-        setCurrentLocation()
-    }
-    
-    func showMenu() {
-        menu?.show()
-    }
-    @IBAction func showMenuItems(_ sender: Any) {
-        self.showMenu()
+    fileprivate func enableSummaryUseCase() {
+        summaryUseCase.activityDelegate = self
+        contentView.setBottomViewWithUseCase(summaryUseCase)
+        summaryUseCase.update()
     }
 
-    
-    @IBAction func calendarTap(_ sender: Any) {
-        guard calendarTop.constant != 0 else {
-            collapseCalendar()
+    fileprivate func startTracking(collectionId: String, useCase: HTLiveTrackingUseCase) {
+        guard HyperTrack.getUserId() != nil else {
             return
         }
-        expandCalendar()
-    }
-    
-    @IBOutlet weak var calendarTop: NSLayoutConstraint!
-    
-    @IBAction func onLiveLocationButtonClick(sender: UIButton) {
-        
-        let reachabilityManager = Alamofire.NetworkReachabilityManager(host: "www.google.com")
-
-        if (reachabilityManager?.isReachable)! {
-            let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-            let liveLocationController = storyboard.instantiateViewController(withIdentifier: "ShareVC") as! ShareVC
-            self.present(liveLocationController, animated: true) {
-                NSLog("presented")
+        if !collectionId.isEmpty {
+            useCase.trackActionWithCollectionId(collectionId, pollDuration: useCase.pollDuration, completionHandler: nil)
+        } else {
+            let actionParams = HTActionParams.default
+            if !sharedCollectionId.isEmpty {
+                actionParams.collectionId = sharedCollectionId
             }
-        }else{
-            showAlert(title: "Internet not available", message: "To share live location, Please check your internet connectivity and try again")
+            HyperTrack.createAction(actionParams, { [weak self] (response, error) in
+                guard let `self` = self else { return }
+                if let collectionId = response?.collectionId {
+                    self.collectionId = collectionId
+                    useCase.trackActionWithCollectionId(collectionId, pollDuration: useCase.pollDuration, completionHandler: nil)
+                    UserDefaults.standard.set(collectionId, forKey: self.collectionIdKey)
+                    UserDefaults.standard.synchronize()
+                }
+            })
         }
     }
     
+    fileprivate func startMockTracking() {
+        let expectedPlace = HTPlaceBuilder()
+            .setCity("Bengaluru")
+            .setCountry("India")
+            .setAddress("HAL Airport")
+            .setLandmark("HAL")
+            .setName("HAL Airport")
+            .setLocation(CLLocationCoordinate2D(latitude: 12.9296494, longitude: 77.6357699))
+            .setId(UUID().uuidString)
+            .build()
+        let actionParams = HTActionParams.default.setUserId(userId: HyperTrack.getUserId() ?? "").setType(type: "visit").setExpectedPlace(expectedPlace: expectedPlace)
+        HyperTrack.createMockAction(nil, nil, actionParams, completionHandler: { [weak self] (response, error) in
+            if let `self` = self, let id = response?.id {
+                self.summaryUseCase.liveUC.trackActionWithIds([id], pollDuration: self.summaryUseCase.liveUC.pollDuration, completionHandler: nil)
+            }
+        })
+    }
+    
+    fileprivate var isLoading: Bool = false {
+        didSet {
+            guard let window = view.window else { return }
+            loaderContainer.removeFromSuperview()
+            activityIndicator.removeFromSuperview()
+            if isLoading {
+                loaderContainer.frame = window.bounds
+                activityIndicator.center = window.center
+                window.addSubview(loaderContainer)
+                window.addSubview(activityIndicator)
+            }
+        }
+    }
+    
+    fileprivate func showError(title: String, message: String?) {
+        let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(ac, animated: true, completion: nil)
+    }
+    
+    func trackUsingUrl(notification: Notification) {
+        guard let url = notification.object as? String else { return }
+        if let collectionId = UserDefaults.standard.string(forKey: collectionIdKey), !collectionId.isEmpty {
+            summaryUseCase.liveUC.trackActionWithShortCodes([url]) { [weak self] (response, error) in
+                guard let `self` = self else { return }
+                if let data = response {
+                    guard let first = data.first else { return }
+                    let vc = SecondTrackingViewController(nibName: nil, bundle: nil)
+                    vc.collectionId = first.collectionId
+                    vc.modalPresentationStyle = .overCurrentContext
+                    vc.modalTransitionStyle = .coverVertical
+                    self.present(vc, animated: true, completion: nil)
+                } else {
+                    self.showError(title: "Error", message: error?.displayErrorMessage)
+                }
+            }
+        } else {
+            summaryUseCase.enabeLiveTracking()
+            summaryUseCase.liveUC.trackActionWithShortCodes([url]) { [weak self] (response, error) in
+                if let data = response, let `self` = self {
+                    guard let first = data.first else { return }
+                    self.sharedCollectionId = first.collectionId
+                    self.startTracking(collectionId: first.collectionId, useCase: self.summaryUseCase.liveUC)
+                } else {
+                    self?.showError(title: "Error", message: error?.displayErrorMessage)
+                }
+            }
+        }
+    }
     
     fileprivate func showAlert(title: String?, message: String?) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
         let ok : UIAlertAction = UIAlertAction.init(title: "OK", style: .cancel) { (action) in
         }
-
         alert.addAction(ok)
-        
         if (self.isBeingPresented){
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.present(alert, animated: true, completion: nil)
@@ -125,276 +164,28 @@ class ViewController: UIViewController {
         }
     }
     
-    
-    func selectCalendarToCurrentDate(){
-        if calendar.maximumDate.timeIntervalSince1970 > Date().timeIntervalSince1970 {
-            calendar.select(Date())
-            return
-        }
-        calendar.reloadData()
-        calendar.select(Date())
-    }
-    
     func onForegroundNotification(_ notification: Notification){
-        selectCalendarToCurrentDate()
-        self.dateLabel.text = Date().toString(dateFormat: "dd MMMM")
-        getPlaceLineData()
-        isACellSelected = false
-        self.mapView.showsUserLocation = true
+        summaryUseCase.update()
     }
-    
-    func onBackgroundNotification(_ notification: Notification){
-       self.mapView.showsUserLocation = false
-    }
-    func userCreated(_ notification: Notification) {
-        selectCalendarToCurrentDate()
-        self.dateLabel.text = Date().toString(dateFormat: "dd MMMM")
-        getPlaceLineData()
-    }
-
     
     override func viewWillAppear(_ animated: Bool) {
         self.view.resignFirstResponder()
-        selectCalendarToCurrentDate()
-        self.dateLabel.text = Date().toString(dateFormat: "dd MMMM")
-        mapView.showsUserLocation = true
-        getPlaceLineData()
+        contentView.showCurrentLocation = true
+        contentView.cleanUp()
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        self.setCurrentLocation()
-    }
-    
-    func setCurrentLocation(){
-        if !isACellSelected {
-            HyperTrack.getCurrentLocation { (clLocation, error) in
-                if let location  = clLocation{
-                    let region = MKCoordinateRegionMake((location.coordinate),MKCoordinateSpanMake(0.005, 0.005))
-                    self.mapView.setRegion(region, animated: true)
-                }else{
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
-                        if self.segments.count > 0 {
-                            self.tableView(self.placeLineTable, didSelectRowAt: IndexPath.init(row: 0, section: 0))
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    func getPlaceLineData(){
-        if(HyperTrack.getUserId() != nil) {
-            HyperTrack.getPlaceline { (placeLine, error) in
-            guard let fetchedPlaceLine = placeLine else { return }
-            self.placeLine = fetchedPlaceLine
-            if let segments = fetchedPlaceLine.segments {
-                self.segments = segments.reversed()
-                if segments.count == 0 {
-                    self.noResults = true
-                } else {
-                    self.noResults = false
-                }
-                    self.placeLineTable.reloadData()
-                    if(segments.count > 0){
-                        self.selectedIndexPath = nil
-                    }
-                }
-                
-            }
-        }
-    }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    
-}
-
-extension ViewController : UITableViewDataSource, UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard segments.count != 0 else { return 1 }
-        return segments.count
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-       return 72
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath) as! placeCell
-     
-        cell.layer.backgroundColor = UIColor.clear.cgColor
-
-        if segments.count != 0 {
-            cell.setStats(activity: segments[indexPath.row],
-                          lastHeartBeatAt: self.placeLine?.lastHeartBeatAt ?? Date())
-        } else {
-            
-            if self.noResults {
-                cell.noResults()
-            } else {
-                cell.loading()
-            }
-        }
-        cell.selectionStyle = .none
-        
-        if(selectedIndexPath?.row != indexPath.row) || (cell.status.text == "Loading Placeline.."){
-            cell.normalize()
-        }else if (selectedIndexPath?.row == indexPath.row){
-            cell.select()
-        }
-        return cell
-        
-    }
-    
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        guard let cell = placeLineTable.cellForRow(at: indexPath) as? placeCell else { return }
-        placeLineTable.scrollToRow(at: indexPath, at: .middle, animated: true)
-        self.mapView.removeAnnotations(annotations)
-        self.mapView.removeOverlays(self.mapView.overlays)
-        annotations = [MKPointAnnotation]()
-        if(polyLine != nil){
-            self.mapView.remove(polyLine!)
-        }
-        
-        if (self.segments.count == 0){
-            return
-        }
-
-        if(!self.noResults){
-            showDataOnMapForActivity(activithy: segments[indexPath.row])
-            cell.select()
-            if(selectedIndexPath != nil && selectedIndexPath?.row != indexPath.row){
-                var  oldCell = self.placeLineTable.cellForRow(at: selectedIndexPath!) as? placeCell
-                oldCell?.normalize()
-            }
-            selectedIndexPath = indexPath
-        }
-        isACellSelected = true
-    }
-    
-    
-    func showDataOnMapForActivity(activithy : HyperTrackActivity){
-        if(activithy.type == "trip"){
-            drawPolyLineForActivity(activity: activithy)
-        }else if(activithy.type == "stop"){
-            drawPointForActivity(activity: activithy)
-        }
-     }
-    
-    
-    func drawPolyLineForActivity(activity : HyperTrackActivity){
-        if let polyline = activity.encodedPolyline {
-            mapPolylineFor(encodedPolyline: polyline)
-        }
-    }
-    
-    func drawPointForActivity(activity : HyperTrackActivity){
-       let annotation =  MKPointAnnotation()
-       annotation.title = "point"
-        if let place = activity.place{
-            annotation.coordinate = CLLocationCoordinate2DMake((place.location?.coordinates.last)!, (place.location?.coordinates.first)!)
-            annotations.append(annotation)
-            self.mapView.addAnnotation(annotation)
-            centerMapOnAnnotation(annotation:annotation)
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as? placeCell
-        cell?.deselect()
-    }
-}
-
-
-extension ViewController : FSCalendarDataSource, FSCalendarDelegate {
-    
-    func maximumDate(for calendar: FSCalendar) -> Date{
-        return Date()
-    }
-
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        self.dateLabel.text = date.toString(dateFormat: "dd MMMM")
-        self.noResults = false
-        self.segments = []
-        self.placeLineTable.reloadData()
-        getPlacelineForDate(date: date)
-        collapseCalendar()
-        
-        if monthPosition == .previous || monthPosition == .next {
-            calendar.setCurrentPage(date, animated: true)
-        }
-    }
-    
-    func collapseCalendar() {
-        
-        calendarTop.constant = -300
-        UIView.animate(withDuration: 0.2, animations: {
-            self.view.layoutIfNeeded()
-            self.calendar.layer.opacity = 0
-            self.calendarArrow.transform = self.calendarArrow.transform.rotated(by: CGFloat(Double.pi))
-        })
-        
-    }
-    
-    func expandCalendar() {
-        calendarTop.constant = 0
-        UIView.animate(withDuration: 0.2, animations: {
-            self.view.layoutIfNeeded()
-            self.calendar.layer.opacity = 1
-            self.calendarArrow.transform = self.calendarArrow.transform.rotated(by: CGFloat(-Double.pi))
-        })
-    }
-    
-    func getPlacelineForDate(date : Date) {
-        
-        self.segments = []
-        self.placeLineTable.reloadData()
-        
-        HyperTrack.getPlaceline(date: date) { (placeLine, error) in
-            guard let fetchedPlaceLine = placeLine else { return }
-            self.placeLine = fetchedPlaceLine
-            if let segments = fetchedPlaceLine.segments {
-                self.segments = segments.reversed()
-                
-                if segments.count == 0 {
-                    self.noResults = true
-                } else {
-                    self.noResults = false
-                }
-                self.selectedIndexPath = nil
-                self.placeLineTable.reloadData()
-                if(segments.count > 0){
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
-                        self.tableView(self.placeLineTable, didSelectRowAt: IndexPath.init(row: 0, section: 0))
-                        
-                    }
-                }
-            }
-        }
-        
-    }
-
 }
 
 extension ViewController {
-   
     func onTap(sender:UITapGestureRecognizer) {
       shareLogs()
     }
     
     func shareLogs() {
-        
         let path = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)
         if let baseDir = path.first {
             if let baseURL = NSURL(fileURLWithPath: baseDir).appendingPathComponent("Logs") {
@@ -422,208 +213,99 @@ extension ViewController {
     }
 }
 
-
-
-extension ViewController : MKMapViewDelegate {
-    
-    func mapPolylineFor(encodedPolyline: String) {
-        let coordinates = decodePolyline(encodedPolyline)
-        
-        self.polyLine = MKPolyline(coordinates: coordinates!, count: coordinates!.count)
-        self.mapView.add(polyLine!)
-        
-        if let first = coordinates?.first {
-            let startAnnotation = MKPointAnnotation()
-            startAnnotation.coordinate = first
-            startAnnotation.title = "start"
-            annotations.append(startAnnotation)
-            self.mapView.addAnnotation(startAnnotation)
-        }
-        
-        if let last = coordinates?.last {
-            let startAnnotation = MKPointAnnotation()
-            startAnnotation.coordinate = last
-            startAnnotation.title = "stop"
-            annotations.append(startAnnotation)
-            self.mapView.addAnnotation(startAnnotation)
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-            let mapEdgePadding = UIEdgeInsets(top: 160, left: 40, bottom: (290.0/667.0) * (self.view.frame.size.height), right: 40)
-            self.mapView.setVisibleMapRect((self.polyLine?.boundingMapRect)!,edgePadding: mapEdgePadding ,animated: true)
-        }
+extension ViewController: HTActivitySummaryUseCaseDelegate {    
+    func showLoader(_ show: Bool) {
+        isLoading = show
     }
     
-
-    func centerMapOnAnnotation(annotation: MKPointAnnotation)
-    {
-        let span = MKCoordinateSpanMake(0.008,0.008)
-        let region = MKCoordinateRegion(center: annotation.coordinate, span: span)
-        mapView.setRegion(region, animated: true)
+    func shareLiveTrackingDetails(_ url: String, eta: String) {
+        let shareText = eta.isEmpty ? ("See my live location and share yours. " + url) : ("Will be there by " + eta + ". See my live location and share yours. "  + url)
+        let activityViewController = UIActivityViewController(activityItems: [shareText], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        activityViewController.excludedActivityTypes = [.print, .assignToContact, .saveToCameraRoll]
+        self.present(activityViewController, animated: true, completion: nil)
     }
     
-    func getVisibleRectForAnnotation(markers : [MKPointAnnotation?],width:Double) -> MKMapRect{
-        var zoomRect:MKMapRect = MKMapRectNull
-        
-        for index in 0..<markers.count {
-            let annotation = markers[index]
-            if let annotation = annotation{
-                let aPoint:MKMapPoint = MKMapPointForCoordinate(annotation.coordinate)
-                let rect:MKMapRect = MKMapRectMake(aPoint.x, aPoint.y, width, width)
-                if MKMapRectIsNull(zoomRect) {
-                    zoomRect = rect
-                } else {
-                    zoomRect = MKMapRectUnion(zoomRect, rect)
-                }
-            }
-        }
-        return zoomRect
-    }
-    
-    func focusMarkers(markers : [MKPointAnnotation?],width:Double){
-     
-        let zoomRect = getVisibleRectForAnnotation(markers: markers, width: width)
-        
-        if(!MKMapRectIsNull(zoomRect)){
-            let mapEdgePadding = UIEdgeInsets(top: 160, left: 40, bottom: (290.0/667.0) * (self.view.frame.size.height), right: 40)
-            mapView.setVisibleMapRect(zoomRect, edgePadding: mapEdgePadding, animated: true)
-            
-        }
-    }
-
-    
-    func decodePolyline(_ encodedPolyline: String, precision: Double = 1e5) -> [CLLocationCoordinate2D]? {
-        
-        let data = encodedPolyline.data(using: String.Encoding.utf8)!
-        
-        let byteArray = (data as NSData).bytes.assumingMemoryBound(to: Int8.self)
-        let length = Int(data.count)
-        var position = Int(0)
-        
-        var decodedCoordinates = [CLLocationCoordinate2D]()
-        
-        var lat = 0.0
-        var lon = 0.0
-        
-        while position < length {
-            
-            do {
-                let resultingLat = try decodeSingleCoordinate(byteArray: byteArray, length: length, position: &position, precision: precision)
-                lat += resultingLat
-                
-                let resultingLon = try decodeSingleCoordinate(byteArray: byteArray, length: length, position: &position, precision: precision)
-                lon += resultingLon
-            } catch {
-                return nil
-            }
-            
-            decodedCoordinates.append(CLLocationCoordinate2D(latitude: lat, longitude: lon))
-        }
-        
-        return decodedCoordinates
-    }
-    
-    private func decodeSingleCoordinate(byteArray: UnsafePointer<Int8>, length: Int, position: inout Int, precision: Double = 1e5) throws -> Double {
-        
-        guard position < length else {
-            return 0.0
-        }
-        
-        let bitMask = Int8(0x1F)
-        
-        var coordinate: Int32 = 0
-        
-        var currentChar: Int8
-        var componentCounter: Int32 = 0
-        var component: Int32 = 0
-        
-        repeat {
-            currentChar = byteArray[position] - 63
-            component = Int32(currentChar & bitMask)
-            coordinate |= (component << (5*componentCounter))
-            position += 1
-            componentCounter += 1
-        } while ((currentChar & 0x20) == 0x20) && (position < length) && (componentCounter < 6)
-        
-        if (componentCounter == 6) && ((currentChar & 0x20) == 0x20) {
-        }
-        
-        if (coordinate & 0x01) == 0x01 {
-            coordinate = ~(coordinate >> 1)
+    func shareLiveLocationClicked() {
+//        startMockTracking()
+        if let collectionId = UserDefaults.standard.string(forKey: collectionIdKey), !collectionId.isEmpty {
+            self.collectionId = collectionId
+            startTracking(collectionId: collectionId, useCase: summaryUseCase.liveUC)
         } else {
-            coordinate = coordinate >> 1
+            startTracking(collectionId: "", useCase: summaryUseCase.liveUC)
         }
-        
-        return Double(coordinate) / precision
-    }
-
-    
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        guard let polyline = overlay as? MKPolyline else {
-            return MKOverlayRenderer()
-        }
-        
-        let renderer = CustomPolyline(polyline: polyline)
-        renderer.lineWidth = 3.0
-        renderer.strokeColor = UIColor(red:0.40, green:0.39, blue:0.49, alpha:1.0)
-        
-        return renderer
     }
     
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        
-        let marker = MKAnnotationView()
-        marker.frame = CGRect(x:0,y:0,width:20.0,height:20.0)
-        let bundle = Bundle(for: ViewController.self)
-        if let title = annotation.title{
-            if(title == "start"){
-                let image = UIImage.init(named: "stopOrEnd", in: bundle, compatibleWith: nil)
-                marker.image =  image?.resizeImage(newWidth: 15.0)
-                marker.annotation = annotation
-                return marker
-
-            }else if (title == "stop"){
-                marker.image =  UIImage.init(named: "destinationMarker", in: bundle, compatibleWith: nil)?.resizeImage(newWidth: 30.0)
-                marker.annotation = annotation
-                return marker
-
-            }
-            else if (title == "point"){
-                marker.image =  UIImage.init(named: "origin", in: bundle, compatibleWith: nil)?.resizeImage(newWidth: 15.0)
-                marker.annotation = annotation
-                return marker
-
-            }
-        }
-        
-        return nil
-    }
-    
-    
-}
-
-class CustomPolyline: MKPolylineRenderer {
-    
-    override func applyStrokeProperties(to context: CGContext, atZoomScale zoomScale: MKZoomScale) {
-        super.applyStrokeProperties(to: context, atZoomScale: zoomScale)
-       // UIGraphicsPushContext(context)
-
-        if let ctx = UIGraphicsGetCurrentContext() {
-            ctx.setLineWidth(self.lineWidth)
-        }
+    func liveTrackingEnded(_ type: HTTrackWithTypeData) {
+        sharedCollectionId = ""
+        self.collectionId = ""
+        UserDefaults.standard.set("", forKey: self.collectionIdKey)
     }
 }
 
-extension UIImage {
-    func resizeImage(newWidth: CGFloat) -> UIImage {
-        
-        let scale = newWidth / self.size.width
-        let newHeight = self.size.height * scale
-        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
-        self.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage!
-    }
-}
+/// Ignore
+//    fileprivate lazy var placelineUseCase: HTPlaceLineUseCase = HTPlaceLineUseCase()
+//    fileprivate lazy var liveUseCase = HTLiveTrackingUseCase()
+//    fileprivate lazy var orderUseCase = HTOrderTrackingUseCase()
+//    fileprivate func enablePlacelineUseCase() {
+//        contentView.setBottomViewWithUseCase(placelineUseCase)
+//        placelineUseCase.update()
+//    }
+
+//    fileprivate func enableOrderTrackingUseCase() {
+//        orderUseCase.trackingDelegate = self
+//        contentView.setBottomViewWithUseCase(orderUseCase)
+//        if let collectionId = UserDefaults.standard.string(forKey: orderCollectionIdKey), !collectionId.isEmpty {
+//            self.collectionId = collectionId
+//            startOrderTracking(collectionId: collectionId)
+//        }
+//    }
+
+//    fileprivate func enableLiveTrackingUseCase() {
+//        liveUseCase.trackingDelegate = self
+//        contentView.setBottomViewWithUseCase(liveUseCase)
+//        if let collectionId = UserDefaults.standard.string(forKey: collectionIdKey), !collectionId.isEmpty {
+//            self.collectionId = collectionId
+//            startTracking(collectionId: collectionId, useCase: liveUseCase)
+//        }
+//    }
+
+//    fileprivate func startOrderTracking(collectionId: String) {
+//        guard HyperTrack.getUserId() != nil else {
+//            return
+//        }
+//        if !collectionId.isEmpty {
+//            orderUseCase.trackActionWithCollectionId(collectionId, pollDuration: orderUseCase.pollDuration, completionHandler: nil)
+//        } else {
+//            let actionParams = HyperTrackActionParams.default
+//            let expectedPlace = HyperTrackPlace()
+//            _ = expectedPlace.setLocation(coordinates: CLLocationCoordinate2D(latitude: 12.9296494, longitude: 77.6357699))
+//            expectedPlace.address = "HAL Airport"
+//            expectedPlace.city = "Bengaluru"
+//            expectedPlace.country = "India"
+//            expectedPlace.landmark = "HAL"
+//            expectedPlace.name = "HAL Airport"
+//            actionParams.expectedPlace = expectedPlace
+//            actionParams.lookupId = String(randomStringWithLength(len: 6))
+//            _ = actionParams.setType(type: "delivery")
+//            HyperTrack.createAndAssignAction(actionParams, { [weak self] (response, error) in
+//                if let collectionId = response?.collectionId {
+//                    self.collectionId = collectionId
+//                    self.orderUseCase.trackActionWithCollectionId(collectionId, pollDuration: self.orderUseCase.pollDuration, completionHandler: nil)
+//                    UserDefaults.standard.set(collectionId, forKey: self.collectionIdKey)
+//                    UserDefaults.standard.synchronize()
+//                }
+//            })
+//        }
+//    }
+
+//extension ViewController: HTOrderTrackingUseCaseDelegate {
+//    func placeOrderClicked() {
+//        startOrderTracking(collectionId: "")
+//    }
+//
+//    func orderTrackingEnded(_ type: HTTrackWithTypeData) {
+//        UserDefaults.standard.set("", forKey: self.orderCollectionIdKey)
+//    }
+//}
+

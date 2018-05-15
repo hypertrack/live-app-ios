@@ -18,8 +18,6 @@ class HyperTrackAppService: NSObject {
     
     let flowInteractor = HyperTrackFlowInteractor()
     static let sharedInstance = HyperTrackAppService()
-    var currentAction : HyperTrackAction? = nil
-    var currentTrackedAction : HyperTrackAction? = nil
     var defaultRootViewController : UIViewController? = nil
     var completedActions = [String]()
     
@@ -36,14 +34,14 @@ class HyperTrackAppService: NSObject {
     func setupHyperTrack() {
         // staging pk : pk_03e3176a9831360e162093292049757b130c75cf
         // production pk : pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451
-        HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
+        HyperTrack.initialize("sk_35b9d87cba7ca206bcb7a06d5c94b24a58cdaac3")
+//        HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
 
         // staging
 //        HyperTrack.initialize("pk_03e3176a9831360e162093292049757b130c75cf")
 
-        HyperTrack.setEventsDelegate(eventDelegate: self)
         if(HyperTrack.getUserId() != nil){
-            HyperTrack.startTracking()
+//            HyperTrack.startTracking()
         }
     }
     
@@ -80,83 +78,10 @@ class HyperTrackAppService: NSObject {
         UserDefaults.standard.removeObject(forKey: "currentLookUpID")
         UserDefaults.standard.synchronize()
     }
-    
-    func getCurrentTrackedAction () -> HyperTrackAction? {
-        
-        if self.currentTrackedAction != nil{
-            return self.currentTrackedAction
-        }
-        
-        if let jsonStr =  UserDefaults.standard.string(forKey: "currentTrackedAction"){
-            if let data = jsonStr.data(using: String.Encoding.utf8){
-                if let action  = HyperTrackAction.fromJson(data: data){
-                    return action
-                }
-            }
-        }
-        
-        if let action = self.currentAction {
-            if self.currentAction?.user?.id == HyperTrack.getUserId(){
-                return action
-            }
-        }
-        
-        return nil
-    }
-    
-    func setCurrentTrackedAction(action : HyperTrackAction){
-        self.currentTrackedAction = action
-        let jsonStr = action.toJson()
-        UserDefaults.standard.set(jsonStr, forKey: "currentTrackedAction")
-        UserDefaults.standard.synchronize()
-    }
-    
-    func deleteCurrentTrackedAction(){
-        self.currentTrackedAction = nil
-        UserDefaults.standard.removeObject(forKey: "currentTrackedAction")
-        UserDefaults.standard.synchronize()
-    }
-    
-    func setLocationSelectionType(locationSelectionType:LocationSelectionType){
-        UserDefaults.standard.set(locationSelectionType.rawValue, forKey: "locationSelectionType")
-        UserDefaults.standard.synchronize()
-    }
-    
+
     func deleteLocationSelectionType(){
         UserDefaults.standard.removeObject(forKey: "locationSelectionType")
         UserDefaults.standard.synchronize()
-    }
-    
-    func getLocationSelectionType()-> LocationSelectionType? {
-        if let locationSelectionType = UserDefaults.standard.object(forKey: "locationSelectionType") {
-            return LocationSelectionType.init(rawValue: locationSelectionType as! Int)
-        }
-        return LocationSelectionType.unknown
-    }
-    
-    func completeAction(){
-        if let currentAction  = self.getCurrentTrackedAction(){
-            // check for current user
-            if currentAction.isCompleted(){
-                if (currentAction.collectionId == self.getCurrentCollectionId()){
-                    HyperTrackAppService.sharedInstance.deleteCurrentCollectionId()
-                    HyperTrackAppService.sharedInstance.deleteCurrentTrackedAction()
-                    HyperTrack.removeActionForCollectionId(collectionId: currentAction.collectionId! ,clearMap: false)
-                }
-            }else{
-                HyperTrack.completeActionInSynch(currentAction.id!, completionHandler: { (action, error) in
-                    if error != nil {
-                        NSLog("error")
-
-                    }else{
-                        NSLog("success")
-                    }
-                })
-                if let collectionId = self.getCurrentCollectionId(){
-                    HyperTrack.removeActionForCollectionId(collectionId: collectionId)
-                }
-            }
-        }
     }
     
     func applicationDidBecomeActive() {
@@ -167,7 +92,6 @@ class HyperTrackAppService: NSObject {
         
         
     }
-    
     
     func applicationContinue (userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
         
@@ -182,34 +106,7 @@ class HyperTrackAppService: NSObject {
             if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
                 let url =  userActivity.webpageURL as NSURL?
                 if let shortCode = url?.lastPathComponent{
-                    if (HyperTrackFlowInteractor.topViewController()?.isKind(of: ShareVC.self))!{
-                        if let controller =  HyperTrackFlowInteractor.topViewController() as? ShareVC{
-                            if (controller.shortCode ==  shortCode){
-                                return
-                            }
-                        }
-                    }
-                    
-                    HyperTrackFlowInteractor.topViewController()?.view.showActivityIndicator()
-                    HyperTrack.getActionsFromShortCode(shortCode, completionHandler: { (actions, error) in
-                        HyperTrackFlowInteractor.topViewController()?.view.hideActivityIndicator()
-                        if let _ = error {
-                            self.showAlert(title: "Error", message: error?.errorMessage)
-                            return
-                        }
-                        
-                        if let htActions = actions {
-                            if let collectionId =  htActions.last?.collectionId{
-                                self.flowInteractor.presentLiveLocationFlow(collectionId: collectionId,shortCode:shortCode)
-                            }else{
-                                self.showAlert(title: "Error", message: "Something went wrong, no look up id in the action")
-                            }
-                            
-                        }else {
-                            self.showAlert(title: "Error", message: "Something went wrong, no actions for this lookup id")
-                            
-                        }
-                    })
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: HTLiveConstants.trackUsingUrl), object: shortCode)
                 }
             }
         }
@@ -228,87 +125,6 @@ class HyperTrackAppService: NSObject {
     func setUpSDKs(){
         setupHyperTrack()
         setupFabric()
-    }
-    
-    @objc func sendLocalNotification(title: String, body: String) {
-        let notification = UILocalNotification()
-        notification.alertTitle = title
-        notification.alertBody = body
-        notification.alertAction = "Open"
-        
-        notification.fireDate = Date.init(timeInterval: 3, since: Date())
-        UIApplication.shared.scheduleLocalNotification(notification)
-    }
-    
-    
-}
-
-extension HyperTrackAppService : HTEventsDelegate {
-    func didReceiveEvent(_ event: HyperTrackEvent) {
-        
-    }
-    
-    func didFailWithError(_ error: HyperTrackError) {
-        
-    }
-    
-    
-    func didEnterMonitoredRegion(region:CLRegion){
-        if(region.identifier == self.getCurrentCollectionId()){
-            
-            if let currentAction  = self.getCurrentTrackedAction(){
-                // check for current user
-                HyperTrack.completeAction(currentAction.id!)
-            }
-            self.sendLocalNotification(title: "Trip Finished.", body: "You have reached your destination.")
-        }
-    }
-    
-    func didShowSummary(forAction : HyperTrackAction){
-        if (forAction.collectionId == self.getCurrentCollectionId()){
-            HyperTrackAppService.sharedInstance.deleteCurrentCollectionId()
-            HyperTrackAppService.sharedInstance.deleteCurrentTrackedAction()
-            HyperTrack.removeActionForCollectionId(collectionId: forAction.collectionId! ,clearMap: false)
-        }
-    }
-    
-    func didRefreshData(forAction: HyperTrackAction){
-        if let action = getCurrentTrackedAction() {
-            if action.id == forAction.id{
-                self.setCurrentTrackedAction(action: forAction)
-            }
-        }
-    }
-    
-    func didRefreshData(forCollectionId: String, actions:[HyperTrackAction]?){
-        if getLocationSelectionType() == LocationSelectionType.myLocation{
-            if let actions = actions {
-                if actions.count > 1 {
-                    var allActionsCompleted = true
-                    for action in actions{
-                        if let trackedAction = getCurrentTrackedAction() {
-                            if action.id != trackedAction.id{
-                                if !action.isCompleted(){
-                                    allActionsCompleted = false
-                                    break
-                                }
-                            }
-                        }
-                    }
-                    
-                    if allActionsCompleted{
-                        if let currentAction  = self.getCurrentTrackedAction(){
-                            // check for current user
-                            if !completedActions.contains(currentAction.id!){
-                                HyperTrack.completeAction(currentAction.id!)
-                                completedActions.append(currentAction.id!)
-                            }
-                        }
-                        
-                    }
-                }
-            }
-        }
     }
 }
 

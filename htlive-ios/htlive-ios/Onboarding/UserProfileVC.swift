@@ -136,8 +136,7 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
 
         // Phone number is used as the user lookup id
         self.showActivityIndicator()
-
-        HyperTrack.getOrCreateUser(name, phone, phone, photo) { (user, error) in
+        HyperTrack.getOrCreateUser(name: name, phone: phone, uniqueId: phone) { (user, error) in
             self.hideActivityIndicator()
             
             if (error != nil) {
@@ -148,8 +147,7 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
             
             if (user != nil) {
                 // User successfully created
-                print("User created:", user!.id ?? "")
-                HyperTrack.startTracking()
+//                HyperTrack.startTracking()
                 self.onboardingViewDelegate?.didCreatedUser(user: user!,currentController:self)
                 if (phone != "") {
                     // If phone was given, send verification code

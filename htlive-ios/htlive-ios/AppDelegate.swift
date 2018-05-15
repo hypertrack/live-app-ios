@@ -20,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         //application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
         UIApplication.shared.registerForRemoteNotifications();
-
         return HyperTrackAppService.sharedInstance.applicationDidFinishLaunchingWithOptions(launchOptions: launchOptions)
     }
     
@@ -51,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 // Remote Notification
 extension AppDelegate {
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Foundation.Data) {
         HyperTrack.didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: deviceToken)
     }
     

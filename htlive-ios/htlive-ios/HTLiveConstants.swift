@@ -10,4 +10,5 @@ import UIKit
 
 struct HTLiveConstants {
     public static let userCreatedNotification =  "userCreatedNotification"
+    public static let trackUsingUrl = "htTrackUsingUrl"
 }

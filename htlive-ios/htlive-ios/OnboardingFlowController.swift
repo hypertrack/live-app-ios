@@ -11,7 +11,7 @@ import HyperTrack
 
 protocol OnboardingViewDelegate {
     func didSkipProfile(currentController : UIViewController)
-    func didCreatedUser(user: HyperTrackUser,currentController : UIViewController)
+    func didCreatedUser(user: HTUser,currentController : UIViewController)
     func willGoToValidateCode(currentController : UIViewController, presentController: ValidateCodeVC)
     func didValidateCode(currentController : UIViewController)
 }
@@ -81,7 +81,7 @@ class OnboardingFlowController: BaseFlowController, OnboardingViewDelegate {
         self.interactorDelegate?.haveFinishedFlow(sender: self)
     }
     
-    func didCreatedUser(user: HyperTrackUser,currentController : UIViewController){
+    func didCreatedUser(user: HTUser, currentController : UIViewController){
         let nc = NotificationCenter.default
         nc.post(name:Notification.Name(rawValue:HTLiveConstants.userCreatedNotification),
                 object: nil,
