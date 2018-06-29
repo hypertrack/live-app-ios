@@ -37,7 +37,7 @@ class PermissionsFlowController: BaseFlowController {
     
     override func startFlow(force : Bool, presentingController:UIViewController?){
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        let requestPermissionsController = storyboard.instantiateViewController(withIdentifier: "OnboardingVC") as! OnboardingVC
+        let requestPermissionsController = storyboard.instantiateViewController(withIdentifier: "RequestPermissionsVC") as! RequestPermissionsVC
         requestPermissionsController.permissionDelegate = self
         if (self.canBecomeRootController()){
             HyperTrackFlowInteractor.switchRootViewController(rootViewController: requestPermissionsController, animated: false, completion: nil)

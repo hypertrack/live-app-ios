@@ -21,9 +21,11 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var nameTextField: CustomTextField!
     @IBOutlet weak var phoneNumberTextField: CustomPhoneTextField!
     @IBOutlet weak var photoImage: UIImageView!
+    @IBOutlet weak var saveButton: UIButton!
     
     let picker = UIImagePickerController()
     var imagePicked:Bool = false
+    var keyboardSize = CGSize.zero
     
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var topConstraint: NSLayoutConstraint!
@@ -68,9 +70,14 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
     }
     
     func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            bottomConstraint.constant = keyboardSize.height + 10
-            topConstraint.constant = topConstraint.constant - keyboardSize.height - 10
+        let fieldFrame = saveButton.frame //phoneNumberTextField.isEditing ? phoneNumberTextField.frame : nameTextField.frame
+        let screenFrame = UIScreen.main.bounds
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue, keyboardSize.height > 0 {
+            let offset = screenFrame.height - keyboardSize.height - fieldFrame.maxY
+            if offset < 10 {
+                topConstraint.constant = 30 - abs(offset) - 10
+            }
+            self.keyboardSize = keyboardSize.size
             
             UIView.animate(withDuration: 0.5) {
                 self.view.layoutIfNeeded()
@@ -79,8 +86,7 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        bottomConstraint.constant = 20
-        topConstraint.constant = 60
+        topConstraint.constant = 30
         
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
@@ -202,8 +208,8 @@ extension UserProfileVC : UIImagePickerControllerDelegate, UINavigationControlle
         photoImage.addGestureRecognizer(imageTap)
         picker.delegate = self
         
-        photoImage.image = UIImage(named: "profile-1")?.withRenderingMode(.alwaysTemplate)
-        photoImage.tintColor = .white
+        photoImage.image = UIImage(named: "profile-1")//?.withRenderingMode(.alwaysTemplate)
+//        photoImage.tintColor = .white
     }
     
     func pickImage() {

@@ -176,8 +176,10 @@ class HyperTrackFlowInteractor: NSObject, HyperTrackFlowInteractorDelegate {
 
     func haveFinishedFlow(sender: BaseFlowController) {
         isPresentingAFlow = false
-        let index =  flows.index(of: sender)
-        flows.remove(at: index!)
+        guard let index =  flows.index(of: sender) else {
+            return
+        }
+        flows.remove(at: index)
         presentFlowsIfNeeded()
     }
 }
