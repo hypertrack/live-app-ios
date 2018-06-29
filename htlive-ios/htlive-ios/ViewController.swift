@@ -47,8 +47,8 @@ class ViewController: UIViewController {
         contentView.edges()
         contentView.cleanUp()
         enableSummaryUseCase()
-        NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(trackUsingUrl), name: NSNotification.Name(rawValue:HTLiveConstants.trackUsingUrl), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification(_:)), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.trackUsingUrl(_:)), name: NSNotification.Name(rawValue:HTLiveConstants.trackUsingUrl), object: nil)
     }
     
     fileprivate func enableSummaryUseCase() {
@@ -118,7 +118,7 @@ class ViewController: UIViewController {
         self.present(ac, animated: true, completion: nil)
     }
     
-    func trackUsingUrl(notification: Notification) {
+    func trackUsingUrl(_ notification: Notification) {
         guard let url = notification.object as? String else { return }
         if let collectionId = UserDefaults.standard.string(forKey: collectionIdKey), !collectionId.isEmpty {
             summaryUseCase.liveUC.trackActionWithShortCodes([url]) { [weak self] (response, error) in
