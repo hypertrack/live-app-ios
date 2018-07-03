@@ -16,19 +16,27 @@
 		33334B921F0B740A001A970E /* htlive_ios.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 33334B901F0B740A001A970E /* htlive_ios.xcdatamodeld */; };
 		33334B941F0B740A001A970E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33334B931F0B740A001A970E /* Assets.xcassets */; };
 		33334B971F0B740A001A970E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 33334B951F0B740A001A970E /* LaunchScreen.storyboard */; };
-		33334BA01F0B87A9001A970E /* ShareVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334B9F1F0B87A9001A970E /* ShareVC.swift */; };
 		33334BA61F0BA399001A970E /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334BA51F0BA399001A970E /* UIViewExtension.swift */; };
 		33334BA91F0BA425001A970E /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334BA81F0BA425001A970E /* TextField.swift */; };
-		3354C1CC1F14DAE50011506D /* placeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3354C1CB1F14DAE50011506D /* placeCell.xib */; };
-		3354C1CE1F14EB820011506D /* placeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3354C1CD1F14EB820011506D /* placeCell.swift */; };
 		3BB04555AF6CF8533DD7E47A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F29BB026EF4C014377323EA /* QuartzCore.framework */; };
+		4128F8991F5DEB0600AE46D4 /* FeedbackDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4128F8981F5DEB0600AE46D4 /* FeedbackDetailVC.swift */; };
+		4128F8C71F5E8E3600AE46D4 /* ActivityFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4128F8C61F5E8E3600AE46D4 /* ActivityFeedback.swift */; };
+		4128F8CB1F5EC01B00AE46D4 /* ActivityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4128F8CA1F5EC01B00AE46D4 /* ActivityTableViewCell.swift */; };
+		418438951F5BBF3200190FE2 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418438921F5BBF3200190FE2 /* OnboardingVC.swift */; };
+		418438961F5BBF3200190FE2 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 418438931F5BBF3200190FE2 /* OnboardingView.swift */; };
+		418438971F5BBF3200190FE2 /* OnboardingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 418438941F5BBF3200190FE2 /* OnboardingView.xib */; };
+		4184389C1F5BF00100190FE2 /* ActivityFeedbackTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4184389B1F5BF00100190FE2 /* ActivityFeedbackTableVC.swift */; };
 		4A9EC7183BF7416C507967D3 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E6015A432434BE00CB7D490 /* CoreVideo.framework */; };
-		6C0CCE1DCCAAE4E4B15AA5E5 /* Pods_htlive_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FA1FE93D3C7A407B321E103 /* Pods_htlive_ios.framework */; };
+		56AA3763CC83A3142327D3DE /* Pods_htlive_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF02833788EEC09C7C0F10CE /* Pods_htlive_ios.framework */; };
 		709F5A4A4D1A2C4D62D67D7A /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B04F8C25B273501623851B5 /* CoreMedia.framework */; };
 		7214AC794737FD3C0D2555C4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6879260750573A1BEF59E3DE /* SystemConfiguration.framework */; };
 		B00C94962B65677DF4F6C7DB /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C72BCF7451040D64AFF2A1 /* CoreTelephony.framework */; };
-		BB7247341F2823A100619F23 /* CustomShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB7247331F2823A100619F23 /* CustomShareView.xib */; };
-		BB7247381F28377000619F23 /* CustomShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7247371F28377000619F23 /* CustomShareView.swift */; };
+		B7AB54A4206BD31B002EF9BC /* SecondTrackingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AB54A3206BD31B002EF9BC /* SecondTrackingViewController.swift */; };
+		B7B2B972203D85C70098D437 /* WorkSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B2B96E203D85C50098D437 /* WorkSans-Regular.ttf */; };
+		B7B2B973203D85C70098D437 /* WorkSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B2B96F203D85C50098D437 /* WorkSans-Medium.ttf */; };
+		B7B2B974203D85C70098D437 /* WorkSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B2B970203D85C50098D437 /* WorkSans-SemiBold.ttf */; };
+		B7B2B975203D85C70098D437 /* WorkSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B2B971203D85C50098D437 /* WorkSans-Bold.ttf */; };
+		B7B2B977203D9AB30098D437 /* AppStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B2B976203D9AB30098D437 /* AppStyle.swift */; };
 		BB7D29981F1D690D00E72DCF /* MKMapView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D298F1F1D690D00E72DCF /* MKMapView+Extension.swift */; };
 		BB7D29991F1D690D00E72DCF /* NSData+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D29901F1D690D00E72DCF /* NSData+Extension.swift */; };
 		BB7D299A1F1D690D00E72DCF /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D29911F1D690D00E72DCF /* String+Extension.swift */; };
@@ -42,10 +50,6 @@
 		BB7D29A91F1EA4E600E72DCF /* RequestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D29A81F1EA4E600E72DCF /* RequestService.swift */; };
 		BB7D29AF1F1EB1B400E72DCF /* RequestPermissionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D29AE1F1EB1B400E72DCF /* RequestPermissionsVC.swift */; };
 		BB7D29B11F1EB1BD00E72DCF /* AcceptInviteVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D29B01F1EB1BD00E72DCF /* AcceptInviteVC.swift */; };
-		BB87233E1F31EB3C009355F9 /* ShareLiveLocationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB87233D1F31EB3C009355F9 /* ShareLiveLocationView.xib */; };
-		BB8723401F31F0FC009355F9 /* ShareLiveLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB87233F1F31F0FC009355F9 /* ShareLiveLocationView.swift */; };
-		BB8723421F328BF0009355F9 /* LiveLocationAlert.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB8723411F328BF0009355F9 /* LiveLocationAlert.xib */; };
-		BB8723441F328CCE009355F9 /* LiveLocationAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8723431F328CCE009355F9 /* LiveLocationAlertView.swift */; };
 		BBF7B3E51F1996A600DA355C /* HyperTrackFlowInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7B3E41F1996A600DA355C /* HyperTrackFlowInteractor.swift */; };
 		BBF7B3E71F1996C100DA355C /* OnboardingFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7B3E61F1996C100DA355C /* OnboardingFlowController.swift */; };
 		BBF7B3E91F1996EC00DA355C /* PermissionsFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7B3E81F1996EC00DA355C /* PermissionsFlowController.swift */; };
@@ -68,22 +72,29 @@
 		33334B931F0B740A001A970E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		33334B961F0B740A001A970E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		33334B981F0B740A001A970E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		33334B9F1F0B87A9001A970E /* ShareVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareVC.swift; sourceTree = "<group>"; };
 		33334BA51F0BA399001A970E /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		33334BA81F0BA425001A970E /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
-		3354C1CB1F14DAE50011506D /* placeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = placeCell.xib; sourceTree = "<group>"; };
-		3354C1CD1F14EB820011506D /* placeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = placeCell.swift; sourceTree = "<group>"; };
-		460AC2866063016417D72344 /* Pods-htlive-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		4128F8981F5DEB0600AE46D4 /* FeedbackDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackDetailVC.swift; sourceTree = "<group>"; };
+		4128F8C61F5E8E3600AE46D4 /* ActivityFeedback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFeedback.swift; sourceTree = "<group>"; };
+		4128F8CA1F5EC01B00AE46D4 /* ActivityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityTableViewCell.swift; sourceTree = "<group>"; };
+		418438921F5BBF3200190FE2 /* OnboardingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OnboardingVC.swift; path = Welcome/OnboardingVC.swift; sourceTree = "<group>"; };
+		418438931F5BBF3200190FE2 /* OnboardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OnboardingView.swift; path = Welcome/OnboardingView.swift; sourceTree = "<group>"; };
+		418438941F5BBF3200190FE2 /* OnboardingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OnboardingView.xib; path = Welcome/OnboardingView.xib; sourceTree = "<group>"; };
+		4184389B1F5BF00100190FE2 /* ActivityFeedbackTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFeedbackTableVC.swift; sourceTree = "<group>"; };
+		4A921267E19BDB82814DC8B9 /* Pods-htlive-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		4E6015A432434BE00CB7D490 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		60060C7769DD795A2A0823B6 /* Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		62C72BCF7451040D64AFF2A1 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		6879260750573A1BEF59E3DE /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		6FA1FE93D3C7A407B321E103 /* Pods_htlive_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_htlive_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7B23EC95E2F4386FADC61EB1 /* Pods-htlive-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios.release.xcconfig"; sourceTree = "<group>"; };
+		790284E1E83C2D3E59B456A0 /* Pods-htlive-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios.release.xcconfig"; sourceTree = "<group>"; };
 		8F29BB026EF4C014377323EA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		B7AB54A3206BD31B002EF9BC /* SecondTrackingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondTrackingViewController.swift; sourceTree = "<group>"; };
+		B7B2B96E203D85C50098D437 /* WorkSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-Regular.ttf"; sourceTree = "<group>"; };
+		B7B2B96F203D85C50098D437 /* WorkSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-Medium.ttf"; sourceTree = "<group>"; };
+		B7B2B970203D85C50098D437 /* WorkSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		B7B2B971203D85C50098D437 /* WorkSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-Bold.ttf"; sourceTree = "<group>"; };
+		B7B2B976203D9AB30098D437 /* AppStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStyle.swift; sourceTree = "<group>"; };
 		B923850CA9BCCA7AFAFE6B5C /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
-		BB7247331F2823A100619F23 /* CustomShareView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomShareView.xib; sourceTree = "<group>"; };
-		BB7247371F28377000619F23 /* CustomShareView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomShareView.swift; sourceTree = "<group>"; };
 		BB7D298F1F1D690D00E72DCF /* MKMapView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "MKMapView+Extension.swift"; path = "Utility/MKMapView+Extension.swift"; sourceTree = "<group>"; };
 		BB7D29901F1D690D00E72DCF /* NSData+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSData+Extension.swift"; path = "Utility/NSData+Extension.swift"; sourceTree = "<group>"; };
 		BB7D29911F1D690D00E72DCF /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Extension.swift"; path = "Utility/String+Extension.swift"; sourceTree = "<group>"; };
@@ -97,10 +108,6 @@
 		BB7D29A81F1EA4E600E72DCF /* RequestService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestService.swift; sourceTree = "<group>"; };
 		BB7D29AE1F1EB1B400E72DCF /* RequestPermissionsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RequestPermissionsVC.swift; path = Permissions/RequestPermissionsVC.swift; sourceTree = "<group>"; };
 		BB7D29B01F1EB1BD00E72DCF /* AcceptInviteVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AcceptInviteVC.swift; path = AcceptInvite/AcceptInviteVC.swift; sourceTree = "<group>"; };
-		BB87233D1F31EB3C009355F9 /* ShareLiveLocationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareLiveLocationView.xib; sourceTree = "<group>"; };
-		BB87233F1F31F0FC009355F9 /* ShareLiveLocationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareLiveLocationView.swift; sourceTree = "<group>"; };
-		BB8723411F328BF0009355F9 /* LiveLocationAlert.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LiveLocationAlert.xib; sourceTree = "<group>"; };
-		BB8723431F328CCE009355F9 /* LiveLocationAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveLocationAlertView.swift; sourceTree = "<group>"; };
 		BBE69D06DE0D45E789542761 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		BBF7B3E41F1996A600DA355C /* HyperTrackFlowInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HyperTrackFlowInteractor.swift; sourceTree = "<group>"; };
 		BBF7B3E61F1996C100DA355C /* OnboardingFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingFlowController.swift; sourceTree = "<group>"; };
@@ -109,6 +116,7 @@
 		BBF7B3ED1F19972C00DA355C /* BaseFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseFlowController.swift; sourceTree = "<group>"; };
 		BBF7B3F01F1997C800DA355C /* HyperTrackAppService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HyperTrackAppService.swift; sourceTree = "<group>"; };
 		FD47E529E549A1731A714D6D /* BuddyBuildSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BuddyBuildSDK.framework; sourceTree = "<group>"; };
+		FF02833788EEC09C7C0F10CE /* Pods_htlive_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_htlive_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF9906AA2CE583E93780D301 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -117,7 +125,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C0CCE1DCCAAE4E4B15AA5E5 /* Pods_htlive_ios.framework in Frameworks */,
 				0BA7C69E5A331DD5DE86CB91 /* BuddyBuildSDK.framework in Frameworks */,
 				D79B41D1ADF2C7B3098EF4B8 /* AssetsLibrary.framework in Frameworks */,
 				DD53C9764BA003663FEC2B91 /* CoreText.framework in Frameworks */,
@@ -127,6 +134,7 @@
 				05750E3F9B22411DC77031D0 /* AVFoundation.framework in Frameworks */,
 				709F5A4A4D1A2C4D62D67D7A /* CoreMedia.framework in Frameworks */,
 				4A9EC7183BF7416C507967D3 /* CoreVideo.framework in Frameworks */,
+				56AA3763CC83A3142327D3DE /* Pods_htlive_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,10 +146,10 @@
 			children = (
 				33334B881F0B740A001A970E /* htlive-ios */,
 				33334B871F0B740A001A970E /* Products */,
-				F566F550D917E6ECD1F27CB6 /* Pods */,
 				C8EC434E1C44884397D1BDA9 /* Frameworks */,
 				60060C7769DD795A2A0823B6 /* Bridging-Header.h */,
 				331001491F17735F00BC3EB0 /* htlive-ios.entitlements */,
+				632268A8AE364679EE17BEE3 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -156,6 +164,9 @@
 		33334B881F0B740A001A970E /* htlive-ios */ = {
 			isa = PBXGroup;
 			children = (
+				B7B2B96C203D85C50098D437 /* Resources */,
+				4184389A1F5BEFCC00190FE2 /* Feedback */,
+				418438911F5BBF2200190FE2 /* Welcome */,
 				BB7D29AD1F1EB1A400E72DCF /* Permissions */,
 				BB7D29AC1F1EB19900E72DCF /* AcceptInvite */,
 				BB7D298C1F1D68FF00E72DCF /* Utility */,
@@ -165,7 +176,6 @@
 				33334B8D1F0B740A001A970E /* Main.storyboard */,
 				33334B9E1F0B84CB001A970E /* Placeline */,
 				33334BA71F0BA39F001A970E /* Extensions */,
-				33334BA41F0B87CD001A970E /* Share */,
 				33334BA31F0B87C3001A970E /* Onboarding */,
 				33334B891F0B740A001A970E /* AppDelegate.swift */,
 				33334B951F0B740A001A970E /* LaunchScreen.storyboard */,
@@ -181,8 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				33334B8B1F0B740A001A970E /* ViewController.swift */,
-				3354C1CB1F14DAE50011506D /* placeCell.xib */,
-				3354C1CD1F14EB820011506D /* placeCell.swift */,
+				B7AB54A3206BD31B002EF9BC /* SecondTrackingViewController.swift */,
 			);
 			name = Placeline;
 			sourceTree = "<group>";
@@ -196,20 +205,6 @@
 			name = Onboarding;
 			sourceTree = "<group>";
 		};
-		33334BA41F0B87CD001A970E /* Share */ = {
-			isa = PBXGroup;
-			children = (
-				33334B9F1F0B87A9001A970E /* ShareVC.swift */,
-				BB7247331F2823A100619F23 /* CustomShareView.xib */,
-				BB7247371F28377000619F23 /* CustomShareView.swift */,
-				BB87233D1F31EB3C009355F9 /* ShareLiveLocationView.xib */,
-				BB87233F1F31F0FC009355F9 /* ShareLiveLocationView.swift */,
-				BB8723411F328BF0009355F9 /* LiveLocationAlert.xib */,
-				BB8723431F328CCE009355F9 /* LiveLocationAlertView.swift */,
-			);
-			name = Share;
-			sourceTree = "<group>";
-		};
 		33334BA71F0BA39F001A970E /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,6 +213,55 @@
 				3313D3A31F18D41F00BDF8E0 /* Date.swift */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		418438911F5BBF2200190FE2 /* Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				418438921F5BBF3200190FE2 /* OnboardingVC.swift */,
+				418438931F5BBF3200190FE2 /* OnboardingView.swift */,
+				418438941F5BBF3200190FE2 /* OnboardingView.xib */,
+			);
+			name = Welcome;
+			sourceTree = "<group>";
+		};
+		4184389A1F5BEFCC00190FE2 /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				4184389B1F5BF00100190FE2 /* ActivityFeedbackTableVC.swift */,
+				4128F8981F5DEB0600AE46D4 /* FeedbackDetailVC.swift */,
+				4128F8C61F5E8E3600AE46D4 /* ActivityFeedback.swift */,
+				4128F8CA1F5EC01B00AE46D4 /* ActivityTableViewCell.swift */,
+			);
+			name = Feedback;
+			sourceTree = "<group>";
+		};
+		632268A8AE364679EE17BEE3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4A921267E19BDB82814DC8B9 /* Pods-htlive-ios.debug.xcconfig */,
+				790284E1E83C2D3E59B456A0 /* Pods-htlive-ios.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		B7B2B96C203D85C50098D437 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B7B2B96D203D85C50098D437 /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		B7B2B96D203D85C50098D437 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				B7B2B96E203D85C50098D437 /* WorkSans-Regular.ttf */,
+				B7B2B96F203D85C50098D437 /* WorkSans-Medium.ttf */,
+				B7B2B970203D85C50098D437 /* WorkSans-SemiBold.ttf */,
+				B7B2B971203D85C50098D437 /* WorkSans-Bold.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		BB7D298C1F1D68FF00E72DCF /* Utility */ = {
@@ -230,6 +274,7 @@
 				BB7D29931F1D690D00E72DCF /* UIAlertView+Extension.swift */,
 				BB7D29941F1D690D00E72DCF /* UIColor+Extension.swift */,
 				BB7D29951F1D690D00E72DCF /* UIView+Extension.swift */,
+				B7B2B976203D9AB30098D437 /* AppStyle.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -273,7 +318,6 @@
 		C8EC434E1C44884397D1BDA9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6FA1FE93D3C7A407B321E103 /* Pods_htlive_ios.framework */,
 				FD47E529E549A1731A714D6D /* BuddyBuildSDK.framework */,
 				B923850CA9BCCA7AFAFE6B5C /* AssetsLibrary.framework */,
 				BBE69D06DE0D45E789542761 /* CoreText.framework */,
@@ -283,17 +327,9 @@
 				FF9906AA2CE583E93780D301 /* AVFoundation.framework */,
 				1B04F8C25B273501623851B5 /* CoreMedia.framework */,
 				4E6015A432434BE00CB7D490 /* CoreVideo.framework */,
+				FF02833788EEC09C7C0F10CE /* Pods_htlive_ios.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		F566F550D917E6ECD1F27CB6 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				460AC2866063016417D72344 /* Pods-htlive-ios.debug.xcconfig */,
-				7B23EC95E2F4386FADC61EB1 /* Pods-htlive-ios.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -303,12 +339,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 33334B9B1F0B740A001A970E /* Build configuration list for PBXNativeTarget "htlive-ios" */;
 			buildPhases = (
-				79400DADB2D27371F4D6E5F8 /* [CP] Check Pods Manifest.lock */,
+				1B403991F76BBA3F0E4BC0E8 /* [CP] Check Pods Manifest.lock */,
 				33334B821F0B740A001A970E /* Sources */,
 				33334B831F0B740A001A970E /* Frameworks */,
 				33334B841F0B740A001A970E /* Resources */,
-				F57E6697B5B7FBC18E5A82D1 /* [CP] Embed Pods Frameworks */,
-				3BF4C8F40A656CCC1EDA9081 /* [CP] Copy Pods Resources */,
+				BB8449C61F55C15100413BA0 /* ShellScript */,
+				997C74476697268CC6DB34D2 /* [CP] Embed Pods Frameworks */,
+				5DFE01401E912CADBBE8BA64 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -344,7 +381,7 @@
 								enabled = 1;
 							};
 							com.apple.SafariKeychain = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
@@ -373,35 +410,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7B2B972203D85C70098D437 /* WorkSans-Regular.ttf in Resources */,
 				33334B971F0B740A001A970E /* LaunchScreen.storyboard in Resources */,
+				418438971F5BBF3200190FE2 /* OnboardingView.xib in Resources */,
+				B7B2B973203D85C70098D437 /* WorkSans-Medium.ttf in Resources */,
 				33334B941F0B740A001A970E /* Assets.xcassets in Resources */,
-				3354C1CC1F14DAE50011506D /* placeCell.xib in Resources */,
-				BB8723421F328BF0009355F9 /* LiveLocationAlert.xib in Resources */,
-				BB87233E1F31EB3C009355F9 /* ShareLiveLocationView.xib in Resources */,
-				BB7247341F2823A100619F23 /* CustomShareView.xib in Resources */,
 				33334B8F1F0B740A001A970E /* Main.storyboard in Resources */,
+				B7B2B974203D85C70098D437 /* WorkSans-SemiBold.ttf in Resources */,
+				B7B2B975203D85C70098D437 /* WorkSans-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3BF4C8F40A656CCC1EDA9081 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		79400DADB2D27371F4D6E5F8 /* [CP] Check Pods Manifest.lock */ = {
+		1B403991F76BBA3F0E4BC0E8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -419,7 +442,25 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F57E6697B5B7FBC18E5A82D1 /* [CP] Embed Pods Frameworks */ = {
+		5DFE01401E912CADBBE8BA64 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios-resources.sh",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		997C74476697268CC6DB34D2 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -428,34 +469,43 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Branch/Branch.framework",
-				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
-				"${BUILT_PRODUCTS_DIR}/FSCalendar/FSCalendar.framework",
+				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
 				"${BUILT_PRODUCTS_DIR}/GzipSwift/Gzip.framework",
-				"${BUILT_PRODUCTS_DIR}/HyperTrack/HyperTrack.framework",
-				"${BUILT_PRODUCTS_DIR}/JustLog/JustLog.framework",
+				"${BUILT_PRODUCTS_DIR}/HyperTrack.local/HyperTrack.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/MediumMenu/MediumMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/PhoneNumberKit/PhoneNumberKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Branch.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSCalendar.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gzip.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HyperTrack.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JustLog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MediumMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PhoneNumberKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		BB8449C61F55C15100413BA0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 012ca85a4085707d726df8e4cc885fa5109d825a b10b6221b9fa60dd0b4eaef4c5a7f9610dc02451f67f01b9156fcf864bd34801";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -465,10 +515,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				33334BA61F0BA399001A970E /* UIViewExtension.swift in Sources */,
-				33334BA01F0B87A9001A970E /* ShareVC.swift in Sources */,
 				BBF7B3EC1F19972000DA355C /* InviteFlowController.swift in Sources */,
 				33334B8C1F0B740A001A970E /* ViewController.swift in Sources */,
 				BBF7B3E51F1996A600DA355C /* HyperTrackFlowInteractor.swift in Sources */,
+				418438951F5BBF3200190FE2 /* OnboardingVC.swift in Sources */,
 				BB7D29981F1D690D00E72DCF /* MKMapView+Extension.swift in Sources */,
 				BB7D29A01F1D7D7400E72DCF /* HTLiveConstants.swift in Sources */,
 				BB7D299A1F1D690D00E72DCF /* String+Extension.swift in Sources */,
@@ -476,18 +526,21 @@
 				BB7D29AF1F1EB1B400E72DCF /* RequestPermissionsVC.swift in Sources */,
 				BB7D29A41F1EA4BF00E72DCF /* UserProfileVC.swift in Sources */,
 				BB7D29991F1D690D00E72DCF /* NSData+Extension.swift in Sources */,
-				BB8723401F31F0FC009355F9 /* ShareLiveLocationView.swift in Sources */,
+				418438961F5BBF3200190FE2 /* OnboardingView.swift in Sources */,
+				4128F8991F5DEB0600AE46D4 /* FeedbackDetailVC.swift in Sources */,
 				33334B921F0B740A001A970E /* htlive_ios.xcdatamodeld in Sources */,
-				3354C1CE1F14EB820011506D /* placeCell.swift in Sources */,
 				BB7D29A91F1EA4E600E72DCF /* RequestService.swift in Sources */,
+				4184389C1F5BF00100190FE2 /* ActivityFeedbackTableVC.swift in Sources */,
+				B7B2B977203D9AB30098D437 /* AppStyle.swift in Sources */,
+				B7AB54A4206BD31B002EF9BC /* SecondTrackingViewController.swift in Sources */,
 				3313D3A41F18D41F00BDF8E0 /* Date.swift in Sources */,
 				BB7D299C1F1D690D00E72DCF /* UIAlertView+Extension.swift in Sources */,
 				BBF7B3EE1F19972C00DA355C /* BaseFlowController.swift in Sources */,
 				BB7D299D1F1D690D00E72DCF /* UIColor+Extension.swift in Sources */,
+				4128F8C71F5E8E3600AE46D4 /* ActivityFeedback.swift in Sources */,
 				BB7D299E1F1D690D00E72DCF /* UIView+Extension.swift in Sources */,
+				4128F8CB1F5EC01B00AE46D4 /* ActivityTableViewCell.swift in Sources */,
 				BBF7B3F11F1997C800DA355C /* HyperTrackAppService.swift in Sources */,
-				BB8723441F328CCE009355F9 /* LiveLocationAlertView.swift in Sources */,
-				BB7247381F28377000619F23 /* CustomShareView.swift in Sources */,
 				33334B8A1F0B740A001A970E /* AppDelegate.swift in Sources */,
 				BBF7B3E91F1996EC00DA355C /* PermissionsFlowController.swift in Sources */,
 				BB7D29A51F1EA4BF00E72DCF /* ValidateCodeVC.swift in Sources */,
@@ -614,7 +667,7 @@
 		};
 		33334B9C1F0B740A001A970E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 460AC2866063016417D72344 /* Pods-htlive-ios.debug.xcconfig */;
+			baseConfigurationReference = 4A921267E19BDB82814DC8B9 /* Pods-htlive-ios.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "htlive-ios/htlive-ios.entitlements";
@@ -639,7 +692,7 @@
 		};
 		33334B9D1F0B740A001A970E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7B23EC95E2F4386FADC61EB1 /* Pods-htlive-ios.release.xcconfig */;
+			baseConfigurationReference = 790284E1E83C2D3E59B456A0 /* Pods-htlive-ios.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "htlive-ios/htlive-ios.entitlements";

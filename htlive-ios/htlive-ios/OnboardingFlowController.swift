@@ -11,7 +11,7 @@ import HyperTrack
 
 protocol OnboardingViewDelegate {
     func didSkipProfile(currentController : UIViewController)
-    func didCreatedUser(user: HyperTrackUser,currentController : UIViewController)
+    func didCreatedUser(user: HTUser,currentController : UIViewController)
     func willGoToValidateCode(currentController : UIViewController, presentController: ValidateCodeVC)
     func didValidateCode(currentController : UIViewController)
 }
@@ -55,12 +55,17 @@ class OnboardingFlowController: BaseFlowController, OnboardingViewDelegate {
         return false
     }
     
-    override func startFlow(force : Bool, presentingController:UIViewController) {
+    override func startFlow(force : Bool, presentingController:UIViewController?) {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         let userProfileController = storyboard.instantiateViewController(withIdentifier: "UserProfileVC") as! UserProfileVC
         userProfileController.onboardingViewDelegate = self
-        presentingController.present(userProfileController, animated:false, completion: nil)
-        return
+        
+        if (self.canBecomeRootController()){
+            HyperTrackFlowInteractor.switchRootViewController(rootViewController: userProfileController, animated: false, completion: nil)
+        }else{
+            presentingController?.present(userProfileController, animated:false, completion: nil)
+            return
+        }
     }
     
     override func getFlowPriority() -> Int {
@@ -73,13 +78,10 @@ class OnboardingFlowController: BaseFlowController, OnboardingViewDelegate {
         // was not entered.
         
         UserDefaults.standard.set(OnboardingState.OnboardingSkipped.rawValue, forKey: onboardingStateKey)
-        currentController.dismiss(animated: false) {
-            self.interactorDelegate?.haveFinishedFlow(sender: self)
-        }
-
+        self.interactorDelegate?.haveFinishedFlow(sender: self)
     }
     
-    func didCreatedUser(user: HyperTrackUser,currentController : UIViewController){
+    func didCreatedUser(user: HTUser, currentController : UIViewController){
         let nc = NotificationCenter.default
         nc.post(name:Notification.Name(rawValue:HTLiveConstants.userCreatedNotification),
                 object: nil,
@@ -92,14 +94,24 @@ class OnboardingFlowController: BaseFlowController, OnboardingViewDelegate {
         // the phone number on the validate code screen.
         UserDefaults.standard.set(OnboardingState.OnboardingCompleted.rawValue, forKey: onboardingStateKey)
         currentOnboardingState = OnboardingState.OnboardingCompleted
-        currentController.presentingViewController?.presentingViewController?.dismiss(animated: false) {
+        if(self.canBecomeRootController()){
             self.interactorDelegate?.haveFinishedFlow(sender: self)
+
+        }else{
+            currentController.presentingViewController?.presentingViewController?.dismiss(animated: false) {
+                self.interactorDelegate?.haveFinishedFlow(sender: self)
+        }
         }
     }
     
     func willGoToValidateCode(currentController : UIViewController , presentController: ValidateCodeVC){
         
        
+    }
+    
+    
+    override func canBecomeRootController() -> Bool{
+        return true
     }
    
 }

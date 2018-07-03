@@ -13,7 +13,8 @@ import MBProgressHUD
 extension UIView {
     
     func showActivityIndicator(animated: Bool = true) {
-        MBProgressHUD.showAdded(to: self, animated: animated)
+        var view = MBProgressHUD.showAdded(to: self, animated: animated)
+        view.alpha = 0.2
     }
     
     func hideActivityIndicator(animate animated: Bool = true) {

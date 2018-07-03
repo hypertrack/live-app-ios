@@ -15,10 +15,7 @@ protocol HyperTrackInviteDelegate {
 
 class InviteFlowController: BaseFlowController {
     
-    
-    var userId : String?
     var acccountId : String?
-    var accountName : String?
     var autoAccept = false
 
     var hasCompletedFlow  = false
@@ -28,7 +25,7 @@ class InviteFlowController: BaseFlowController {
             return true
         }
         
-        if(userId != nil && accountName != nil && acccountId != nil){
+        if( acccountId != nil){
             return false
         }
         return true
@@ -38,33 +35,18 @@ class InviteFlowController: BaseFlowController {
         return false
     }
     
-    override func startFlow(force : Bool, presentingController:UIViewController){
+    override func startFlow(force : Bool, presentingController:UIViewController?){
         
         if (autoAccept == true){
-            let oldUserId = HyperTrack.getUserId()
-            HyperTrack.setUserId(userId!)
-            
-            if(oldUserId != userId){
-                HyperTrack.stopTracking()
-                HyperTrack.startTracking()
-            }
-            RequestService.shared.acceptHyperTrackInvite(accountId: self.acccountId!, oldUserId: oldUserId
-            , completionHandler: { (error) in
-
+            RequestService.shared.acceptHyperTrackInvite(accountId: self.acccountId!, completionHandler: { (error) in
             })
-            
+            self.hasCompletedFlow = true
             self.interactorDelegate?.haveFinishedFlow(sender: self)
 
         }
         else{
-            let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-            let acceptInviteController = storyboard.instantiateViewController(withIdentifier: "AcceptInviteVC") as! AcceptInviteVC
-            acceptInviteController.inviteDelegate = self
-            acceptInviteController.accountName = accountName
-            acceptInviteController.accountId = acccountId
-            acceptInviteController.userId = userId
-            presentingController.present(acceptInviteController, animated: true, completion: nil)
-
+            hasCompletedFlow = true
+            self.interactorDelegate?.haveFinishedFlow(sender: self)
         }
     }
     

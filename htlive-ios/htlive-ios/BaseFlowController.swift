@@ -20,11 +20,15 @@ class BaseFlowController: NSObject {
         return false
     }
     
-    func startFlow(force : Bool, presentingController:UIViewController){
+    func startFlow(force : Bool, presentingController:UIViewController?){
         return
     }
     
     func getFlowPriority() -> Int {
         return -1
+    }
+    
+    func canBecomeRootController() -> Bool{
+        return false
     }
 }

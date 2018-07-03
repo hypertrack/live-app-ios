@@ -11,8 +11,6 @@ import HyperTrack
 import CoreLocation
 
 class RequestPermissionsVC : UIViewController {
-    
-    @IBOutlet weak var radiationCircle: UIImageView!
     @IBOutlet weak var requestLocationDescriptionLabel: UILabel!
     @IBOutlet weak var enableLocationCTAButton: UIButton!
     
@@ -25,14 +23,12 @@ class RequestPermissionsVC : UIViewController {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         
-        self.requestLocationDescriptionLabel.text = "We need your location and activity permissions  to capture your activity through the day, and to let you share your live location with your friends when you are on your way."
+        self.requestLocationDescriptionLabel.text = "HyperTrack live app needs location permission to track your location."
 
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.radiate()
-        
         if (HyperTrack.locationAuthorizationStatus() == .denied) {
             changeToSettingsCTAButton()
         }
@@ -58,11 +54,11 @@ class RequestPermissionsVC : UIViewController {
         
         // Check for Location Authorization Status (Always by default)
         if (HyperTrack.locationAuthorizationStatus() != .authorizedAlways) {
-            HyperTrack.requestAlwaysAuthorization(completionHandler: { (isAuthorized) in
+            HyperTrack.requestAlwaysLocationAuthorization(completionHandler: { (isAuthorized) in
                 if(isAuthorized){
                     self.permissionDelegate?.didAcceptedLocationPermissions(currentController: self)
                     
-                    if(HyperTrack.canAskMotionPermissions()){
+                    if(HyperTrack.isActivityAvailable()){
                         HyperTrack.requestMotionAuthorization()
                         self.initializeTimer()
                         
@@ -74,7 +70,7 @@ class RequestPermissionsVC : UIViewController {
                     self.permissionDelegate?.didDeniedLocationPermissions(currentController: self)
                     
                     
-                    self.requestLocationDescriptionLabel.text = "We need your locatio"
+                    self.requestLocationDescriptionLabel.text = "Please give 'Always' location permission from Settings."
 
                     self.changeToSettingsCTAButton()
                 }
@@ -82,7 +78,7 @@ class RequestPermissionsVC : UIViewController {
             })
         }else if (HyperTrack.locationAuthorizationStatus() == .authorizedAlways){
            
-            if(HyperTrack.canAskMotionPermissions()){
+            if(HyperTrack.isActivityAvailable()){
                 HyperTrack.requestMotionAuthorization()
                 self.initializeTimer()
                 
@@ -90,17 +86,12 @@ class RequestPermissionsVC : UIViewController {
                 self.dismissViewController()
             }
         }
-        
-        
     }
-    
-    
-    
     
     func onForegroundNotification(_ notification: Notification){
         if (HyperTrack.locationAuthorizationStatus() == .authorizedAlways) {
             changeToEnablePermissions()
-            if(HyperTrack.canAskMotionPermissions()){
+            if(HyperTrack.isActivityAvailable()){
                 HyperTrack.requestMotionAuthorization()
                 self.initializeTimer()
                 
@@ -109,7 +100,6 @@ class RequestPermissionsVC : UIViewController {
             }
         }
     }
-    
     
     @IBAction func didTapGoToSettings(_ sender: Any) {
         UIApplication.shared.open(URL(string:UIApplicationOpenSettingsURLString)!)
@@ -117,7 +107,7 @@ class RequestPermissionsVC : UIViewController {
     
     func changeToSettingsCTAButton(){
         
-        self.requestLocationDescriptionLabel.text = "We need your permissions to capture your activity through the day, and to let you share your live location with your friends when you are on your way.\n Please give 'Always' location permission from Settings."
+        self.requestLocationDescriptionLabel.text = "HyperTrack live app needs location permission to track your location.\nPlease give 'Always' location permission from Settings."
 
         self.enableLocationCTAButton.setTitle("Open Settings", for: UIControlState.normal)
         self.enableLocationCTAButton.removeTarget(self, action: #selector(didTapEnableLocationButton(_:)), for: UIControlEvents.touchUpInside)
@@ -127,9 +117,9 @@ class RequestPermissionsVC : UIViewController {
     
     func changeToEnablePermissions(){
         
-        self.requestLocationDescriptionLabel.text = "We need your permissions to capture your activity through the day, and to let you share your live location with your friends when you are on your way."
+        self.requestLocationDescriptionLabel.text = "HyperTrack live app needs location permission to track your location."
         
-        self.enableLocationCTAButton.setTitle("Enable Permissions", for: UIControlState.normal)
+        self.enableLocationCTAButton.setTitle("Allow Access", for: UIControlState.normal)
         self.enableLocationCTAButton.removeTarget(self, action: #selector(didTapGoToSettings(_:)), for: UIControlEvents.touchUpInside)
         self.enableLocationCTAButton.addTarget(self, action: #selector(didTapEnableLocationButton(_:)), for: UIControlEvents.touchUpInside)
 
@@ -137,43 +127,32 @@ class RequestPermissionsVC : UIViewController {
     
     
     func dismissViewController (){
-        self.dismiss(animated: false, completion: {
-            self.permissionDelegate?.didFinishedAskingPermissions(currentController: self)
-        })
+        self.permissionDelegate?.didFinishedAskingPermissions(currentController: self)
     }
     
     private func initializeTimer() {
         pollingTimer = Timer.scheduledTimer(timeInterval: 1,
                                             target: self, selector: #selector(checkForMotionPermission),
-                                            userInfo: nil, repeats: true)
+                                            userInfo: nil, repeats: false)
     }
     
     @objc private func checkForMotionPermission() {
         currentTimerHit += 1
-        if(currentTimerHit == 10){
+        if currentTimerHit >= 10 {
             pollingTimer?.invalidate()
+            pollingTimer = nil
             self.dismissViewController()
             return
-        }
-        else{
-            HyperTrack.motionAuthorizationStatus(completionHandler: { (authorized) in
-                if(authorized){
-                    self.pollingTimer?.invalidate()
-                    self.dismissViewController()
+        } else {
+            HyperTrack.motionAuthorizationStatus(completionHandler: { [weak self] (authorized) in
+                if authorized {
+                    self?.pollingTimer?.invalidate()
+                    self?.pollingTimer = nil
+                    self?.dismissViewController()
+                } else {
+                    self?.initializeTimer()
                 }
             })
         }
-    }
-    
-    private func radiate() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(0), execute: {
-            UIView.animate(withDuration: 2, delay: 0, options: [.repeat], animations: {
-                self.radiationCircle.transform = CGAffineTransform(scaleX: 80, y: 80)
-                self.radiationCircle.alpha = 0
-            }, completion: { (hello) in
-                self.radiationCircle.alpha = 1
-                self.radiationCircle.transform = CGAffineTransform(scaleX: 0, y: 0)
-            })
-        })
     }
 }
