@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		05750E3F9B22411DC77031D0 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF9906AA2CE583E93780D301 /* AVFoundation.framework */; };
-		0BA7C69E5A331DD5DE86CB91 /* BuddyBuildSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD47E529E549A1731A714D6D /* BuddyBuildSDK.framework */; };
 		3313D3A41F18D41F00BDF8E0 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3313D3A31F18D41F00BDF8E0 /* Date.swift */; };
 		33334B8A1F0B740A001A970E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334B891F0B740A001A970E /* AppDelegate.swift */; };
 		33334B8C1F0B740A001A970E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33334B8B1F0B740A001A970E /* ViewController.swift */; };
@@ -115,7 +114,6 @@
 		BBF7B3EB1F19972000DA355C /* InviteFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InviteFlowController.swift; sourceTree = "<group>"; };
 		BBF7B3ED1F19972C00DA355C /* BaseFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseFlowController.swift; sourceTree = "<group>"; };
 		BBF7B3F01F1997C800DA355C /* HyperTrackAppService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HyperTrackAppService.swift; sourceTree = "<group>"; };
-		FD47E529E549A1731A714D6D /* BuddyBuildSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BuddyBuildSDK.framework; sourceTree = "<group>"; };
 		FF02833788EEC09C7C0F10CE /* Pods_htlive_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_htlive_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF9906AA2CE583E93780D301 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -125,7 +123,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0BA7C69E5A331DD5DE86CB91 /* BuddyBuildSDK.framework in Frameworks */,
 				D79B41D1ADF2C7B3098EF4B8 /* AssetsLibrary.framework in Frameworks */,
 				DD53C9764BA003663FEC2B91 /* CoreText.framework in Frameworks */,
 				B00C94962B65677DF4F6C7DB /* CoreTelephony.framework in Frameworks */,
@@ -318,7 +315,6 @@
 		C8EC434E1C44884397D1BDA9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FD47E529E549A1731A714D6D /* BuddyBuildSDK.framework */,
 				B923850CA9BCCA7AFAFE6B5C /* AssetsLibrary.framework */,
 				BBE69D06DE0D45E789542761 /* CoreText.framework */,
 				62C72BCF7451040D64AFF2A1 /* CoreTelephony.framework */,
@@ -471,7 +467,7 @@
 				"${BUILT_PRODUCTS_DIR}/Branch/Branch.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
 				"${BUILT_PRODUCTS_DIR}/GzipSwift/Gzip.framework",
-				"${BUILT_PRODUCTS_DIR}/HyperTrack.local/HyperTrack.framework",
+				"${BUILT_PRODUCTS_DIR}/HyperTrack/HyperTrack.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/MediumMenu/MediumMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/PhoneNumberKit/PhoneNumberKit.framework",
