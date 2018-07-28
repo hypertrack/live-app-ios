@@ -54,7 +54,7 @@ $ cd hypertrack-live-ios/htlive-ios
 $ pod install
 ```
 
-Get your HyperTrack API keys [here](https://www.hypertrack.com/signup?utm_source=github&utm_campaign=ht_live_ios), and add the publishable key to ```setUpHypertrack``` function in [HyperTrackAppService.swift](https://github.com/hypertrack/hypertrack-live-ios/blob/master/htlive-ios/htlive-ios/HyperTrackAppService.swift) file.
+Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup?utm_source=github&utm_campaign=ht_live_ios), and add the publishable key to ```setUpHypertrack``` function in [HyperTrackAppService.swift](https://github.com/hypertrack/hypertrack-live-ios/blob/master/htlive-ios/htlive-ios/HyperTrackAppService.swift) file.
 ```swift
 HyperTrack.initialize("YOUR_PUBLISHABLE_KEY")
 ```
@@ -155,7 +155,7 @@ Let's get started ðŸ˜Š . Strap yourself in and get ready for an exciting ride ðŸ
   
 ### Basic Setup
 #### Step 1. Get API keys
-Get your HyperTrack API keys [here](https://www.hypertrack.com/signup?utm_source=github&utm_campaign=ht_live_ios).
+Get your HyperTrack API keys [here](https://dashboard.hypertrack.com/signup?utm_source=github&utm_campaign=ht_live_ios).
 
 #### Step 2. Use starter project
 We have created a starter project so that building Live Location Sharing becomes very easy and quick. It will prevent you from the hassle of creating a new project and the workflow to enable Live Location Sharing. If you want to directly build the flow in your own app or wanted to create a new project, you can ignore this step.
