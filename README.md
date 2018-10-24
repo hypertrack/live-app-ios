@@ -1,5 +1,5 @@
 <a href="https://hypertrack.com/">
-    <img src="https://dalc1wjncfbgm.cloudfront.net/new-logo-green.ee965141b3b2085f5abf.svg" alt="Hypertrack logo" title="Hypertrack" align="right" height="70" />
+    <img src="https://cdn-images-1.medium.com/max/1138/1*ua4VsrbPobclyoE6fb37fA.png" alt="Hypertrack logo" title="Hypertrack" align="right" height="70" />
 </a>
 
 Activity Tracking and Live Location Sharing  
@@ -7,6 +7,7 @@ Activity Tracking and Live Location Sharing
 
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/licenses/MIT) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  [![Slack Status](http://slack.hypertrack.com/badge.svg)](http://slack.hypertrack.com)
 
+**🛑WARNING: THIS OPEN SOURCE REPO ISN'T A WORKING REPO. WE ARE ACTIVELY WORKING TO UPDATE THIS REPO. WE EXPECTED TO GET IT BACK IN A WORKING STATE BY NOV 2018.**
 
 This open source repo uses [HyperTrack](https://www.hypertrack.com) for Live Location Sharing and Activity Tracking.
 Hypertrack Live helps you share your Live Location with friends through your favorite messaging app when on the way to meet up. You can also see your activities organized as chronological cards so that tapping on each card gives you the locations of the activity. In case you are using Android, refer to our open source Android [repository](https://github.com/hypertrack/hypertrack-live-android). 
