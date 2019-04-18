@@ -13,7 +13,7 @@ extension String {
             return Character("")
         }
         
-        if i > self.characters.count {
+        if i > self.count {
             return Character("")
         }
         
@@ -25,16 +25,22 @@ extension String {
             return ""
         }
         
-        if i > self.characters.count {
+        if i > self.count {
             return ""
         }
         
         return String(self[i] as Character)
     }
     
+//    subscript (r: Range<Int>) -> String {
+//        let start = self.index(self.startIndex, offsetBy: r.lowerBound)
+//        let end = self.index(start, offsetBy: r.upperBound - r.lowerBound)
+//        return self[Range(start ..< end)]
+//    }
     subscript (r: Range<Int>) -> String {
-        let start = self.index(self.startIndex, offsetBy: r.lowerBound)
-        let end = self.index(start, offsetBy: r.upperBound - r.lowerBound)
-        return self[Range(start ..< end)]
+        let range = Range(uncheckedBounds: (lower: max(0, min(self.count, r.lowerBound)), upper: min(self.count, max(0, r.upperBound))))
+        let start = index(startIndex, offsetBy: range.lowerBound)
+        let end = index(start, offsetBy: range.upperBound - range.lowerBound)
+        return String(self[start ..< end])
     }
 }

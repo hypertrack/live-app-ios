@@ -50,10 +50,10 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow(notification:)),
-                                               name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+                                               name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillHide(notification:)),
-                                               name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+                                               name: UIResponder.keyboardWillHideNotification, object: nil)
         
         // Text editing dismiss gesture
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self,
@@ -64,15 +64,15 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
         setImageDelegate()
     }
     
-    func dismissKeyboard() {
+    @objc func dismissKeyboard() {
         // Dismiss the key when the tap gesture is used on the view
         view.endEditing(true)
     }
     
-    func keyboardWillShow(notification: NSNotification) {
+    @objc func keyboardWillShow(notification: NSNotification) {
         let fieldFrame = saveButton.frame //phoneNumberTextField.isEditing ? phoneNumberTextField.frame : nameTextField.frame
         let screenFrame = UIScreen.main.bounds
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue, keyboardSize.height > 0 {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue, keyboardSize.height > 0 {
             let offset = screenFrame.height - keyboardSize.height - fieldFrame.maxY
             if offset < 10 {
                 topConstraint.constant = 30 - abs(offset) - 10
@@ -85,7 +85,7 @@ class UserProfileVC: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func keyboardWillHide(notification: NSNotification) {
+    @objc func keyboardWillHide(notification: NSNotification) {
         topConstraint.constant = 30
         
         UIView.animate(withDuration: 0.5) {
@@ -212,7 +212,7 @@ extension UserProfileVC : UIImagePickerControllerDelegate, UINavigationControlle
 //        photoImage.tintColor = .white
     }
     
-    func pickImage() {
+    @objc func pickImage() {
         let actionSheetController: UIAlertController = UIAlertController(title: "Add a photo", message: "Where do you want your photo from?", preferredStyle: .actionSheet)
         
         let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { _ in
@@ -279,10 +279,9 @@ extension UserProfileVC : UIImagePickerControllerDelegate, UINavigationControlle
     }
     
     //MARK: - Delegates
-    func imagePickerController(_ picker: UIImagePickerController,
-                               didFinishPickingMediaWithInfo info: [String : AnyObject])
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject])
     {
-        let chosenImage = info[UIImagePickerControllerEditedImage] as! UIImage
+        let chosenImage = info[UIImagePickerController.InfoKey.editedImage.rawValue] as! UIImage
         photoImage.contentMode = .scaleAspectFit
         photoImage.image = chosenImage
         imagePicked = true

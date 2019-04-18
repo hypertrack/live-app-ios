@@ -13,29 +13,29 @@ import UIKit
 class CustomTextField : UITextField {
     
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return UIEdgeInsetsInsetRect(bounds, UIEdgeInsetsMake(0, 15, 0, 15))
+        return bounds.inset(by: UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15))
     }
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return UIEdgeInsetsInsetRect(bounds, UIEdgeInsetsMake(0, 15, 0, 15))
+        return bounds.inset(by: UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15))
     }
     
     override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-        return UIEdgeInsetsInsetRect(bounds, UIEdgeInsetsMake(0, 15, 0, 15))
+        return bounds.inset(by: UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15))
     }
 }
 
 
 class CustomPhoneTextField : PhoneNumberTextField {
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return UIEdgeInsetsInsetRect(bounds, UIEdgeInsetsMake(0, 15, 0, 15))
+        return bounds.inset(by: UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15))
     }
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return UIEdgeInsetsInsetRect(bounds, UIEdgeInsetsMake(0, 15, 0, 15))
+        return bounds.inset(by: UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15))
     }
     
     override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-        return UIEdgeInsetsInsetRect(bounds, UIEdgeInsetsMake(0, 15, 0, 15))
+        return bounds.inset(by: UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15))
     }
 }

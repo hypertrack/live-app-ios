@@ -32,7 +32,7 @@ class ViewController: UIViewController {
     }()
     
     fileprivate lazy var activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
+        let activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.white)
         activityIndicator.startAnimating()
         return activityIndicator
     }()
@@ -47,7 +47,7 @@ class ViewController: UIViewController {
         contentView.edges()
         contentView.cleanUp()
         enableSummaryUseCase()
-        NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification(_:)), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.trackUsingUrl(_:)), name: NSNotification.Name(rawValue:HTLiveConstants.trackUsingUrl), object: nil)
     }
     
@@ -118,7 +118,7 @@ class ViewController: UIViewController {
         self.present(ac, animated: true, completion: nil)
     }
     
-    func trackUsingUrl(_ notification: Notification) {
+    @objc func trackUsingUrl(_ notification: Notification) {
         guard let url = notification.object as? String else { return }
         if let collectionId = UserDefaults.standard.string(forKey: collectionIdKey), !collectionId.isEmpty {
             summaryUseCase.liveUC.trackActionWithShortCodes([url]) { [weak self] (response, error) in
@@ -164,7 +164,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func onForegroundNotification(_ notification: Notification){
+    @objc func onForegroundNotification(_ notification: Notification){
         summaryUseCase.update()
     }
     

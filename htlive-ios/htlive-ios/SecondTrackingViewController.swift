@@ -26,7 +26,7 @@ final class SecondTrackingViewController: UIViewController {
     }()
     
     fileprivate lazy var activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.white)
+        let activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.white)
         activityIndicator.startAnimating()
         return activityIndicator
     }()
@@ -54,7 +54,7 @@ final class SecondTrackingViewController: UIViewController {
         contentView.setPrimaryAction(crossButton, anchor: .topLeft)
     }
     
-    func crossClicked() {
+    @objc func crossClicked() {
         contentView.cleanUp()
         dismiss(animated: true, completion: nil)
         liveUseCase.stop()

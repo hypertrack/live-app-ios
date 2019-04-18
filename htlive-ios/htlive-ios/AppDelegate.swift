@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         //application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
         UIApplication.shared.registerForRemoteNotifications();
         HTProvider.alwaysRotateUserMarker = false
@@ -73,7 +73,7 @@ extension AppDelegate {
     }
     
     func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
-        if notificationSettings.types != .none {
+        if notificationSettings.types != [] {
             application.registerForRemoteNotifications()
         }
     }

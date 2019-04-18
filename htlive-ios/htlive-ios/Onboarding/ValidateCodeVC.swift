@@ -80,7 +80,7 @@ class ValidateCodeVC: UIViewController {
         resendTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateResendLabel), userInfo: nil, repeats: true)
     }
     
-    func updateResendLabel() {
+    @objc func updateResendLabel() {
         if (resendCounter <= 1) {
             // Invalidate the timer
             if let timer = resendTimer {

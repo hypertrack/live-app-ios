@@ -2,8 +2,7 @@
  platform :ios, '9.0'
 
 def hypertrack_pods
-    pod 'HyperTrack'
-#    pod 'HyperTrack.local', :path => '~/hypertrack-ios-v3/HyperTrack.local.podspec'
+    pod 'HyperTrack.local', :path => '~/hypertrack-ios-v3/HyperTrack.local.podspec'
 end
 
 target 'htlive-ios' do
@@ -11,7 +10,7 @@ target 'htlive-ios' do
   use_frameworks!
 
   hypertrack_pods
-  pod 'PhoneNumberKit', '~> 1.2'
+  pod 'PhoneNumberKit', '~> 2.6'
   pod 'MBProgressHUD'
   pod 'Branch'
   pod 'Crashlytics'

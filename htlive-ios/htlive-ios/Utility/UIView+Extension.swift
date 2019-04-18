@@ -13,7 +13,7 @@ import MBProgressHUD
 extension UIView {
     
     func showActivityIndicator(animated: Bool = true) {
-        var view = MBProgressHUD.showAdded(to: self, animated: animated)
+        let view = MBProgressHUD.showAdded(to: self, animated: animated)
         view.alpha = 0.2
     }
     
@@ -59,7 +59,7 @@ extension UIView {
 extension UIImage {
     
     var data: NSData? {
-        return UIImageJPEGRepresentation(self, 0.3) as NSData?
+        return self.jpegData(compressionQuality:0.3) as NSData?
     }
 }
 
