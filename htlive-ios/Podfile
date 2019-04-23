@@ -14,5 +14,4 @@ target 'htlive-ios' do
   pod 'MBProgressHUD'
   pod 'Branch'
   pod 'Crashlytics'
-  pod 'MediumMenu'
 end
