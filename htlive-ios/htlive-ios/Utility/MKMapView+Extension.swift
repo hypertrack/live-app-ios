@@ -14,15 +14,15 @@ extension MKMapView {
     func mapRectThatFits(first: CLLocationCoordinate2D, second: CLLocationCoordinate2D) -> MKMapRect {
         
         if (!(CLLocationCoordinate2DIsValid(first) && CLLocationCoordinate2DIsValid(second))) {
-            return MKMapRectNull
+            return MKMapRect.null
         }
         
-        let firstPoint = MKMapPointForCoordinate(first)
-        let firstRect = MKMapRect(origin: firstPoint, size: MKMapSizeMake(0.0, 0.0))
+        let firstPoint = MKMapPoint(first)
+        let firstRect = MKMapRect(origin: firstPoint, size: MKMapSize(width: 0.0, height: 0.0))
         
-        let secondPoint = MKMapPointForCoordinate(second)
-        let secondRect = MKMapRect(origin: secondPoint, size: MKMapSizeMake(0.0, 0.0))
+        let secondPoint = MKMapPoint(second)
+        let secondRect = MKMapRect(origin: secondPoint, size: MKMapSize(width: 0.0, height: 0.0))
         
-        return MKMapRectUnion(firstRect, secondRect)
+        return firstRect.union(secondRect)
     }
 }

@@ -21,7 +21,7 @@ class HyperTrackAppService: NSObject {
     var defaultRootViewController : UIViewController? = nil
     var completedActions = [String]()
     
-    func applicationDidFinishLaunchingWithOptions(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func applicationDidFinishLaunchingWithOptions(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         setUpSDKs()
         self.defaultRootViewController = UIApplication.shared.windows.first?.rootViewController
         self.flowInteractor.presentFlowsIfNeeded()
@@ -145,7 +145,7 @@ extension HyperTrackAppService: UNUserNotificationCenterDelegate{
 }
 
 extension HyperTrackAppService {
-    fileprivate func setupBranchDeeplink(launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) {
+    fileprivate func setupBranchDeeplink(launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) {
         let branch: Branch = Branch.getInstance()
         branch.initSession(launchOptions: launchOptions) { (params, error) in
             if (error == nil), (params != nil), (params!["+clicked_branch_link"] as? Bool == true) {

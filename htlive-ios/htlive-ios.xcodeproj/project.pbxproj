@@ -26,10 +26,12 @@
 		418438971F5BBF3200190FE2 /* OnboardingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 418438941F5BBF3200190FE2 /* OnboardingView.xib */; };
 		4184389C1F5BF00100190FE2 /* ActivityFeedbackTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4184389B1F5BF00100190FE2 /* ActivityFeedbackTableVC.swift */; };
 		4A9EC7183BF7416C507967D3 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E6015A432434BE00CB7D490 /* CoreVideo.framework */; };
-		56AA3763CC83A3142327D3DE /* Pods_htlive_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF02833788EEC09C7C0F10CE /* Pods_htlive_ios.framework */; };
+		5E71617AB52F9CF78EE9F4C5 /* Pods_htlive_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A15DDBAA5037882A6C1D718 /* Pods_htlive_ios.framework */; };
 		709F5A4A4D1A2C4D62D67D7A /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B04F8C25B273501623851B5 /* CoreMedia.framework */; };
 		7214AC794737FD3C0D2555C4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6879260750573A1BEF59E3DE /* SystemConfiguration.framework */; };
 		B00C94962B65677DF4F6C7DB /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C72BCF7451040D64AFF2A1 /* CoreTelephony.framework */; };
+		B49102FB226EECAB007D8AAA /* MediumMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49102F9226EECAB007D8AAA /* MediumMenu.swift */; };
+		B49102FC226EECAB007D8AAA /* MediumMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49102FA226EECAB007D8AAA /* MediumMenuItem.swift */; };
 		B7AB54A4206BD31B002EF9BC /* SecondTrackingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AB54A3206BD31B002EF9BC /* SecondTrackingViewController.swift */; };
 		B7B2B972203D85C70098D437 /* WorkSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B2B96E203D85C50098D437 /* WorkSans-Regular.ttf */; };
 		B7B2B973203D85C70098D437 /* WorkSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B2B96F203D85C50098D437 /* WorkSans-Medium.ttf */; };
@@ -80,13 +82,15 @@
 		418438931F5BBF3200190FE2 /* OnboardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OnboardingView.swift; path = Welcome/OnboardingView.swift; sourceTree = "<group>"; };
 		418438941F5BBF3200190FE2 /* OnboardingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OnboardingView.xib; path = Welcome/OnboardingView.xib; sourceTree = "<group>"; };
 		4184389B1F5BF00100190FE2 /* ActivityFeedbackTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityFeedbackTableVC.swift; sourceTree = "<group>"; };
-		4A921267E19BDB82814DC8B9 /* Pods-htlive-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		4E6015A432434BE00CB7D490 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		5A15DDBAA5037882A6C1D718 /* Pods_htlive_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_htlive_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		60060C7769DD795A2A0823B6 /* Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		62C72BCF7451040D64AFF2A1 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		6879260750573A1BEF59E3DE /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		790284E1E83C2D3E59B456A0 /* Pods-htlive-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios.release.xcconfig"; sourceTree = "<group>"; };
+		6F1DDC5C4339ECDB04093261 /* Pods-htlive-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.release.xcconfig"; path = "Target Support Files/Pods-htlive-ios/Pods-htlive-ios.release.xcconfig"; sourceTree = "<group>"; };
 		8F29BB026EF4C014377323EA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		B49102F9226EECAB007D8AAA /* MediumMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediumMenu.swift; sourceTree = "<group>"; };
+		B49102FA226EECAB007D8AAA /* MediumMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediumMenuItem.swift; sourceTree = "<group>"; };
 		B7AB54A3206BD31B002EF9BC /* SecondTrackingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondTrackingViewController.swift; sourceTree = "<group>"; };
 		B7B2B96E203D85C50098D437 /* WorkSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-Regular.ttf"; sourceTree = "<group>"; };
 		B7B2B96F203D85C50098D437 /* WorkSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WorkSans-Medium.ttf"; sourceTree = "<group>"; };
@@ -114,7 +118,7 @@
 		BBF7B3EB1F19972000DA355C /* InviteFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InviteFlowController.swift; sourceTree = "<group>"; };
 		BBF7B3ED1F19972C00DA355C /* BaseFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseFlowController.swift; sourceTree = "<group>"; };
 		BBF7B3F01F1997C800DA355C /* HyperTrackAppService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HyperTrackAppService.swift; sourceTree = "<group>"; };
-		FF02833788EEC09C7C0F10CE /* Pods_htlive_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_htlive_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5C5E52CE96FB1FEE10CE23C /* Pods-htlive-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.debug.xcconfig"; path = "Target Support Files/Pods-htlive-ios/Pods-htlive-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		FF9906AA2CE583E93780D301 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -131,13 +135,22 @@
 				05750E3F9B22411DC77031D0 /* AVFoundation.framework in Frameworks */,
 				709F5A4A4D1A2C4D62D67D7A /* CoreMedia.framework in Frameworks */,
 				4A9EC7183BF7416C507967D3 /* CoreVideo.framework in Frameworks */,
-				56AA3763CC83A3142327D3DE /* Pods_htlive_ios.framework in Frameworks */,
+				5E71617AB52F9CF78EE9F4C5 /* Pods_htlive_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		06008553B79410706786B4E1 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C5C5E52CE96FB1FEE10CE23C /* Pods-htlive-ios.debug.xcconfig */,
+				6F1DDC5C4339ECDB04093261 /* Pods-htlive-ios.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		33334B7D1F0B740A001A970E = {
 			isa = PBXGroup;
 			children = (
@@ -146,7 +159,7 @@
 				C8EC434E1C44884397D1BDA9 /* Frameworks */,
 				60060C7769DD795A2A0823B6 /* Bridging-Header.h */,
 				331001491F17735F00BC3EB0 /* htlive-ios.entitlements */,
-				632268A8AE364679EE17BEE3 /* Pods */,
+				06008553B79410706786B4E1 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -233,13 +246,13 @@
 			name = Feedback;
 			sourceTree = "<group>";
 		};
-		632268A8AE364679EE17BEE3 /* Pods */ = {
+		B49102F4226EEC21007D8AAA /* MediumMenu */ = {
 			isa = PBXGroup;
 			children = (
-				4A921267E19BDB82814DC8B9 /* Pods-htlive-ios.debug.xcconfig */,
-				790284E1E83C2D3E59B456A0 /* Pods-htlive-ios.release.xcconfig */,
+				B49102F9226EECAB007D8AAA /* MediumMenu.swift */,
+				B49102FA226EECAB007D8AAA /* MediumMenuItem.swift */,
 			);
-			name = Pods;
+			name = MediumMenu;
 			sourceTree = "<group>";
 		};
 		B7B2B96C203D85C50098D437 /* Resources */ = {
@@ -264,6 +277,7 @@
 		BB7D298C1F1D68FF00E72DCF /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				B49102F4226EEC21007D8AAA /* MediumMenu */,
 				BB7D298F1F1D690D00E72DCF /* MKMapView+Extension.swift */,
 				BB7D29901F1D690D00E72DCF /* NSData+Extension.swift */,
 				BB7D29911F1D690D00E72DCF /* String+Extension.swift */,
@@ -323,7 +337,7 @@
 				FF9906AA2CE583E93780D301 /* AVFoundation.framework */,
 				1B04F8C25B273501623851B5 /* CoreMedia.framework */,
 				4E6015A432434BE00CB7D490 /* CoreVideo.framework */,
-				FF02833788EEC09C7C0F10CE /* Pods_htlive_ios.framework */,
+				5A15DDBAA5037882A6C1D718 /* Pods_htlive_ios.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -335,13 +349,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 33334B9B1F0B740A001A970E /* Build configuration list for PBXNativeTarget "htlive-ios" */;
 			buildPhases = (
-				1B403991F76BBA3F0E4BC0E8 /* [CP] Check Pods Manifest.lock */,
+				FE78AE16267ABFB7BA4F55DB /* [CP] Check Pods Manifest.lock */,
 				33334B821F0B740A001A970E /* Sources */,
 				33334B831F0B740A001A970E /* Frameworks */,
 				33334B841F0B740A001A970E /* Resources */,
 				BB8449C61F55C15100413BA0 /* ShellScript */,
-				997C74476697268CC6DB34D2 /* [CP] Embed Pods Frameworks */,
-				5DFE01401E912CADBBE8BA64 /* [CP] Copy Pods Resources */,
+				3072C6C3189676158EAA1DCE /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -388,6 +401,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -420,74 +434,38 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1B403991F76BBA3F0E4BC0E8 /* [CP] Check Pods Manifest.lock */ = {
+		3072C6C3189676158EAA1DCE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-htlive-ios-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5DFE01401E912CADBBE8BA64 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios-resources.sh",
-				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		997C74476697268CC6DB34D2 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-htlive-ios/Pods-htlive-ios-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Branch/Branch.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
-				"${BUILT_PRODUCTS_DIR}/GzipSwift/Gzip.framework",
-				"${BUILT_PRODUCTS_DIR}/HyperTrack/HyperTrack.framework",
+				"${BUILT_PRODUCTS_DIR}/HyperTrack.local/HyperTrack.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/MediumMenu/MediumMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/PhoneNumberKit/PhoneNumberKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Branch.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gzip.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HyperTrack.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MediumMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PhoneNumberKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-htlive-ios/Pods-htlive-ios-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-htlive-ios/Pods-htlive-ios-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BB8449C61F55C15100413BA0 /* ShellScript */ = {
@@ -501,7 +479,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" 012ca85a4085707d726df8e4cc885fa5109d825a b10b6221b9fa60dd0b4eaef4c5a7f9610dc02451f67f01b9156fcf864bd34801";
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 012ca85a4085707d726df8e4cc885fa5109d825a b10b6221b9fa60dd0b4eaef4c5a7f9610dc02451f67f01b9156fcf864bd34801\n";
+		};
+		FE78AE16267ABFB7BA4F55DB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-htlive-ios-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -515,6 +515,7 @@
 				33334B8C1F0B740A001A970E /* ViewController.swift in Sources */,
 				BBF7B3E51F1996A600DA355C /* HyperTrackFlowInteractor.swift in Sources */,
 				418438951F5BBF3200190FE2 /* OnboardingVC.swift in Sources */,
+				B49102FC226EECAB007D8AAA /* MediumMenuItem.swift in Sources */,
 				BB7D29981F1D690D00E72DCF /* MKMapView+Extension.swift in Sources */,
 				BB7D29A01F1D7D7400E72DCF /* HTLiveConstants.swift in Sources */,
 				BB7D299A1F1D690D00E72DCF /* String+Extension.swift in Sources */,
@@ -543,6 +544,7 @@
 				BBF7B3E71F1996C100DA355C /* OnboardingFlowController.swift in Sources */,
 				BB7D299B1F1D690D00E72DCF /* ThemeManager.swift in Sources */,
 				BB7D29B11F1EB1BD00E72DCF /* AcceptInviteVC.swift in Sources */,
+				B49102FB226EECAB007D8AAA /* MediumMenu.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -663,7 +665,7 @@
 		};
 		33334B9C1F0B740A001A970E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4A921267E19BDB82814DC8B9 /* Pods-htlive-ios.debug.xcconfig */;
+			baseConfigurationReference = C5C5E52CE96FB1FEE10CE23C /* Pods-htlive-ios.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "htlive-ios/htlive-ios.entitlements";
@@ -682,13 +684,13 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
 		33334B9D1F0B740A001A970E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 790284E1E83C2D3E59B456A0 /* Pods-htlive-ios.release.xcconfig */;
+			baseConfigurationReference = 6F1DDC5C4339ECDB04093261 /* Pods-htlive-ios.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "htlive-ios/htlive-ios.entitlements";
@@ -706,7 +708,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};

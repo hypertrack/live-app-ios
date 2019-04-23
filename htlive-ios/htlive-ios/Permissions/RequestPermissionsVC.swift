@@ -21,7 +21,7 @@ class RequestPermissionsVC : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onForegroundNotification), name: UIApplication.didBecomeActiveNotification, object: nil)
         
         self.requestLocationDescriptionLabel.text = "HyperTrack live app needs location permission to track your location."
 
@@ -88,7 +88,7 @@ class RequestPermissionsVC : UIViewController {
         }
     }
     
-    func onForegroundNotification(_ notification: Notification){
+    @objc func onForegroundNotification(_ notification: Notification){
         if (HyperTrack.locationAuthorizationStatus() == .authorizedAlways) {
             changeToEnablePermissions()
             if(HyperTrack.isActivityAvailable()){
@@ -102,16 +102,16 @@ class RequestPermissionsVC : UIViewController {
     }
     
     @IBAction func didTapGoToSettings(_ sender: Any) {
-        UIApplication.shared.open(URL(string:UIApplicationOpenSettingsURLString)!)
+        UIApplication.shared.open(URL(string:UIApplication.openSettingsURLString)!)
     }
     
     func changeToSettingsCTAButton(){
         
         self.requestLocationDescriptionLabel.text = "HyperTrack live app needs location permission to track your location.\nPlease give 'Always' location permission from Settings."
 
-        self.enableLocationCTAButton.setTitle("Open Settings", for: UIControlState.normal)
-        self.enableLocationCTAButton.removeTarget(self, action: #selector(didTapEnableLocationButton(_:)), for: UIControlEvents.touchUpInside)
-        self.enableLocationCTAButton.addTarget(self, action: #selector(didTapGoToSettings(_:)), for: UIControlEvents.touchUpInside)
+        self.enableLocationCTAButton.setTitle("Open Settings", for: UIControl.State.normal)
+        self.enableLocationCTAButton.removeTarget(self, action: #selector(didTapEnableLocationButton(_:)), for: UIControl.Event.touchUpInside)
+        self.enableLocationCTAButton.addTarget(self, action: #selector(didTapGoToSettings(_:)), for: UIControl.Event.touchUpInside)
     }
     
     
@@ -119,9 +119,9 @@ class RequestPermissionsVC : UIViewController {
         
         self.requestLocationDescriptionLabel.text = "HyperTrack live app needs location permission to track your location."
         
-        self.enableLocationCTAButton.setTitle("Allow Access", for: UIControlState.normal)
-        self.enableLocationCTAButton.removeTarget(self, action: #selector(didTapGoToSettings(_:)), for: UIControlEvents.touchUpInside)
-        self.enableLocationCTAButton.addTarget(self, action: #selector(didTapEnableLocationButton(_:)), for: UIControlEvents.touchUpInside)
+        self.enableLocationCTAButton.setTitle("Allow Access", for: UIControl.State.normal)
+        self.enableLocationCTAButton.removeTarget(self, action: #selector(didTapGoToSettings(_:)), for: UIControl.Event.touchUpInside)
+        self.enableLocationCTAButton.addTarget(self, action: #selector(didTapEnableLocationButton(_:)), for: UIControl.Event.touchUpInside)
 
     }
     
