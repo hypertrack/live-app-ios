@@ -35,7 +35,7 @@ class RequestService {
             switch response.result {
             case .success:
                 completionHandler(nil)
-            case .failure(let error):
+            case .failure( _):
                 let errorMsg = String(data: response.data!, encoding: .utf8)!
                 completionHandler(errorMsg)
             }
@@ -77,7 +77,7 @@ class RequestService {
             switch response.result {
             case .success: break
 //                completionHandler(nil)
-            case .failure(let error):
+            case .failure( _):
                 let errorMsg = String(data: response.data!, encoding: .utf8)!
                 print(errorMsg)
 //                completionHandler(errorMsg)

@@ -279,9 +279,9 @@ extension UserProfileVC : UIImagePickerControllerDelegate, UINavigationControlle
     }
     
     //MARK: - Delegates
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject])
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any])
     {
-        let chosenImage = info[UIImagePickerController.InfoKey.editedImage.rawValue] as! UIImage
+        let chosenImage = info[UIImagePickerController.InfoKey.editedImage] as! UIImage
         photoImage.contentMode = .scaleAspectFit
         photoImage.image = chosenImage
         imagePicked = true

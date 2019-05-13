@@ -77,8 +77,6 @@ extension AppDelegate {
             application.registerForRemoteNotifications()
         }
     }
-    
-    
 }
 
 

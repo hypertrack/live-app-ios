@@ -13,6 +13,7 @@ import CoreLocation
 import Fabric
 import Crashlytics
 import UserNotifications
+import HyperTrackV3
 
 class HyperTrackAppService: NSObject {
     
@@ -35,6 +36,12 @@ class HyperTrackAppService: NSObject {
         // staging pk : pk_03e3176a9831360e162093292049757b130c75cf
         // production pk : pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451
         HyperTrack.initialize("sk_35b9d87cba7ca206bcb7a06d5c94b24a58cdaac3")
+        
+        // Prod PK
+        HyperTrackV3.initialize(publishableKey: "uvIAA8xJANxUxDgINOX62-LINLuLeymS6JbGieJ9PegAPITcr9fgUpROpfSMdL9kv-qFjl17NeAuBHse8Qu9sw", delegate: self, startsTracking: true, requestsPermissions: true)
+        
+        print(HyperTrackV3.deviceID)
+        
 //        HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
 
         // staging
@@ -142,6 +149,12 @@ extension HyperTrackAppService: UNUserNotificationCenterDelegate{
     }
     
     
+}
+
+extension HyperTrackAppService: HyperTrackDelegateV3 {
+    func hyperTrack(_ hyperTrack: HyperTrackV3.Type, didEncounterCriticalError criticalError: HyperTrackCriticalError) {
+        showAlert(title: "Attention", message: String(criticalError.errorMessage))
+    }
 }
 
 extension HyperTrackAppService {

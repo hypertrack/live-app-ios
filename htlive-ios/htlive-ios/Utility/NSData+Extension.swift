@@ -55,7 +55,7 @@ extension NSDate {
     var shareFormat: String {
         
         let formatter = DateFormatter()
-        formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale!
+        formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale
         formatter.dateFormat = "h:mm a"
         
         return formatter.string(from: self as Date)

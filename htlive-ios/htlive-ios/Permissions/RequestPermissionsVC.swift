@@ -9,6 +9,7 @@
 import Foundation
 import HyperTrack
 import CoreLocation
+import HyperTrackV3
 
 class RequestPermissionsVC : UIViewController {
     @IBOutlet weak var requestLocationDescriptionLabel: UILabel!
@@ -55,7 +56,7 @@ class RequestPermissionsVC : UIViewController {
         // Check for Location Authorization Status (Always by default)
         if (HyperTrack.locationAuthorizationStatus() != .authorizedAlways) {
             HyperTrack.requestAlwaysLocationAuthorization(completionHandler: { (isAuthorized) in
-                if(isAuthorized){
+                if(isAuthorized) {
                     self.permissionDelegate?.didAcceptedLocationPermissions(currentController: self)
                     
                     if(HyperTrack.isActivityAvailable()){
@@ -65,6 +66,8 @@ class RequestPermissionsVC : UIViewController {
                     }else{
                         self.dismissViewController()
                     }
+                    
+                    HyperTrackV3.startTracking(requestsPermissions: true)
                     
                 }else{
                     self.permissionDelegate?.didDeniedLocationPermissions(currentController: self)
@@ -85,6 +88,8 @@ class RequestPermissionsVC : UIViewController {
             }else{
                 self.dismissViewController()
             }
+            
+            HyperTrackV3.startTracking(requestsPermissions: true)
         }
     }
     

@@ -14,4 +14,19 @@ target 'htlive-ios' do
   pod 'MBProgressHUD'
   pod 'Branch'
   pod 'Crashlytics'
+  pod 'GRDB.swift', '3.6.2'
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings['BITCODE_GENERATION_MODE'] = 'bitcode'
+            config.build_settings['ENABLE_BITCODE'] = 'YES'
+	end
+    if ['GRDB.swift', 'CocoaLumberjack'].include? target.name
+      target.build_configurations.each do |config|
+        config.build_settings['SWIFT_VERSION'] = '4.2'
+      end
+    end
+  end
 end

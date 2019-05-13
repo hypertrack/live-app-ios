@@ -95,7 +95,7 @@ class OnboardingVC: UIViewController, UIScrollViewDelegate {
     
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let controller = segue.destination as? RequestPermissionsVC{
+        if let controller = segue.destination as? RequestPermissionsVC {
             controller.permissionDelegate = self.permissionDelegate
         }
     }
