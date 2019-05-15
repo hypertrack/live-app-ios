@@ -40,8 +40,6 @@ class HyperTrackAppService: NSObject {
         // Prod PK
         HyperTrackV3.initialize(publishableKey: "uvIAA8xJANxUxDgINOX62-LINLuLeymS6JbGieJ9PegAPITcr9fgUpROpfSMdL9kv-qFjl17NeAuBHse8Qu9sw", delegate: self, startsTracking: true, requestsPermissions: true)
         
-        print(HyperTrackV3.deviceID)
-        
 //        HyperTrack.initialize("pk_e956d4c123e8b726c10b553fe62bbaa9c1ac9451")
 
         // staging
