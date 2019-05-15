@@ -39,7 +39,6 @@
 		B7B2B974203D85C70098D437 /* WorkSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B2B970203D85C50098D437 /* WorkSans-SemiBold.ttf */; };
 		B7B2B975203D85C70098D437 /* WorkSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B2B971203D85C50098D437 /* WorkSans-Bold.ttf */; };
 		B7B2B977203D9AB30098D437 /* AppStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B2B976203D9AB30098D437 /* AppStyle.swift */; };
-		B85712551F4D2CD979D3C74D /* Pods_htlive_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77C7CD6D01D24326A6F43FBE /* Pods_htlive_ios.framework */; };
 		BB7D29981F1D690D00E72DCF /* MKMapView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D298F1F1D690D00E72DCF /* MKMapView+Extension.swift */; };
 		BB7D29991F1D690D00E72DCF /* NSData+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D29901F1D690D00E72DCF /* NSData+Extension.swift */; };
 		BB7D299A1F1D690D00E72DCF /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB7D29911F1D690D00E72DCF /* String+Extension.swift */; };
@@ -59,6 +58,7 @@
 		BBF7B3EC1F19972000DA355C /* InviteFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7B3EB1F19972000DA355C /* InviteFlowController.swift */; };
 		BBF7B3EE1F19972C00DA355C /* BaseFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7B3ED1F19972C00DA355C /* BaseFlowController.swift */; };
 		BBF7B3F11F1997C800DA355C /* HyperTrackAppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7B3F01F1997C800DA355C /* HyperTrackAppService.swift */; };
+		C9F35D34D1D15A5D2BB302EA /* Pods_htlive_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD251EC2A90B8A5826816545 /* Pods_htlive_ios.framework */; };
 		D79B41D1ADF2C7B3098EF4B8 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B923850CA9BCCA7AFAFE6B5C /* AssetsLibrary.framework */; };
 		DD53C9764BA003663FEC2B91 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE69D06DE0D45E789542761 /* CoreText.framework */; };
 /* End PBXBuildFile section */
@@ -78,9 +78,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0175938058C076AAB70C7721 /* Pods-htlive-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.debug.xcconfig"; path = "Target Support Files/Pods-htlive-ios/Pods-htlive-ios.debug.xcconfig"; sourceTree = "<group>"; };
-		0A3E063167170D6A55B8E03F /* Pods-htlive-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.release.xcconfig"; path = "Target Support Files/Pods-htlive-ios/Pods-htlive-ios.release.xcconfig"; sourceTree = "<group>"; };
 		1B04F8C25B273501623851B5 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		280FB6D41923F44A95EA2399 /* Pods-htlive-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.debug.xcconfig"; path = "Target Support Files/Pods-htlive-ios/Pods-htlive-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		331001491F17735F00BC3EB0 /* htlive-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = "htlive-ios.entitlements"; path = "htlive-ios/htlive-ios.entitlements"; sourceTree = "<group>"; };
 		3313D3A31F18D41F00BDF8E0 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		33334B861F0B740A001A970E /* htlive-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "htlive-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,8 +103,8 @@
 		60060C7769DD795A2A0823B6 /* Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		62C72BCF7451040D64AFF2A1 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		6879260750573A1BEF59E3DE /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		77C7CD6D01D24326A6F43FBE /* Pods_htlive_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_htlive_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F29BB026EF4C014377323EA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		AD251EC2A90B8A5826816545 /* Pods_htlive_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_htlive_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B45D19E92286D8F600C673C8 /* HyperTrackV3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HyperTrackV3.framework; sourceTree = "<group>"; };
 		B49102F9226EECAB007D8AAA /* MediumMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediumMenu.swift; sourceTree = "<group>"; };
 		B49102FA226EECAB007D8AAA /* MediumMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediumMenuItem.swift; sourceTree = "<group>"; };
@@ -136,6 +135,7 @@
 		BBF7B3EB1F19972000DA355C /* InviteFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InviteFlowController.swift; sourceTree = "<group>"; };
 		BBF7B3ED1F19972C00DA355C /* BaseFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseFlowController.swift; sourceTree = "<group>"; };
 		BBF7B3F01F1997C800DA355C /* HyperTrackAppService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HyperTrackAppService.swift; sourceTree = "<group>"; };
+		DCBF8C1A1114D29D5C2013D0 /* Pods-htlive-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-htlive-ios.release.xcconfig"; path = "Target Support Files/Pods-htlive-ios/Pods-htlive-ios.release.xcconfig"; sourceTree = "<group>"; };
 		FF9906AA2CE583E93780D301 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -153,7 +153,7 @@
 				05750E3F9B22411DC77031D0 /* AVFoundation.framework in Frameworks */,
 				709F5A4A4D1A2C4D62D67D7A /* CoreMedia.framework in Frameworks */,
 				4A9EC7183BF7416C507967D3 /* CoreVideo.framework in Frameworks */,
-				B85712551F4D2CD979D3C74D /* Pods_htlive_ios.framework in Frameworks */,
+				C9F35D34D1D15A5D2BB302EA /* Pods_htlive_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,8 +163,8 @@
 		06008553B79410706786B4E1 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				0175938058C076AAB70C7721 /* Pods-htlive-ios.debug.xcconfig */,
-				0A3E063167170D6A55B8E03F /* Pods-htlive-ios.release.xcconfig */,
+				280FB6D41923F44A95EA2399 /* Pods-htlive-ios.debug.xcconfig */,
+				DCBF8C1A1114D29D5C2013D0 /* Pods-htlive-ios.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -356,7 +356,7 @@
 				FF9906AA2CE583E93780D301 /* AVFoundation.framework */,
 				1B04F8C25B273501623851B5 /* CoreMedia.framework */,
 				4E6015A432434BE00CB7D490 /* CoreVideo.framework */,
-				77C7CD6D01D24326A6F43FBE /* Pods_htlive_ios.framework */,
+				AD251EC2A90B8A5826816545 /* Pods_htlive_ios.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -368,13 +368,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 33334B9B1F0B740A001A970E /* Build configuration list for PBXNativeTarget "htlive-ios" */;
 			buildPhases = (
-				9E0F54E9A93048D98AE62C7C /* [CP] Check Pods Manifest.lock */,
+				DD202511C88A8FCA1BA7E5B8 /* [CP] Check Pods Manifest.lock */,
 				33334B821F0B740A001A970E /* Sources */,
 				33334B831F0B740A001A970E /* Frameworks */,
 				33334B841F0B740A001A970E /* Resources */,
 				BB8449C61F55C15100413BA0 /* ShellScript */,
 				B45D19EC2286D8F700C673C8 /* Embed Frameworks */,
-				F863BB618DE97295C4310CAB /* [CP] Embed Pods Frameworks */,
+				B0E071C84A7BBE9AC28E109C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -454,42 +454,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		9E0F54E9A93048D98AE62C7C /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-htlive-ios-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BB8449C61F55C15100413BA0 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" 012ca85a4085707d726df8e4cc885fa5109d825a b10b6221b9fa60dd0b4eaef4c5a7f9610dc02451f67f01b9156fcf864bd34801\n";
-		};
-		F863BB618DE97295C4310CAB /* [CP] Embed Pods Frameworks */ = {
+		B0E071C84A7BBE9AC28E109C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -523,6 +488,41 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-htlive-ios/Pods-htlive-ios-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BB8449C61F55C15100413BA0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 012ca85a4085707d726df8e4cc885fa5109d825a b10b6221b9fa60dd0b4eaef4c5a7f9610dc02451f67f01b9156fcf864bd34801\n";
+		};
+		DD202511C88A8FCA1BA7E5B8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-htlive-ios-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -705,7 +705,7 @@
 		};
 		33334B9C1F0B740A001A970E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0175938058C076AAB70C7721 /* Pods-htlive-ios.debug.xcconfig */;
+			baseConfigurationReference = 280FB6D41923F44A95EA2399 /* Pods-htlive-ios.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "htlive-ios/htlive-ios.entitlements";
@@ -730,7 +730,7 @@
 		};
 		33334B9D1F0B740A001A970E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0A3E063167170D6A55B8E03F /* Pods-htlive-ios.release.xcconfig */;
+			baseConfigurationReference = DCBF8C1A1114D29D5C2013D0 /* Pods-htlive-ios.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "htlive-ios/htlive-ios.entitlements";
