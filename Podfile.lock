@@ -1,0 +1,30 @@
+PODS:
+  - CocoaLumberjack/Default (3.4.2)
+  - CocoaLumberjack/Swift (3.4.2):
+    - CocoaLumberjack/Default
+  - GRDB.swift (3.6.2)
+  - HyperTrack (3.3.2):
+    - CocoaLumberjack/Swift (= 3.4.2)
+    - GRDB.swift (= 3.6.2)
+  - lottie-ios (3.1.1)
+
+DEPENDENCIES:
+  - HyperTrack
+  - lottie-ios
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - CocoaLumberjack
+    - GRDB.swift
+    - HyperTrack
+    - lottie-ios
+
+SPEC CHECKSUMS:
+  CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
+  GRDB.swift: e10787d857b6b8135354b9e08fb23b4bb8e2fab7
+  HyperTrack: 583005e47cecf27e4c034bbe6851ff241418adf6
+  lottie-ios: 43a472d22b2dd2bed292cc4010c0b4d2e66d3ba8
+
+PODFILE CHECKSUM: 259f068d4f1c1b461d3220b8780f9319f6b2a72a
+
+COCOAPODS: 1.7.3

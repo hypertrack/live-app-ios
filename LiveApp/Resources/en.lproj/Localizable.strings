@@ -1,0 +1,39 @@
+/* 
+  Localizable.strings
+  LiveApp
+
+  Created by Dmytro Shapovalov on 6/25/19.
+  Copyright © 2019 Dmytro Shapovalov. All rights reserved.
+*/
+
+"WELCOME_TITLE_1" = "Welcome to HyperTrack Live!";
+"WELCOME_STEP_1" = "Step 1: Verify your publishable key";
+"WELCOME_STEP_2" = "Step 2: Allow use of your location";
+"WELCOME_STEP_3" = "Step 3: Allow use of your motion & fitness";
+"WELCOME_BUTTON_TITLE" = "I'm ready!";
+
+"PKVERIFY_NAVIGATION_TITLE" = "Verify your publishable key";
+"PKVERIFY_TITLE" = "Paste key here";
+"PKVERIFY_SUBTITLE" = "This will help us link your device to your HyperTrack account";
+"PKVERIFY_TIPS" = "You can copy the key from your welcome email or HyperTrack dashboard";
+"PKVERIFY_BUTTON_TITLE" = "Verify";
+"PKVERIFY_ALERT_TITLE" = "Valid publishable key required";
+
+"PKVERIFY_ALERT_MESSAGE_FOR_EMPTY_PK_KEY" = "Empty publishable key.";
+
+"PERMISSIONS_TITLE_1" = "Welcome to HyperTrack Live!";
+"PERMISSIONS_SUBTITLE_1" = "We need your permission to access your Location and Motion & Fitness to track and share your live location.";
+"PERMISSIONS_BUTTON_TITLE" = "Allow access";
+
+"MAP_BUTTON_TITLE" = "Share live location";
+
+"PERMISSIONS_ERROR_MESSAGE" = "Please allow access to Location and Motion & Fitness to track live location";
+
+"MAP_LINK_SHARING" = "Live track me at:";
+
+"Invalid token" = "The publishable key you entered is invalid. Please enter a valid key.";
+
+"Error" = "Error";
+"ALERT_OK_BUTTON" = "OK";
+
+"TIPS_MESSAGE" = "Tap to restart tracking";
