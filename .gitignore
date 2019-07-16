@@ -1,73 +1,48 @@
 # Xcode
-#
-# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
 ## Build generated
-htlive-ios/build/
-htlive-ios/DerivedData/
+build/
+DerivedData/
 
 ## Various settings
-htlive-ios/*.pbxuser
-htlive-ios/!default.pbxuser
-htlive-ios/*.mode1v3
-htlive-ios/!default.mode1v3
-htlive-ios/*.mode2v3
-htlive-ios/!default.mode2v3
-htlive-ios/*.perspectivev3
-htlive-ios/!default.perspectivev3
-htlive-ios/xcuserdata/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
 
 ## Other
-htlive-ios/*.moved-aside
-htlive-ios/*.xccheckout
-htlive-ios/*.xcscmblueprint
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
 
 ## Obj-C/Swift specific
-htlive-ios/*.hmap
-htlive-ios/*.ipa
-htlive-ios/*.dSYM.zip
-htlive-ios/*.dSYM
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
 
 ## Playgrounds
-htlive-ios/timeline.xctimeline
-htlive-ios/playground.xcworkspace
-htlive-ios/htlive-ios.xcodeproj/xcuserdata/
+timeline.xctimeline
+playground.xcworkspace
 
 # Swift Package Manager
-#
-# Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
-# Packages/
-# Package.pins
-# Package.resolved
-htlive-ios/.build/
+.build/
 
 # CocoaPods
-#
-# We recommend against adding the Pods directory to your .gitignore. However
-# you should judge for yourself, the pros and cons are mentioned at:
-# https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
-#
-# Pods/
-htlive-ios/htlive-ios.xcworkspace/
-htlive-ios/Podfile.lock
-htlive-ios/Pods
+Pods/
+*.xcworkspace
 
 # Carthage
-#
-# Add this line if you want to avoid checking in source code from Carthage dependencies.
-# Carthage/Checkouts
-
-htlive-ios/Carthage/Build
+Carthage/Checkouts
+Carthage/Build
 
 # fastlane
-#
-# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
-# screenshots whenever they are needed.
-# For more information about the recommended setup visit:
-# https://docs.fastlane.tools/best-practices/source-control/#source-control
-
-htlive-ios/fastlane/report.xml
-htlive-ios/fastlane/Preview.html
-htlive-ios/fastlane/screenshots/**/*.png
-htlive-ios/fastlane/test_output
-
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
