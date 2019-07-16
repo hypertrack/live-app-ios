@@ -2,9 +2,11 @@
 
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/licenses/MIT) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This open source repo uses [HyperTrack](https://www.hypertrack.com) for Live Location Sharing and Activity Tracking.
-Hypertrack Live helps you share your Live Location with friends through your favorite messaging app when on the way to meet up. In case you are using Android, refer to our open source Android [repository](https://github.com/hypertrack/live-app-android).
+This open source app for Live Location Sharing is built with [HyperTrack](https://www.hypertrack.com). Developers can now build live location sharing into their apps within minutes by using HyperTrack Live source code. For Android, refer to our open source [Android repository](https://github.com/hypertrack/live-app-android).
 
+[HyperTrack Live for iOS](https://apps.apple.com/us/app/hypertrack-live/id1076924821) is available on the public App Store for use by users signed up with HyperTrack. [HyperTrack Live for Android](https://play.google.com/store/apps/details?id=io.hypertrack.sendeta) is available on the Google Play Store.
+
+The app demonstrates a simple flow for users to share their live location with friends through their favorite messaging app when on the way to meet up. The convenient 23-character secure short-URL displays live location with accuracy, speed, bearing and recency. The view highlights the ongoing activity (walk, drive, stop, etc.). Device getting inactive due to permissions or other reasons, or disconnected due to unknown reasons is highlighted in the tracking experience. Battery charing and low battery states are flagged as well.
 
 - [Live Location Sharing](#live-location-sharing)
 - [Usage](#usage)
@@ -13,7 +15,13 @@ Hypertrack Live helps you share your Live Location with friends through your fav
 - [Support](#support)
 
 ## Live Location Sharing
-The core feature of Hypertrack Live is Live Location Sharing. Live Location Sharing is useful for consumer apps like messengers and social apps where two or more people want to share their Live Location with each other when on the way to meet up. It is also useful for marketplace aggregators where the transaction starts online 💻📱 but requires people to meet offline for fulfillment. It helps you solve the consumer's anxiety of “where are you⁉️”.
+The primary feature of Hypertrack Live is Live Location Sharing. Live Location Sharing is useful for:
+- Workforce productivity apps with messaging and customer support capabilities
+- Peer-to-peer marketplaces for goods and services
+- Ridesharing and carpooling apps
+- Consumer apps like messengers and social apps
+
+It helps solve the user's anxiety of “where are you⁉️”.
 
 ## Usage
 #### To use this app
