@@ -5,10 +5,6 @@
 This open source repo uses [HyperTrack](https://www.hypertrack.com) for Live Location Sharing and Activity Tracking.
 Hypertrack Live helps you share your Live Location with friends through your favorite messaging app when on the way to meet up. In case you are using Android, refer to our open source Android [repository](https://github.com/hypertrack/live-app-android).
 
-| Usecase       |  Description  |  Tutorial     |
-| ------------- | ------------- | ------------- |
-| Live Location Sharing  | Share your Live Location with friends and see theirs. [Description](#live-location-sharing) | [Build yourself 👩‍💻](#build-live-location-sharing-using-hypertrack)|
-
 
 - [Live Location Sharing](#live-location-sharing)
 - [Usage](#usage)
