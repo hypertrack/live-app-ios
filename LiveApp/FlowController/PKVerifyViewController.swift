@@ -212,7 +212,7 @@ extension PKVerifyViewController {
             view.frame.width > iPhoneSEScreenWidth {
             let keyboardRectangle = keyboardFrame.cgRectValue
             let keyboardHeight = keyboardRectangle.height
-            self.button.frame.origin.y -= keyboardHeight
+            self.button.frame.origin.y = self.view.frame.height - (28 + self.button.frame.height + keyboardRectangle.height)
         }
     }
     
