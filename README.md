@@ -4,7 +4,7 @@
 
 This open source app for Live Location Sharing is built with [HyperTrack](https://www.hypertrack.com). Developers can now build live location sharing into their apps within minutes by using HyperTrack Live source code. For Android, refer to our open source [Android repository](https://github.com/hypertrack/live-app-android).
 
-[HyperTrack Live for iOS](https://apps.apple.com/us/app/hypertrack-live/id1076924821) is available on the public App Store for use by users signed up with HyperTrack. [HyperTrack Live for Android](https://play.google.com/store/apps/details?id=io.hypertrack.sendeta) is available on the Google Play Store.
+[HyperTrack Live for iOS](https://apps.apple.com/us/app/hypertrack-live/id1076924821) is available on the public App Store for use by users signed up with HyperTrack. [HyperTrack Live for Android](https://play.google.com/store/apps/details?id=com.hypertrack.live) is available on the Google Play Store.
 
 ![animation](https://hypertrack.com/blog/content/images/2019/07/Comp_3.gif)
 > 👋 Read our [blog post announcement](https://hypertrack.com/blog/2019/07/19/build-live-location-sharing-in-your-work-app-within-minutes/) to learn more about this sample app.
