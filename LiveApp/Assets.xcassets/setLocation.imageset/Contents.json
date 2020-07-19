@@ -1,0 +1,134 @@
+{
+  "images" : [
+    {
+      "idiom" : "iphone",
+      "filename" : "setLocation.png",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "iphone",
+      "filename" : "setLocationCopy.png",
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "iphone",
+      "filename" : "setLocation-1.png",
+      "appearances" : [
+        {
+          "appearance" : "contrast",
+          "value" : "high"
+        }
+      ],
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "iphone",
+      "filename" : "setLocationCopy-1.png",
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        },
+        {
+          "appearance" : "contrast",
+          "value" : "high"
+        }
+      ],
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "iphone",
+      "filename" : "setLocation@2x.png",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "iphone",
+      "filename" : "setLocationCopy@2x.png",
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "iphone",
+      "filename" : "setLocation@2x-1.png",
+      "appearances" : [
+        {
+          "appearance" : "contrast",
+          "value" : "high"
+        }
+      ],
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "iphone",
+      "filename" : "setLocationCopy@2x-1.png",
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        },
+        {
+          "appearance" : "contrast",
+          "value" : "high"
+        }
+      ],
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "iphone",
+      "filename" : "setLocation@3x.png",
+      "scale" : "3x"
+    },
+    {
+      "idiom" : "iphone",
+      "filename" : "setLocationCopy@3x.png",
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "scale" : "3x"
+    },
+    {
+      "idiom" : "iphone",
+      "filename" : "setLocation@3x-1.png",
+      "appearances" : [
+        {
+          "appearance" : "contrast",
+          "value" : "high"
+        }
+      ],
+      "scale" : "3x"
+    },
+    {
+      "idiom" : "iphone",
+      "filename" : "setLocationCopy@3x-1.png",
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        },
+        {
+          "appearance" : "contrast",
+          "value" : "high"
+        }
+      ],
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  }
+}

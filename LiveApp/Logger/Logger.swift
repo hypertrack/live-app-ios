@@ -1,0 +1,11 @@
+let logger = logFor(subsystem: "com.hypertrack.live")
+
+let logGeneral = logger("General")
+let logDeepLink = logger("DeepLink")
+let logDestination = logger("Destination")
+let logNetwork = logger("Network")
+let logPermissions = logger("Permissions")
+let logReachability = logger("Reachability")
+let logView = logger("View")
+let logAuthentication = logger("Authentication")
+let logLiveGeofenceTracking = logger("LiveGeofence")

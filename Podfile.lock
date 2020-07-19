@@ -1,30 +1,84 @@
 PODS:
-  - CocoaLumberjack/Default (3.4.2)
-  - CocoaLumberjack/Swift (3.4.2):
-    - CocoaLumberjack/Default
-  - GRDB.swift (3.6.2)
-  - HyperTrack (3.3.2):
-    - CocoaLumberjack/Swift (= 3.4.2)
-    - GRDB.swift (= 3.6.2)
-  - lottie-ios (3.1.1)
+  - AppSyncRealTimeClient (1.0.1):
+    - Starscream (~> 3.0.2)
+  - AWSAppSync (3.0.2):
+    - AppSyncRealTimeClient (~> 1.0.0)
+    - AWSCore (~> 2.12.0)
+    - ReachabilitySwift (~> 5.0.0)
+    - SQLite.swift (~> 0.12.2)
+  - AWSAuthCore (2.12.7):
+    - AWSCore (= 2.12.7)
+  - AWSCognitoIdentityProvider (2.12.7):
+    - AWSCognitoIdentityProviderASF (= 1.0.1)
+    - AWSCore (= 2.12.7)
+  - AWSCognitoIdentityProviderASF (1.0.1)
+  - AWSCore (2.12.7)
+  - AWSMobileClient (2.12.7):
+    - AWSAuthCore (= 2.12.7)
+    - AWSCognitoIdentityProvider (= 2.12.7)
+  - Branch (0.34.0)
+  - GRDB.swift (4.4.0):
+    - GRDB.swift/standard (= 4.4.0)
+  - GRDB.swift/standard (4.4.0)
+  - HyperTrack (4.2.1):
+    - GRDB.swift (= 4.4.0)
+    - HyperTrack/Swift (= 4.2.1)
+  - HyperTrack/Swift (4.2.1):
+    - GRDB.swift (= 4.4.0)
+  - HyperTrackViews/Core (0.6.0-alpha.8):
+    - AWSAppSync (= 3.0.2)
+  - HyperTrackViews/MapKit (0.6.0-alpha.8):
+    - AWSAppSync (= 3.0.2)
+    - HyperTrackViews/Core
+  - lottie-ios (3.1.8)
+  - ReachabilitySwift (5.0.0)
+  - SQLite.swift (0.12.2):
+    - SQLite.swift/standard (= 0.12.2)
+  - SQLite.swift/standard (0.12.2)
+  - Starscream (3.0.6)
 
 DEPENDENCIES:
-  - HyperTrack
+  - AWSMobileClient
+  - Branch
+  - HyperTrack (= 4.2.1)
+  - HyperTrackViews/MapKit (= 0.6.0-alpha.8)
   - lottie-ios
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
-    - CocoaLumberjack
+  trunk:
+    - AppSyncRealTimeClient
+    - AWSAppSync
+    - AWSAuthCore
+    - AWSCognitoIdentityProvider
+    - AWSCognitoIdentityProviderASF
+    - AWSCore
+    - AWSMobileClient
+    - Branch
     - GRDB.swift
     - HyperTrack
+    - HyperTrackViews
     - lottie-ios
+    - ReachabilitySwift
+    - SQLite.swift
+    - Starscream
 
 SPEC CHECKSUMS:
-  CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
-  GRDB.swift: e10787d857b6b8135354b9e08fb23b4bb8e2fab7
-  HyperTrack: 583005e47cecf27e4c034bbe6851ff241418adf6
-  lottie-ios: 43a472d22b2dd2bed292cc4010c0b4d2e66d3ba8
+  AppSyncRealTimeClient: 63c44a04e7ce32e14f79836cc184cf800f71ac7a
+  AWSAppSync: 8fba81ebe3ec9423e35d4efd035cc01322cf3ebd
+  AWSAuthCore: 288cb737a35ff031fbf42edaa8d0062328791d4e
+  AWSCognitoIdentityProvider: 4998bdbfbafe5038dae0237a598580e102e7b6b5
+  AWSCognitoIdentityProviderASF: f94f1a502e72ef3d0a1de93e10bf7a79c8698118
+  AWSCore: 2f0f88ae94a63a198274d683c7d0e18709d7090b
+  AWSMobileClient: bf1fb0868f9187141ca7b69220383c14878c0a29
+  Branch: 446aeb832102f56f04edf5fa7cb0a752dc392ca7
+  GRDB.swift: 4f9b6e7efc9470426f6a6de10ec1fee798ff7e43
+  HyperTrack: 401234fd4828096e989b22a78b98f342dde8b284
+  HyperTrackViews: b6983bac3d812105b8cc9ad307cf4be557020d0c
+  lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
+  SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
+  Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
 
-PODFILE CHECKSUM: 259f068d4f1c1b461d3220b8780f9319f6b2a72a
+PODFILE CHECKSUM: 0e6635ed41b9d30fccb9c5ba4d5195da5369430d
 
-COCOAPODS: 1.7.3
+COCOAPODS: 1.9.3

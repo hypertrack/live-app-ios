@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="LMD-oC-g3D">
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="VGC-Ex-3O8">
+            <objects>
+                <viewController id="LMD-oC-g3D" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="MTh-8j-HTg">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="gLO-Wj-ifO">
+                                <rect key="frame" x="160.66666666666666" y="314" width="93" height="108"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" name="LauncherScreenBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="gLO-Wj-ifO" firstAttribute="centerX" secondItem="MTh-8j-HTg" secondAttribute="centerXWithinMargins" id="DOb-Xv-hcV"/>
+                            <constraint firstItem="gLO-Wj-ifO" firstAttribute="centerY" secondItem="MTh-8j-HTg" secondAttribute="centerYWithinMargins" id="Jlr-ks-ZiV"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="bDt-SC-Zym"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Ub-l7-bU8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53" y="375"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="logo" width="93" height="108"/>
+        <namedColor name="LauncherScreenBackgroundColor">
+            <color red="0.36100000143051147" green="0.79699999094009399" blue="0.40799999237060547" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+    </resources>
+</document>
