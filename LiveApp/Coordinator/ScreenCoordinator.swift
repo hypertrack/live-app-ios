@@ -449,19 +449,16 @@ struct ScreenCoordinator: View {
   }
   
   private func startTracking(hyperTrack: HyperTrack) {
-    if !hyperTrack.isRunning {
-      apiClient.startTracking(self.hyperTrackData, hyperTrack.deviceID) { _ in
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-          hyperTrack.syncDeviceSettings()
-        }
+    logGeneral.log("Starting Tracking")
+    apiClient.startTracking(self.hyperTrackData, hyperTrack.deviceID) { _ in
+      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+        hyperTrack.syncDeviceSettings()
       }
-    } else {
-      logGeneral.log("Tracking already started.")
     }
   }
   
   private func stopTracking(hyperTrack: HyperTrack) {
-    logGeneral.log("Call stopTracking.")
+    logGeneral.log("Stopping Tracking")
     apiClient.stopTracking(self.hyperTrackData, hyperTrack.deviceID) { _ in
       DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
         hyperTrack.syncDeviceSettings()
