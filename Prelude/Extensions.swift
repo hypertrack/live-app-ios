@@ -106,6 +106,7 @@ public extension DateFormatter {
 
   static func stringDate(_ date: Date) -> String {
     let dateFormat = DateFormatter()
+    dateFormat.locale = Locale(identifier: "en_US_POSIX")
     dateFormat.dateFormat = "h:mm a"
     return dateFormat.string(from: date)
   }
