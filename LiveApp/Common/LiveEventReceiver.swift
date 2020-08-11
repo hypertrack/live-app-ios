@@ -56,7 +56,6 @@ final class LiveEventReceiver {
     let liveErrorInputStream = errorInputPublisher
       .share()
       .compactMap { $0.unpackError() }
-      .print()
       .subscribe(errorSubject)
 
     cancellables += [

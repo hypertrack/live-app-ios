@@ -42,7 +42,6 @@ struct ManuHomeAddressView: View {
               )
             HStack {
               Button(action: {
-                print("Push .primaryMapView")
                 self.store.update(.updateFlow(.primaryMapView))
               }) {
                 Image("close")
@@ -283,7 +282,6 @@ struct ManuHomeAddressView: View {
 
   private func saveHomeAddress(_ homePlace: Place?) {
     guard let addrress = homePlace else {
-      print("Can't unwrapp homeAddress")
       return
     }
     inputData.update(.updateHomeAddress(addrress))

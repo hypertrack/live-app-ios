@@ -19,16 +19,11 @@ final class LocationSearcher: NSObject, ObservableObject {
 
   @Published var searchStringForList: String = "" {
     willSet {
-      print("searchStringForList: \(newValue)")
       makeSearch(searchString: newValue)
     }
   }
 
-  @Published var searchDisplayStringForMap: String = "" {
-    willSet {
-      print("searchDisplayStringForMap: \(newValue)")
-    }
-  }
+  @Published var searchDisplayStringForMap: String = ""
 
   @Published var searchCoordinate: CLLocationCoordinate2D? {
     willSet { makeSearchGeocodeByLocation(newValue) }

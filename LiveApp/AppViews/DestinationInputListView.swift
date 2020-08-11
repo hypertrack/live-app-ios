@@ -41,7 +41,6 @@ struct DestinationInputListView: View {
               )
             HStack {
               Button(action: {
-                print("Push .primaryMapView")
                 self.store.update(.updateFlow(.primaryMapView))
               }) {
                 Image("back_arrow")

@@ -37,7 +37,6 @@ extension Place {
       ] }
       return try JSONDecoder().decode([Place].self, from: addressModelData)
     } catch {
-      print("Couldn't read file.")
       return []
     }
   }
@@ -51,9 +50,7 @@ extension Place {
       let removeDuplicate = value.removingDuplicates(byKey: \.addressTitle)
       let data = try JSONEncoder().encode(removeDuplicate)
       defaults.set(data, forKey: defaultName)
-    } catch {
-      print("Couldn't write file")
-    }
+    } catch {}
   }
 
   public static func retrievePlace(
@@ -64,7 +61,6 @@ extension Place {
       guard let addressModelData = defaults.data(forKey: defaultName) else { return nil }
       return try JSONDecoder().decode(Place.self, from: addressModelData)
     } catch {
-      print("Couldn't read file.")
       return nil
     }
   }
@@ -79,14 +75,11 @@ extension Place {
       return
     }
     guard let place = place else {
-      print("Couldn't write file, plase object is nil")
       return
     }
     do {
       let data = try JSONEncoder().encode(place)
       defaults.set(data, forKey: defaultName)
-    } catch {
-      print("Couldn't write file")
-    }
+    } catch { }
   }
 }

@@ -277,10 +277,7 @@ struct GeofenceInputListView: View {
   }
 
   private func saveHomeAddress(_ homePlace: Place?) {
-    guard let addrress = homePlace else {
-      print("Can't unwrapp homeAddress")
-      return
-    }
+    guard let addrress = homePlace else { return }
     inputData.update(.updateHomeAddress(addrress))
 
     var dictionary: [String: Any] = [:]

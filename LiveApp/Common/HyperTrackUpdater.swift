@@ -41,7 +41,6 @@ final class HyperTrackUpdater: ObservableObject {
           guard let self = self else { return }
           switch result {
             case let .success(movementStatus):
-              dump(movementStatus)
               self.connectionEstablished = true
               let isTripContains = movementStatus.trips
                 .contains { $0.id == self.removedTripId }
@@ -49,7 +48,6 @@ final class HyperTrackUpdater: ObservableObject {
                 self.userMovementStatus = movementStatus
               }
             case let .failure(error):
-              dump(error)
               self.connectionEstablished = false
               self.createUserMovementStatusSubscription()
           }
@@ -74,12 +72,9 @@ final class HyperTrackUpdater: ObservableObject {
           guard let self = self else { return }
           switch result {
             case let .success(movementStatus):
-              dump(movementStatus)
-              dump(movementStatus.trips.first?.destination)
               self.connectionEstablished = true
               self.movementStatusWithSelectedTrip = movementStatus
-            case let .failure(error):
-              dump(error)
+            case .failure:
               self.connectionEstablished = false
               self.createMovementStatusWithSelectedTripSubscription()
           }
@@ -89,7 +84,6 @@ final class HyperTrackUpdater: ObservableObject {
 
   func createAllSubscriptions() {
     if hyperTrackViews == nil {
-      print("hyperTrackViews is nil")
       hyperTrackViews = HyperTrackViews(
         publishableKey: inputData.publishableKey ?? ""
       )

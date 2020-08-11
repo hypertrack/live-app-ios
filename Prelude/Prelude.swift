@@ -341,9 +341,7 @@ public func convertToDictionary(text: String) -> [String: String]? {
       return try JSONSerialization.jsonObject(with: data, options: []) as? [
         String: String
       ]
-    } catch {
-      print(error.localizedDescription)
-    }
+    } catch { }
   }
   return nil
 }
