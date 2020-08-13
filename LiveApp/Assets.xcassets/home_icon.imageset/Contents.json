@@ -1,18 +1,18 @@
 {
   "images" : [
     {
-      "filename" : "home_icon-1.png",
-      "idiom" : "iphone",
+      "filename" : "home_icon-2.png",
+      "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "home_icon@2x-1.png",
-      "idiom" : "iphone",
+      "filename" : "home_icon@2x-2.png",
+      "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "home_icon@3x-1.png",
-      "idiom" : "iphone",
+      "filename" : "home_icon@3x-2.png",
+      "idiom" : "universal",
       "scale" : "3x"
     }
   ],

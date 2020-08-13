@@ -1,57 +1,57 @@
 {
   "images" : [
     {
-      "idiom" : "iphone",
-      "filename" : "arrowLeft-1.png",
+      "filename" : "arrowLeft-3.png",
+      "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "idiom" : "iphone",
-      "filename" : "arrowLeft-2.png",
       "appearances" : [
         {
           "appearance" : "luminosity",
           "value" : "dark"
         }
       ],
+      "filename" : "arrowLeft-4.png",
+      "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "idiom" : "iphone",
-      "filename" : "arrowLeft@2x-1.png",
+      "filename" : "arrowLeft@2x-3.png",
+      "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "idiom" : "iphone",
-      "filename" : "arrowLeft@2x-2.png",
       "appearances" : [
         {
           "appearance" : "luminosity",
           "value" : "dark"
         }
       ],
+      "filename" : "arrowLeft@2x-4.png",
+      "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "idiom" : "iphone",
-      "filename" : "arrowLeft@3x-1.png",
+      "filename" : "arrowLeft@3x-3.png",
+      "idiom" : "universal",
       "scale" : "3x"
     },
     {
-      "idiom" : "iphone",
-      "filename" : "arrowLeft@3x-2.png",
       "appearances" : [
         {
           "appearance" : "luminosity",
           "value" : "dark"
         }
       ],
+      "filename" : "arrowLeft@3x-4.png",
+      "idiom" : "universal",
       "scale" : "3x"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   },
   "properties" : {
     "template-rendering-intent" : "original"
