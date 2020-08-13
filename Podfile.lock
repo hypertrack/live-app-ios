@@ -45,9 +45,6 @@ DEPENDENCIES:
   - lottie-ios
 
 SPEC REPOS:
-  https://cdn.cocoapods.org/:
-    - GRDB.swift
-    - HyperTrack
   trunk:
     - AppSyncRealTimeClient
     - AWSAppSync
@@ -57,6 +54,8 @@ SPEC REPOS:
     - AWSCore
     - AWSMobileClient
     - Branch
+    - GRDB.swift
+    - HyperTrack
     - HyperTrackViews
     - lottie-ios
     - ReachabilitySwift
