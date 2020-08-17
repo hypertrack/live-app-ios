@@ -20,10 +20,10 @@ PODS:
   - GRDB.swift (4.4.0):
     - GRDB.swift/standard (= 4.4.0)
   - GRDB.swift/standard (4.4.0)
-  - HyperTrack (4.3.0):
+  - HyperTrack (4.3.1-alpha.1):
     - GRDB.swift (= 4.4.0)
-    - HyperTrack/Swift (= 4.3.0)
-  - HyperTrack/Swift (4.3.0):
+    - HyperTrack/Swift (= 4.3.1-alpha.1)
+  - HyperTrack/Swift (4.3.1-alpha.1):
     - GRDB.swift (= 4.4.0)
   - HyperTrackViews/Core (0.6.0-alpha.8):
     - AWSAppSync (= 3.0.2)
@@ -40,11 +40,14 @@ PODS:
 DEPENDENCIES:
   - AWSMobileClient
   - Branch
-  - HyperTrack (= 4.3.0)
+  - HyperTrack (= 4.3.1-alpha.1)
   - HyperTrackViews/MapKit (= 0.6.0-alpha.8)
   - lottie-ios
 
 SPEC REPOS:
+  https://cdn.cocoapods.org/:
+    - GRDB.swift
+    - HyperTrack
   trunk:
     - AppSyncRealTimeClient
     - AWSAppSync
@@ -54,8 +57,6 @@ SPEC REPOS:
     - AWSCore
     - AWSMobileClient
     - Branch
-    - GRDB.swift
-    - HyperTrack
     - HyperTrackViews
     - lottie-ios
     - ReachabilitySwift
@@ -72,13 +73,13 @@ SPEC CHECKSUMS:
   AWSMobileClient: bf1fb0868f9187141ca7b69220383c14878c0a29
   Branch: 446aeb832102f56f04edf5fa7cb0a752dc392ca7
   GRDB.swift: 4f9b6e7efc9470426f6a6de10ec1fee798ff7e43
-  HyperTrack: 12699ea845137a09e7f16286290315a431797c2c
+  HyperTrack: dcb3d392c8573d08e3d44b3489c247665dc0829f
   HyperTrackViews: b6983bac3d812105b8cc9ad307cf4be557020d0c
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
 
-PODFILE CHECKSUM: c5fe88cee6e881661934bf5c5b4c9d0e944f1d29
+PODFILE CHECKSUM: 80c9f5a2fd2412270a0e1235d1406a45a8a55895
 
 COCOAPODS: 1.9.3
