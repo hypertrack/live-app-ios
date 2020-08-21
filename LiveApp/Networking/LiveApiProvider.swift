@@ -22,7 +22,10 @@ protocol LiveApiProviding {
     Trip,
     Error
   >
-  func completeTrip(_ tripId: TripId, _ token: Token) -> AnyPublisher<
+  func completeTrip(
+    _ tripId: TripId,
+    _ token: Token
+  ) -> AnyPublisher<
     [String: String],
     Error
   >
@@ -83,18 +86,6 @@ struct LiveApiProvider: LiveApiProviding {
     Trip,
     Error
   > {
-    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-      hyperTrack.syncDeviceSettings()
-    }
-    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
-      hyperTrack.syncDeviceSettings()
-    }
-    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-      hyperTrack.syncDeviceSettings()
-    }
-    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.5) {
-      hyperTrack.syncDeviceSettings()
-    }
     return self.apiSession.execute(ApiRequest(ApiRouter.tripCreate(
       tripPayload,
       token

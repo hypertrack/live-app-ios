@@ -42,6 +42,7 @@ protocol ApiClientProvider {
   )
   func completeTrip(
     _ regModel: HyperTrackData,
+    _ hyperTrack: HyperTrack,
     _ deviceId: DeviceId,
     _ tripId: String,
     _ completion: @escaping (Result<Void, Error>) -> Void
@@ -58,11 +59,13 @@ protocol ApiClientProvider {
   )
   func startTracking(
     _ regModel: HyperTrackData,
+    _ hyperTrack: HyperTrack,
     _ deviceId: DeviceId,
     _ completion: @escaping (Result<Void, Error>) -> Void
   )
   func stopTracking(
     _ regModel: HyperTrackData,
+    _ hyperTrack: HyperTrack,
     _ deviceId: DeviceId,
     _ completion: @escaping (Result<Void, Error>) -> Void
   )
@@ -317,7 +320,10 @@ extension ApiClient {
             logNetwork.error("Failed to create trip with \(error)")
             completion(.failure(error))
         }
-      }, receiveValue: { completion(.success($0)) }
+      }, receiveValue: {
+        hyperTrack.syncDeviceSettings()
+        completion(.success($0))
+      }
     )
   }
 
@@ -349,6 +355,7 @@ extension ApiClient {
 
   func completeTrip(
     _ regModel: HyperTrackData,
+    _ hyperTrack: HyperTrack,
     _ deviceId: DeviceId,
     _ tripId: String,
     _ completion: @escaping (Result<Void, Error>) -> Void
@@ -368,7 +375,10 @@ extension ApiClient {
             logNetwork.error("Failed to completeTrip with \(error)")
             completion(.failure(error))
         }
-      }, receiveValue: { _ in completion(.success(())) }
+      }, receiveValue: { _ in
+        hyperTrack.syncDeviceSettings()
+        completion(.success(()))
+      }
     )
   }
   
@@ -427,7 +437,12 @@ extension ApiClient {
     )
   }
   
-  func startTracking(_ regModel: HyperTrackData, _ deviceId: DeviceId, _ completion: @escaping (Result<Void, Error>) -> Void) {
+  func startTracking(
+    _ regModel: HyperTrackData,
+    _ hyperTrack: HyperTrack,
+    _ deviceId: DeviceId,
+    _ completion: @escaping (Result<Void, Error>) -> Void
+  ) {
     logAuthentication.log("StartTracking")
     guard let pk = regModel.publishableKey else {
       return completion(.failure(LiveError.unknown("Publishable key is empty")))
@@ -443,11 +458,19 @@ extension ApiClient {
             logNetwork.error("Failed to startTracking with \(error)")
             completion(.failure(error))
         }
-      }, receiveValue: { _ in completion(.success(())) }
+      }, receiveValue: { _ in
+        hyperTrack.syncDeviceSettings()
+        completion(.success(()))
+      }
     )
   }
   
-  func stopTracking(_ regModel: HyperTrackData, _ deviceId: DeviceId, _ completion: @escaping (Result<Void, Error>) -> Void) {
+  func stopTracking(
+    _ regModel: HyperTrackData,
+    _ hyperTrack: HyperTrack,
+    _ deviceId: DeviceId,
+    _ completion: @escaping (Result<Void, Error>) -> Void
+  ) {
     logAuthentication.log("StopTracking")
     guard let pk = regModel.publishableKey else {
       return completion(.failure(LiveError.unknown("Publishable key is empty")))
@@ -463,7 +486,10 @@ extension ApiClient {
             logNetwork.error("Failed to stopTracking with \(error)")
             completion(.failure(error))
         }
-      }, receiveValue: { _ in completion(.success(())) }
+      }, receiveValue: { _ in
+        hyperTrack.syncDeviceSettings()
+        completion(.success(()))
+      }
     )
   }
   

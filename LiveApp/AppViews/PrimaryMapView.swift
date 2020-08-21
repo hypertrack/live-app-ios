@@ -128,13 +128,11 @@ struct PrimaryMapView: View {
       .onReceive(appStateReceiver.$didBecomeActive) {
         if $0.name == UIApplication.didBecomeActiveNotification {
           self.hyperTrackUpdater.createUserMovementStatusSubscription()
-          self.hyperTrack.syncDeviceSettings()
         }
       }
       .onReceive(appStateReceiver.$didEnterBackground) {
         if $0.name == UIApplication.didEnterBackgroundNotification {
           self.hyperTrackUpdater.cancelAllSubscriptions()
-          self.hyperTrack.syncDeviceSettings()
         }
       }
     }

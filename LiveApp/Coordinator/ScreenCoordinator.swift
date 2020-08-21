@@ -450,20 +450,12 @@ struct ScreenCoordinator: View {
   
   private func startTracking(hyperTrack: HyperTrack) {
     logGeneral.log("Starting Tracking")
-    apiClient.startTracking(self.hyperTrackData, hyperTrack.deviceID) { _ in
-      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-        hyperTrack.syncDeviceSettings()
-      }
-    }
+    apiClient.startTracking(self.hyperTrackData, hyperTrack, hyperTrack.deviceID, { _ in })
   }
   
   private func stopTracking(hyperTrack: HyperTrack) {
     logGeneral.log("Stopping Tracking")
-    apiClient.stopTracking(self.hyperTrackData, hyperTrack.deviceID) { _ in
-      DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-        hyperTrack.syncDeviceSettings()
-      }
-    }
+    apiClient.stopTracking(self.hyperTrackData, hyperTrack, hyperTrack.deviceID, { _ in })
   }
   
   private func getMasterAccount(hyperTrack: HyperTrack) {

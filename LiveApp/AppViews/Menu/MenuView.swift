@@ -86,7 +86,7 @@ struct MenuView: View {
           .padding(.bottom, 12)
           .opacity(self.inputData.isSignedInFromDeeplink ? 0.0 : 1.0)
         Button(action: {
-          self.apiClient.stopTracking(self.inputData, self.hyperTrack.deviceID) { _ in }
+          self.apiClient.stopTracking(self.inputData, self.hyperTrack, self.hyperTrack.deviceID) { _ in }
           self.apiClient.signOut()
           self.inputData.update(.signOut)
           self.inputData.update(.updatePass(""))
@@ -124,16 +124,14 @@ struct MenuView: View {
     self.hypertrackTrackingState = newState
     self.startTrackingRequestState = .requestInFlight
     if self.hyperTrack.isRunning {
-      self.apiClient.stopTracking(self.inputData, self.hyperTrack.deviceID) { reuslt in
+      self.apiClient.stopTracking(self.inputData, self.hyperTrack, self.hyperTrack.deviceID) { reuslt in
         DispatchQueue.main.async {
-          self.hyperTrack.syncDeviceSettings()
           self.startTrackingRequestState = .requestComplete
         }
       }
     } else {
-      self.apiClient.startTracking(self.inputData, self.hyperTrack.deviceID) { reuslt in
+      self.apiClient.startTracking(self.inputData, self.hyperTrack, self.hyperTrack.deviceID) { reuslt in
         DispatchQueue.main.async {
-          self.hyperTrack.syncDeviceSettings()
           self.startTrackingRequestState = .requestComplete
         }
       }

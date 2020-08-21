@@ -79,7 +79,6 @@ struct TrackingMapView: View {
         self.isActivityIndicatorVisible = true
         self.isTripsDetailVisible = false
         self.isTracking = self.hyperTrack.isRunning
-        self.hyperTrack.syncDeviceSettings()
         self.hyperTrackUpdater.createAllSubscriptions()
       }
       .onDisappear {
@@ -107,7 +106,6 @@ struct TrackingMapView: View {
       }
       .onReceive(appStateReceiver.$didBecomeActive) {
         if $0.name == UIApplication.didBecomeActiveNotification {
-          self.hyperTrack.syncDeviceSettings()
           self.hyperTrackUpdater.createAllSubscriptions()
         }
       }
@@ -276,7 +274,7 @@ extension TrackingMapView {
     isActivityIndicatorVisible = true
     isTripsDetailVisible = false
     hyperTrackUpdater.setRemovedTripId(tripId)
-    apiClient.completeTrip(hyperTrackData, hyperTrack.deviceID, tripId) { completion($0) }
+    apiClient.completeTrip(hyperTrackData, hyperTrack, hyperTrack.deviceID, tripId) { completion($0) }
   }
 
   private func movementStatusHandler(_ movementStatus: MovementStatus?) {
