@@ -96,7 +96,7 @@ struct TripDetails: View {
     return VStack(spacing: 0.0) {
       HStack {
         VStack(alignment: .leading, spacing: 0) {
-          Text(isDestinationEmpty(self.selectedTrip) ? "Trip strated from" :
+          Text(isDestinationEmpty(self.selectedTrip) ? "Trip started from" :
             "Trip to")
             .font(
               Font.system(size: 14)
