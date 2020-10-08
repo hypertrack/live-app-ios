@@ -9,7 +9,7 @@ struct TripCell: View {
   var body: some View {
     GeometryReader { geometry in
       VStack(alignment: .leading, spacing: 0) {
-        Text(isDestinationEmpty(self.trip) ? "Trip strated from" : "Trip to")
+        Text(isDestinationEmpty(self.trip) ? "Trip started from" : "Trip to")
           .font(
             Font.system(size: 14)
               .weight(.bold))
