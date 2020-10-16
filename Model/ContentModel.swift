@@ -114,11 +114,6 @@ extension ContentModel {
         subTitle = "HyperTrack can't run on device without GPS module"
         controlTitle = ""
         deepLink = nil
-      case .timedOutError:
-        title = "Network error"
-        subTitle = "Request time out"
-        controlTitle = ""
-        deepLink = nil
       case .emptyResult:
         title = "Empty result"
         subTitle = "The result of this operation is empty."
@@ -127,6 +122,11 @@ extension ContentModel {
       case let .unknown(errorMessage):
         title = "Unexpected error"
         subTitle = errorMessage
+        controlTitle = ""
+        deepLink = nil
+      case let .networkError(errorMessage):
+        title = "Unexpected connection error"
+        subTitle =  "Check your network connection and try again." + "\n\n" + errorMessage
         controlTitle = ""
         deepLink = nil
       case .locationPermissionsNotDetermined:
