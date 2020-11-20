@@ -16,16 +16,16 @@ PODS:
   - AWSMobileClient (2.12.7):
     - AWSAuthCore (= 2.12.7)
     - AWSCognitoIdentityProvider (= 2.12.7)
-  - Branch (0.34.0)
-  - HyperTrack (4.5.1):
-    - HyperTrack/Swift (= 4.5.1)
-  - HyperTrack/Swift (4.5.1)
-  - HyperTrackViews/Core (0.6.0-alpha.8):
+  - Branch (0.36.0)
+  - HyperTrack (4.6.0):
+    - HyperTrack/Swift (= 4.6.0)
+  - HyperTrack/Swift (4.6.0)
+  - HyperTrackViews/Core (0.6.0):
     - AWSAppSync (= 3.0.2)
-  - HyperTrackViews/MapKit (0.6.0-alpha.8):
+  - HyperTrackViews/MapKit (0.6.0):
     - AWSAppSync (= 3.0.2)
     - HyperTrackViews/Core
-  - lottie-ios (3.1.8)
+  - lottie-ios (3.1.9)
   - ReachabilitySwift (5.0.0)
   - SQLite.swift (0.12.2):
     - SQLite.swift/standard (= 0.12.2)
@@ -34,14 +34,12 @@ PODS:
 
 DEPENDENCIES:
   - AWSMobileClient
-  - Branch
-  - HyperTrack (= 4.5.1)
-  - HyperTrackViews/MapKit (= 0.6.0-alpha.8)
-  - lottie-ios
+  - Branch (= 0.36.0)
+  - HyperTrack (= 4.6.0)
+  - HyperTrackViews/MapKit (= 0.6.0)
+  - lottie-ios (= 3.1.9)
 
 SPEC REPOS:
-  https://cdn.cocoapods.org/:
-    - HyperTrack
   trunk:
     - AppSyncRealTimeClient
     - AWSAppSync
@@ -51,6 +49,7 @@ SPEC REPOS:
     - AWSCore
     - AWSMobileClient
     - Branch
+    - HyperTrack
     - HyperTrackViews
     - lottie-ios
     - ReachabilitySwift
@@ -65,14 +64,14 @@ SPEC CHECKSUMS:
   AWSCognitoIdentityProviderASF: f94f1a502e72ef3d0a1de93e10bf7a79c8698118
   AWSCore: 2f0f88ae94a63a198274d683c7d0e18709d7090b
   AWSMobileClient: bf1fb0868f9187141ca7b69220383c14878c0a29
-  Branch: 446aeb832102f56f04edf5fa7cb0a752dc392ca7
-  HyperTrack: 595288ee7b489290310a6b91a0db816ddeb2b81e
-  HyperTrackViews: b6983bac3d812105b8cc9ad307cf4be557020d0c
-  lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
+  Branch: 8aebcb7a6465f19f9f4d315acced369ae078d3f2
+  HyperTrack: 7348ec6feb266c7909496ea59602ac4ad78b972b
+  HyperTrackViews: 8c5068c2cb8d7337fe89d4c298085a2df83611cd
+  lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
 
-PODFILE CHECKSUM: 04ef5a147cc3997d626e39035c6fbe3ac58edb27
+PODFILE CHECKSUM: be4f5c7dd11c4584f9495efeada3ade8530a36ab
 
-COCOAPODS: 1.10.0.rc.1
+COCOAPODS: 1.10.0
