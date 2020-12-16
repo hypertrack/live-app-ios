@@ -6,7 +6,7 @@ inhibit_all_warnings!
 
 def live_app_pods
   pod 'AWSMobileClient'
-  pod 'HyperTrack', '4.6.0'
+  pod 'HyperTrack', '4.7.0-rc.1'
   pod 'HyperTrackViews/MapKit', '0.6.0'
   pod 'lottie-ios', '3.1.9'
   pod 'Branch', '0.36.0'

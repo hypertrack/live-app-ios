@@ -108,7 +108,7 @@ struct ForgotPasswordView: View {
                   .weight(.semibold))
               .foregroundColor(Color(UIColor.tertiary_4_mdark))
               .padding(.top, 20)
-            TextField("", text: self.$inputText.email) {}
+            TextField("", text: self.$inputText.email, onCommit:  {})
               .textContentType(.emailAddress)
               .keyboardType(.emailAddress)
               .textFieldStyle(LiveTextFieldStyle(
