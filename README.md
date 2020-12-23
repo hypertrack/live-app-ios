@@ -1,6 +1,6 @@
 # Live Location Sharing
 
-[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/licenses/MIT) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/licenses/MIT) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)![Cocoapods platforms](https://img.shields.io/cocoapods/p/HyperTrack.svg)[![iOS SDK](https://img.shields.io/badge/iOS%20SDK-4.7.0-brightgreen.svg)](https://cocoapods.org/pods/HyperTrack)
 
 This open source app for Live Location Sharing is built with [HyperTrack](https://www.hypertrack.com). Developers can now build live location sharing into their apps within minutes by using HyperTrack Live source code. For Android, refer to our open source [Android repository](https://github.com/hypertrack/live-app-android).
 
