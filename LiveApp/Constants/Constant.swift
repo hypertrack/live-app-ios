@@ -84,24 +84,14 @@ enum Constant {
       static let companyNameKey = "custom:company"
 
       static let appGoalKey = "custom:use_case"
-      static let appDeviceCountKey = "custom:scale"
       static let appProductStateKey = "custom:state"
 
-      static let workforceKey = "workforce"
-      static let logisticsKey = "logistics"
-      static let gigWorkKey = "gig_work"
-      static let onDemandDeliveryKey = "on_demand_delivery"
-      static let ridesharingKey = "ridesharing"
-      static let otherKey = "other"
-
-      static let commercialUseKey = "commercial_use"
-      static let covidResponseKey = "covid_response"
-      static let personalUseKey = "personal_use"
-      static let publicGoodKey = "public_good"
+      static let visitsKey = "visits"
+      static let deliveriesKey = "deliveries"
+      static let ridesKey = "rides"
 
       static let myWorkforceKey = "my_workforce"
       static let myCustomersKey = "my_customers"
-      static let consumersKey = "consumers"
     }
   }
 

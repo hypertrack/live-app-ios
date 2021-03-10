@@ -8,17 +8,14 @@ import ViewsComponents
 struct TellusView: View {
   @EnvironmentObject var store: Store<AppState, Action>
   @State private var topPickerSelectedIndex: Int = 0
-  @State private var middlePickerSelectedIndex: Int = 0
   @State private var bottomPickerSelectedIndex: Int = 0
   @State private var topPickerVisible = false
-  @State private var middlePickerVisible = false
   @State private var bottomPickerVisible = false
   @State private var isActivityIndicatorVisible = false
 
   private let hyperTrackData: HyperTrackData
   private let apiClient: ApiClientProvider
   private let top: [[String: String]]
-  private let middle: [[String: String]]
   private let bottom: [[String: String]]
 
   init(
@@ -30,25 +27,14 @@ struct TellusView: View {
 
     top = [
       ["Not set": ""],
-      ["Workforce": Constant.ServerKeys.SignUp.workforceKey],
-      ["Logistics": Constant.ServerKeys.SignUp.logisticsKey],
-      ["Gig Work": Constant.ServerKeys.SignUp.gigWorkKey],
-      ["On-Demand Delivery": Constant.ServerKeys.SignUp.onDemandDeliveryKey],
-      ["Ridesharing": Constant.ServerKeys.SignUp.ridesharingKey],
-      ["Other": Constant.ServerKeys.SignUp.otherKey]
-    ]
-    middle = [
-      ["Not set": ""],
-      ["Commercial use": Constant.ServerKeys.SignUp.commercialUseKey],
-      ["COVID-19 response": Constant.ServerKeys.SignUp.covidResponseKey],
-      ["Personal use": Constant.ServerKeys.SignUp.personalUseKey],
-      ["Public good": Constant.ServerKeys.SignUp.publicGoodKey]
+      ["Deliveries": Constant.ServerKeys.SignUp.visitsKey],
+      ["Visits": Constant.ServerKeys.SignUp.deliveriesKey],
+      ["Rides": Constant.ServerKeys.SignUp.ridesKey]
     ]
     bottom = [
       ["Not set": ""],
-      ["My workforce": Constant.ServerKeys.SignUp.myWorkforceKey],
-      ["My customer's workforce": Constant.ServerKeys.SignUp.myCustomersKey],
-      ["Consumers": Constant.ServerKeys.SignUp.consumersKey]
+      ["My fleet": Constant.ServerKeys.SignUp.myWorkforceKey],
+      ["My customer's fleet": Constant.ServerKeys.SignUp.myCustomersKey]
     ]
 
     if let topIndex = top
@@ -56,13 +42,6 @@ struct TellusView: View {
         $0.values.first! == self.hyperTrackData.appGoal
       }) {
       _topPickerSelectedIndex = State(initialValue: topIndex)
-    }
-
-    if let middleIndex = middle
-      .firstIndex(where: {
-        $0.values.first! == self.hyperTrackData.appDeviceCount
-      }) {
-      _middlePickerSelectedIndex = State(initialValue: middleIndex)
     }
 
     if let bottomIndex = bottom
@@ -116,7 +95,7 @@ struct TellusView: View {
       VStack(spacing: 0) {
         Section {
           HStack {
-            Text("My app manages:")
+            Text("My business manages:")
               .font(
                 Font.system(size: 16)
                   .weight(.medium))
@@ -124,7 +103,6 @@ struct TellusView: View {
             Button(self.top[self.topPickerSelectedIndex].keys
               .first!) {
               self.topPickerVisible.toggle()
-              self.middlePickerVisible = false
               self.bottomPickerVisible = false
             }
             .font(
@@ -148,7 +126,6 @@ struct TellusView: View {
               }
               .onTapGesture {
                 self.topPickerVisible.toggle()
-                self.middlePickerVisible = false
                 self.bottomPickerVisible = false
               }
               Spacer()
@@ -162,52 +139,7 @@ struct TellusView: View {
           .frame(height: 1)
         Section {
           HStack {
-            Text("My app is for:")
-              .font(
-                Font.system(size: 16)
-                  .weight(.medium))
-            Spacer()
-            Button(self.middle[self.middlePickerSelectedIndex].keys
-              .first!) {
-              self.middlePickerVisible.toggle()
-              self.topPickerVisible = false
-              self.bottomPickerVisible = false
-            }
-            .font(
-              Font.system(size: 16)
-                .weight(.medium))
-            .lineLimit(1)
-          }
-          .padding([.top, .bottom], 13)
-          .padding(.trailing, 16)
-          .padding(.leading, 38)
-          if self.middlePickerVisible {
-            HStack {
-              Spacer()
-              Picker(
-                selection: self.$middlePickerSelectedIndex,
-                label: Text("")
-              ) {
-                ForEach(0 ..< self.middle.count) {
-                  Text(self.middle[$0].keys.first!)
-                }
-              }.onTapGesture {
-                self.middlePickerVisible.toggle()
-                self.topPickerVisible = false
-                self.bottomPickerVisible = false
-              }
-              Spacer()
-            }
-            .padding([.leading, .trailing], 38)
-          }
-        }
-        .frame(width: geometry.size.width)
-        .background(Color("NavigationBarColor"))
-        Spacer()
-          .frame(height: 1)
-        Section {
-          HStack {
-            Text("My app would track:")
+            Text("for")
               .font(
                 Font.system(size: 16)
                   .weight(.medium))
@@ -216,7 +148,6 @@ struct TellusView: View {
             Button(self.bottom[self.bottomPickerSelectedIndex].keys
               .first!) {
               self.bottomPickerVisible.toggle()
-              self.middlePickerVisible = false
               self.topPickerVisible = false
             }
             .font(
@@ -239,7 +170,6 @@ struct TellusView: View {
                 }
               }.onTapGesture {
                 self.bottomPickerVisible.toggle()
-                self.middlePickerVisible = false
                 self.topPickerVisible = false
               }
               Spacer()
@@ -272,9 +202,6 @@ struct TellusView: View {
       self.hyperTrackData.update(.updateAppGoal(self.top[
         self.topPickerSelectedIndex
       ].values.first!))
-      self.hyperTrackData.update(.updateAppDeviceCount(self.middle[
-        self.middlePickerSelectedIndex
-      ].values.first!))
       self.hyperTrackData.update(.updateAppProductState(self.bottom[
         self.bottomPickerSelectedIndex
       ].values.first!))
@@ -296,9 +223,6 @@ struct TellusView: View {
     Button(action: {
       self.hyperTrackData.update(.updateAppGoal(self.top[
         self.topPickerSelectedIndex
-      ].values.first!))
-      self.hyperTrackData.update(.updateAppDeviceCount(self.middle[
-        self.middlePickerSelectedIndex
       ].values.first!))
       self.hyperTrackData.update(.updateAppProductState(self.bottom[
         self.bottomPickerSelectedIndex
@@ -343,6 +267,6 @@ struct TellusView: View {
   }
 
   private func isNextButtonEnabled() -> Bool {
-    return !(topPickerSelectedIndex > 0 && middlePickerSelectedIndex > 0 && bottomPickerSelectedIndex > 0)
+    return !(topPickerSelectedIndex > 0 && bottomPickerSelectedIndex > 0)
   }
 }

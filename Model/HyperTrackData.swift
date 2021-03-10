@@ -109,14 +109,6 @@ public final class HyperTrackData {
     ) }
   }
 
-  public var appDeviceCount: String {
-    get {
-      return liveUserDefaults
-        .string(forKey: appDeviceCountKeyDefaultsKey) ?? ""
-    }
-    set { liveUserDefaults.set(newValue, forKey: appDeviceCountKeyDefaultsKey) }
-  }
-
   public var shareVisibilityStatus: Bool {
     get { return liveUserDefaults.bool(
       forKey: trackingMapViewShareVisibilityStatusDefaultsKey
@@ -152,7 +144,6 @@ public final class HyperTrackData {
       password: String
     )
     case updateAppGoal(String)
-    case updateAppDeviceCount(String)
     case updateAppProductState(String)
     case removeRegData
     case updateShareVisibilityStatus(Bool)
@@ -179,13 +170,10 @@ public final class HyperTrackData {
         self.password = password
       case let .updateAppGoal(goal):
         appGoal = goal
-      case let .updateAppDeviceCount(deviceCount):
-        appDeviceCount = deviceCount
       case let .updateAppProductState(productState):
         appProductState = productState
       case .removeRegData:
         companyName = ""
-        appDeviceCount = ""
         appProductState = ""
         appGoal = ""
         errorMessage = ""
@@ -200,7 +188,6 @@ public final class HyperTrackData {
         tripId = nil
         geofenceId = ""
         companyName = ""
-        appDeviceCount = ""
         appProductState = ""
         appGoal = ""
         errorMessage = ""
