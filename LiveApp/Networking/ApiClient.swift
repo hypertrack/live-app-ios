@@ -97,6 +97,7 @@ extension ApiClient {
     _ completion: @escaping (Result<String, Error>) -> Void
   ) {
     logAuthentication.log("Signing in")
+    client.signOut()
     client
       .signIn(
         username: username.lowercased(),
