@@ -251,7 +251,7 @@ extension ApiClient {
     _ completion: @escaping (Result<Void, Error>) -> Void
   ) {
     logAuthentication.log("Sending forgot password request")
-    client.forgotPassword(username: email) { forgotPasswordResult, error in
+    client.forgotPassword(username: email.lowercased()) { forgotPasswordResult, error in
       if let result = forgotPasswordResult {
         logAuthentication
           .log("Successfuly sent confirm password request with result: \(result)")
