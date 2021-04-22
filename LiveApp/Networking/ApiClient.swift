@@ -99,7 +99,7 @@ extension ApiClient {
     logAuthentication.log("Signing in")
     client
       .signIn(
-        username: username,
+        username: username.lowercased(),
         password: password
       ) { [weak self] result, error in
         guard let self = self else { return }
