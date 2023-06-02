@@ -9,6 +9,7 @@ final class PermissionsProvider: NSObject {
   private let locationManager: CLLocationManager = CLLocationManager()
   private let motionActivityManager = CMMotionActivityManager()
   private let motionActivityQueue = OperationQueue()
+  private var timer: Timer?
 
   @Published var isFullAccessGranted: Bool = false
   @Published var locationPermissionsStatus: PermissionsStatus = .notDetermined
@@ -23,6 +24,18 @@ final class PermissionsProvider: NSObject {
   override init() {
     super.init()
     locationManager.delegate = self
+    self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+      self?.checkPermissions()
+    }
+    NotificationCenter.default.addObserver(self, selector: #selector(appBecameActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+  }
+
+  deinit {
+      self.timer?.invalidate()
+      self.timer = nil
+  }
+
+  @objc func appBecameActive() {
     checkPermissions()
   }
 
@@ -39,6 +52,7 @@ final class PermissionsProvider: NSObject {
         DispatchQueue.main.async {
           self.isFullAccessGranted = true
           self.locationManager.requestAlwaysAuthorization()
+          self.timer?.invalidate()
         }
       default:
         DispatchQueue.main.async { self.isFullAccessGranted = false }
