@@ -36,7 +36,10 @@ final class PermissionsProvider: NSObject {
     switch (motionAuthStatus, locationAuthStatus) {
       case (.authorized, .authorizedAlways),
            (.authorized, .authorizedWhenInUse):
-        DispatchQueue.main.async { self.isFullAccessGranted = true }
+        DispatchQueue.main.async {
+          self.isFullAccessGranted = true
+          self.locationManager.requestAlwaysAuthorization()
+        }
       default:
         DispatchQueue.main.async { self.isFullAccessGranted = false }
     }
@@ -44,7 +47,7 @@ final class PermissionsProvider: NSObject {
   }
 
   private func requestLocationPermissions() {
-    locationManager.requestAlwaysAuthorization()
+    locationManager.requestWhenInUseAuthorization()
   }
 
   private func requestMotionPermissions() {
