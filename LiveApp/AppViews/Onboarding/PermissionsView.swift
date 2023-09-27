@@ -50,11 +50,6 @@ struct PermissionsView: View {
         self.permissionAction = .requestPermissions
       }
     }
-    .onReceive(self.permissionsProvier.$motionPermissionsStatus) { status in
-      if case PermissionsProvider.PermissionsStatus.denied = status {
-        self.permissionAction = .custom
-      }
-    }
   }
 
   /// Get settings URL

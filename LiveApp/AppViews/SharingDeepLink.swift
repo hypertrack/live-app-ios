@@ -13,18 +13,15 @@ struct SharingDeepLinkView: View {
   @Binding var sheetIdentifier: SheetIdentifier?
   private let apiClient: ApiClientProvider
   private let hyperTrackData: HyperTrackData
-  private let hyperTrack: HyperTrack
   
   init(
     alertIdentifier: Binding<AlertIdentifier?>,
     sheetIdentifier: Binding<SheetIdentifier?>,
     apiClient: ApiClientProvider,
-    hyperTrackData: HyperTrackData,
-    hyperTrack: HyperTrack
+    hyperTrackData: HyperTrackData
   ) {
     _alertIdentifier = alertIdentifier
     _sheetIdentifier = sheetIdentifier
-    self.hyperTrack = hyperTrack
     self.hyperTrackData = hyperTrackData
     self.apiClient = apiClient
   }
@@ -126,10 +123,9 @@ struct SharingDeepLinkView: View {
   private func getDeepLink() {
     self.isActivityIndicatorVisible = true
     self.apiClient.getDeepLink(
-    self.hyperTrackData,
-    self.hyperTrack.deviceID,
-    self.hyperTrackData.email)
-    {
+      self.hyperTrackData,
+      self.hyperTrackData.email
+    ) {
       DispatchQueue.main.async {
         self.isActivityIndicatorVisible = false
       }

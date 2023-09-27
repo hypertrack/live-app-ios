@@ -13,16 +13,13 @@ struct MenuView: View {
   @State private var startTrackingRequestState: StartTrackingRequestState = .requestComplete
   @State private var hypertrackTrackingState: Bool = false
   private var inputData: HyperTrackData
-  private var hyperTrack: HyperTrack
   private let apiClient: ApiClientProvider
 
   init(
     inputData: HyperTrackData,
-    hyperTrack: HyperTrack,
     apiClient: ApiClientProvider
   ) {
     self.inputData = inputData
-    self.hyperTrack = hyperTrack
     self.apiClient = apiClient
   }
 
@@ -86,7 +83,7 @@ struct MenuView: View {
           .padding(.bottom, 12)
           .opacity(self.inputData.isSignedInFromDeeplink ? 0.0 : 1.0)
         Button(action: {
-          self.apiClient.stopTracking(self.inputData, self.hyperTrack, self.hyperTrack.deviceID) { _ in }
+          self.apiClient.stopTracking(self.inputData) { _ in }
           self.apiClient.signOut()
           self.inputData.update(.signOut)
           self.inputData.update(.updatePass(""))
@@ -116,21 +113,21 @@ struct MenuView: View {
       .clipped()
       .shadow(radius: 2, x: 5)
     }.onAppear {
-      self.hypertrackTrackingState = self.hyperTrack.isRunning
+      self.hypertrackTrackingState = HyperTrack.isTracking
     }
   }
   
   private func startTracking(_ newState: Bool) {
     self.hypertrackTrackingState = newState
     self.startTrackingRequestState = .requestInFlight
-    if self.hyperTrack.isRunning {
-      self.apiClient.stopTracking(self.inputData, self.hyperTrack, self.hyperTrack.deviceID) { reuslt in
+    if HyperTrack.isTracking {
+      self.apiClient.stopTracking(self.inputData) { reuslt in
         DispatchQueue.main.async {
           self.startTrackingRequestState = .requestComplete
         }
       }
     } else {
-      self.apiClient.startTracking(self.inputData, self.hyperTrack, self.hyperTrack.deviceID) { reuslt in
+      self.apiClient.startTracking(self.inputData) { reuslt in
         DispatchQueue.main.async {
           self.startTrackingRequestState = .requestComplete
         }

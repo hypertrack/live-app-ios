@@ -46,11 +46,6 @@ public struct ExceptionPermissionsView: View {
         self.permissionAction = .requestPermissions
       }
     }
-    .onReceive(self.permissionsProvier.$motionPermissionsStatus) { status in
-      if case PermissionsProvider.PermissionsStatus.denied = status {
-        self.permissionAction = .custom
-      }
-    }
     .onAppear {
       DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
         UIApplication.shared.endEditing()

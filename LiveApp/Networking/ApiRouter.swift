@@ -1,3 +1,4 @@
+import HyperTrack
 import Foundation
 import Model
 
@@ -51,13 +52,13 @@ extension APIEndpoint {
 }
 
 enum ApiRouter {
-  case authenticate(DeviceId, PublishableKey)
+  case authenticate(PublishableKey)
   case getHyperTrackToken(Token)
   case tripCreate(Payload, Token)
   case tripComplete(TripId, Token)
   case getDeepLink(Token, Email)
-  case startTracking(DeviceId, Token)
-  case stopTracking(DeviceId, Token)
+  case startTracking(Token)
+  case stopTracking(Token)
   case masterAccount(Token)
   case createGeofence(Token, Payload)
   case removeGeofence(Token, GeofenceId)
@@ -103,10 +104,10 @@ extension ApiRouter: APIEndpoint {
         return "\(Constant.Network.getDeepLink)"
       case .authenticate:
         return "\(Constant.Network.authenticate)"
-      case let .startTracking(deviceId, _):
-        return "\(Constant.Network.devices)" + "/" + deviceId + "\(Constant.Network.start)"
-      case let .stopTracking(deviceId, _):
-        return "\(Constant.Network.devices)" + "/" + deviceId + "\(Constant.Network.stop)"
+      case .startTracking(_):
+      return "\(Constant.Network.devices)" + "/" + HyperTrack.deviceID + "\(Constant.Network.start)"
+      case .stopTracking(_):
+        return "\(Constant.Network.devices)" + "/" + HyperTrack.deviceID + "\(Constant.Network.stop)"
       case .masterAccount:
         return "\(Constant.Network.masterAccount)"
     }
@@ -118,8 +119,8 @@ extension ApiRouter: APIEndpoint {
         return trip
       case let .createGeofence(_, payload):
         return payload
-      case let .authenticate(deviceid, _):
-        return ["device_id": deviceid]
+      case .authenticate(_):
+        return ["device_id": HyperTrack.deviceID]
       default:
         return nil
     }
@@ -166,15 +167,13 @@ extension ApiRouter: APIEndpoint {
            let .getDeepLink(token, _),
            let .masterAccount(token),
            let .stopTracking(
-             _,
              token
            ),
            let .startTracking(
-             _,
              token
            ):
         return ["Authorization": "Bearer \(token)"]
-      case let .authenticate(_, publishableKey):
+      case let .authenticate(publishableKey):
         return [
           "Content-Type": "application/json",
           "Authorization":

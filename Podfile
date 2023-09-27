@@ -6,7 +6,7 @@ inhibit_all_warnings!
 
 def live_app_pods
   pod 'AWSMobileClient'
-  pod 'HyperTrack', '4.16.0'
+  pod 'HyperTrack', '5.0.2'
   pod 'HyperTrackViews/MapKit', '0.6.0'
   pod 'lottie-ios', '3.1.9'
   pod 'Branch', '1.39.2'
@@ -32,15 +32,8 @@ post_install do |installer|
     target.build_configurations.each do |config|
       config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'dwarf'
       deployment_target = config.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
-      if !deployment_target.nil? && !deployment_target.empty? && deployment_target.to_f < 11.0
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
-      end
-    end
-    if target.name == "HyperTrack"
-      target.build_configurations.each do |config|
-        if config.name == "Debug"
-          config.build_settings['SWIFT_ACTIVE_COMPILATION_CONDITIONS'] = "DEBUG HYPERTRACK"
-        end
+      if !deployment_target.nil? && !deployment_target.empty? && deployment_target.to_f < 12.0
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
       end
     end
   end

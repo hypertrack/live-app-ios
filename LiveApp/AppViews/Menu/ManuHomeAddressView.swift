@@ -22,7 +22,6 @@ struct ManuHomeAddressView: View {
   
   var inputData: HyperTrackData
   var apiClient: ApiClientProvider
-  var hyperTrack: HyperTrack
 
   fileprivate enum ViewState {
     case list
@@ -286,27 +285,24 @@ struct ManuHomeAddressView: View {
     }
     inputData.update(.updateHomeAddress(addrress))
 
-    var dictionary: [String: Any] = [:]
-    
+    var json: HyperTrack.JSON.Object = [:]
+
     if inputData.name.count > 0 {
-      dictionary[Constant.MetadataKeys.nameKey] = inputData.name
+      json[Constant.MetadataKeys.nameKey] = .string(inputData.name)
     }
     
     if inputData.phone.count > 0 {
-      dictionary[Constant.MetadataKeys.phoneKey] = inputData.phone
+      json[Constant.MetadataKeys.phoneKey] = .string(inputData.phone)
     }
     
-    if dictionary.count > 0 {
-      
-      if let metadata = HyperTrack.Metadata(dictionary: dictionary) {
-        hyperTrack.setDeviceMetadata(metadata)
-      }
+    if json.count > 0 {
+      HyperTrack.metadata = json
     }
 
     if inputData.geofenceId.isEmpty {
       
       DispatchQueue.main.async { self.isActivityIndicatorVisible = true }
-      self.apiClient.createGeofence(self.inputData, self.hyperTrack.deviceID) { result in
+      self.apiClient.createGeofence(self.inputData) { result in
         DispatchQueue.main.async { self.isActivityIndicatorVisible = false }
         switch result {
         case let .success(geofence):
@@ -320,11 +316,11 @@ struct ManuHomeAddressView: View {
     } else {
       DispatchQueue.main.async { self.isActivityIndicatorVisible = true }
       
-      apiClient.removeGeofence(inputData, hyperTrack.deviceID) { result in
+      apiClient.removeGeofence(inputData) { result in
         switch result {
         case .success:
           self.inputData.update(.updateGeofenceId(""))
-          self.apiClient.createGeofence(self.inputData, self.hyperTrack.deviceID) { result in
+          self.apiClient.createGeofence(self.inputData) { result in
             DispatchQueue.main.async { self.isActivityIndicatorVisible = false }
             switch result {
             case let .success(geofence):

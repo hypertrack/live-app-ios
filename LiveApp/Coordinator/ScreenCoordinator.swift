@@ -96,8 +96,7 @@ struct ScreenCoordinator: View {
   }
 
   private func sharingDeepLinkView() -> some View {
-    guard let pk = hyperTrackData.publishableKey,
-      let hypertrackPublishableKey = HyperTrack.PublishableKey(pk)
+    guard let pk = hyperTrackData.publishableKey
       else {
         return LoginView(
           hyperTrackData: hyperTrackData,
@@ -105,37 +104,17 @@ struct ScreenCoordinator: View {
           permissionsProvier: permissionsProvider
         ).any
     }
-    switch HyperTrack.makeSDK(publishableKey: hypertrackPublishableKey, automaticallyRequestPermissions: false) {
-      case let .success(hypertrack):
-        return SharingDeepLinkView(
-          alertIdentifier: $alertIdentifier,
-          sheetIdentifier: $sheetIdentifier,
-          apiClient: apiClient,
-          hyperTrackData: hyperTrackData,
-          hyperTrack: hypertrack
-        ).any
-      case let .failure(error):
-        switch error {
-          case .developmentError:
-            fatalError()
-          case .productionError:
-            return PermissionsView(
-              permissionsProvier: permissionsProvider,
-              contentModel: ContentModel.getContentForLiveError(LiveError(
-                fatalError: error
-              )),
-              permissionAction: .custom
-            ) {
-              DispatchQueue.main
-                .async { self.store.update(.updateFlow(.deeplinkView)) }
-            }.any
-        }
-    }
+    eventReceiver.unlock(pk: pk)
+    return SharingDeepLinkView(
+      alertIdentifier: $alertIdentifier,
+      sheetIdentifier: $sheetIdentifier,
+      apiClient: apiClient,
+      hyperTrackData: hyperTrackData
+    ).any
   }
   
   private func destinationInputListView() -> some View {
-    guard let pk = hyperTrackData.publishableKey,
-      let hypertrackPublishableKey = HyperTrack.PublishableKey(pk)
+    guard let pk = hyperTrackData.publishableKey
       else {
         return LoginView(
           hyperTrackData: hyperTrackData,
@@ -144,41 +123,19 @@ struct ScreenCoordinator: View {
         ).any
     }
     searcher.removeSearchData()
-    switch HyperTrack.makeSDK(publishableKey: hypertrackPublishableKey, automaticallyRequestPermissions: false) {
-      case let .success(hypertrack):
-        return DestinationInputListView(
-          searcher: searcher,
-          monitor: monitor,
-          alertIdentifier: $alertIdentifier,
-          sheetIdentifier: $sheetIdentifier,
-          hyperTrackData: hyperTrackData,
-          apiClient: apiClient,
-          hyperTrack: hypertrack
-        ).any
-      case let .failure(error):
-        switch error {
-          case .developmentError:
-            fatalError()
-          case .productionError:
-            return PermissionsView(
-              permissionsProvier: permissionsProvider,
-              contentModel: ContentModel.getContentForLiveError(LiveError(
-                fatalError: error
-              )),
-              permissionAction: .custom
-            ) {
-              DispatchQueue.main
-                .async {
-                  self.store.update(.updateFlow(.destinationInputListView))
-                }
-            }.any
-        }
-    }
+    eventReceiver.unlock(pk: pk)
+    return DestinationInputListView(
+      searcher: searcher,
+      monitor: monitor,
+      alertIdentifier: $alertIdentifier,
+      sheetIdentifier: $sheetIdentifier,
+      hyperTrackData: hyperTrackData,
+      apiClient: apiClient
+    ).any
   }
 
   private func editGeofenceView() -> some View {
-    guard let pk = hyperTrackData.publishableKey,
-      let hypertrackPublishableKey = HyperTrack.PublishableKey(pk)
+    guard let pk = hyperTrackData.publishableKey
       else {
         return LoginView(
           hyperTrackData: hyperTrackData,
@@ -187,41 +144,19 @@ struct ScreenCoordinator: View {
         ).any
     }
     searcher.removeSearchData()
-    switch HyperTrack.makeSDK(publishableKey: hypertrackPublishableKey, automaticallyRequestPermissions: false) {
-      case let .success(hypertrack):
-        return EditGeofenceView(
-          searcher: searcher,
-          monitor: monitor,
-          alertIdentifier: $alertIdentifier,
-          sheetIdentifier: $sheetIdentifier,
-          inputData: hyperTrackData,
-          apiClient: apiClient,
-          hyperTrack: hypertrack
-        ).any
-      case let .failure(error):
-        switch error {
-          case .developmentError:
-            fatalError()
-          case .productionError:
-            return PermissionsView(
-              permissionsProvier: permissionsProvider,
-              contentModel: ContentModel.getContentForLiveError(LiveError(
-                fatalError: error
-              )),
-              permissionAction: .custom
-            ) {
-              DispatchQueue.main
-                .async {
-                  self.store.update(.updateFlow(.editGeofenceView))
-                }
-            }.any
-        }
-    }
+    eventReceiver.unlock(pk: pk)
+    return EditGeofenceView(
+      searcher: searcher,
+      monitor: monitor,
+      alertIdentifier: $alertIdentifier,
+      sheetIdentifier: $sheetIdentifier,
+      inputData: hyperTrackData,
+      apiClient: apiClient
+    ).any
   }
   
   private func homeAddressView() -> some View {
-    guard let pk = hyperTrackData.publishableKey,
-      let hypertrackPublishableKey = HyperTrack.PublishableKey(pk)
+    guard let pk = hyperTrackData.publishableKey
       else {
         return LoginView(
           hyperTrackData: hyperTrackData,
@@ -230,41 +165,19 @@ struct ScreenCoordinator: View {
         ).any
     }
     searcher.removeSearchData()
-    switch HyperTrack.makeSDK(publishableKey: hypertrackPublishableKey, automaticallyRequestPermissions: false) {
-      case let .success(hypertrack):
-        return ManuHomeAddressView(
-          searcher: searcher,
-          monitor: monitor,
-          alertIdentifier: $alertIdentifier,
-          sheetIdentifier: $sheetIdentifier,
-          inputData: hyperTrackData,
-          apiClient: apiClient,
-          hyperTrack: hypertrack
-        ).any
-      case let .failure(error):
-        switch error {
-          case .developmentError:
-            fatalError()
-          case .productionError:
-            return PermissionsView(
-              permissionsProvier: permissionsProvider,
-              contentModel: ContentModel.getContentForLiveError(LiveError(
-                fatalError: error
-              )),
-              permissionAction: .custom
-            ) {
-              DispatchQueue.main
-                .async {
-                  self.store.update(.updateFlow(.homeAddressView))
-                }
-            }.any
-        }
-    }
+    eventReceiver.unlock(pk: pk)
+    return ManuHomeAddressView(
+      searcher: searcher,
+      monitor: monitor,
+      alertIdentifier: $alertIdentifier,
+      sheetIdentifier: $sheetIdentifier,
+      inputData: hyperTrackData,
+      apiClient: apiClient
+    ).any
   }
 
   private func trackingMapView() -> some View {
-    guard let pk = hyperTrackData.publishableKey,
-      let hypertrackPublishableKey = HyperTrack.PublishableKey(pk)
+    guard let pk = hyperTrackData.publishableKey
       else {
         return LoginView(
           hyperTrackData: hyperTrackData,
@@ -272,38 +185,17 @@ struct ScreenCoordinator: View {
           permissionsProvier: permissionsProvider
         ).any
     }
-    switch HyperTrack.makeSDK(publishableKey: hypertrackPublishableKey, automaticallyRequestPermissions: false) {
-      case let .success(hypertrack):
-
-        let shareVisibility = hyperTrackData.shareVisibilityStatus
-
-        return TrackingMapView(
-          monitor: monitor,
-          alertIdentifier: $alertIdentifier,
-          sheetIdentifier: $sheetIdentifier,
-          inputData: hyperTrackData,
-          apiClient: apiClient,
-          hyperTrack: hypertrack,
-          eventReceiver: eventReceiver,
-          state: shareVisibility ? TrackingMapView.TrackingMapViewState.share : TrackingMapView.TrackingMapViewState.tripList
-        ).any
-      case let .failure(error):
-        switch error {
-          case .developmentError:
-            fatalError()
-          case .productionError:
-            return PermissionsView(
-              permissionsProvier: permissionsProvider,
-              contentModel: ContentModel.getContentForLiveError(LiveError(
-                fatalError: error
-              )),
-              permissionAction: .custom
-            ) {
-              DispatchQueue.main
-                .async { self.store.update(.updateFlow(.trackingMapView)) }
-            }.any
-        }
-    }
+    eventReceiver.unlock(pk: pk)
+    let shareVisibility = hyperTrackData.shareVisibilityStatus
+    return TrackingMapView(
+      monitor: monitor,
+      alertIdentifier: $alertIdentifier,
+      sheetIdentifier: $sheetIdentifier,
+      inputData: hyperTrackData,
+      apiClient: apiClient,
+      eventReceiver: eventReceiver,
+      state: shareVisibility ? TrackingMapView.TrackingMapViewState.share : TrackingMapView.TrackingMapViewState.tripList
+    ).any
   }
 
   private func permissionsView() -> some View {
@@ -319,8 +211,7 @@ struct ScreenCoordinator: View {
   }
 
   private func geofenceInputListView() -> some View {
-    guard let pk = hyperTrackData.publishableKey,
-      let hypertrackPublishableKey = HyperTrack.PublishableKey(pk)
+    guard let pk = hyperTrackData.publishableKey
       else {
         return LoginView(
           hyperTrackData: hyperTrackData,
@@ -329,35 +220,14 @@ struct ScreenCoordinator: View {
         ).any
     }
     searcher.removeSearchData()
-    switch HyperTrack.makeSDK(publishableKey: hypertrackPublishableKey, automaticallyRequestPermissions: false) {
-      case let .success(hypertrack):
-        return GeofenceInputListView(
-          searcher: searcher,
-          alertIdentifier: $alertIdentifier,
-          sheetIdentifier: $sheetIdentifier,
-          inputData: hyperTrackData,
-          apiClient: apiClient,
-          hyperTrack: hypertrack
-        ).any
-      case let .failure(error):
-        switch error {
-          case .developmentError:
-            fatalError()
-          case .productionError:
-            return PermissionsView(
-              permissionsProvier: permissionsProvider,
-              contentModel: ContentModel.getContentForLiveError(LiveError(
-                fatalError: error
-              )),
-              permissionAction: .custom
-            ) {
-              DispatchQueue.main
-                .async {
-                  self.store.update(.updateFlow(.geofenceInputListView))
-                }
-            }.any
-        }
-    }
+    eventReceiver.unlock(pk: pk)
+    return GeofenceInputListView(
+      searcher: searcher,
+      alertIdentifier: $alertIdentifier,
+      sheetIdentifier: $sheetIdentifier,
+      inputData: hyperTrackData,
+      apiClient: apiClient
+    ).any
   }
 
   private func loginView() -> some View {
@@ -369,8 +239,7 @@ struct ScreenCoordinator: View {
   }
 
   private func primaryMapView() -> some View {
-    guard let pk = hyperTrackData.publishableKey,
-      let hypertrackPublishableKey = HyperTrack.PublishableKey(pk)
+    guard let pk = hyperTrackData.publishableKey
       else {
         return LoginView(
           hyperTrackData: hyperTrackData,
@@ -378,40 +247,20 @@ struct ScreenCoordinator: View {
           permissionsProvier: permissionsProvider
         ).any
     }
-    switch HyperTrack.makeSDK(publishableKey: hypertrackPublishableKey, automaticallyRequestPermissions: false) {
-      case let .success(hypertrack):
-        self.getMasterAccount(hyperTrack: hypertrack)
-        return PrimaryMapView(
-          monitor: monitor,
-          alertIdentifier: $alertIdentifier,
-          sheetIdentifier: $sheetIdentifier,
-          inputData: hyperTrackData,
-          hyperTrack: hypertrack,
-          apiClient: apiClient,
-          eventReceiver: eventReceiver
-        ).any
-      case let .failure(error):
-        switch error {
-          case .developmentError:
-            fatalError()
-          case .productionError:
-            return PermissionsView(
-              permissionsProvier: permissionsProvider,
-              contentModel: ContentModel.getContentForLiveError(LiveError(
-                fatalError: error
-              )),
-              permissionAction: .custom
-            ) {
-              DispatchQueue.main
-                .async { self.store.update(.updateFlow(.primaryMapView)) }
-            }.any
-        }
-    }
+    eventReceiver.unlock(pk: pk)
+    self.getMasterAccount()
+    return PrimaryMapView(
+      monitor: monitor,
+      alertIdentifier: $alertIdentifier,
+      sheetIdentifier: $sheetIdentifier,
+      inputData: hyperTrackData,
+      apiClient: apiClient,
+      eventReceiver: eventReceiver
+    ).any
   }
 
   private func metadataMapView() -> some View {
-    guard let pk = hyperTrackData.publishableKey,
-      let hypertrackPublishableKey = HyperTrack.PublishableKey(pk)
+    guard let pk = hyperTrackData.publishableKey
       else {
         return LoginView(
           hyperTrackData: hyperTrackData,
@@ -419,48 +268,29 @@ struct ScreenCoordinator: View {
           permissionsProvier: permissionsProvider
         ).any
     }
-    switch HyperTrack.makeSDK(publishableKey: hypertrackPublishableKey, automaticallyRequestPermissions: false) {
-      case let .success(hypertrack):
-        self.startTracking(hyperTrack: hypertrack)
-        return MetadataView(
-          hyperTrackData: hyperTrackData,
-          hyperTrack: hypertrack,
-          action: {
-            self.store.update(.updateFlow(.geofenceInputListView))
-        }
-        ).any
-      case let .failure(error):
-        switch error {
-          case .developmentError:
-            fatalError()
-          case .productionError:
-            return PermissionsView(
-              permissionsProvier: permissionsProvider,
-              contentModel: ContentModel.getContentForLiveError(LiveError(
-                fatalError: error
-              )),
-              permissionAction: .custom
-            ) {
-              DispatchQueue.main
-                .async { self.store.update(.updateFlow(.metadataView)) }
-            }.any
-        }
+    eventReceiver.unlock(pk: pk)
+    self.startTracking()
+    return MetadataView(
+      hyperTrackData: hyperTrackData,
+      action: {
+        self.store.update(.updateFlow(.geofenceInputListView))
     }
+    ).any
   }
   
-  private func startTracking(hyperTrack: HyperTrack) {
+  private func startTracking() {
     logGeneral.log("Starting Tracking")
-    apiClient.startTracking(self.hyperTrackData, hyperTrack, hyperTrack.deviceID, { _ in })
+    apiClient.startTracking(self.hyperTrackData, { _ in })
   }
   
-  private func stopTracking(hyperTrack: HyperTrack) {
+  private func stopTracking() {
     logGeneral.log("Stopping Tracking")
-    apiClient.stopTracking(self.hyperTrackData, hyperTrack, hyperTrack.deviceID, { _ in })
+    apiClient.stopTracking(self.hyperTrackData, { _ in })
   }
   
-  private func getMasterAccount(hyperTrack: HyperTrack) {
+  private func getMasterAccount() {
     if self.hyperTrackData.masterAccountEmail.isEmpty {
-      self.apiClient.getMasterAccount(self.hyperTrackData, hyperTrack.deviceID) {
+      self.apiClient.getMasterAccount(self.hyperTrackData) {
         switch $0 {
         case let .success(masteraccount):
           DispatchQueue.main.async {

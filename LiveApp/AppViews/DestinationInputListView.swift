@@ -21,7 +21,6 @@ struct DestinationInputListView: View {
 
   var hyperTrackData: HyperTrackData
   var apiClient: ApiClientProvider
-  let hyperTrack: HyperTrack
 
   fileprivate enum ViewState {
     case list
@@ -313,10 +312,8 @@ struct DestinationInputListView: View {
     isActivityIndicatorVisible = true
     guard let destination = destination else { return }
     apiClient.createTrip(
-      hyperTrack.deviceID,
       destination,
-      hyperTrackData,
-      hyperTrack
+      hyperTrackData
     ) {
       DispatchQueue.main.async { self.isActivityIndicatorVisible = false }
       switch $0 {

@@ -29,49 +29,37 @@ protocol ApiClientProvider {
   )
   func getDeepLink(
     _ regModel: HyperTrackData,
-    _ deviceId: DeviceId,
     _ email: String,
     _ completion: @escaping (Result<String, Error>) -> Void
   )
   func createTrip(
-    _ deviceId: DeviceId,
     _ destination: Place,
     _ regModel: HyperTrackData,
-    _ hyperTrack: HyperTrack,
     _ completion: @escaping (Result<Trip, Error>) -> Void
   )
   func completeTrip(
     _ regModel: HyperTrackData,
-    _ hyperTrack: HyperTrack,
-    _ deviceId: DeviceId,
     _ tripId: String,
     _ completion: @escaping (Result<Void, Error>) -> Void
   )
   func createGeofence(
     _ regModel: HyperTrackData,
-    _ deviceId: DeviceId,
     _ completion: @escaping (Result<Geofence, Error>) -> Void
   )
   func removeGeofence(
     _ regModel: HyperTrackData,
-    _ deviceId: DeviceId,
     _ completion: @escaping (Result<Void, Error>) -> Void
   )
   func startTracking(
     _ regModel: HyperTrackData,
-    _ hyperTrack: HyperTrack,
-    _ deviceId: DeviceId,
     _ completion: @escaping (Result<Void, Error>) -> Void
   )
   func stopTracking(
     _ regModel: HyperTrackData,
-    _ hyperTrack: HyperTrack,
-    _ deviceId: DeviceId,
     _ completion: @escaping (Result<Void, Error>) -> Void
   )
   func getMasterAccount(
     _ regModel: HyperTrackData,
-    _ deviceId: DeviceId,
     _ completion: @escaping (Result<String, Error>) -> Void
   )
   func signOut()
@@ -298,21 +286,19 @@ extension ApiClient {
   }
   
   func createTrip(
-    _ deviceId: DeviceId,
     _ destination: Place,
     _ regModel: HyperTrackData,
-    _ hyperTrack: HyperTrack,
     _ completion: @escaping (Result<Trip, Error>) -> Void
   ) {
     var payload = destination.convertToPayload()
-    payload[Constant.ServerKeys.Trip.deviceId] = deviceId
+    payload[Constant.ServerKeys.Trip.deviceId] = HyperTrack.deviceID
     logNetwork.log("Creating trip with payload: \(String(describing: payload as AnyObject))")
     guard let pk = regModel.publishableKey else {
       return completion(.failure(LiveError.unknown("Publishable key is empty")))
     }
-    cancellable = tripProvider.authenticate(deviceId, pk)
+    cancellable = tripProvider.authenticate(pk)
       .receive(on: RunLoop.main)
-      .flatMap { self.tripProvider.createTrip(payload, hyperTrack, $0.access_token) }
+      .flatMap { self.tripProvider.createTrip(payload, $0.access_token) }
       .sink(
         receiveCompletion: {
         switch $0 {
@@ -322,7 +308,6 @@ extension ApiClient {
             completion(.failure(error))
         }
       }, receiveValue: {
-        hyperTrack.syncDeviceSettings()
         completion(.success($0))
       }
     )
@@ -331,7 +316,6 @@ extension ApiClient {
 
   func getDeepLink(
     _ regModel: HyperTrackData,
-    _ deviceId: DeviceId,
     _ email: String,
     _ completion: @escaping (Result<String, Error>) -> Void
   ) {
@@ -339,7 +323,7 @@ extension ApiClient {
     guard let pk = regModel.publishableKey else {
       return completion(.failure(LiveError.unknown("Publishable key is empty")))
     }
-    cancellable = tripProvider.authenticate(deviceId, pk)
+    cancellable = tripProvider.authenticate(pk)
       .receive(on: RunLoop.main)
       .flatMap { self.tripProvider.getDeepLink($0.access_token, email.lowercased()) }
       .sink(receiveCompletion: {
@@ -356,8 +340,6 @@ extension ApiClient {
 
   func completeTrip(
     _ regModel: HyperTrackData,
-    _ hyperTrack: HyperTrack,
-    _ deviceId: DeviceId,
     _ tripId: String,
     _ completion: @escaping (Result<Void, Error>) -> Void
   ) {
@@ -365,7 +347,7 @@ extension ApiClient {
     guard let pk = regModel.publishableKey else {
       return completion(.failure(LiveError.unknown("Publishable key is empty")))
     }
-    cancellable = tripProvider.authenticate(deviceId, pk)
+    cancellable = tripProvider.authenticate(pk)
       .receive(on: RunLoop.main)
       .flatMap { self.tripProvider.completeTrip(tripId, $0.access_token) }
       .sink(
@@ -377,7 +359,6 @@ extension ApiClient {
             completion(.failure(error))
         }
       }, receiveValue: { _ in
-        hyperTrack.syncDeviceSettings()
         completion(.success(()))
       }
     )
@@ -385,7 +366,6 @@ extension ApiClient {
   
   func createGeofence(
     _ regModel: HyperTrackData,
-    _ deviceId: DeviceId,
     _ completion: @escaping (Result<Geofence, Error>) -> Void
   ) {
     
@@ -394,15 +374,15 @@ extension ApiClient {
     }
     
     var payload = geofence.convertToGeofencePayload()
-    payload[Constant.ServerKeys.Geofence.deviceId] = deviceId
+    payload[Constant.ServerKeys.Geofence.deviceId] = HyperTrack.deviceID
     logNetwork.log("Create geofence with payload: \(String(describing: payload as AnyObject))")
     
     guard let pk = regModel.publishableKey else {
       return completion(.failure(LiveError.unknown("Publishable key is empty")))
     }
-    cancellable = tripProvider.authenticate(deviceId, pk)
+    cancellable = tripProvider.authenticate(pk)
       .receive(on: RunLoop.main)
-      .flatMap { self.tripProvider.createGeofence(payload, deviceId, $0.access_token) }
+      .flatMap { self.tripProvider.createGeofence(payload, $0.access_token) }
       .sink(
         receiveCompletion: {
         switch $0 {
@@ -417,13 +397,13 @@ extension ApiClient {
     )
   }
   
-  func removeGeofence(_ regModel: HyperTrackData, _ deviceId: DeviceId, _ completion: @escaping (Result<Void, Error>) -> Void) {
+  func removeGeofence(_ regModel: HyperTrackData, _ completion: @escaping (Result<Void, Error>) -> Void) {
     logAuthentication.log("Remove geofence")
     guard let pk = regModel.publishableKey else {
       return completion(.failure(LiveError.unknown("Publishable key is empty")))
     }
     
-    cancellable = tripProvider.authenticate(deviceId, pk)
+    cancellable = tripProvider.authenticate(pk)
       .receive(on: RunLoop.main)
       .flatMap { self.tripProvider.removeGeofence(regModel.geofenceId, $0.access_token) }
       .sink(
@@ -440,17 +420,15 @@ extension ApiClient {
   
   func startTracking(
     _ regModel: HyperTrackData,
-    _ hyperTrack: HyperTrack,
-    _ deviceId: DeviceId,
     _ completion: @escaping (Result<Void, Error>) -> Void
   ) {
     logAuthentication.log("StartTracking")
     guard let pk = regModel.publishableKey else {
       return completion(.failure(LiveError.unknown("Publishable key is empty")))
     }
-    cancellable = tripProvider.authenticate(deviceId, pk)
+    cancellable = tripProvider.authenticate(pk)
       .receive(on: RunLoop.main)
-      .flatMap { self.tripProvider.startTracking(deviceId, $0.access_token) }
+      .flatMap { self.tripProvider.startTracking($0.access_token) }
       .sink(
         receiveCompletion: {
         switch $0 {
@@ -460,7 +438,6 @@ extension ApiClient {
             completion(.failure(error))
         }
       }, receiveValue: { _ in
-        hyperTrack.syncDeviceSettings()
         completion(.success(()))
       }
     )
@@ -468,17 +445,15 @@ extension ApiClient {
   
   func stopTracking(
     _ regModel: HyperTrackData,
-    _ hyperTrack: HyperTrack,
-    _ deviceId: DeviceId,
     _ completion: @escaping (Result<Void, Error>) -> Void
   ) {
     logAuthentication.log("StopTracking")
     guard let pk = regModel.publishableKey else {
       return completion(.failure(LiveError.unknown("Publishable key is empty")))
     }
-    cancellable = tripProvider.authenticate(deviceId, pk)
+    cancellable = tripProvider.authenticate(pk)
       .receive(on: RunLoop.main)
-      .flatMap { self.tripProvider.stopTracking(deviceId, $0.access_token) }
+      .flatMap { self.tripProvider.stopTracking($0.access_token) }
       .sink(
         receiveCompletion: {
         switch $0 {
@@ -488,18 +463,17 @@ extension ApiClient {
             completion(.failure(error))
         }
       }, receiveValue: { _ in
-        hyperTrack.syncDeviceSettings()
         completion(.success(()))
       }
     )
   }
   
-  func getMasterAccount(_ regModel: HyperTrackData, _ deviceId: DeviceId, _ completion: @escaping (Result<String, Error>) -> Void) {
+  func getMasterAccount(_ regModel: HyperTrackData, _ completion: @escaping (Result<String, Error>) -> Void) {
     logAuthentication.log("Get Master Account")
     guard let pk = regModel.publishableKey else {
       return completion(.failure(LiveError.unknown("Publishable key is empty")))
     }
-    cancellable = tripProvider.authenticate(deviceId, pk)
+    cancellable = tripProvider.authenticate(pk)
       .receive(on: RunLoop.main)
       .flatMap { self.tripProvider.masterAccount($0.access_token) }
       .sink(

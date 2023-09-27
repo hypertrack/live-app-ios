@@ -16,7 +16,6 @@ struct PrimaryMapView: View {
   @State private var showMenu = false
 
   private var inputData: HyperTrackData
-  private let hyperTrack: HyperTrack
   private let apiClient: ApiClientProvider
   private let eventReceiver: LiveEventReceiver
 
@@ -25,19 +24,16 @@ struct PrimaryMapView: View {
     alertIdentifier: Binding<AlertIdentifier?>,
     sheetIdentifier: Binding<SheetIdentifier?>,
     inputData: HyperTrackData,
-    hyperTrack: HyperTrack,
     apiClient: ApiClientProvider,
     eventReceiver: LiveEventReceiver
   ) {
     self.monitor = monitor
     _alertIdentifier = alertIdentifier
     _sheetIdentifier = sheetIdentifier
-    self.hyperTrack = hyperTrack
     self.inputData = inputData
     self.eventReceiver = eventReceiver
     self.apiClient = apiClient
     hyperTrackUpdater = HyperTrackUpdater(
-      hyperTrack: self.hyperTrack,
       inputData: self.inputData
     )
   }
@@ -86,7 +82,6 @@ struct PrimaryMapView: View {
         SideMenu(
           leftMenu: MenuView(
             inputData: self.inputData,
-            hyperTrack: self.hyperTrack,
             apiClient: self.apiClient
           ),
           isLeftPanelShow: self.$showMenu,
@@ -106,7 +101,7 @@ struct PrimaryMapView: View {
       ))
       .onAppear {
         self.inputData.update(.updateShareVisibilityStatus(false))
-        self.isTracking = self.hyperTrack.isRunning
+        self.isTracking = HyperTrack.isTracking
         self.hyperTrackUpdater.createUserMovementStatusSubscription()
       }
       .onDisappear {

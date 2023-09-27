@@ -72,69 +72,39 @@ public enum LiveError: Error {
   case locationPermissionsNotDetermined
   case locationServicesDisabled
   case locationServicesUnavalible
-  case motionActivityServicesDisabled
-  case motionActivityPermissionsDenied
 
   /// Other error
   case missingLocationUpdatesBackgroundModeCapability
-  case runningOnSimulatorUnsupported
   case appSyncAuthError(String)
   case cognitoAuthNull
   case unknown(String)
 
-  public init(trackingError: HyperTrack.TrackingError) {
-    switch trackingError {
-      case let .restorableError(restorableError):
-        switch restorableError {
-          case .locationPermissionsDenied,
-               .locationPermissionsNotDetermined,
-               .locationPermissionsRestricted,
-               .locationPermissionsInsufficientForBackground,
-               .locationPermissionsCantBeAskedInBackground,
-               .motionActivityPermissionsCantBeAskedInBackground,
-               .motionActivityPermissionsRestricted:
-            self = .locationPermissionsDenied
-          case .locationServicesDisabled:
-            self = .locationServicesDisabled
-          case .motionActivityServicesDisabled:
-            self = .motionActivityServicesDisabled
-          case .networkConnectionUnavailable:
-            self = .networkDisconnected
-          case .paymentDefault:
-            self = .paymentDefault
-          case .trialEnded:
-            self = .trialEnded
-        case .motionActivityPermissionsNotDetermined:
-          self = .motionActivityPermissionsDenied
+  public init(hyperTrackError: HyperTrack.Error) {
+    switch hyperTrackError {
+    case .blockedFromRunning:
+      self = .trialEnded
+    case .invalidPublishableKey:
+      self = .authorizationFailed
+    case let .location(locationError):
+      switch locationError {
+      case .mocked:
+        self = .unknown("Location mocked")
+      case .servicesDisabled:
+        self = .locationServicesDisabled
+      case .signalLost:
+        self = .unknown("GPS signal lost")
+      @unknown default:
+        self = .unknown("")
       }
-      case let .unrestorableError(unrestorableError):
-        switch unrestorableError {
-          case .invalidPublishableKey:
-            self = .authorizationFailed
-          case .motionActivityPermissionsDenied:
-            self = .motionActivityPermissionsDenied
-        }
-    }
-  }
-
-  public init(fatalError: HyperTrack.FatalError) {
-    switch fatalError {
-      case let .developmentError(devError):
-        switch devError {
-          case .missingLocationUpdatesBackgroundModeCapability:
-            self = .missingLocationUpdatesBackgroundModeCapability
-          case .runningOnSimulatorUnsupported:
-            self = .runningOnSimulatorUnsupported
-        }
-      case let .productionError(prodError):
-        switch prodError {
-          case .locationServicesUnavalible:
-            self = .locationServicesUnavalible
-          case .motionActivityPermissionsDenied:
-            self = .motionActivityPermissionsDenied
-          case .motionActivityServicesUnavalible:
-            self = .motionActivityServicesDisabled
-        }
+    case let .permissions(permissionsError):
+      switch permissionsError {
+      case .location(_):
+        self = .locationPermissionsDenied
+      @unknown default:
+        self = .unknown("")
+      }
+    @unknown default:
+      self = .unknown("")
     }
   }
 
@@ -176,9 +146,7 @@ public func errorReducer(
 ) {
   switch error {
     case .locationPermissionsDenied,
-         .locationServicesDisabled,
-         .motionActivityPermissionsDenied,
-         .motionActivityServicesDisabled:
+         .locationServicesDisabled:
       if exceptionIdentifier == nil {
         exceptionIdentifier = SheetIdentifier(
           id: .permissionsSettings,
@@ -214,9 +182,7 @@ public func errorActionReducer(
 ) {
   switch error {
   case .locationPermissionsDenied,
-       .locationServicesDisabled,
-       .motionActivityPermissionsDenied,
-       .motionActivityServicesDisabled:
+       .locationServicesDisabled:
     if exceptionIdentifier == nil {
       exceptionIdentifier = SheetIdentifier(id: .permissions, content: error)
     } else {
@@ -230,7 +196,6 @@ public func errorActionReducer(
   case .missingLocationUpdatesBackgroundModeCapability: break
   case .networkDisconnected: break
   case .paymentDefault: break
-  case .runningOnSimulatorUnsupported: break
   case .trialEnded: break
   case .unknown: break
   case .emptyResult: break

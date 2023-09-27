@@ -8,84 +8,47 @@ final class LiveEventReceiver {
   @Published var error: LiveError? = nil
   @Published var isTracking: Bool = false
 
-  private let errorSubject = PassthroughSubject<LiveError, Never>()
-  private let trackingSubject = PassthroughSubject<Notification, Never>()
-  private var cancellables: [AnyCancellable] = []
+  private var isUnlocked = false
+  private var hyperTrackCancellables: [HyperTrack.Cancellable] = []
+  private var combineCancellables: [AnyCancellable] = []
 
   init() {
-    bindInputs()
-    bindOutputs()
-  }
-
-  private func bindInputs() {
-    let startedTrackingPublisher = NotificationCenter.Publisher(
-      center: .default, name: HyperTrack.startedTrackingNotification,
-      object: nil
-    )
-    let stoppedTrackingPublisher = NotificationCenter.Publisher(
-      center: .default, name: HyperTrack.stoppedTrackingNotification,
-      object: nil
-    )
-
-    let trackingInputStream = startedTrackingPublisher
-      .merge(with: stoppedTrackingPublisher)
-      .share()
-      .subscribe(trackingSubject)
-
-    let unrecoverableErrorInputPublisher = NotificationCenter.Publisher(
-      center: .default,
-      name: HyperTrack.didEncounterUnrestorableErrorNotification, object: nil
-    )
-    let recoverableErrorInputPublisher = NotificationCenter.Publisher(
-      center: .default,
-      name: HyperTrack.didEncounterRestorableErrorNotification, object: nil
-    )
-    let errorInputPublisher = NotificationCenter.Publisher(
+    combineCancellables.append(NotificationCenter.Publisher(
       center: .default,
       name: Notification.Name(rawValue: Constant.Notification.LiveError.name),
       object: nil
     )
-
-    let errorInputStream = unrecoverableErrorInputPublisher
-      .merge(with: recoverableErrorInputPublisher)
-      .share()
-      .compactMap { $0.hyperTrackTrackingError() }
-      .map { LiveError(trackingError: $0) }
-      .subscribe(errorSubject)
-
-    let liveErrorInputStream = errorInputPublisher
-      .share()
       .compactMap { $0.unpackError() }
-      .subscribe(errorSubject)
-
-    cancellables += [
-      trackingInputStream,
-      errorInputStream,
-      liveErrorInputStream
-    ]
+      .sink { liveError in
+        self.error = .some(liveError)
+      })
   }
 
-  private func bindOutputs() {
-    let trackingStream = trackingSubject
-      .map { notification in
-        switch notification.name {
-          case HyperTrack.startedTrackingNotification: return true
-          case HyperTrack.stoppedTrackingNotification: return false
-          default: return false
-        }
+  public func unlock(pk: String) {
+    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    let hypertrackDirectory = documentsDirectory.appendingPathComponent("hypertrack")
+    let filePath = hypertrackDirectory.appendingPathComponent("publishable_key_dynamic")
+    do {
+        try FileManager.default.createDirectory(at: hypertrackDirectory, withIntermediateDirectories: true, attributes: nil)
+    } catch {
+        fatalError()
+    }
+    do {
+      try pk.write(to: filePath, atomically: true, encoding: .utf8)
+    } catch {
+      fatalError()
+    }
+    guard !isUnlocked else { return }
+    hyperTrackCancellables.append(HyperTrack.subscribeToErrors({ errors in
+      for error in errors {
+        self.error = LiveError(hyperTrackError: error)
       }
-      .receive(on: RunLoop.main)
-      .assign(to: \.isTracking, on: self)
+    }))
 
-    let errorStream = errorSubject
-      .map { $0 }
-      .receive(on: RunLoop.main)
-      .assign(to: \.error, on: self)
-
-    cancellables += [
-      trackingStream,
-      errorStream
-    ]
+    hyperTrackCancellables.append(HyperTrack.subscribeToIsTracking({ isTracking in
+      self.isTracking = isTracking
+    }))
+    isUnlocked = true
   }
 }
 

@@ -6,7 +6,6 @@ import Model
 final class HyperTrackUpdater: ObservableObject {
   private var cancelViewsMovementStatusSubscription: Cancel?
   private var cancelMovementStatusWithSelectedTripSubscription: Cancel?
-  private let hyperTrack: HyperTrack
   private let inputData: HyperTrackData
   private var hyperTrackViews: HyperTrackViews?
   private var removedTripId: String?
@@ -16,10 +15,8 @@ final class HyperTrackUpdater: ObservableObject {
   public var connectionEstablished = false
 
   init(
-    hyperTrack: HyperTrack,
     inputData: HyperTrackData
   ) {
-    self.hyperTrack = hyperTrack
     self.inputData = inputData
   }
 
@@ -36,7 +33,7 @@ final class HyperTrackUpdater: ObservableObject {
 
     cancelViewsMovementStatusSubscription = hyperTrackViews?
       .subscribeToMovementStatusUpdates(
-        for: hyperTrack.deviceID,
+        for: HyperTrack.deviceID,
         completionHandler: { [weak self] result in
           guard let self = self else { return }
           switch result {
@@ -47,7 +44,7 @@ final class HyperTrackUpdater: ObservableObject {
               if !isTripContains {
                 self.userMovementStatus = movementStatus
               }
-            case let .failure(error):
+            case .failure:
               self.connectionEstablished = false
               self.createUserMovementStatusSubscription()
           }
@@ -66,7 +63,7 @@ final class HyperTrackUpdater: ObservableObject {
 
     cancelMovementStatusWithSelectedTripSubscription = hyperTrackViews?
       .subscribeToMovementStatusUpdates(
-        for: hyperTrack.deviceID,
+        for: HyperTrack.deviceID,
         withTripIDs: [tripId],
         completionHandler: { [weak self] result in
           guard let self = self else { return }

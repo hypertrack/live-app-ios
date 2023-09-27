@@ -8,7 +8,6 @@ protocol LiveApiProviding {
   var apiSession: APISessionProviding { get }
 
   func authenticate(
-    _ deviceId: DeviceId,
     _ publishableKey: PublishableKey
   ) -> AnyPublisher<
     AuthenticateResponse,
@@ -16,7 +15,6 @@ protocol LiveApiProviding {
   >
   func createTrip(
     _ tripPayload: Payload,
-    _ hyperTrack: HyperTrack,
     _ token: Token
   ) -> AnyPublisher<
     Trip,
@@ -29,7 +27,7 @@ protocol LiveApiProviding {
     [String: String],
     Error
   >
-func createGeofence(_ payload: Payload, _ deviceId: DeviceId, _ token: Token) -> AnyPublisher<
+func createGeofence(_ payload: Payload, _ token: Token) -> AnyPublisher<
     [Geofence],
     Error
   >
@@ -47,11 +45,11 @@ func createGeofence(_ payload: Payload, _ deviceId: DeviceId, _ token: Token) ->
     String,
     Error
   >
-  func startTracking(_ deviceId: DeviceId, _ token: Token) -> AnyPublisher<
+  func startTracking(_ token: Token) -> AnyPublisher<
     Void,
     Error
   >
-  func stopTracking(_ deviceId: DeviceId, _ token: Token) -> AnyPublisher<
+  func stopTracking(_ token: Token) -> AnyPublisher<
     Void,
     Error
   >
@@ -65,14 +63,12 @@ struct LiveApiProvider: LiveApiProviding {
   let apiSession: APISessionProviding
 
   func authenticate(
-    _ deviceId: DeviceId,
     _ publishableKey: PublishableKey
   ) -> AnyPublisher<
     AuthenticateResponse,
     Error
   > {
     return self.apiSession.execute(ApiRequest(ApiRouter.authenticate(
-      deviceId,
       publishableKey
     )))
       .eraseToAnyPublisher()
@@ -80,7 +76,6 @@ struct LiveApiProvider: LiveApiProviding {
 
   func createTrip(
     _ tripPayload: Payload,
-    _ hyperTrack: HyperTrack,
     _ token: Token
   ) -> AnyPublisher<
     Trip,
@@ -104,7 +99,7 @@ struct LiveApiProvider: LiveApiProviding {
       .eraseToAnyPublisher()
   }
 
-  func createGeofence(_ payload: Payload, _ deviceId: DeviceId, _ token: Token) -> AnyPublisher<
+  func createGeofence(_ payload: Payload, _ token: Token) -> AnyPublisher<
     [Geofence],
     Error
   > {
@@ -128,13 +123,13 @@ struct LiveApiProvider: LiveApiProviding {
       .eraseToAnyPublisher()
   }
   
-  func startTracking(_ deviceId: DeviceId, _ token: Token) -> AnyPublisher<Void, Error> {
-    return self.apiSession.execute(ApiRequest(ApiRouter.startTracking(deviceId, token)))
+  func startTracking(_ token: Token) -> AnyPublisher<Void, Error> {
+    return self.apiSession.execute(ApiRequest(ApiRouter.startTracking(token)))
       .eraseToAnyPublisher()
   }
 
-  func stopTracking(_ deviceId: DeviceId, _ token: Token) -> AnyPublisher<Void, Error> {
-    return self.apiSession.execute(ApiRequest(ApiRouter.stopTracking(deviceId, token)))
+  func stopTracking(_ token: Token) -> AnyPublisher<Void, Error> {
+    return self.apiSession.execute(ApiRequest(ApiRouter.stopTracking(token)))
       .eraseToAnyPublisher()
   }
   

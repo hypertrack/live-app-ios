@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,7 +13,6 @@
 		B40D3C6E23F6DFC500B09789 /* TripCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40D3C6D23F6DFC500B09789 /* TripCell.swift */; };
 		B41F039623D5FEC60053A6FE /* ContentPresentationModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41F039523D5FEC60053A6FE /* ContentPresentationModifier.swift */; };
 		B41F039823D606C30053A6FE /* HyperTrackData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41F039723D606C30053A6FE /* HyperTrackData.swift */; };
-		B426B7EC2434A5D300B3B0DC /* LiveApp.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = B4BDD89623C68459001EBB41 /* LiveApp.entitlements */; };
 		B42EFE3C24C1BBB900E541A1 /* Geofence.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42EFE3B24C1BBB900E541A1 /* Geofence.swift */; };
 		B439F70C241FA0BC003C6FFE /* DestinationMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B439F70B241FA0BC003C6FFE /* DestinationMapView.swift */; };
 		B43B557423C719D600331D0F /* OnboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43B557323C719D600331D0F /* OnboardView.swift */; };
@@ -1097,7 +1096,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B426B7EC2434A5D300B3B0DC /* LiveApp.entitlements in Resources */,
 				B4BDD82D23C680A4001EBB41 /* loading_00041.png in Resources */,
 				B4BDD84123C680A4001EBB41 /* loading_00020.png in Resources */,
 				B4BDD84523C680A4001EBB41 /* loading_00037.png in Resources */,
@@ -1754,11 +1752,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E9189BA1C9F55F2D3A24D725 /* Pods-LiveApp.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = LiveApp/LiveApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 43;
+				CURRENT_PROJECT_VERSION = 44;
 				DEVELOPMENT_ASSET_PATHS = "\"LiveApp/Preview Content\"";
 				DEVELOPMENT_TEAM = H4925W78YQ;
 				ENABLE_PREVIEWS = YES;
@@ -1768,7 +1766,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.5.4;
+				MARKETING_VERSION = 4.5.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "io.hypertrack.SendETA-iPhone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG HYPERTRACK";
@@ -1781,11 +1779,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1C0B0E9F0608E6C935D19B76 /* Pods-LiveApp.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = LiveApp/LiveApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 43;
+				CURRENT_PROJECT_VERSION = 44;
 				DEVELOPMENT_ASSET_PATHS = "\"LiveApp/Preview Content\"";
 				DEVELOPMENT_TEAM = H4925W78YQ;
 				ENABLE_PREVIEWS = YES;
@@ -1795,7 +1793,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.5.4;
+				MARKETING_VERSION = 4.5.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "io.hypertrack.SendETA-iPhone";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

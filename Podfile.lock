@@ -17,9 +17,7 @@ PODS:
     - AWSAuthCore (= 2.12.7)
     - AWSCognitoIdentityProvider (= 2.12.7)
   - Branch (1.39.2)
-  - HyperTrack (4.16.0):
-    - HyperTrack/Swift (= 4.16.0)
-  - HyperTrack/Swift (4.16.0)
+  - HyperTrack (5.0.2)
   - HyperTrackViews/Core (0.6.0):
     - AWSAppSync (= 3.0.2)
   - HyperTrackViews/MapKit (0.6.0):
@@ -35,7 +33,7 @@ PODS:
 DEPENDENCIES:
   - AWSMobileClient
   - Branch (= 1.39.2)
-  - HyperTrack (= 4.16.0)
+  - HyperTrack (= 5.0.2)
   - HyperTrackViews/MapKit (= 0.6.0)
   - lottie-ios (= 3.1.9)
 
@@ -65,13 +63,13 @@ SPEC CHECKSUMS:
   AWSCore: 2f0f88ae94a63a198274d683c7d0e18709d7090b
   AWSMobileClient: bf1fb0868f9187141ca7b69220383c14878c0a29
   Branch: 5227975ef3c0b4ccd61d70d8f1aab7ba6b1a4775
-  HyperTrack: b12dca3f01260a17246740f3601dd00c137d7c93
+  HyperTrack: eb26159c069ebed32351a329bc54182b82654503
   HyperTrackViews: 8c5068c2cb8d7337fe89d4c298085a2df83611cd
   lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
 
-PODFILE CHECKSUM: bdd53abf627c85166c88fb4cf50a5ba2341f13be
+PODFILE CHECKSUM: bc539a53476e0eb9d4fc4cc979cb2048a2b9e833
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.13.0

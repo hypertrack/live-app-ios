@@ -1,5 +1,4 @@
 import Branch
-import HyperTrack
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -9,8 +8,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       UIApplication.LaunchOptionsKey: Any
     ]?
   ) -> Bool {
-    HyperTrack.registerForRemoteNotifications()
-
     let branch = Branch.getInstance()
     branch.initSession(
       launchOptions: launchOptions,
@@ -38,34 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     return UISceneConfiguration(
       name: "Default Configuration",
       sessionRole: connectingSceneSession.role
-    )
-  }
-
-  // MARK: - Remote Notifications
-
-  func application(
-    _: UIApplication,
-    didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
-  ) {
-    HyperTrack.didRegisterForRemoteNotificationsWithDeviceToken(deviceToken)
-  }
-
-  func application(
-    _: UIApplication,
-    didFailToRegisterForRemoteNotificationsWithError error: Error
-  ) {
-    HyperTrack.didFailToRegisterForRemoteNotificationsWithError(error)
-  }
-
-  func application(
-    _: UIApplication,
-    didReceiveRemoteNotification userInfo: [AnyHashable: Any],
-    fetchCompletionHandler completionHandler:
-    @escaping (UIBackgroundFetchResult) -> Void
-  ) {
-    HyperTrack.didReceiveRemoteNotification(
-      userInfo,
-      fetchCompletionHandler: completionHandler
     )
   }
 }

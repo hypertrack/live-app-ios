@@ -20,7 +20,6 @@ struct TrackingMapView: View {
 
   private var hyperTrackData: HyperTrackData
   private var apiClient: ApiClientProvider
-  private var hyperTrack: HyperTrack
   private var eventReceiver: LiveEventReceiver
 
   enum TrackingMapViewState {
@@ -34,20 +33,17 @@ struct TrackingMapView: View {
     sheetIdentifier: Binding<SheetIdentifier?>,
     inputData: HyperTrackData,
     apiClient: ApiClientProvider,
-    hyperTrack: HyperTrack,
     eventReceiver: LiveEventReceiver,
     state: TrackingMapViewState
   ) {
     self.monitor = monitor
     _alertIdentifier = alertIdentifier
     _sheetIdentifier = sheetIdentifier
-    self.hyperTrack = hyperTrack
     hyperTrackData = inputData
     self.apiClient = apiClient
     self.eventReceiver = eventReceiver
     _vibisleView = State(initialValue: state)
     hyperTrackUpdater = HyperTrackUpdater(
-      hyperTrack: self.hyperTrack,
       inputData: hyperTrackData
     )
   }
@@ -78,7 +74,7 @@ struct TrackingMapView: View {
       .onAppear {
         self.isActivityIndicatorVisible = true
         self.isTripsDetailVisible = false
-        self.isTracking = self.hyperTrack.isRunning
+        self.isTracking = HyperTrack.isTracking
         self.hyperTrackUpdater.createAllSubscriptions()
       }
       .onDisappear {
@@ -274,7 +270,7 @@ extension TrackingMapView {
     isActivityIndicatorVisible = true
     isTripsDetailVisible = false
     hyperTrackUpdater.setRemovedTripId(tripId)
-    apiClient.completeTrip(hyperTrackData, hyperTrack, hyperTrack.deviceID, tripId) { completion($0) }
+    apiClient.completeTrip(hyperTrackData, tripId) { completion($0) }
   }
 
   private func movementStatusHandler(_ movementStatus: MovementStatus?) {

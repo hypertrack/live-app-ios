@@ -29,7 +29,7 @@ struct OnboardView: View {
           Text("Step 1: Sign in with a HyperTrack account")
             .padding(.top, 30)
             .padding([.leading, .trailing], 36)
-          Text("Step 2: Allow use of location and motion & fitness")
+          Text("Step 2: Allow use of location")
             .padding(.top, 5)
             .padding([.leading, .trailing], 36)
           Text("Step 3: Start sharing live location with ETA when on the way!")

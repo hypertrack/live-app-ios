@@ -19,17 +19,14 @@ struct MetadataView: View {
   @ObservedObject private var inputText: Input
 
   let hyperTrackData: HyperTrackData
-  let hyperTrack: HyperTrack
   var action: () -> Void
 
   init(
     hyperTrackData: HyperTrackData,
-    hyperTrack: HyperTrack,
     action: @escaping () -> Void
   ) {
     self.hyperTrackData = hyperTrackData
     inputText = Input(name: hyperTrackData.name, phone: hyperTrackData.phone)
-    self.hyperTrack = hyperTrack
     self.action = action
   }
 
@@ -132,15 +129,11 @@ struct MetadataView: View {
     hyperTrackData.update(.updateName(inputText.name))
     hyperTrackData.update(.updatePhone(inputText.phoneNumber))
 
-    hyperTrack.setDeviceName(inputText.name)
-    if let metadata = HyperTrack.Metadata(
-      dictionary: [
-        Constant.MetadataKeys.phoneKey: self.inputText.phoneNumber,
-        Constant.MetadataKeys.nameKey: self.inputText.name
-      ]
-    ) {
-      hyperTrack.setDeviceMetadata(metadata)
-    }
+    HyperTrack.name = inputText.name
+    HyperTrack.metadata = [
+      Constant.MetadataKeys.phoneKey: .string(self.inputText.phoneNumber),
+      Constant.MetadataKeys.nameKey: .string(self.inputText.name)
+    ]
 
     action()
   }

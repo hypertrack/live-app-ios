@@ -13,7 +13,7 @@ public struct ContentModel {
       case .default:
         title = "Welcome to HyperTrack Live!"
         subTitle =
-          "We need your permission to access your Location and Motion & Fitness to track and share your live location."
+          "We need your permission to access your Location to track and share your live location."
         controlTitle = "Allow access"
         deepLink = "\(UIApplication.openSettingsURLString)"
       case let .custom(title, subTitle, controlTitle, deepLink):
@@ -57,18 +57,6 @@ extension ContentModel {
           "We need your permission to access your Location to track and share your live location."
         controlTitle = "Allow access"
         deepLink = "\(UIApplication.openSettingsURLString)"
-      case .motionActivityPermissionsDenied:
-        title = "Welcome to HyperTrack Live!"
-        subTitle =
-          "We need your permission to access your Motion & Fitness to track and share your live location."
-        controlTitle = "Allow access"
-        deepLink = "\(UIApplication.openSettingsURLString)"
-      case .motionActivityServicesDisabled:
-        title = "Welcome to HyperTrack Live!"
-        subTitle =
-          "We need your permission to access your Motion & Fitness to track and share your live location."
-        controlTitle = "Allow access"
-        deepLink = "\(UIApplication.openSettingsURLString)"
       case .authorizationFailed:
         title = "Invalid Publishable Key"
         subTitle = "Publishable Key wan't found in HyperTrack's database."
@@ -102,11 +90,6 @@ extension ContentModel {
       case .missingLocationUpdatesBackgroundModeCapability:
         title = "Capability error"
         subTitle = "Please, turn on background mode capability"
-        controlTitle = ""
-        deepLink = nil
-      case .runningOnSimulatorUnsupported:
-        title = "Simulator error"
-        subTitle = "HyperTrack can't run on simulator"
         controlTitle = ""
         deepLink = nil
       case .locationServicesUnavalible:
